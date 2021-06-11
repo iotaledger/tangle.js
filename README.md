@@ -10,7 +10,7 @@ The library allows you create "Anchoring Channels". An Anchoring Channel is just
 
 After anchoring a message to an anchorage, such new message can become itself another anchorage point (on top of the previous message). 
 
-You can imagine an Anchoring Channel as a port's dock where different ships can be anchored and where multiple anchorages  are available. The library allows you to anchor the ships and once the ship is anchored that ship itself becomes another anchorage. When you anchor other ships to that ship, they even are anchored more strongly as not only they are anchored to the dock but also to another ship. 
+You can imagine an Anchoring Channel as a port's dock where different ships can be anchored and where multiple anchorages  are available. The library allows you to anchor the ships and once the ship is anchored that ship itself becomes another anchorage point. When you anchor other ships you anchor them both to the dock and to that ship acting as an anchorage.
 
 The entities anchoring the messages (i.e. the ship owners) are authenticated by means of EdDSA (Ed25519). 
 
@@ -19,9 +19,7 @@ The entities anchoring the messages (i.e. the ship owners) are authenticated by 
 ### Anchoring messages
 
 ```
-const anchoringChannel = new IotaAnchoringChannel(node);
-const anchoringChannel = new IotaAnchoringChannel(node, seed);
-const anchoringChannel = IotaAnchoringChannel.fromChannelID(node, channelID, seed);
+const anchoringChannel = IotaAnchoringChannel.create(node, seed).bind(channelID);
 
 anchoringChannel.seed
 anchoringChannel.channelID
@@ -30,7 +28,6 @@ anchoringChannel.announceMsgID
 
 const result = anchoringChannel.anchor(message, anchorageID)
 
-const result = anchoringChannel.fetch(anchorageID)
 const result = anchoringChannel.fetch(anchorageID, msgID)
 ``` 
 
