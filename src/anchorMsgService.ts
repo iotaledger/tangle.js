@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { Address, Author, Subscriber, ChannelType, SendOptions } from "wasm-node/iota_streams_wasm";
+import { Address, Subscriber, SendOptions } from "wasm-node/iota_streams_wasm";
 import { ChannelHelper } from "./channelHelper";
 import { IAnchoringRequest } from "./IAnchoringRequest";
 import { IAnchoringResult } from "./IAnchoringResult";

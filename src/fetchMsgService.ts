@@ -49,7 +49,6 @@ export default class FetchMsgService {
       message: messageContent,
       msgID,
       pk
-    }
-
+    };
   }
 }

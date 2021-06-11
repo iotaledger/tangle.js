@@ -8,12 +8,31 @@ import { IFetchRequest } from "./IFetchRequest";
 import { IFetchResult } from "./IFetchResult";
 
 export class IotaAnchoringChannel {
+    private _channelID: string;
+
+    private readonly _node: string;
+
+    private readonly _seed: string;
+
+    private _channelAddress: string;
+
+    private _announceMsgID: string;
+
+    private constructor(node: string, seed?: string) {
+        this._node = node;
+        this._seed = seed;
+
+        if (!seed) {
+            this._seed = ChannelHelper.generateSeed();
+        }
+    }
+
     /**
      * Creates a new Anchoring Channel
-     *  
-     * @param node  The node 
+     *
+     * @param node  The node
      * @param seed  The seed
-     * 
+     *
      * @returns The anchoring channel
      */
     public static create(node: string, seed?: string): IotaAnchoringChannel {
@@ -22,9 +41,11 @@ export class IotaAnchoringChannel {
 
     /**
      * Binds to an existing channel or creates a new binding
-     * 
-     * @param channelID in the form of 'channel_address:announce_msg_id'    
-     * 
+     *
+     * @param channelID in the form of 'channel_address:announce_msg_id'
+     *
+     * @returns reference to the channel
+     *
      */
     public async bind(channelID?: string): Promise<IotaAnchoringChannel> {
         if (!channelID) {
@@ -48,42 +69,33 @@ export class IotaAnchoringChannel {
         return this;
     }
 
-    get channelID(): string {
+    public get channelID(): string {
         return this._channelID;
     }
 
-    get channelAddress(): string {
+    public get channelAddress(): string {
         return this._channelAddress;
     }
 
-    get announceMsgID(): string {
+    public get announceMsgID(): string {
         return this._announceMsgID;
     }
 
-    get node(): string {
+    public get node(): string {
         return this._node;
     }
 
-    get seed(): string {
+    public get seed(): string {
         return this._seed;
     }
 
-    private _channelID: string;
-    private _node: string;
-    private _seed: string;
-
-    private _channelAddress: string;
-    private _announceMsgID: string;
-
-    private constructor(node: string, seed?: string) {
-        this._node = node;
-        this._seed = seed;
-
-        if (!seed) {
-            this._seed = ChannelHelper.generateSeed();
-        }
-    }
-
+    /**
+     * Anchors a message to the anchoring channel
+     *
+     * @param message Message to be anchored
+     * @param anchorageID The anchorage
+     * @returns The result of the operation
+     */
     public async anchor(message: string, anchorageID: string): Promise<IAnchoringResult> {
         if (!this._channelAddress) {
             throw new Error("Unbound anchoring channel. Please call bind first");
@@ -97,9 +109,17 @@ export class IotaAnchoringChannel {
             anchorageID
         };
 
-        return await AnchorMsgService.anchor(request);
+        return AnchorMsgService.anchor(request);
     }
 
+    /**
+     * Fetch a previously anchored message
+     *
+     * @param anchorageID The anchorage point
+     * @param messageID  The ID of the message
+     *
+     * @returns The fetch result
+     */
     public async fetch(anchorageID: string, messageID?: string): Promise<IFetchResult> {
         if (!this._channelAddress) {
             throw new Error("Unbound anchoring channel. Please call bind first");
@@ -114,14 +134,16 @@ export class IotaAnchoringChannel {
             anchorageID
         };
 
-        return await FetchMsgService.fetch(request);
+        return FetchMsgService.fetch(request);
     }
 
     /**
-     *  Creates a new Channel 
-     * 
+     *  Creates a new Channel
+     *
+     *  @returns The address of the channel created and the announce message ID
+     *
      */
-    private async createChannel(): Promise<{ channelAddress: string, announceMsgID: string }> {
+    private async createChannel(): Promise<{ channelAddress: string; announceMsgID: string }> {
         const options = new SendOptions(this._node, true);
         const auth = new Author(this._seed, options.clone(), ChannelType.SingleBranch);
 
@@ -131,6 +153,6 @@ export class IotaAnchoringChannel {
         return {
             announceMsgID: announceLink.msg_id,
             channelAddress: auth.channel_address()
-        }
+        };
     }
 }
