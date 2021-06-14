@@ -5,39 +5,52 @@ import { IAnchoringRequest } from "./IAnchoringRequest";
 import { IAnchoringResult } from "./IAnchoringResult";
 
 export default class AnchorMsgService {
-  public static async anchor(request: IAnchoringRequest): Promise<IAnchoringResult> {
-    const options = new SendOptions(request.node, true);
-    const subs = new Subscriber(request.seed, options.clone());
+  public static async anchor(request: IAnchoringRequest): Promise<IAnchoringResult | Error> {
+    try {
+      const options = new SendOptions(request.node, true);
+      const subs = new Subscriber(request.seed, options.clone());
 
-    // Channel contains the channel address and the announce messageID
-    const channel = request.channelID;
-    const announceLink = Address.from_string(channel);
+      // Channel contains the channel address and the announce messageID
+      const channel = request.channelID;
+      const announceLink = Address.from_string(channel).copy();
 
-    await subs.clone().receive_announcement(announceLink);
+      // Saving the announce link just in case it is the anchorage link
+      let anchorageLink = announceLink.copy();
 
-    // The address of the anchorage message
-    const anchorageID = request.anchorageID;
+      await subs.clone().receive_announcement(announceLink);
 
-    // Iteratively retrieve messages until We find the one to anchor to
-    const { found, anchorageLink } = await ChannelHelper.findAnchorage(subs, anchorageID);
+      // The address of the anchorage message
+      const anchorageID = request.anchorageID;
 
-    if (!found) {
-      throw new Error(`The anchorage point ${anchorageID} has not been found on the Channel`);
+      let found = true;
+
+      // If we are not anchoring to the announce Msg ID we find the proper anchorage
+      if (anchorageLink.msg_id !== anchorageID) {
+        // Iteratively retrieve messages until We find the one to anchor to
+        ({ found, anchorageLink } = await ChannelHelper.findAnchorage(subs, anchorageID));
+
+        if (!found) {
+          return new Error(`The anchorage point ${anchorageID} has not been found on the Channel`);
+        }
+      }
+
+      const publicPayload = Buffer.from(request.message);
+      const maskedPayload = Buffer.from("");
+
+      const anchoringResp = await subs.clone().send_signed_packet(anchorageLink,
+        publicPayload, maskedPayload);
+
+      const msgID = anchoringResp.get_link().msg_id;
+
+      return {
+        seed: request.seed,
+        channel,
+        anchorageID,
+        msgID
+      };
+    } catch (error) {
+      console.log(error);
+      return new Error(error);
     }
-
-    const publicPayload = Buffer.from(request.message);
-    const maskedPayload = Buffer.from("");
-
-    const anchoringResp = await subs.clone().send_signed_packet(anchorageLink,
-      publicPayload, maskedPayload);
-
-    const msgID = anchoringResp.get_link().msg_id;
-
-    return {
-      seed: request.seed,
-      channel,
-      anchorageID,
-      msgID
-    };
   }
 }

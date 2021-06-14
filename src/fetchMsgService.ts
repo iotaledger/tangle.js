@@ -10,7 +10,6 @@ export default class FetchMsgService {
 
     const seed = request.seed;
 
-
     const options = new SendOptions(node, true);
     const subs = new Subscriber(seed, options.clone());
 
@@ -27,7 +26,6 @@ export default class FetchMsgService {
     if (!found) {
       throw new Error(`The anchorage point ${anchorageID} has not been found on the Channel`);
     }
-
 
     const msgID = request.msgID;
 

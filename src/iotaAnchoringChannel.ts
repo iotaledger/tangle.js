@@ -1,11 +1,14 @@
 import { Author, ChannelType, SendOptions } from "wasm-node/iota_streams_wasm";
 import AnchorMsgService from "./anchorMsgService";
-import { ChannelHelper } from "./channelHelper";
+import { ChannelHelper, initialize } from "./channelHelper";
 import FetchMsgService from "./fetchMsgService";
 import { IAnchoringRequest } from "./IAnchoringRequest";
 import { IAnchoringResult } from "./IAnchoringResult";
 import { IFetchRequest } from "./IFetchRequest";
 import { IFetchResult } from "./IFetchResult";
+
+// Needed for the Streams WASM bindings
+initialize();
 
 export class IotaAnchoringChannel {
     private _channelID: string;
@@ -54,7 +57,7 @@ export class IotaAnchoringChannel {
             this._announceMsgID = announceMsgID;
             this._channelID = `${channelAddress}:${announceMsgID}`;
 
-            return;
+            return this;
         }
 
         const components: string[] = channelID.split(":");
@@ -109,7 +112,13 @@ export class IotaAnchoringChannel {
             anchorageID
         };
 
-        return AnchorMsgService.anchor(request);
+        const result = await AnchorMsgService.anchor(request);
+
+        if (result instanceof Error) {
+            throw result;
+        }
+
+        return result;
     }
 
     /**
