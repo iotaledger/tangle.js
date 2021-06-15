@@ -91,22 +91,52 @@ export class IotaAnchoringChannel {
         return this;
     }
 
+    /**
+     *  Returns the channelID ('channelAddress:announce_msg_id')
+     * 
+     *  @return channel ID
+     * 
+     */
     public get channelID(): string {
         return this._channelID;
     }
 
+    /**
+     *  Returns the channel's address
+     * 
+     *  @return channel address
+     * 
+     */
     public get channelAddr(): string {
         return this._channelAddress;
     }
 
+    /**
+     *  Returns the channel's first anchorage ID
+     * 
+     *  @return anchorageID
+     * 
+     */
     public get firstAnchorageID(): string {
         return this._announceMsgID;
     }
 
+    /**
+     *  Returns the channel's node
+     * 
+     *  @return node
+     * 
+     */
     public get node(): string {
         return this._node;
     }
 
+    /**
+     *  Returns the channel's seed
+     * 
+     *  @return seed
+     * 
+     */
     public get seed(): string {
         return this._seed;
     }
@@ -137,14 +167,14 @@ export class IotaAnchoringChannel {
     }
 
     /**
-     * Fetch a previously anchored message
+     * Fetches a previously anchored message
      *
      * @param anchorageID The anchorage point
      * @param messageID  The ID of the message
      *
      * @returns The fetch result
      */
-    public async fetch(anchorageID: string, messageID?: string): Promise<IFetchResult> {
+    public async fetch(anchorageID: string, messageID: string): Promise<IFetchResult> {
         if (!this._channelAddress) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");

@@ -40,7 +40,7 @@ export default class FetchMsgService {
     const receivedMsgID = response.get_link().copy().msg_id;
 
     if (receivedMsgID !== msgID) {
-      throw new Error("Requested message ID and fethed message ID are not equal");
+      throw new Error("Requested message ID and fetched message ID are not equal");
     }
     const pk = response.get_message().get_pk();
 
