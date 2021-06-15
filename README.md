@@ -24,9 +24,10 @@ const anchoringChannel = await IotaAnchoringChannel.create(node, seed).bind(chan
 anchoringChannel.seed
 anchoringChannel.channelID
 anchoringChannel.channelAddr
-anchoringChannel.firstAnchorageID
+anchoringChannel.initialAnchorageID
 
 const message = "my message";
+// Obtain your anchorageID (it could be the initial anchorageID of the channel)
 const result = await anchoringChannel.anchor(message, anchorageID);
 console.log("msg ID", result.msgID);
 ```
