@@ -150,7 +150,7 @@ export class IotaAnchoringChannel {
                 "Unbound anchoring channel. Please call bind first");
         }
 
-        const request: IFetchRequest = { 
+        const request: IFetchRequest = {
             channelID: this._channelID,
             subscriber: this._subscriber,
             msgID: messageID,

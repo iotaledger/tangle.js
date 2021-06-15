@@ -52,24 +52,70 @@ describe("Fetch Messages", () => {
 
     test("should throw error if fetching a message from an anchorage which does not have anything", async () => {
         const channel = await newChannel(network);
+        // First message
+        const result = await channel.anchor(MSG_1, channel.firstAnchorageID);
+
+        try {
+            await channel.fetch(result.msgID, msgID2);
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.MSG_NOT_FOUND);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should throw error if fetching a message which anchorage does not exist", async () => {
+        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+
+        try {
+            await channel.fetch("1234567abcdef", msgID1);
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should throw error if fetching a message which does not exist", async () => {
+        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+
+        await channel.fetch(channel.firstAnchorageID, msgID1);
+
+        try {
+            await channel.fetch(msgID1, "12345678abcdef");
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.MSG_NOT_FOUND);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should throw error if channel is not bound yet", async () => {
+        const channel = IotaAnchoringChannel.create(network);
+
+        try {
+            await channel.fetch(msgID1, msgID2);
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should throw error if channel only contains the first anchorage", async () => {
+        const channel = await newChannel(network);
 
         try {
             await channel.fetch(channel.firstAnchorageID, msgID1);
         } catch (error) {
             expect(error.name).toBe(AnchoringChannelErrorNames.MSG_NOT_FOUND);
+            return;
         }
-    });
 
-    test("should throw error if fetching a message which anchorage does not exist", async () => {
-
-    });
-
-    test("should throw error if fetching a message which does not exist", async () => {
-    });
-
-    test("should throw error if channel is not bound yet", async () => {
-    });
-
-    test("should throw error if channel only contains the first anchorage", async () => {
+        fail("No exception thrown");
     });
 });

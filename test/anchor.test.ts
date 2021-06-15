@@ -1,4 +1,4 @@
-import AnchorErrorNames from "../src/errors/anchoringChannelErrorNames";
+import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { network, newChannel } from "./testCommon";
 
@@ -68,7 +68,7 @@ describe("Anchor Messages", () => {
         try {
             await channel.anchor(message, "123456789aa");
         } catch (error) {
-            expect(error.name).toBe(AnchorErrorNames.CHANNEL_NOT_BOUND);
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND);
             return;
         }
 
@@ -80,7 +80,7 @@ describe("Anchor Messages", () => {
             const channel = await IotaAnchoringChannel.create(network).bind();
             await channel.bind();
         } catch (error) {
-            expect(error.name).toBe(AnchorErrorNames.CHANNEL_ALREADY_BOUND);
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_ALREADY_BOUND);
             return;
         }
 
@@ -92,7 +92,7 @@ describe("Anchor Messages", () => {
         try {
             await IotaAnchoringChannel.create(network).bind("aaaaaabbbbbbb");
         } catch (error) {
-            expect(error.name).toBe(AnchorErrorNames.CHANNEL_BINDING_ERROR);
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR);
             return;
         }
 
@@ -106,7 +106,7 @@ describe("Anchor Messages", () => {
         try {
             await IotaAnchoringChannel.create(network).bind(channelID);
         } catch (error) {
-            expect(error.name).toBe(AnchorErrorNames.CHANNEL_BINDING_ERROR);
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR);
             return;
         }
 
@@ -120,7 +120,7 @@ describe("Anchor Messages", () => {
             await channel.anchor(message, "123456789aa");
         } catch (error) {
             console.log(error.message);
-            expect(error.name).toBe(AnchorErrorNames.ANCHORAGE_NOT_FOUND);
+            expect(error.name).toBe(AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND);
             return;
         }
 

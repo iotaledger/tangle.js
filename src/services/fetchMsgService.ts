@@ -21,15 +21,17 @@ export default class FetchMsgService {
     }
 
     if (!found) {
-      throw new AnchoringChannelError(AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND, 
+      throw new AnchoringChannelError(AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND,
         `The anchorage point ${anchorageID} has not been found on the channel`);
     }
 
     const msgID = request.msgID;
 
     const msgLink = Address.from_string(`${subs.clone().channel_address()}:${msgID}`);
-    const response = await subs.clone().receive_signed_packet(msgLink);
-    if (!response) {
+    let response;
+    try {
+      response = await subs.clone().receive_signed_packet(msgLink);
+    } catch {
       throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
         `The message ${msgID} has not been found on the Channel`);
     }
