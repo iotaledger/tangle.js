@@ -1,7 +1,9 @@
-export default abstract class AnchorErrorNames {
+export default abstract class AnchoringChannelErrorNames {
     public static CHANNEL_NOT_BOUND = "Not_Bound";
 
     public static ANCHORAGE_NOT_FOUND = "Anchorage_Not_Found";
+
+    public static MSG_NOT_FOUND = "Message_Not_Found";
 
     public static CHANNEL_BINDING_ERROR = "Channel_Binding_Error";
 

@@ -35,14 +35,13 @@ export class ChannelHelper {
         let found = false;
         let anchorageLink: Address;
 
-        // First we try to read such message 
+        // First we try to read such message
         const candidateLink = Address.from_string(`${subs.channel_address()}:${anchorageID}`);
 
         let response;
         try {
             response = await subs.clone().receive_signed_packet(candidateLink);
-        }
-        catch(error) {
+        } catch {
            // The message has not been found
         }
 
@@ -50,7 +49,7 @@ export class ChannelHelper {
             anchorageLink = response.get_link().copy();
             found = true;
         }
-        
+
         // Iteratively retrieve messages until We find the one to anchor to
         while (!found) {
             const messages = await subs.clone().fetch_next_msgs();

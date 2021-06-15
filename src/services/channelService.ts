@@ -1,6 +1,6 @@
 import { Author, Subscriber, Address, ChannelType, SendOptions } from "wasm-node/iota_streams_wasm";
-import AnchorError from "../errors/anchorError";
-import AnchorErrorNames from "../errors/anchorErrorNames";
+import AnchoringChannelError from "../errors/anchoringChannelError";
+import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
 import { IBindChannelRequest } from "../models/IBindChannelRequest";
 
 
@@ -34,9 +34,9 @@ export default class ChannelService {
     /**
      *  Binds to a channel by creating the corresponding IOTA Streams Subscriber and reading
      *  the announce message
-     * 
+     *
      * @param request The channel details
-     * 
+     *
      * @returns IOTA Streams Subscriber object
      */
     public static async bindToChannel(request: IBindChannelRequest): Promise<Subscriber> {
@@ -52,7 +52,7 @@ export default class ChannelService {
 
             return subs;
         } catch {
-            throw new AnchorError(AnchorErrorNames.CHANNEL_BINDING_ERROR,
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
                 `Cannot bind to channel ${request.channelID}`);
         }
     }

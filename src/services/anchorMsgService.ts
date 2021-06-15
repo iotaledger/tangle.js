@@ -1,21 +1,21 @@
 /* eslint-disable no-duplicate-imports */
 import { Address } from "wasm-node/iota_streams_wasm";
-import AnchorError from "../errors/anchorError";
-import AnchorErrorNames from "../errors/anchorErrorNames";
+import AnchoringChannelError from "../errors/anchoringChannelError";
+import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
 import { IAnchoringRequest } from "../models/IAnchoringRequest";
 import { IAnchoringResult } from "../models/IAnchoringResult";
 
 /**
  * Service to deal with message anchors
- * 
+ *
  */
 export default class AnchorMsgService {
   /**
    * Anchors a message to an anchorage
-   * 
+   *
    * @param request The anchoring details
-   * 
+   *
    * @returns The result or error
    */
   public static async anchor(request: IAnchoringRequest): Promise<IAnchoringResult> {
@@ -39,7 +39,7 @@ export default class AnchorMsgService {
         ({ found, anchorageLink } = await ChannelHelper.findAnchorage(subs, anchorageID));
 
         if (!found) {
-          throw new AnchorError(AnchorErrorNames.ANCHORAGE_NOT_FOUND,
+          throw new AnchoringChannelError(AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND,
             `The anchorage ${anchorageID} has not been found on the channel`);
         }
       }
@@ -57,10 +57,10 @@ export default class AnchorMsgService {
         msgID
       };
     } catch (error) {
-      if (error.type === "AnchorError") {
+      if (error.type === AnchoringChannelError.ERR_TYPE) {
         throw error;
       }
-      throw new AnchorError(AnchorErrorNames.OTHER_ERROR, 
+      throw new AnchoringChannelError(AnchoringChannelErrorNames.OTHER_ERROR,
         `Error while anchoring to ${request.anchorageID} on ${request.channelID} -> ${error}`);
     }
   }

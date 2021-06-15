@@ -1,6 +1,6 @@
 import { Subscriber } from "wasm-node/iota_streams_wasm";
-import AnchorError from "./errors/anchorError";
-import AnchorErrorNames from "./errors/anchorErrorNames";
+import AnchoringChannelError from "./errors/anchoringChannelError";
+import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "./helpers/channelHelper";
 import initialize from "./helpers/initializationHelper";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
@@ -59,7 +59,8 @@ export class IotaAnchoringChannel {
      */
     public async bind(channelID?: string): Promise<IotaAnchoringChannel> {
         if (this._subscriber) {
-            throw new AnchorError(AnchorErrorNames.CHANNEL_ALREADY_BOUND, `Channel already bound to ${this._channelID}`);
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_ALREADY_BOUND,
+                `Channel already bound to ${this._channelID}`);
         }
         if (!channelID) {
             const { channelAddress, announceMsgID } = await ChannelService.createChannel(this._node, this._seed);
@@ -74,7 +75,7 @@ export class IotaAnchoringChannel {
                 this._channelAddress = components[0];
                 this._announceMsgID = components[1];
             } else {
-                throw new AnchorError(AnchorErrorNames.CHANNEL_BINDING_ERROR,
+                throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
                     `Invalid channel identifier: ${channelID}`);
             }
         }
@@ -119,7 +120,7 @@ export class IotaAnchoringChannel {
      */
     public async anchor(message: string, anchorageID: string): Promise<IAnchoringResult> {
         if (!this._channelAddress) {
-            throw new AnchorError(AnchorErrorNames.CHANNEL_NOT_BOUND,
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");
         }
 
@@ -145,7 +146,7 @@ export class IotaAnchoringChannel {
      */
     public async fetch(anchorageID: string, messageID?: string): Promise<IFetchResult> {
         if (!this._channelAddress) {
-            throw new AnchorError(AnchorErrorNames.CHANNEL_NOT_BOUND,
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");
         }
 

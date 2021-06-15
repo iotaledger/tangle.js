@@ -1,4 +1,4 @@
-import AnchorErrorNames from "../src/errors/anchorErrorNames";
+import AnchorErrorNames from "../src/errors/anchoringChannelErrorNames";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { network, newChannel } from "./testCommon";
 
