@@ -1,28 +1,10 @@
 import AnchorErrorNames from "../src/errors/anchorErrorNames";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
+import { network, newChannel } from "./testCommon";
 
-/**
- * Creates a new anchoring channel
- *
- *  @param network The network on which the chanel is created
- *
- * @returns the anchoring channel
- */
-async function newChannel(network: string): Promise<IotaAnchoringChannel> {
-    const anchoringChannel = await IotaAnchoringChannel.create(network).bind();
-
-    expect(anchoringChannel.seed).toBeDefined();
-    expect(anchoringChannel.channelID).toBeDefined();
-    expect(anchoringChannel.channelAddr).toBeDefined();
-    expect(anchoringChannel.firstAnchorageID).toBeDefined();
-
-    return anchoringChannel;
-}
 
 describe("Anchor Messages", () => {
     const message = "Hello";
-    // Chrysalis testnet
-    const network = "https://api.lb-0.testnet.chrysalis2.com";
 
     test("should anchor a message to the initial anchorage", async () => {
         const anchoringChannel = await newChannel(network);
@@ -61,6 +43,21 @@ describe("Anchor Messages", () => {
 
         const result = await secondChannel.anchor(message, secondChannel.firstAnchorageID);
         expect(result.msgID).toBeDefined();
+    });
+
+    test("should bind to an already existing channel and anchor to a previous message ID", async () => {
+        // Channel created
+        const channel = await newChannel(network);
+
+        const firstAnchorageID = channel.firstAnchorageID;
+        const result = await channel.anchor(message, firstAnchorageID);
+        const result2 = await channel.anchor(message, result.msgID);
+
+        // Now a new channel is created bound to the initial one
+        const secondChannel = await IotaAnchoringChannel.create(channel.node, channel.seed).bind(channel.channelID);
+        // We anchor a message directly to one of the previous message IDs
+        const result3 = await secondChannel.anchor(message, result2.msgID);
+        expect(result3.msgID).toBeDefined();
     });
 
     test("should throw error if channel not bound yet", async () => {
