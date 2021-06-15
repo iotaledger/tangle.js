@@ -1,5 +1,7 @@
 /* eslint-disable no-duplicate-imports */
 import { Address, Subscriber, SendOptions } from "wasm-node/iota_streams_wasm";
+import AnchorageError from "./anchorError";
+import AnchorErrorNames from "./anchorErrorNames";
 import { ChannelHelper } from "./channelHelper";
 import { IAnchoringRequest } from "./IAnchoringRequest";
 import { IAnchoringResult } from "./IAnchoringResult";
@@ -30,7 +32,8 @@ export default class AnchorMsgService {
         ({ found, anchorageLink } = await ChannelHelper.findAnchorage(subs, anchorageID));
 
         if (!found) {
-          return new Error(`The anchorage point ${anchorageID} has not been found on the Channel`);
+          return new AnchorageError(AnchorErrorNames.ANCHORAGE_NOT_FOUND,
+            `The anchorage point ${anchorageID} has not been found on the Channel`);
         }
       }
 

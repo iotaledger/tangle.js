@@ -1,4 +1,6 @@
 import { Author, ChannelType, SendOptions } from "wasm-node/iota_streams_wasm";
+import AnchorageError from "./anchorError";
+import AnchorErrorNames from "./anchorErrorNames";
 import AnchorMsgService from "./anchorMsgService";
 import { ChannelHelper, initialize } from "./channelHelper";
 import FetchMsgService from "./fetchMsgService";
@@ -76,11 +78,11 @@ export class IotaAnchoringChannel {
         return this._channelID;
     }
 
-    public get channelAddress(): string {
+    public get channelAddr(): string {
         return this._channelAddress;
     }
 
-    public get announceMsgID(): string {
+    public get firstAnchorageID(): string {
         return this._announceMsgID;
     }
 
@@ -101,7 +103,8 @@ export class IotaAnchoringChannel {
      */
     public async anchor(message: string, anchorageID: string): Promise<IAnchoringResult> {
         if (!this._channelAddress) {
-            throw new Error("Unbound anchoring channel. Please call bind first");
+            throw new AnchorageError(AnchorErrorNames.CHANNEL_NOT_BOUND,
+                "Unbound anchoring channel. Please call bind first");
         }
 
         const request: IAnchoringRequest = {
