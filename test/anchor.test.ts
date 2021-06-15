@@ -122,6 +122,7 @@ describe("Anchor Messages", () => {
         try {
             await channel.anchor(message, "123456789aa");
         } catch (error) {
+            console.log(error.message);
             expect(error.name).toBe(AnchorErrorNames.ANCHORAGE_NOT_FOUND);
             return;
         }

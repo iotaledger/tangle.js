@@ -132,10 +132,6 @@ export class IotaAnchoringChannel {
 
         const result = await AnchorMsgService.anchor(request);
 
-        if (result instanceof Error) {
-            throw result;
-        }
-
         return result;
     }
 

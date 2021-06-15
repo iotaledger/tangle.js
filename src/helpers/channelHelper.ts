@@ -38,10 +38,16 @@ export class ChannelHelper {
         // First we try to read such message 
         const candidateLink = Address.from_string(`${subs.channel_address()}:${anchorageID}`);
 
-        const message = await subs.clone().receive_signed_packet(candidateLink);
+        let response;
+        try {
+            response = await subs.clone().receive_signed_packet(candidateLink);
+        }
+        catch(error) {
+           // The message has not been found
+        }
 
-        if (message) {
-            anchorageLink = message.get_link().copy();
+        if (response) {
+            anchorageLink = response.get_link().copy();
             found = true;
         }
         

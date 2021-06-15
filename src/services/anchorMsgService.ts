@@ -18,7 +18,7 @@ export default class AnchorMsgService {
    * 
    * @returns The result or error
    */
-  public static async anchor(request: IAnchoringRequest): Promise<IAnchoringResult | Error> {
+  public static async anchor(request: IAnchoringRequest): Promise<IAnchoringResult> {
     try {
       // The address of the anchorage message
       const anchorageID = request.anchorageID;
@@ -39,7 +39,7 @@ export default class AnchorMsgService {
         ({ found, anchorageLink } = await ChannelHelper.findAnchorage(subs, anchorageID));
 
         if (!found) {
-          return new AnchorError(AnchorErrorNames.ANCHORAGE_NOT_FOUND,
+          throw new AnchorError(AnchorErrorNames.ANCHORAGE_NOT_FOUND,
             `The anchorage ${anchorageID} has not been found on the channel`);
         }
       }
@@ -57,8 +57,11 @@ export default class AnchorMsgService {
         msgID
       };
     } catch (error) {
-      console.log(error);
-      return new Error(error);
+      if (error.type === "AnchorError") {
+        throw error;
+      }
+      throw new AnchorError(AnchorErrorNames.OTHER_ERROR, 
+        `Error while anchoring to ${request.anchorageID} on ${request.channelID} -> ${error}`);
     }
   }
 }
