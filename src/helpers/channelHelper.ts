@@ -1,22 +1,5 @@
 import * as crypto from "crypto";
-import * as fetch from "node-fetch";
-import { set_panic_hook as streamsPanickHook, Address, Subscriber } from "wasm-node/iota_streams_wasm";
-
-/**
- *   Initialization function for the Streams WASM bindings
- */
-export function initialize() {
-    // @ts-expect-error Streams WASM bindings need it
-    global.fetch = fetch;
-    // @ts-expect-error  Streams WASM bindings need it
-    global.Headers = fetch.Headers;
-    // @ts-expect-error  Streams WASM bindings need it
-    global.Request = fetch.Request;
-    // @ts-expect-error  Streams WASM bindings need it
-    global.Response = fetch.Response;
-
-    streamsPanickHook();
-}
+import { Address, Subscriber } from "wasm-node/iota_streams_wasm";
 
 export class ChannelHelper {
     /**

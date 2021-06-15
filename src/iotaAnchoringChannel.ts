@@ -1,13 +1,14 @@
 import { Author, ChannelType, SendOptions } from "wasm-node/iota_streams_wasm";
-import AnchorageError from "./anchorError";
-import AnchorErrorNames from "./anchorErrorNames";
-import AnchorMsgService from "./anchorMsgService";
-import { ChannelHelper, initialize } from "./channelHelper";
-import FetchMsgService from "./fetchMsgService";
-import { IAnchoringRequest } from "./IAnchoringRequest";
-import { IAnchoringResult } from "./IAnchoringResult";
-import { IFetchRequest } from "./IFetchRequest";
-import { IFetchResult } from "./IFetchResult";
+import AnchorageError from "./errors/anchorError";
+import AnchorErrorNames from "./errors/anchorErrorNames";
+import { ChannelHelper } from "./helpers/channelHelper";
+import initialize from "./helpers/initializationHelper";
+import { IAnchoringRequest } from "./models/IAnchoringRequest";
+import { IAnchoringResult } from "./models/IAnchoringResult";
+import { IFetchRequest } from "./models/IFetchRequest";
+import { IFetchResult } from "./models/IFetchResult";
+import AnchorMsgService from "./services/anchorMsgService";
+import FetchMsgService from "./services/fetchMsgService";
 
 // Needed for the Streams WASM bindings
 initialize();

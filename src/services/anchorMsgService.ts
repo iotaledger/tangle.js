@@ -1,10 +1,10 @@
 /* eslint-disable no-duplicate-imports */
 import { Address, Subscriber, SendOptions } from "wasm-node/iota_streams_wasm";
-import AnchorageError from "./anchorError";
-import AnchorErrorNames from "./anchorErrorNames";
-import { ChannelHelper } from "./channelHelper";
-import { IAnchoringRequest } from "./IAnchoringRequest";
-import { IAnchoringResult } from "./IAnchoringResult";
+import AnchorageError from "../errors/anchorError";
+import AnchorErrorNames from "../errors/anchorErrorNames";
+import { ChannelHelper } from "../helpers/channelHelper";
+import { IAnchoringRequest } from "../models/IAnchoringRequest";
+import { IAnchoringResult } from "../models/IAnchoringResult";
 
 export default class AnchorMsgService {
   public static async anchor(request: IAnchoringRequest): Promise<IAnchoringResult | Error> {

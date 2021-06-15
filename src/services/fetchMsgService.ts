@@ -1,8 +1,8 @@
 /* eslint-disable no-duplicate-imports */
 import { Address, Subscriber, SendOptions } from "wasm-node/iota_streams_wasm";
-import { ChannelHelper } from "./channelHelper";
-import { IFetchRequest } from "./IFetchRequest";
-import { IFetchResult } from "./IFetchResult";
+import { ChannelHelper } from "../helpers/channelHelper";
+import { IFetchRequest } from "../models/IFetchRequest";
+import { IFetchResult } from "../models/IFetchResult";
 
 export default class FetchMsgService {
   public static async fetch(request: IFetchRequest): Promise<IFetchResult> {
