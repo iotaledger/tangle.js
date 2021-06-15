@@ -18,40 +18,40 @@ The entities anchoring the messages (i.e. the ship owners) are authenticated by 
 
 ### Anchoring messages
 
-```
-const anchoringChannel = IotaAnchoringChannel.create(node, seed).bind(channelID);
+```ts
+const anchoringChannel = await IotaAnchoringChannel.create(node, seed).bind(channelID);
 
 anchoringChannel.seed
 anchoringChannel.channelID
 anchoringChannel.channelAddr
-anchoringChannel.announceMsgID
+anchoringChannel.firstAnchorageID
 
-const result = anchoringChannel.anchor(message, anchorageID)
+const result = await anchoringChannel.anchor(message, anchorageID)
 
-const result = anchoringChannel.fetch(anchorageID, msgID)
+const result = await anchoringChannel.fetch(anchorageID, msgID)
 ``` 
 
 ### Signing messages
 
-```
+```ts
 const signer = new IotaSigner(node, did);
-const signature = signer.sign(message, privateKey);
+const signature = await signer.sign(message, privateKey);
 ```
 
 ### Linked Data Proofs generation
 
-```
+```ts
 const anchorChannel = /* Instantiate an anchor channel */
 const signer = /* Instantiate a signer */
 const ldProofGenerator = new IotaLdProofGenerator(anchoringChannel, signer)
-ldProofGenerator.generate(jsonLdDocument, anchorageID)
+await ldProofGenerator.generate(jsonLdDocument, anchorageID)
 ```
 
 ### Linked Data Proofs verification
 
-```
+```ts
 const verifier = new IotaAnchorVerifier(node, seed);
-verifier.verify(jsonDocument);
+await verifier.verify(jsonDocument);
 
-verifier.verify(jsonDocument[]);
+await verifier.verify(jsonDocument[]);
 ```
