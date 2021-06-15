@@ -1,47 +1,46 @@
 /* eslint-disable no-duplicate-imports */
-import { Address, Subscriber, SendOptions } from "wasm-node/iota_streams_wasm";
+import { Address } from "wasm-node/iota_streams_wasm";
+import AnchoringChannelError from "../errors/anchoringChannelError";
+import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
 import { IFetchRequest } from "../models/IFetchRequest";
 import { IFetchResult } from "../models/IFetchResult";
 
 export default class FetchMsgService {
   public static async fetch(request: IFetchRequest): Promise<IFetchResult> {
-    const node = request.node;
+    const subs = request.subscriber;
 
-    const seed = request.seed;
-
-    const options = new SendOptions(node, true);
-    const subs = new Subscriber(seed, options.clone());
-
-    // Channel contains the channel address + the announce messageID
-    const channel = request.channelID;
-    const announceLink = Address.from_string(channel);
-
-    await subs.clone().receive_announcement(announceLink);
+    const announceMsgID = request.channelID.split(":")[1];
 
     const anchorageID = request.anchorageID;
 
-    const { found } = await ChannelHelper.findAnchorage(subs, anchorageID);
+    let found = true;
+
+    if (anchorageID !== announceMsgID) {
+      ({ found } = await ChannelHelper.findAnchorage(subs, anchorageID));
+    }
 
     if (!found) {
-      throw new Error(`The anchorage point ${anchorageID} has not been found on the Channel`);
+      throw new AnchoringChannelError(AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND, 
+        `The anchorage point ${anchorageID} has not been found on the channel`);
     }
 
     const msgID = request.msgID;
 
-    const msgLink = Address.from_string(`${request.channelAddress}:${msgID}`);
-    const message = await subs.clone().receive_signed_packet(msgLink);
-    if (!message) {
-      throw new Error(`The message ${msgID} has not been found on the Channel`);
+    const msgLink = Address.from_string(`${subs.clone().channel_address()}:${msgID}`);
+    const response = await subs.clone().receive_signed_packet(msgLink);
+    if (!response) {
+      throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
+        `The message ${msgID} has not been found on the Channel`);
     }
 
-    const messageContent = Buffer.from(message.get_message().get_public_payload()).toString();
-    const receivedMsgID = message.get_link().copy().msg_id;
+    const messageContent = Buffer.from(response.get_message().get_public_payload()).toString();
+    const receivedMsgID = response.get_link().copy().msg_id;
 
     if (receivedMsgID !== msgID) {
       throw new Error("Requested message ID and fethed message ID are not equal");
     }
-    const pk = message.get_message().get_pk();
+    const pk = response.get_message().get_pk();
 
     return {
       message: messageContent,

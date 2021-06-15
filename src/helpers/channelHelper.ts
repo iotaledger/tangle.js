@@ -36,7 +36,7 @@ export class ChannelHelper {
         let anchorageLink: Address;
 
         // First we try to read such message
-        const candidateLink = Address.from_string(`${subs.channel_address()}:${anchorageID}`);
+        const candidateLink = Address.from_string(`${subs.clone().channel_address()}:${anchorageID}`);
 
         let response;
         try {

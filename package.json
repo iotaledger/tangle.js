@@ -9,7 +9,7 @@
         "build-lint": "eslint src --ext .ts",
         "build": "npm-run-all build-clean build-compile build-lint",
         "test-lint": "eslint test --ext .ts",
-        "test-run": "jest  --testTimeout=30000 --verbose --coverage=false",
+        "test-run": "jest  --testTimeout=60000 --verbose --coverage=false",
         "test": "run-s test-lint test-run"
     },
     "repository": {
