@@ -1,13 +1,15 @@
-import { Author, ChannelType, SendOptions } from "wasm-node/iota_streams_wasm";
+import { Subscriber } from "wasm-node/iota_streams_wasm";
 import AnchorageError from "./errors/anchorError";
 import AnchorErrorNames from "./errors/anchorErrorNames";
 import { ChannelHelper } from "./helpers/channelHelper";
 import initialize from "./helpers/initializationHelper";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
 import { IAnchoringResult } from "./models/IAnchoringResult";
+import { IBindChannelRequest } from "./models/IBindChannelRequest";
 import { IFetchRequest } from "./models/IFetchRequest";
 import { IFetchResult } from "./models/IFetchResult";
 import AnchorMsgService from "./services/anchorMsgService";
+import ChannelService from "./services/channelService";
 import FetchMsgService from "./services/fetchMsgService";
 
 // Needed for the Streams WASM bindings
@@ -23,6 +25,8 @@ export class IotaAnchoringChannel {
     private _channelAddress: string;
 
     private _announceMsgID: string;
+
+    private _subscriber: Subscriber;
 
     private constructor(node: string, seed?: string) {
         this._node = node;
@@ -54,23 +58,34 @@ export class IotaAnchoringChannel {
      *
      */
     public async bind(channelID?: string): Promise<IotaAnchoringChannel> {
+        if (this._subscriber) {
+            throw new AnchorageError(AnchorErrorNames.CHANNEL_ALREADY_BOUND, `Channel already bound to ${this._channelID}`);
+        }
         if (!channelID) {
-            const { channelAddress, announceMsgID } = await this.createChannel();
+            const { channelAddress, announceMsgID } = await ChannelService.createChannel(this._node, this._seed);
             this._channelAddress = channelAddress;
             this._announceMsgID = announceMsgID;
             this._channelID = `${channelAddress}:${announceMsgID}`;
+        } else {
+            const components: string[] = channelID.split(":");
 
-            return this;
+            if (Array.isArray(components) && components.length === 2) {
+                this._channelID = channelID;
+                this._channelAddress = components[0];
+                this._announceMsgID = components[1];
+            } else {
+                throw new AnchorageError(AnchorErrorNames.CHANNEL_BINDING_ERROR,
+                    `Invalid channel identifier: ${channelID}`);
+            }
         }
 
-        const components: string[] = channelID.split(":");
+        const bindRequest: IBindChannelRequest = {
+            node: this._node,
+            seed: this._seed,
+            channelID: this._channelID
+        };
 
-        if (!Array.isArray(components) || components.length !== 2) {
-            throw new Error("Invalid Channel ID");
-        }
-
-        this._channelAddress = components[0];
-        this._announceMsgID = components[1];
+        this._subscriber = await ChannelService.bindToChannel(bindRequest);
 
         return this;
     }
@@ -109,9 +124,8 @@ export class IotaAnchoringChannel {
         }
 
         const request: IAnchoringRequest = {
-            node: this._node,
-            seed: this._seed,
             channelID: this._channelID,
+            subscriber: this._subscriber,
             message,
             anchorageID
         };
@@ -148,24 +162,5 @@ export class IotaAnchoringChannel {
         };
 
         return FetchMsgService.fetch(request);
-    }
-
-    /**
-     *  Creates a new Channel
-     *
-     *  @returns The address of the channel created and the announce message ID
-     *
-     */
-    private async createChannel(): Promise<{ channelAddress: string; announceMsgID: string }> {
-        const options = new SendOptions(this._node, true);
-        const auth = new Author(this._seed, options.clone(), ChannelType.SingleBranch);
-
-        const response = await auth.clone().send_announce();
-        const announceLink = response.get_link().copy();
-
-        return {
-            announceMsgID: announceLink.msg_id,
-            channelAddress: auth.channel_address()
-        };
     }
 }

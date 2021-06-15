@@ -1,12 +1,12 @@
+import { Subscriber } from "wasm-node/iota_streams_wasm";
+
 export interface IAnchoringRequest {
-    /** The node */
-    node: string;
-    /** The channel ID 'channel_address:announce_msg_id' */
+    /** The channel ID */
     channelID: string;
-    /** The seed */
-    seed?: string;
+    /** The IOTA Streams Subscriber */
+    subscriber: Subscriber;
     /** The message */
     message: string;
-    /** The anchorage */
+    /** The anchorage point */
     anchorageID: string;
 }
