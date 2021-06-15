@@ -1,5 +1,5 @@
 import { Author, Subscriber, Address, ChannelType, SendOptions } from "wasm-node/iota_streams_wasm";
-import AnchorageError from "../errors/anchorError";
+import AnchorError from "../errors/anchorError";
 import AnchorErrorNames from "../errors/anchorErrorNames";
 import { IBindChannelRequest } from "../models/IBindChannelRequest";
 
@@ -52,7 +52,7 @@ export default class ChannelService {
 
             return subs;
         } catch {
-            throw new AnchorageError(AnchorErrorNames.CHANNEL_BINDING_ERROR,
+            throw new AnchorError(AnchorErrorNames.CHANNEL_BINDING_ERROR,
                 `Cannot bind to channel ${request.channelID}`);
         }
     }

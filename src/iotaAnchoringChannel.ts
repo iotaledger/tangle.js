@@ -1,5 +1,5 @@
 import { Subscriber } from "wasm-node/iota_streams_wasm";
-import AnchorageError from "./errors/anchorError";
+import AnchorError from "./errors/anchorError";
 import AnchorErrorNames from "./errors/anchorErrorNames";
 import { ChannelHelper } from "./helpers/channelHelper";
 import initialize from "./helpers/initializationHelper";
@@ -59,7 +59,7 @@ export class IotaAnchoringChannel {
      */
     public async bind(channelID?: string): Promise<IotaAnchoringChannel> {
         if (this._subscriber) {
-            throw new AnchorageError(AnchorErrorNames.CHANNEL_ALREADY_BOUND, `Channel already bound to ${this._channelID}`);
+            throw new AnchorError(AnchorErrorNames.CHANNEL_ALREADY_BOUND, `Channel already bound to ${this._channelID}`);
         }
         if (!channelID) {
             const { channelAddress, announceMsgID } = await ChannelService.createChannel(this._node, this._seed);
@@ -74,7 +74,7 @@ export class IotaAnchoringChannel {
                 this._channelAddress = components[0];
                 this._announceMsgID = components[1];
             } else {
-                throw new AnchorageError(AnchorErrorNames.CHANNEL_BINDING_ERROR,
+                throw new AnchorError(AnchorErrorNames.CHANNEL_BINDING_ERROR,
                     `Invalid channel identifier: ${channelID}`);
             }
         }
@@ -119,7 +119,7 @@ export class IotaAnchoringChannel {
      */
     public async anchor(message: string, anchorageID: string): Promise<IAnchoringResult> {
         if (!this._channelAddress) {
-            throw new AnchorageError(AnchorErrorNames.CHANNEL_NOT_BOUND,
+            throw new AnchorError(AnchorErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");
         }
 
@@ -149,7 +149,8 @@ export class IotaAnchoringChannel {
      */
     public async fetch(anchorageID: string, messageID?: string): Promise<IFetchResult> {
         if (!this._channelAddress) {
-            throw new Error("Unbound anchoring channel. Please call bind first");
+            throw new AnchorError(AnchorErrorNames.CHANNEL_NOT_BOUND,
+                "Unbound anchoring channel. Please call bind first");
         }
 
         const request: IFetchRequest = {

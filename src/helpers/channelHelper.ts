@@ -32,13 +32,20 @@ export class ChannelHelper {
      */
     public static async findAnchorage(subs: Subscriber, anchorageID: string):
         Promise<{ found: boolean; anchorageLink?: Address }> {
-        
-        // First we try to read such message 
-
-        // Iteratively retrieve messages until We find the one to anchor to
         let found = false;
         let anchorageLink: Address;
 
+        // First we try to read such message 
+        const candidateLink = Address.from_string(`${subs.channel_address()}:${anchorageID}`);
+
+        const message = await subs.clone().receive_signed_packet(candidateLink);
+
+        if (message) {
+            anchorageLink = message.get_link().copy();
+            found = true;
+        }
+        
+        // Iteratively retrieve messages until We find the one to anchor to
         while (!found) {
             const messages = await subs.clone().fetch_next_msgs();
             if (!messages || messages.length === 0) {
