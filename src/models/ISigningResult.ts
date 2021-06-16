@@ -1,4 +1,6 @@
 export interface ISigningResult {
     verificationMethod: string;
-    signature: string;
+    type: string;
+    signatureValue: string;
+    created: string;
 }

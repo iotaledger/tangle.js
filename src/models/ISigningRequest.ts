@@ -4,6 +4,6 @@ export interface ISigningRequest {
     node: string;
     didDocument: DidDocument;
     message: string;
-    verificationMethod: string;
+    method: string;
     secret: string;
 }

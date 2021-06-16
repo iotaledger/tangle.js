@@ -3,6 +3,7 @@ import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import ValidationHelper from "./helpers/validationHelper";
 import { ISigningRequest } from "./models/ISigningRequest";
+import { ISigningResult } from "./models/ISigningResult";
 import DidService from "./services/didService";
 import SigningService from "./services/signingService";
 
@@ -53,31 +54,28 @@ export default class IotaSigner {
     }
 
     /**
-     *  Signs a string message
-     *
+     * Signs a string message
      * @param message The message
-     * @param verificationMethod The verification method
+     * @param method The method used for signing (referred as a DID fragment identifier)
      * @param secret The secret
-     *
      * @returns The signature
-     *
      */
-    public async sign(message: string, verificationMethod: string, secret: string): Promise<string> {
+    public async sign(message: string, method: string, secret: string): Promise<ISigningResult> {
         const request: ISigningRequest = {
             node: this._node,
             didDocument: this._didDocument,
-            verificationMethod,
+            method,
             secret,
             message
         };
 
         const result = await SigningService.sign(request);
 
-        return result.signature;
+        return result;
     }
 
     /**
-     *  Signs a JSON message but first executes a canonicalisation
+     *  Signs a JSON message but first executes a canonicalization
      *
      * @param message The JSON
      *
