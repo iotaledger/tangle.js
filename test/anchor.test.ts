@@ -11,7 +11,7 @@ describe("Anchor Messages", () => {
 
         const firstAnchorageID = anchoringChannel.firstAnchorageID;
 
-        const result = await anchoringChannel.anchor(message, firstAnchorageID);
+        const result = await anchoringChannel.anchor(firstAnchorageID, message);
 
         expect(result.anchorageID).toBe(firstAnchorageID);
         expect(result.msgID).toBeDefined();
@@ -21,9 +21,9 @@ describe("Anchor Messages", () => {
         const channel = await newChannel(network);
 
         const firstAnchorageID = channel.firstAnchorageID;
-        const result = await channel.anchor(message, firstAnchorageID);
+        const result = await channel.anchor(firstAnchorageID, message);
 
-        const result2 = await channel.anchor(message, result.msgID);
+        const result2 = await channel.anchor(result.msgID, message);
 
         expect(result2.anchorageID).toBe(result.msgID);
         expect(result2.msgID).toBeDefined();
@@ -41,7 +41,7 @@ describe("Anchor Messages", () => {
         expect(secondChannel.channelAddr).toBe(channel.channelAddr);
         expect(secondChannel.channelID).toBe(channel.channelID);
 
-        const result = await secondChannel.anchor(message, secondChannel.firstAnchorageID);
+        const result = await secondChannel.anchor(secondChannel.firstAnchorageID, message);
         expect(result.msgID).toBeDefined();
     });
 
@@ -50,13 +50,13 @@ describe("Anchor Messages", () => {
         const channel = await newChannel(network);
 
         const firstAnchorageID = channel.firstAnchorageID;
-        const result = await channel.anchor(message, firstAnchorageID);
-        const result2 = await channel.anchor(message, result.msgID);
+        const result = await channel.anchor(firstAnchorageID, message);
+        const result2 = await channel.anchor(result.msgID, message);
 
         // Now a new channel is created bound to the initial one
         const secondChannel = await IotaAnchoringChannel.create(channel.node, channel.seed).bind(channel.channelID);
         // We anchor a message directly to one of the previous message IDs
-        const result3 = await secondChannel.anchor(message, result2.msgID);
+        const result3 = await secondChannel.anchor(result2.msgID, message);
         expect(result3.msgID).toBeDefined();
     });
 
@@ -66,7 +66,7 @@ describe("Anchor Messages", () => {
         expect(channel.firstAnchorageID).toBeUndefined();
 
         try {
-            await channel.anchor(message, "123456789aa");
+            await channel.anchor("123456789aa", message);
         } catch (error) {
             expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND);
             return;
@@ -117,9 +117,8 @@ describe("Anchor Messages", () => {
         const channel = await newChannel(network);
 
         try {
-            await channel.anchor(message, "123456789aa");
+            await channel.anchor("123456789aa", message);
         } catch (error) {
-            console.log(error.message);
             expect(error.name).toBe(AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND);
             return;
         }

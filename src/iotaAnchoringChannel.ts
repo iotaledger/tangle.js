@@ -144,11 +144,13 @@ export class IotaAnchoringChannel {
     /**
      * Anchors a message to the anchoring channel
      *
-     * @param message Message to be anchored
      * @param anchorageID The anchorage
+     * @param message Message to be anchored
+     *
      * @returns The result of the operation
+     *
      */
-    public async anchor(message: string, anchorageID: string): Promise<IAnchoringResult> {
+    public async anchor(anchorageID: string, message: string): Promise<IAnchoringResult> {
         if (!this._channelAddress) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");

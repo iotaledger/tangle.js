@@ -28,7 +28,7 @@ anchoringChannel.firstAnchorageID
 
 const message = "my message";
 // Obtain your anchorageID (it could be the first anchorageID of the channel)
-const result = await anchoringChannel.anchor(message, anchorageID);
+const result = await anchoringChannel.anchor(anchorageID, message);
 console.log("msg ID", result.msgID);
 ```
 
