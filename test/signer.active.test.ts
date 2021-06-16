@@ -1,3 +1,4 @@
+import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import IotaSigner from "../src/iotaSigner";
 
 /*
@@ -15,14 +16,84 @@ import IotaSigner from "../src/iotaSigner";
 */
 
 describe("Sign messages", () => {
+  const node = "https://chrysalis-nodes.iota.org";
+
   const message = "Hello";
 
+  const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
+  const method = "key";
+
+  const privateKey = "CcpYJYpyYi2uaGNZnuJpfN75RL1Y9HDqfDtvfufW7XME";
+
   test("should sign a message", async () => {
-    const signer = await IotaSigner.create("http://network.example.org",
-      "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP");
+    const signer = await IotaSigner.create(node, did);
 
-      const response = await signer.sign(message, "key", "CcpYJYpyYi2uaGNZnuJpfN75RL1Y9HDqfDtvfufW7XME");
+    const proof = await signer.sign(message, method, privateKey);
 
-      console.log(response);
+    expect(proof.type).toBe("Ed25519Signature2018");
+    expect(proof.created).toBeDefined();
+    expect(proof.verificationMethod).toBe(`${did}#${method}`);
+    expect(proof.signatureValue).toBeDefined();
+  });
+
+  test("should throw exception if node address is wrong", async () => {
+    try {
+      await IotaSigner.create("abced", did);
+    } catch (error) {
+      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_NODE);
+      return;
+    }
+
+    fail("Exception not thrown");
+  });
+
+
+  test("should throw exception if DID syntax is wrong", async () => {
+    try {
+      await IotaSigner.create(node, "did:999");
+    } catch (error) {
+      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_DID);
+      return;
+    }
+
+    fail("Exception not thrown");
+  });
+
+
+  test("should throw exception if DID does not exist", async () => {
+    try {
+      await IotaSigner.create(node, `${did}a`);
+    } catch (error) {
+      expect(error.name).toBe(AnchoringChannelErrorNames.DID_NOT_FOUND);
+      return;
+    }
+
+    fail("Exception not thrown");
+  });
+
+
+  test("should throw exception if private key is wrong", async () => {
+    try {
+      const signer = await IotaSigner.create(node, did);
+      await signer.sign(message, method, "389393939");
+    } catch (error) {
+      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_SIGNING_KEY);
+      return;
+    }
+
+    fail("Exception not thrown");
+  });
+
+
+  test("should throw exception if method does not exist on the DID", async () => {
+    try {
+      const signer = await IotaSigner.create(node, did);
+      await signer.sign(message, "notfoundmethod", privateKey);
+    } catch (error) {
+      expect(error.name).toBe(AnchoringChannelErrorNames.DID_NOT_FOUND);
+      return;
+    }
+
+    fail("Exception not thrown");
   });
 });
