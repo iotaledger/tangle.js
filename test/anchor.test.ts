@@ -60,6 +60,29 @@ describe("Anchor Messages", () => {
         expect(result3.msgID).toBeDefined();
     });
 
+    test("should throw error if node not a URL", async () => {
+        try {
+            IotaAnchoringChannel.create("thisisnotanode");
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_NODE);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    /* Skipped for the moment until there is better error control */
+    test.skip("should throw error if node service is not available", async () => {
+        try {
+            await IotaAnchoringChannel.create("http://example.org").bind();
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.OTHER_ERROR);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
     test("should throw error if channel not bound yet", async () => {
         const channel = IotaAnchoringChannel.create(network);
 

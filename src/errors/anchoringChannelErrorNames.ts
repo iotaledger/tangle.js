@@ -10,4 +10,6 @@ export default abstract class AnchoringChannelErrorNames {
     public static CHANNEL_ALREADY_BOUND = "Channel_Already_Bound";
 
     public static OTHER_ERROR = "Runtime_Error";
+
+    public static INVALID_NODE = "Invalid_Node";
 }

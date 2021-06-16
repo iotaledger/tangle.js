@@ -46,6 +46,13 @@ export class IotaAnchoringChannel {
      * @returns The anchoring channel
      */
     public static create(node: string, seed?: string): IotaAnchoringChannel {
+        try {
+            new URL(node);
+        }
+        catch {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE, "The node has to be a URL");
+        }
+
         return new IotaAnchoringChannel(node, seed);
     }
 
