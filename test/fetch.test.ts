@@ -50,6 +50,27 @@ describe("Fetch Messages", () => {
         expect(response2.message).toBe(MSG_2);
     });
 
+    test("should perform a cycle of anchor, fetch with the same channel object", async () => {
+        const channel = await newChannel(network);
+
+        const anchorResponse = await channel.anchor(MSG_1, channel.firstAnchorageID);
+
+        const fetchResponse = await channel.fetch(channel.firstAnchorageID, anchorResponse.msgID);
+
+        expect(fetchResponse.message).toBe(MSG_1);
+    });
+
+    test("should perform a cycle of anchor, anchor fetch with the same channel object", async () => {
+        const channel = await newChannel(network);
+
+        const anchorResponse1 = await channel.anchor(MSG_1, channel.firstAnchorageID);
+        const anchorResponse2 = await channel.anchor(MSG_2, anchorResponse1.msgID);
+
+        const fetchResponse = await channel.fetch(anchorResponse1.msgID, anchorResponse2.msgID);
+
+        expect(fetchResponse.message).toBe(MSG_2);
+    });
+
     test("should throw error if fetching a message from an anchorage which does not have anything", async () => {
         const channel = await newChannel(network);
         // First message
