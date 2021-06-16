@@ -12,4 +12,8 @@ export default abstract class AnchoringChannelErrorNames {
     public static OTHER_ERROR = "Runtime_Error";
 
     public static INVALID_NODE = "Invalid_Node";
+
+    public static INVALID_DID = "Invalid_DID";
+
+    public static DID_NOT_FOUND = "DID_Not_Found";
 }

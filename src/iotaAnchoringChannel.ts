@@ -3,6 +3,7 @@ import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "./helpers/channelHelper";
 import initialize from "./helpers/initializationHelper";
+import ValidationHelper from "./helpers/validationHelper";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
 import { IAnchoringResult } from "./models/IAnchoringResult";
 import { IBindChannelRequest } from "./models/IBindChannelRequest";
@@ -15,7 +16,7 @@ import FetchMsgService from "./services/fetchMsgService";
 // Needed for the Streams WASM bindings
 initialize();
 
-export class IotaAnchoringChannel {
+export default class IotaAnchoringChannel {
     private _channelID: string;
 
     private readonly _node: string;
@@ -46,11 +47,9 @@ export class IotaAnchoringChannel {
      * @returns The anchoring channel
      */
     public static create(node: string, seed?: string): IotaAnchoringChannel {
-        try {
-            new URL(node);
-        }
-        catch {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE, "The node has to be a URL");
+        if (!ValidationHelper.url(node)) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
+                "The node has to be a URL");
         }
 
         return new IotaAnchoringChannel(node, seed);
@@ -100,9 +99,9 @@ export class IotaAnchoringChannel {
 
     /**
      *  Returns the channelID ('channelAddress:announce_msg_id')
-     * 
-     *  @return channel ID
-     * 
+     *
+     *  @returns channel ID
+     *
      */
     public get channelID(): string {
         return this._channelID;
@@ -110,9 +109,9 @@ export class IotaAnchoringChannel {
 
     /**
      *  Returns the channel's address
-     * 
-     *  @return channel address
-     * 
+     *
+     *  @returns channel address
+     *
      */
     public get channelAddr(): string {
         return this._channelAddress;
@@ -120,9 +119,9 @@ export class IotaAnchoringChannel {
 
     /**
      *  Returns the channel's first anchorage ID
-     * 
-     *  @return anchorageID
-     * 
+     *
+     *  @returns anchorageID
+     *
      */
     public get firstAnchorageID(): string {
         return this._announceMsgID;
@@ -130,9 +129,9 @@ export class IotaAnchoringChannel {
 
     /**
      *  Returns the channel's node
-     * 
-     *  @return node
-     * 
+     *
+     *  @returns node
+     *
      */
     public get node(): string {
         return this._node;
@@ -140,9 +139,9 @@ export class IotaAnchoringChannel {
 
     /**
      *  Returns the channel's seed
-     * 
-     *  @return seed
-     * 
+     *
+     *  @returns seed
+     *
      */
     public get seed(): string {
         return this._seed;
