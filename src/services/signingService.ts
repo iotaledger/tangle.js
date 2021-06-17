@@ -15,7 +15,7 @@ export default class SigningService {
      *
      * @param request Signing Request
      *
-     * @returns The signing result
+     * @returns The signature details
      *
      */
     public static async sign(request: ISigningRequest): Promise<ISigningResult> {

@@ -30,10 +30,9 @@ describe("Sign messages", () => {
 
     const signature = await signer.sign(message, method, privateKey);
 
-    console.log(signature);
-
     expect(signature.created).toBeDefined();
     expect(signature.verificationMethod).toBe(`${did}#${method}`);
+    expect(signature.hashAlgorithm).toBe("sha256");
     expect(signature.signatureValue).toBeDefined();
   });
 
@@ -43,10 +42,9 @@ describe("Sign messages", () => {
 
     const signature = await signer.sign(message, method, privateKey, "sha512");
 
-    console.log(signature);
-
     expect(signature.created).toBeDefined();
     expect(signature.verificationMethod).toBe(`${did}#${method}`);
+    expect(signature.hashAlgorithm).toBe("sha512");
     expect(signature.signatureValue).toBeDefined();
   });
 
@@ -87,9 +85,10 @@ describe("Sign messages", () => {
   });
 
 
-  test("should throw exception if private key is wrong", async () => {
+  test("should throw exception if private key has not the proper length", async () => {
     try {
       const signer = await IotaSigner.create(node, did);
+
       await signer.sign(message, method, "389393939");
     } catch (error) {
       expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_SIGNING_KEY);
@@ -99,13 +98,26 @@ describe("Sign messages", () => {
     fail("Exception not thrown");
   });
 
+  test("should throw exception if private key is not really known", async () => {
+    try {
+      const signer = await IotaSigner.create(node, did);
+
+      await signer.sign(message, method, "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5");
+    } catch (error) {
+      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_SIGNING_KEY);
+      return;
+    }
+
+    fail("Exception not thrown");
+  });
 
   test("should throw exception if method does not exist on the DID", async () => {
     try {
       const signer = await IotaSigner.create(node, did);
+
       await signer.sign(message, "notfoundmethod", privateKey);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.DID_NOT_FOUND);
+      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_DID_METHOD);
       return;
     }
 

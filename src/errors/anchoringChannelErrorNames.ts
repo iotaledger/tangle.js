@@ -17,6 +17,8 @@ export default abstract class AnchoringChannelErrorNames {
 
     public static DID_NOT_FOUND = "DID_Not_Found";
 
+    public static INVALID_DID_METHOD = "Invalid_DID_Method";
+
     public static DID_NOT_VERIFIED = "DID_Not_Verified";
 
     public static INVALID_SIGNING_KEY = "Invalid_Signing_Key";

@@ -13,7 +13,7 @@ export default class DidService {
     public static async resolve(node: string, did: string): Promise<DidDocument> {
         try {
             const jsonDoc = await iotaDidResolve(did, {
-              network: "mainnet"
+                network: "mainnet"
             });
 
             const doc = DidDocument.fromJSON(jsonDoc);
@@ -23,10 +23,10 @@ export default class DidService {
             }
 
             return doc;
-          } catch {
+        } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.DID_NOT_FOUND,
                 "DID cannot be resolved");
-          }
+        }
     }
 
     /**
@@ -39,13 +39,28 @@ export default class DidService {
      * @returns true if verified false if not
      */
     public static async verifyOwnership(didDocument: DidDocument, method: string, secret: string): Promise<boolean> {
-        const verificationData = { "testData": ChannelHelper.generateSeed(10) };
+        // First we verify if the method really exists on the DID
+        try {
+            didDocument.resolveKey(`${didDocument.id}#${method}`);
+        }
+        catch(error) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+                "The DID method supplied is not valid");
+        }
 
-        const signature = await didDocument.signData(verificationData, {
-            secret,
-            method: `${didDocument.id}#${method}`
-        });
+        try {
+            const verificationData = { "testData": ChannelHelper.generateSeed(10) };
 
-        return didDocument.verifyData(signature);
+            const signature = await didDocument.signData(verificationData, {
+                secret,
+                method: `${didDocument.id}#${method}`
+            });
+
+            return didDocument.verifyData(signature);
+        }
+        catch (error) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_SIGNING_KEY,
+                "The key supplied is not valid");
+        }
     }
 }

@@ -8,9 +8,9 @@ import DidService from "./services/didService";
 import SigningService from "./services/signingService";
 
 /**
- *  It allows to sign messages using a Verification Method provided by a DID
+ *  It allows to sign and verify messages using a Verification Method provided by a DID
  *
- *  It uses EdDSA Ed25519 signatures
+ *  It generates and verifies EdDSA (Ed25519) signatures
  *
  */
 export default class IotaSigner {
@@ -32,7 +32,7 @@ export default class IotaSigner {
      *
      * @param node The node
      *
-     * @param did The DID
+     * @param did The DID that has the verification methods of the signer
      *
      * @returns The newly created signer
      */
@@ -57,9 +57,9 @@ export default class IotaSigner {
      * @param message The message
      * @param method The method used for signing (referred as a DID fragment identifier)
      * @param secret The secret
-     * @param hashAlgorithm The hash algorithm (sha256 by default) used
+     * @param hashAlgorithm The hash algorithm ('sha256' by default) used
      *
-     * @returns The Ed25519 signature
+     * @returns The signature details including its value encoded in Base58
      *
      */
     public async sign(message: string, method: string, secret: string,
