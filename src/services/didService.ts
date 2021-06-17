@@ -1,4 +1,4 @@
-import { resolve as iotaDidResolve, Document as DidDocument } from "@iota/identity-wasm/node";
+import { resolve as iotaDidResolve, Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
 import AnchoringChannelError from "../errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
@@ -30,6 +30,24 @@ export default class DidService {
     }
 
     /**
+     * Resolves the DID verification method
+     * @param node Node against the DID is resolved
+     * @param didMethod  DID method to be resolved
+     * @returns The DID Document resolved from Tangle
+     */
+     public static async resolveMethod(node: string, didMethod: string): Promise<VerificationMethod> {
+        try {
+            const didDocument = await this.resolve(node, didMethod.split("#")[0]);
+
+            return didDocument.resolveKey(didMethod);
+        } catch {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.DID_NOT_FOUND,
+                "DID cannot be resolved");
+        }
+    }
+
+
+    /**
      * Verifies that the secret really corresponds to the verification method
      *
      * @param didDocument DID document
@@ -42,8 +60,7 @@ export default class DidService {
         // First we verify if the method really exists on the DID
         try {
             didDocument.resolveKey(`${didDocument.id}#${method}`);
-        }
-        catch(error) {
+        } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
                 "The DID method supplied is not valid");
         }
@@ -57,8 +74,7 @@ export default class DidService {
             });
 
             return didDocument.verifyData(signature);
-        }
-        catch (error) {
+        } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_SIGNING_KEY,
                 "The key supplied is not valid");
         }
