@@ -38,11 +38,33 @@ console.log("msg ID", result.msgID);
 const result = await anchoringChannel.fetch(anchorageID, msgID);
 ``` 
 
-### Signing messages (To be implemented)
+### Signing messages (EdDSA)
 
 ```ts
-const signer = new IotaSigner(node, did);
-const signature = await signer.sign(message, privateKey);
+const node = "https://chrysalis-nodes.iota.org";
+const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
+const signer = await IotaSigner.create(node, did);
+
+const message = "hello";
+// Method declared on the DID document
+const method = "key";
+const privateKey = "privateKeybase58";
+const hashAlgorithm = /* "sha256" or "sha512" */
+const signature = (await signer.sign(message, method, privateKey, hashAlgorithm?)).signatureValue;
+```
+
+### Verifying messages
+
+```ts
+const request: IVerificationRequest = {
+      message: "Hello",
+      signatureValue,
+      verificationMethod: "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
+      hashAlgorithm: "sha256",
+      "https://chrysalis-nodes.iota.org"
+    };
+
+    const result = await IotaVerifier.verify(request);
 ```
 
 ### Linked Data Proofs generation (To be implemented)
