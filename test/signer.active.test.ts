@@ -28,11 +28,26 @@ describe("Sign messages", () => {
   test("should sign a message", async () => {
     const signer = await IotaSigner.create(node, did);
 
-    const proof = await signer.sign(message, method, privateKey);
+    const signature = await signer.sign(message, method, privateKey);
 
-    expect(proof.created).toBeDefined();
-    expect(proof.verificationMethod).toBe(`${did}#${method}`);
-    expect(proof.signatureValue).toBeDefined();
+    console.log(signature);
+
+    expect(signature.created).toBeDefined();
+    expect(signature.verificationMethod).toBe(`${did}#${method}`);
+    expect(signature.signatureValue).toBeDefined();
+  });
+
+
+  test("should sign a message hashing with SHA512", async () => {
+    const signer = await IotaSigner.create(node, did);
+
+    const signature = await signer.sign(message, method, privateKey, "sha512");
+
+    console.log(signature);
+
+    expect(signature.created).toBeDefined();
+    expect(signature.verificationMethod).toBe(`${did}#${method}`);
+    expect(signature.signatureValue).toBeDefined();
   });
 
 

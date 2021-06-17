@@ -14,14 +14,11 @@ import SigningService from "./services/signingService";
  *
  */
 export default class IotaSigner {
-    private readonly _node: string;
-
     private readonly _did: string;
 
     private readonly _didDocument: DidDocument;
 
-    private constructor(node: string, did: string, didDocument: DidDocument) {
-        this._node = node;
+    private constructor(did: string, didDocument: DidDocument) {
         this._did = did;
         this._didDocument = didDocument;
     }
@@ -48,25 +45,31 @@ export default class IotaSigner {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
         }
 
-        const didDoc = await DidService.resolve(did);
+        const didDoc = await DidService.resolve(node, did);
 
-        return new IotaSigner(node, did, didDoc);
+        return new IotaSigner(did, didDoc);
     }
 
     /**
-     * Signs a string message
+     *
+     * Signs a string message using the Ed25519 signature algorithm
+     *
      * @param message The message
      * @param method The method used for signing (referred as a DID fragment identifier)
      * @param secret The secret
-     * @returns The signature
+     * @param hashAlgorithm The hash algorithm (sha256 by default) used
+     *
+     * @returns The Ed25519 signature
+     *
      */
-    public async sign(message: string, method: string, secret: string): Promise<ISigningResult> {
+    public async sign(message: string, method: string, secret: string,
+        hashAlgorithm = "sha256"): Promise<ISigningResult> {
         const request: ISigningRequest = {
-            node: this._node,
             didDocument: this._didDocument,
             method,
             secret,
-            message
+            message,
+            hashAlgorithm
         };
 
         const result = await SigningService.sign(request);

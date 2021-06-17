@@ -6,13 +6,11 @@ import { ChannelHelper } from "../helpers/channelHelper";
 export default class DidService {
     /**
      * Resolves the DID
-     *
+     * @param node Node against the DID is resolved
      * @param did  DID to be resolved
-     *
      * @returns The DID Document resolved from Tangle
-     *
      */
-    public static async resolve(did: string): Promise<DidDocument> {
+    public static async resolve(node: string, did: string): Promise<DidDocument> {
         try {
             const jsonDoc = await iotaDidResolve(did, {
               network: "mainnet"
