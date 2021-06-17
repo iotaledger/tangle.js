@@ -48,8 +48,10 @@ const signer = await IotaSigner.create(node, did);
 const message = "hello";
 // Method declared on the DID document
 const method = "key";
+// Private Key in base58
 const privateKey = "privateKeybase58";
-const hashAlgorithm = /* "sha256" or "sha512" */
+/* Optional. By default sha256 */
+const hashAlgorithm = "sha512";
 const signature = (await signer.sign(message, method, privateKey, hashAlgorithm?)).signatureValue;
 ```
 
@@ -57,14 +59,14 @@ const signature = (await signer.sign(message, method, privateKey, hashAlgorithm?
 
 ```ts
 const request: IVerificationRequest = {
-      message: "Hello",
-      signatureValue,
-      verificationMethod: "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
-      hashAlgorithm: "sha256",
-      "https://chrysalis-nodes.iota.org"
-    };
+    message: "Hello",
+    signatureValue,
+    verificationMethod: "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
+    hashAlgorithm: "sha256",
+    node: "https://chrysalis-nodes.iota.org"
+};
 
-    const result = await IotaVerifier.verify(request);
+const verified = await IotaVerifier.verify(request);
 ```
 
 ### Linked Data Proofs generation (To be implemented)
