@@ -30,11 +30,11 @@ describe("Sign messages", () => {
 
     const proof = await signer.sign(message, method, privateKey);
 
-    expect(proof.type).toBe("Ed25519Signature2018");
     expect(proof.created).toBeDefined();
     expect(proof.verificationMethod).toBe(`${did}#${method}`);
     expect(proof.signatureValue).toBeDefined();
   });
+
 
   test("should throw exception if node address is wrong", async () => {
     try {

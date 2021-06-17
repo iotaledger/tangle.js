@@ -30,7 +30,6 @@ export default class SigningService {
         const signatureValue = this.calculateSignature(request.secret, request.message);
 
         const response: ISigningResult = {
-            type: "Ed25519Signature2018",
             created: new Date().toISOString(),
             verificationMethod: `${didDocument.id}#${request.method}`,
             signatureValue

@@ -1,6 +1,7 @@
 import { resolve as iotaDidResolve, Document as DidDocument } from "@iota/identity-wasm/node";
 import AnchoringChannelError from "../errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
+import { ChannelHelper } from "../helpers/channelHelper";
 
 export default class DidService {
     /**
@@ -40,16 +41,13 @@ export default class DidService {
      * @returns true if verified false if not
      */
     public static async verifyOwnership(didDocument: DidDocument, method: string, secret: string): Promise<boolean> {
-        const verificationData = { "testData": true };
+        const verificationData = { "testData": ChannelHelper.generateSeed(10) };
 
         const signature = await didDocument.signData(verificationData, {
             secret,
             method: `${didDocument.id}#${method}`
         });
 
-        return didDocument.verifyData({
-            "testData": true,
-            proof: signature.proof
-        });
+        return didDocument.verifyData(signature);
     }
 }
