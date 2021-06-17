@@ -123,4 +123,16 @@ describe("Sign messages", () => {
 
     fail("Exception not thrown");
   });
+
+  test("should throw exception if hashing algorithm is unknown", async () => {
+    try {
+      const signer = await IotaSigner.create(node, did);
+
+      await signer.sign(message, method, privateKey, "unknown-hash");
+    } catch {
+      return;
+    }
+
+    fail("Exception not thrown");
+  });
 });
