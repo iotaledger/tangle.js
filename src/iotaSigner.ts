@@ -78,17 +78,34 @@ export default class IotaSigner {
     }
 
     /**
-     *  Signs a JSON message but first executes a canonicalization
+     *  Signs a JSON document 
      *
-     * @param message The JSON
-     *
+     * @param doc The JSON document as an object or as a string
      * @param verificationMethod  Verification method
      * @param secret The secret
+     * @param hashAlgorithm The hash algorithm ('sha256' by default) used
      *
-     * @returns The signature
+     * @returns The JSON document including its corresponding Linked Data Signature
      *
      */
-    public async signJson(message: unknown, verificationMethod: string, secret: string): Promise<string> {
+    public async signJson(message: unknown, verificationMethod: string, secret: string, 
+        hashAlgorithm = "sha256"): Promise<unknown> {
+        return "";
+    }
+
+    /**
+     *  Signs a JSON-LD document 
+     *
+     * @param doc The JSON-LD document as an object or as a string
+     * @param verificationMethod  Verification method
+     * @param secret The secret
+     * @param hashAlgorithm The hash algorithm ('sha256' by default) used
+     *
+     * @returns The JSON-LD document including its corresponding Linked Data Signature
+     *
+     */
+     public async signJsonLd(message: unknown, verificationMethod: string, secret: string, 
+        hashAlgorithm = "sha256"): Promise<unknown> {
         return "";
     }
 }

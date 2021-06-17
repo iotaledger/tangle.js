@@ -1,3 +1,4 @@
+import { VerificationMethod } from "@iota/identity-wasm/node";
 import bs58 from "bs58";
 import * as crypto from "crypto";
 import { eddsa as EdDSA } from "elliptic";
@@ -20,6 +21,19 @@ export default class SigningService {
      */
     public static async sign(request: ISigningRequest): Promise<ISigningResult> {
         const didDocument = request.didDocument;
+
+        let methodDocument: VerificationMethod;
+        try {
+            methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
+        }
+        catch (error) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+                "The method has not been found on the DID Document");
+        }
+        if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+                "Only 'Ed25519VerificationKey2018' verification methods are allowed");
+        }
 
         const proofedOwnership = await DidService.verifyOwnership(request.didDocument,
             request.method, request.secret);
@@ -58,7 +72,7 @@ export default class SigningService {
 
         const msgHash = crypto
             .createHash(hashAlgorithm).update(message)
-.digest();
+            .digest();
 
         const signatureHex = ecKey.sign(msgHash).toHex();
 

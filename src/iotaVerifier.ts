@@ -29,6 +29,11 @@ export default class IotaVerifier {
         const resolution = await DidService.resolveMethod(request.node,
             request.verificationMethod);
 
+        if (resolution.type !== "Ed25519VerificationKey2018") {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+                "Only 'Ed25519VerificationKey2018' verification methods are allowed");
+        }
+
         return this.verifySignature(request.signatureValue, request.message,
             request.hashAlgorithm, resolution.toJSON().publicKeyBase58);
     }
@@ -43,7 +48,7 @@ export default class IotaVerifier {
             const ecKey = ed25519.keyFromPublic(publicKeyBytes.toString("hex"), "hex");
 
             const msgHash = crypto.createHash(hashAlgorithm).update(message)
-.digest();
+                .digest();
 
             return (ecKey.verify(msgHash, signatureBytes.toString("hex"))) as boolean;
         } catch (error) {
