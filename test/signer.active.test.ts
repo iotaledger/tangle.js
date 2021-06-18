@@ -70,8 +70,8 @@ describe("Sign messages", () => {
 
     const jsonLdDocument = {
       "@context": "https://schema.org",
-      "type": "Organization",
-      "name": "IOTA Foundation"
+      type: "Organization",
+      name: "IOTA Foundation"
     };
 
     const signature = await signer.signJsonLd(jsonLdDocument, method, privateKey);
@@ -87,14 +87,13 @@ describe("Sign messages", () => {
         "https://gs1.github.io/EPCIS/epcis-context.jsonld",
         { "example": "http://ns.example.com/epcis/" }
       ],
-      "eventID": "ni:///sha-256;a98f08ae6ac4de3482054314d637c07010b448d3802dccb028a06aafcc6a4b10?ver=CBV2.0",
-      "isA": "ObjectEvent",
-      "eventTime": "2013-06-08T14:58:56.591Z",
-      "eventTimeZoneOffset": "+02:00",
-      "action": "OBSERVE",
-      "bizStep": "urn:epcglobal:cbv:bizstep:receiving",
-      "disposition": "urn:epcglobal:cbv:disp:in_progress",
-      "readPoint": { "id": "urn:epc:id:sgln:0614141.00777.0" },
+      isA: "ObjectEvent",
+      eventTime: "2013-06-08T14:58:56.591Z",
+      eventTimeZoneOffset: "+02:00",
+      action: "OBSERVE",
+      bizStep: "receiving",
+      disposition: "in_progress",
+      readPoint: { id: "urn:epc:id:sgln:0614141.00777.0" },
 
       "example:myField": "Example of a vendor/user extension"
     };
