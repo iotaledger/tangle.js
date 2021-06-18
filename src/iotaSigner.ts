@@ -4,7 +4,7 @@ import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { ILinkedDataProof } from "./models/ILinkedDataProof";
+import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
 import { ISigningRequest } from "./models/ISigningRequest";
 import { ISigningResult } from "./models/ISigningResult";
 import DidService from "./services/didService";
@@ -91,7 +91,7 @@ export default class IotaSigner {
      * @returns The JSON document including its corresponding Linked Data Signature
      */
     public async signJson(doc: string | Record<string, unknown>, verificationMethod: string,
-        secret: string, signatureType = ""): Promise<ILinkedDataProof|string> {
+        secret: string, signatureType = ""): Promise<ILinkedDataSignature|string> {
         return "";
     }
 
@@ -107,7 +107,7 @@ export default class IotaSigner {
      *
      */
     public async signJsonLd(doc: string | Record<string, unknown>, verificationMethod: string, secret: string,
-        signatureType = "Ed25519Signature2018"): Promise<ILinkedDataProof> {
+        signatureType = "Ed25519Signature2018"): Promise<ILinkedDataSignature> {
         if ((typeof doc !== "string" && typeof doc !== "object") || Array.isArray(doc)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
                 "Please provide a Javascript object or string in JSON format");

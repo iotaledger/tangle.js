@@ -1,4 +1,4 @@
-export interface ILinkedDataProof {
+export interface ILinkedDataSignature {
     proof: {
         type: string;
         verificationMethod: string;

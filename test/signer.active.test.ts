@@ -1,6 +1,6 @@
 import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import IotaSigner from "../src/iotaSigner";
-import { ILinkedDataProof } from "../src/models/ILinkedDataProof";
+import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 
 /*
 
@@ -22,7 +22,7 @@ import { ILinkedDataProof } from "../src/models/ILinkedDataProof";
  * @param did DID
  * @param method Verification method
  */
- function assertSignature(signature: ILinkedDataProof, did: string, method: string) {
+ function assertSignature(signature: ILinkedDataSignature, did: string, method: string) {
   expect(signature.proof).toBeDefined();
   const proof = signature.proof;
   expect(proof.created).toBeDefined();
