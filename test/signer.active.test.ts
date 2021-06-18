@@ -28,7 +28,7 @@ import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
   expect(proof.created).toBeDefined();
   expect(proof.verificationMethod).toBe(`${did}#${method}`);
   expect(proof.type).toBe("Ed25519Signature2018");
-  expect(proof.signatureValue.length).toBeGreaterThan(80);
+  expect(proof.proofValue.length).toBeGreaterThan(80);
 }
 
 

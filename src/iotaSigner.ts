@@ -147,7 +147,8 @@ export default class IotaSigner {
             proof: {
                 type: "Ed25519Signature2018",
                 verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
-                signatureValue: signature.signatureValue,
+                proofValue: signature.signatureValue,
+                proofPurpose: "dataVerification",
                 created: signature.created
             }
         };
