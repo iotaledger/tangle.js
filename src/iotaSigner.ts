@@ -1,7 +1,10 @@
 import { Document as DidDocument } from "@iota/identity-wasm/node";
+import * as jsonld from "jsonld";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
+import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
+import { ILinkedDataProof } from "./models/ILinkedDataProof";
 import { ISigningRequest } from "./models/ISigningRequest";
 import { ISigningResult } from "./models/ISigningResult";
 import DidService from "./services/didService";
@@ -78,34 +81,75 @@ export default class IotaSigner {
     }
 
     /**
-     *  Signs a JSON document 
+     * Signs a JSON document
      *
      * @param doc The JSON document as an object or as a string
      * @param verificationMethod  Verification method
      * @param secret The secret
-     * @param hashAlgorithm The hash algorithm ('sha256' by default) used
+     * @param signatureType The type of signature to be generated
      *
      * @returns The JSON document including its corresponding Linked Data Signature
-     *
      */
-    public async signJson(message: unknown, verificationMethod: string, secret: string, 
-        hashAlgorithm = "sha256"): Promise<unknown> {
+    public async signJson(doc: string | Record<string, unknown>, verificationMethod: string,
+        secret: string, signatureType = ""): Promise<ILinkedDataProof|string> {
         return "";
     }
 
     /**
-     *  Signs a JSON-LD document 
+     *  Signs a JSON-LD document
      *
      * @param doc The JSON-LD document as an object or as a string
      * @param verificationMethod  Verification method
      * @param secret The secret
-     * @param hashAlgorithm The hash algorithm ('sha256' by default) used
+     * @param signatureType The type of signature to be generated (by default 'Ed25519Signature2018')
      *
-     * @returns The JSON-LD document including its corresponding Linked Data Signature
+     * @returns The Linked Data Signature represented as a Linked Data Proof
      *
      */
-     public async signJsonLd(message: unknown, verificationMethod: string, secret: string, 
-        hashAlgorithm = "sha256"): Promise<unknown> {
-        return "";
+    public async signJsonLd(doc: string | Record<string, unknown>, verificationMethod: string, secret: string,
+        signatureType = "Ed25519Signature2018"): Promise<ILinkedDataProof> {
+        if ((typeof doc !== "string" && typeof doc !== "object") || Array.isArray(doc)) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
+                "Please provide a Javascript object or string in JSON format");
+        }
+
+        if (signatureType !== "Ed25519Signature2018") {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
+                "Only the 'Ed25519Signature2018' is supported");
+        }
+
+        let docToBeSigned = doc;
+        if (typeof doc === "string") {
+            try {
+                docToBeSigned = JSON.parse(doc);
+            } catch {
+                throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
+                    "Invalid JSON Format");
+            }
+        }
+
+        if (!docToBeSigned["@context"]) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
+                "Not a JSON-LD document. Use 'signJson' instead");
+        }
+
+        // RDF canonization algorithm
+        const canonized = await jsonld.canonize(docToBeSigned, {
+            algorithm: "URDNA2015",
+            format: "application/n-quads",
+            documentLoader: customLdContextLoader
+        });
+
+        // We use SHA512 as mandated by https://w3c-ccg.github.io/lds-ed25519-2018/
+        const signature = await this.sign(canonized, verificationMethod, secret, "sha512");
+
+        return {
+            proof: {
+                type: "Ed25519Signature2018",
+                verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
+                signatureValue: signature.signatureValue,
+                created: signature.created
+            }
+        };
     }
 }

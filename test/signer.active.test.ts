@@ -1,5 +1,6 @@
 import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import IotaSigner from "../src/iotaSigner";
+import { ILinkedDataProof } from "../src/models/ILinkedDataProof";
 
 /*
 
@@ -14,6 +15,22 @@ import IotaSigner from "../src/iotaSigner";
 }
 
 */
+
+/**
+ * Asserts a signature
+ * @param signature Signature
+ * @param did DID
+ * @param method Verification method
+ */
+ function assertSignature(signature: ILinkedDataProof, did: string, method: string) {
+  expect(signature.proof).toBeDefined();
+  const proof = signature.proof;
+  expect(proof.created).toBeDefined();
+  expect(proof.verificationMethod).toBe(`${did}#${method}`);
+  expect(proof.type).toBe("Ed25519Signature2018");
+  expect(proof.signatureValue.length).toBeGreaterThan(80);
+}
+
 
 describe("Sign messages", () => {
   const node = "https://chrysalis-nodes.iota.org";
@@ -48,6 +65,44 @@ describe("Sign messages", () => {
     expect(signature.signatureValue).toBeDefined();
   });
 
+  test("should sign a JSON-LD document. JSON Schema", async () => {
+    const signer = await IotaSigner.create(node, did);
+
+    const jsonLdDocument = {
+      "@context": "https://schema.org",
+      "type": "Organization",
+      "name": "IOTA Foundation"
+    };
+
+    const signature = await signer.signJsonLd(jsonLdDocument, method, privateKey);
+
+    assertSignature(signature, did, method);
+  });
+
+  test("should sign a JSON-LD document. EPCIS Schema", async () => {
+    const signer = await IotaSigner.create(node, did);
+
+    const jsonLdDocument = {
+      "@context": [
+        "https://gs1.github.io/EPCIS/epcis-context.jsonld",
+        { "example": "http://ns.example.com/epcis/" }
+      ],
+      "eventID": "ni:///sha-256;a98f08ae6ac4de3482054314d637c07010b448d3802dccb028a06aafcc6a4b10?ver=CBV2.0",
+      "isA": "ObjectEvent",
+      "eventTime": "2013-06-08T14:58:56.591Z",
+      "eventTimeZoneOffset": "+02:00",
+      "action": "OBSERVE",
+      "bizStep": "urn:epcglobal:cbv:bizstep:receiving",
+      "disposition": "urn:epcglobal:cbv:disp:in_progress",
+      "readPoint": { "id": "urn:epc:id:sgln:0614141.00777.0" },
+
+      "example:myField": "Example of a vendor/user extension"
+    };
+
+    const signature = await signer.signJsonLd(jsonLdDocument, method, privateKey);
+
+    assertSignature(signature, did, method);
+  });
 
   test("should throw exception if node address is wrong", async () => {
     try {
@@ -136,3 +191,4 @@ describe("Sign messages", () => {
     fail("Exception not thrown");
   });
 });
+

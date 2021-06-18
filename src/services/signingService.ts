@@ -25,8 +25,7 @@ export default class SigningService {
         let methodDocument: VerificationMethod;
         try {
             methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
-        }
-        catch (error) {
+        } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
                 "The method has not been found on the DID Document");
         }
