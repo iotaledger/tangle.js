@@ -1,6 +1,7 @@
 import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import IotaSigner from "../src/iotaSigner";
 import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
+import { SignatureTypes } from "../src/models/signatureTypes";
 
 /*
 
@@ -19,15 +20,16 @@ import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 /**
  * Asserts a signature
  * @param signature Signature
+ * @param signatureType The type of signature
  * @param did DID
  * @param method Verification method
  */
- function assertSignature(signature: ILinkedDataSignature, did: string, method: string) {
+function assertSignature(signature: ILinkedDataSignature, signatureType: string, did: string, method: string) {
   expect(signature.proof).toBeDefined();
   const proof = signature.proof;
   expect(proof.created).toBeDefined();
   expect(proof.verificationMethod).toBe(`${did}#${method}`);
-  expect(proof.type).toBe("Ed25519Signature2018");
+  expect(proof.type).toBe(signatureType);
   expect(proof.proofValue.length).toBeGreaterThan(80);
 }
 
@@ -65,7 +67,23 @@ describe("Sign messages", () => {
     expect(signature.signatureValue).toBeDefined();
   });
 
-  test("should sign a JSON-LD document. JSON Schema", async () => {
+  test("should sign a plain JSON document", async () => {
+    const signer = await IotaSigner.create(node, did);
+
+    const jsonDocument = {
+      "member1": "value 1",
+      "member2": 56789,
+      "member3": false
+    };
+
+    const signature = await signer.signJson(jsonDocument, method, privateKey);
+
+    console.log(signature);
+
+    assertSignature(signature, SignatureTypes.JCS_ED25519_2020, did, method);
+  });
+
+  test("should sign a JSON-LD document. Schema.org @context", async () => {
     const signer = await IotaSigner.create(node, did);
 
     const jsonLdDocument = {
@@ -76,10 +94,10 @@ describe("Sign messages", () => {
 
     const signature = await signer.signJsonLd(jsonLdDocument, method, privateKey);
 
-    assertSignature(signature, did, method);
+    assertSignature(signature, SignatureTypes.ED25519_2018, did, method);
   });
 
-  test("should sign a JSON-LD document. EPCIS Schema", async () => {
+  test("should sign a JSON-LD document. EPCIS @context", async () => {
     const signer = await IotaSigner.create(node, did);
 
     const jsonLdDocument = {
@@ -100,7 +118,7 @@ describe("Sign messages", () => {
 
     const signature = await signer.signJsonLd(jsonLdDocument, method, privateKey);
 
-    assertSignature(signature, did, method);
+    assertSignature(signature, SignatureTypes.ED25519_2018, did, method);
   });
 
   test("should throw exception if node address is wrong", async () => {
