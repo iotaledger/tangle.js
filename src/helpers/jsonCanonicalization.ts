@@ -1,57 +1,69 @@
 export class JsonCanonicalization {
+    /**
+     * Calculates the canonical serialization of a JSON document
+     *
+     * @param input The input
+     *
+     * @returns The serialization as a string
+     *
+     */
     public static calculate(input: unknown): string {
         let buffer = "";
         serialize(input);
 
         return buffer;
 
+        /**
+         *  Serializes in canonical format
+         *
+         * @param object The object to be serialized
+         */
         function serialize(object) {
-            if (object === null || typeof object !== 'object') {
-                /////////////////////////////////////////////////
+            if (object === null || typeof object !== "object") {
+                // ///////////////////////////////////////////////
                 // Primitive data type - Use ES6/JSON          //
-                /////////////////////////////////////////////////
+                // ///////////////////////////////////////////////
                 buffer += JSON.stringify(object);
-
             } else if (Array.isArray(object)) {
-                /////////////////////////////////////////////////
+                // ///////////////////////////////////////////////
                 // Array - Maintain element order              //
-                /////////////////////////////////////////////////
-                buffer += '[';
+                // ///////////////////////////////////////////////
+                buffer += "[";
                 let next = false;
-                object.forEach((element) => {
+                object.forEach(element => {
                     if (next) {
-                        buffer += ',';
+                        buffer += ",";
                     }
                     next = true;
-                    /////////////////////////////////////////
+                    // ///////////////////////////////////////
                     // Array element - Recursive expansion //
-                    /////////////////////////////////////////
+                    // ///////////////////////////////////////
                     serialize(element);
                 });
-                buffer += ']';
-
+                buffer += "]";
             } else {
-                /////////////////////////////////////////////////
+                // ///////////////////////////////////////////////
                 // Object - Sort properties before serializing //
-                /////////////////////////////////////////////////
-                buffer += '{';
+                // ///////////////////////////////////////////////
+                buffer += "{";
                 let next = false;
-                Object.keys(object).sort().forEach((property) => {
+                Object.keys(object).sort()
+.forEach(property => {
                     if (next) {
-                        buffer += ',';
+                        buffer += ",";
                     }
                     next = true;
-                    ///////////////////////////////////////////////
+                    // /////////////////////////////////////////////
                     // Property names are strings - Use ES6/JSON //
-                    ///////////////////////////////////////////////
+                    // /////////////////////////////////////////////
                     buffer += JSON.stringify(property);
-                    buffer += ':';
-                    //////////////////////////////////////////
+                    buffer += ":";
+                    // ////////////////////////////////////////
                     // Property value - Recursive expansion //
-                    //////////////////////////////////////////
+                    // ////////////////////////////////////////
                     serialize(object[property]);
                 });
-                buffer += '}';
+                buffer += "}";
             }
         }
     }

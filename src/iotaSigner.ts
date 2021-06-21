@@ -95,8 +95,7 @@ export default class IotaSigner {
      */
     public async signJson(doc: string | Record<string, unknown>, verificationMethod: string,
         secret: string, signatureType = SignatureTypes.JCS_ED25519_2020): Promise<ILinkedDataSignature> {
-
-        let docToBeSigned = JsonHelper.getDocument(doc);
+        const docToBeSigned = JsonHelper.getDocument(doc);
 
         if (signatureType !== SignatureTypes.JCS_ED25519_2020) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
@@ -111,7 +110,7 @@ export default class IotaSigner {
         };
 
         // The canonicalization has to be performed over the whole object excluding the proof value
-        docToBeSigned['proof'] = proof;
+        docToBeSigned.proof = proof;
 
         // JSON Canonicalization Scheme
         const canonized = JsonCanonicalization.calculate(docToBeSigned);
@@ -120,7 +119,7 @@ export default class IotaSigner {
         const signature = await this.sign(canonized, verificationMethod, secret, "sha256");
 
         // Finally restore the original object
-        delete docToBeSigned['proof'];
+        delete docToBeSigned.proof;
 
         return {
             proofValue: signature.signatureValue,
@@ -141,9 +140,8 @@ export default class IotaSigner {
      */
     public async signJsonLd(doc: string | Record<string, unknown>, verificationMethod: string, secret: string,
         signatureType = SignatureTypes.ED25519_2018): Promise<ILinkedDataSignature> {
-
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
-        
+
         if (signatureType !== SignatureTypes.ED25519_2018) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
                 "Only the 'Ed25519Signature2018' is supported");

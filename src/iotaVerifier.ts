@@ -1,18 +1,18 @@
 import { VerificationMethod } from "@iota/identity-wasm/node";
 import bs58 from "bs58";
 import * as crypto from "crypto";
-import * as jsonld from "jsonld";
 import { eddsa as EdDSA } from "elliptic";
+import * as jsonld from "jsonld";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
+import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
+import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 import { IJsonVerificationRequest } from "./models/IJsonVerificationRequest";
 import { IVerificationRequest } from "./models/IVerificationRequest";
 import DidService from "./services/didService";
-import JsonHelper from "./helpers/jsonHelper";
-import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 
 export default class IotaVerifier {
     /**
@@ -48,10 +48,9 @@ export default class IotaVerifier {
     /**
      * Verifies a plain JSON document containing a Linked Data Signature
      *
-     * @param document The document
+     * @param request Verification request
      *
      * @returns true or false depending on the verification result
-     *
      */
     public static async verifyJson(request: IJsonVerificationRequest): Promise<boolean> {
         const resolution = await this.verificationMethod(request);
@@ -78,10 +77,9 @@ export default class IotaVerifier {
     /**
      * Verifies a JSON-LD document containing a Linked Data Signature
      *
-     * @param document The document
+     * @param request Verification request
      *
      * @returns true or false depending on the verification result
-     *
      */
     public static async verifyJsonLd(request: IJsonVerificationRequest): Promise<boolean> {
         const resolution = await this.verificationMethod(request);

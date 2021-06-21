@@ -18,18 +18,17 @@ export default class JsonHelper {
                 throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
                     "Invalid JSON Format");
             }
-        }
-        else {
+        } else {
             document = JSON.parse(JSON.stringify(doc));
         }
 
-        return document;
+        return document as Record<string, unknown>;
     }
 
     public static getSignedDocument(doc: Record<string, unknown> | string): IJsonSignedDocument {
         const result = this.getDocument(doc);
 
-        if (!result["proof"]) {
+        if (!result.proof) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON document does not include a proof");
         }
@@ -51,7 +50,7 @@ export default class JsonHelper {
     public static getSignedJsonLdDocument(doc: Record<string, unknown> | string): IJsonSignedDocument {
         const result = this.getJsonLdDocument(doc);
 
-        if (!result["proof"]) {
+        if (!result.proof) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON document does not include a proof");
         }
