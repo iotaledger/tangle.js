@@ -42,7 +42,7 @@ export default class IotaVerifier {
         }
 
         return this.verifySignature(request.signatureValue, request.message,
-            request.hashAlgorithm, resolution.toJSON().publicKeyBase58);
+            resolution.toJSON().publicKeyBase58);
     }
 
     /**
@@ -63,9 +63,10 @@ export default class IotaVerifier {
         delete proof.proofValue;
 
         const canonical = JsonCanonicalization.calculate(document);
+        const msgHash = crypto.createHash("sha256").update(canonical)
+.digest();
 
-        const result = this.verifySignature(proofValue, canonical,
-            "sha256", resolution.toJSON().publicKeyBase58);
+        const result = this.verifySignature(proofValue, msgHash, resolution.toJSON().publicKeyBase58);
 
         // Restore the proof value
         proof.proofValue = proofValue;
@@ -97,8 +98,7 @@ export default class IotaVerifier {
             documentLoader: customLdContextLoader
         });
 
-        const result = this.verifySignature(proofValue, canonical,
-            "sha512", resolution.toJSON().publicKeyBase58);
+        const result = this.verifySignature(proofValue, canonical, resolution.toJSON().publicKeyBase58);
 
         // Restore the proof value
         document.proof = proof;
@@ -132,8 +132,7 @@ export default class IotaVerifier {
         return resolution;
     }
 
-    private static verifySignature(signature: string, message: string,
-        hashAlgorithm: string, publicKeyBase58: string): boolean {
+    private static verifySignature(signature: string, message: Buffer, publicKeyBase58: string): boolean {
         try {
             const signatureBytes = bs58.decode(signature);
             const publicKeyBytes = bs58.decode(publicKeyBase58);
@@ -141,10 +140,7 @@ export default class IotaVerifier {
             const ed25519 = new EdDSA("ed25519");
             const ecKey = ed25519.keyFromPublic(publicKeyBytes.toString("hex"), "hex");
 
-            const msgHash = crypto.createHash(hashAlgorithm).update(message)
-                .digest();
-
-            return (ecKey.verify(msgHash, signatureBytes.toString("hex"))) as boolean;
+            return (ecKey.verify(message, signatureBytes.toString("hex"))) as boolean;
         } catch (error) {
             console.log("Error while verifying signature:", error);
             return false;

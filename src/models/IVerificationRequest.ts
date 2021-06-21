@@ -1,8 +1,8 @@
 export interface IVerificationRequest {
     /** Message to be verified */
-    message: string;
-    /** Hash algorithm */
-    hashAlgorithm: string;
+    message: Buffer;
+    /** The type of signature */
+    type: string;
     /** The signature (proof) value */
     signatureValue: string;
     /** Node to be used to resolve identities */

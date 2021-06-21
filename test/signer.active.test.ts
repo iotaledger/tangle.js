@@ -45,23 +45,10 @@ describe("Sign messages", () => {
   test("should sign a message", async () => {
     const signer = await IotaSigner.create(node, did);
 
-    const signature = await signer.sign(message, method, privateKey);
+    const signature = await signer.sign(Buffer.from(message), method, privateKey);
 
     expect(signature.created).toBeDefined();
     expect(signature.verificationMethod).toBe(`${did}#${method}`);
-    expect(signature.hashAlgorithm).toBe("sha256");
-    expect(signature.signatureValue).toBeDefined();
-  });
-
-
-  test("should sign a message hashing with SHA512", async () => {
-    const signer = await IotaSigner.create(node, did);
-
-    const signature = await signer.sign(message, method, privateKey, "sha512");
-
-    expect(signature.created).toBeDefined();
-    expect(signature.verificationMethod).toBe(`${did}#${method}`);
-    expect(signature.hashAlgorithm).toBe("sha512");
     expect(signature.signatureValue).toBeDefined();
   });
 
@@ -161,7 +148,7 @@ describe("Sign messages", () => {
     try {
       const signer = await IotaSigner.create(node, did);
 
-      await signer.sign(message, method, "389393939");
+      await signer.sign(Buffer.from(message), method, "389393939");
     } catch (error) {
       expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_SIGNING_KEY);
       return;
@@ -174,7 +161,7 @@ describe("Sign messages", () => {
     try {
       const signer = await IotaSigner.create(node, did);
 
-      await signer.sign(message, method, "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5");
+      await signer.sign(Buffer.from(message), method, "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5");
     } catch (error) {
       expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_SIGNING_KEY);
       return;
@@ -187,21 +174,9 @@ describe("Sign messages", () => {
     try {
       const signer = await IotaSigner.create(node, did);
 
-      await signer.sign(message, "notfoundmethod", privateKey);
+      await signer.sign(Buffer.from(message), "notfoundmethod", privateKey);
     } catch (error) {
       expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_DID_METHOD);
-      return;
-    }
-
-    fail("Exception not thrown");
-  });
-
-  test("should throw exception if hashing algorithm is unknown", async () => {
-    try {
-      const signer = await IotaSigner.create(node, did);
-
-      await signer.sign(message, method, privateKey, "unknown-hash");
-    } catch {
       return;
     }
 

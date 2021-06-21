@@ -5,6 +5,7 @@ import IotaVerifier from "../src/iotaVerifier";
 import { IJsonVerificationRequest } from "../src/models/IJsonVerificationRequest";
 import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { IVerificationRequest } from "../src/models/IVerificationRequest";
+import { SignatureTypes } from "../src/models/signatureTypes";
 
 
 /*
@@ -46,41 +47,26 @@ describe("Verify messages", () => {
 
   const verificationMethod = `${did}#${method}`;
   let signatureValue: string;
-  let signatureValueSha512: string;
+
   let jsonProof: ILinkedDataSignature;
   let jsonLdProof: ILinkedDataSignature;
 
   beforeAll(async () => {
     const signer = await IotaSigner.create(node, did);
 
-    signatureValue = (await signer.sign(message, method, privateKey)).signatureValue;
-    signatureValueSha512 = (await signer.sign(message, method, privateKey, "sha512")).signatureValue;
+    signatureValue = (await signer.sign(Buffer.from(message), method, privateKey)).signatureValue;
 
     jsonProof = await signer.signJson(jsonDocument, method, privateKey);
 
     jsonLdProof = await signer.signJsonLd(jsonLdDocument, method, privateKey);
   });
 
-  test("should verify a message - sha256", async () => {
+  test("should verify a message", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue,
       verificationMethod,
-      hashAlgorithm: "sha256",
-      node
-    };
-
-    const result = await IotaVerifier.verify(request);
-
-    expect(result).toBe(true);
-  });
-
-  test("should verify a message - sha512", async () => {
-    const request: IVerificationRequest = {
-      message,
-      signatureValue: signatureValueSha512,
-      verificationMethod,
-      hashAlgorithm: "sha512",
       node
     };
 
@@ -91,10 +77,10 @@ describe("Verify messages", () => {
 
   test("should fail verification. message integrity not respected", async () => {
     const request: IVerificationRequest = {
-      message: `${message}ab`,
-      signatureValue: signatureValueSha512,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(`${message}ab`),
+      signatureValue,
       verificationMethod,
-      hashAlgorithm: "sha512",
       node
     };
 
@@ -185,27 +171,12 @@ describe("Verify messages", () => {
     expect(result).toBe(false);
   });
 
-
-  test("should fail verification. signature does not correspond to the hash algorithm", async () => {
-    const request: IVerificationRequest = {
-      message,
-      signatureValue: signatureValueSha512,
-      verificationMethod,
-      hashAlgorithm: "sha256",
-      node
-    };
-
-    const result = await IotaVerifier.verify(request);
-
-    expect(result).toBe(false);
-  });
-
   test("should fail verification. signature is corrupted", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue: `x${signatureValue.slice(1)}`,
       verificationMethod,
-      hashAlgorithm: "sha256",
       node
     };
 
@@ -216,10 +187,10 @@ describe("Verify messages", () => {
 
   test("should fail verification. Identity is not the correct one", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue,
       verificationMethod: "did:iota:B8y9H4tagyLhzGRP5EyHd3basposcCYCHvhVS5H9ScW1#key",
-      hashAlgorithm: "sha256",
       node
     };
 
@@ -231,10 +202,10 @@ describe("Verify messages", () => {
   // Skipped until we generate a DID with multiple verification methods
   test.skip("should fail verification. Method is not the correct one", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue,
       verificationMethod: `${did}#key2`,
-      hashAlgorithm: "sha256",
       node
     };
 
@@ -245,10 +216,10 @@ describe("Verify messages", () => {
 
   test("should throw exception if node address is wrong", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue,
       verificationMethod,
-      hashAlgorithm: "sha256",
       node: "xyz"
     };
 
@@ -265,10 +236,10 @@ describe("Verify messages", () => {
 
   test("should throw exception if DID syntax is wrong", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue,
       verificationMethod: "did:9999",
-      hashAlgorithm: "sha256",
       node
     };
 
@@ -285,10 +256,10 @@ describe("Verify messages", () => {
 
   test("should throw exception if DID does not exist", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue,
       verificationMethod: `${did}a#key`,
-      hashAlgorithm: "sha256",
       node
     };
 
@@ -304,10 +275,10 @@ describe("Verify messages", () => {
 
   test("should throw exception if method does not exist on the DID", async () => {
     const request: IVerificationRequest = {
-      message,
+      type: SignatureTypes.ED25519_2018,
+      message: Buffer.from(message),
       signatureValue,
       verificationMethod: `${did}#key6789`,
-      hashAlgorithm: "sha256",
       node
     };
 

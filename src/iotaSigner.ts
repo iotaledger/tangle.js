@@ -1,4 +1,5 @@
 import { Document as DidDocument } from "@iota/identity-wasm/node";
+import * as crypto from "crypto";
 import * as jsonld from "jsonld";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
@@ -63,19 +64,17 @@ export default class IotaSigner {
      * @param message The message
      * @param method The method used for signing (referred as a DID fragment identifier)
      * @param secret The secret
-     * @param hashAlgorithm The hash algorithm ('sha256' by default) used
      *
      * @returns The signature details including its value encoded in Base58
      *
      */
-    public async sign(message: string, method: string, secret: string,
-        hashAlgorithm = "sha256"): Promise<ISigningResult> {
+    public async sign(message: Buffer, method: string, secret: string): Promise<ISigningResult> {
         const request: ISigningRequest = {
             didDocument: this._didDocument,
+            type: SignatureTypes.ED25519_2018,
             method,
             secret,
-            message,
-            hashAlgorithm
+            message
         };
 
         const result = await SigningService.sign(request);
@@ -115,8 +114,11 @@ export default class IotaSigner {
         // JSON Canonicalization Scheme
         const canonized = JsonCanonicalization.calculate(docToBeSigned);
 
+        const digest = crypto.createHash("sha256").update(canonized)
+.digest();
+
         // We use SHA256 to calculate the digest as mandated by https://identity.foundation/JcsEd25519Signature2020/
-        const signature = await this.sign(canonized, verificationMethod, secret, "sha256");
+        const signature = await this.sign(digest, verificationMethod, secret);
 
         // Finally restore the original object
         delete docToBeSigned.proof;
@@ -147,15 +149,35 @@ export default class IotaSigner {
                 "Only the 'Ed25519Signature2018' is supported");
         }
 
-        // RDF canonization algorithm
+        // RDF canonization algorithm over the document
         const canonized = await jsonld.canonize(docToBeSigned, {
             algorithm: "URDNA2015",
             format: "application/n-quads",
             documentLoader: customLdContextLoader
         });
 
-        // We use SHA512 to calculate the digest as mandated by https://w3c-ccg.github.io/lds-ed25519-2018/
-        const signature = await this.sign(canonized, verificationMethod, secret, "sha512");
+        const docHash = crypto.createHash("sha256").update(canonized)
+.digest();
+
+        const proofLd = {
+            "@context": "https://w3id.org/security/v1",
+            verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
+            proofPurpose: "dataVerification",
+            created: new Date().toISOString()
+        };
+
+        const proofCanonized = await jsonld.canonize(proofLd, {
+            algorithm: "URDNA2015",
+            format: "application/n-quads",
+            documentLoader: customLdContextLoader
+        });
+
+        const proofOptionsHash = crypto.createHash("sha256").update(proofCanonized)
+.digest();
+
+        const finalHash = Buffer.concat([docHash, proofOptionsHash]);
+
+        const signature = await this.sign(finalHash, verificationMethod, secret);
 
         return {
             type: SignatureTypes.ED25519_2018,
