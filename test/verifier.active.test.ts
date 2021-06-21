@@ -34,6 +34,12 @@ describe("Verify messages", () => {
     "member3": [false, true]
   };
 
+  const jsonLdDocument = {
+    "@context": "https://schema.org",
+    "type": "Organization",
+    "name": "IOTA Foundation"
+  };
+
   const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
   const method = "key";
   const privateKey = "CcpYJYpyYi2uaGNZnuJpfN75RL1Y9HDqfDtvfufW7XME";
@@ -42,6 +48,7 @@ describe("Verify messages", () => {
   let signatureValue: string;
   let signatureValueSha512: string;
   let jsonProof: ILinkedDataSignature;
+  let jsonLdProof: ILinkedDataSignature;
 
   beforeAll(async () => {
     const signer = await IotaSigner.create(node, did);
@@ -50,6 +57,8 @@ describe("Verify messages", () => {
     signatureValueSha512 = (await signer.sign(message, method, privateKey, "sha512")).signatureValue;
 
     jsonProof = await signer.signJson(jsonDocument, method, privateKey);
+
+    jsonLdProof = await signer.signJsonLd(jsonLdDocument, method, privateKey);
   });
 
   test("should verify a message - sha256", async () => {
@@ -129,6 +138,49 @@ describe("Verify messages", () => {
     };
 
     const result = await IotaVerifier.verifyJson(request);
+
+    expect(result).toBe(false);
+  });
+
+
+  test("should verify a JSON-LD document", async () => {
+    const jsonLdToVerify = {
+      "@context": {
+        "tipo": "@type",
+        "Organizacion": "http://schema.org/Organization",
+        "nombre": "http://schema.org/name"
+      },
+      "tipo": "Organizacion",
+      "nombre": "IOTA Foundation"
+    };
+
+    const request: IJsonVerificationRequest = {
+      document: {
+        ...jsonLdToVerify,
+        proof: jsonLdProof
+      },
+      node
+    };
+
+    const result = await IotaVerifier.verifyJsonLd(request);
+
+    expect(result).toBe(true);
+  });
+
+  test("should fail verification JSON-LD document. integrity not respected", async () => {
+    const jsonLdToVerify = {
+      ...jsonLdDocument,
+      "email": "contact@iota.org"
+    };
+    const request: IJsonVerificationRequest = {
+      document: {
+        ...jsonLdToVerify,
+        proof: jsonLdProof
+      },
+      node
+    };
+
+    const result = await IotaVerifier.verifyJsonLd(request);
 
     expect(result).toBe(false);
   });

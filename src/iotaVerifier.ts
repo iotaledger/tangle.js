@@ -1,9 +1,12 @@
+import { VerificationMethod } from "@iota/identity-wasm/node";
 import bs58 from "bs58";
 import * as crypto from "crypto";
+import * as jsonld from "jsonld";
 import { eddsa as EdDSA } from "elliptic";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
+import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IJsonVerificationRequest } from "./models/IJsonVerificationRequest";
 import { IVerificationRequest } from "./models/IVerificationRequest";
@@ -48,27 +51,11 @@ export default class IotaVerifier {
      * @returns true or false depending on the verification result
      *
      */
-     public static async verifyJson(request: IJsonVerificationRequest): Promise<boolean> {
-        if (!ValidationHelper.url(request.node)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
-                "The node has to be a URL");
-        }
+    public static async verifyJson(request: IJsonVerificationRequest): Promise<boolean> {
+        const resolution = await this.verificationMethod(request);
 
         const document = request.document;
         const proof = document.proof;
-
-        const verificationMethod = proof.verificationMethod;
-
-        if (!ValidationHelper.did(verificationMethod)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
-        }
-
-        const resolution = await DidService.resolveMethod(request.node, verificationMethod);
-
-        if (resolution.type !== "Ed25519VerificationKey2018") {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
-                "Only 'Ed25519VerificationKey2018' verification methods are allowed");
-        }
 
         // After removing the proofValue we obtain the canonical form and that will be verified
         const proofValue = proof.proofValue;
@@ -76,7 +63,7 @@ export default class IotaVerifier {
 
         const canonical = JsonCanonicalization.calculate(document);
 
-        const result = this.verifySignature(proofValue, canonical, 
+        const result = this.verifySignature(proofValue, canonical,
             "sha256", resolution.toJSON().publicKeyBase58);
 
         // Restore the proof value
@@ -94,28 +81,60 @@ export default class IotaVerifier {
      * @returns true or false depending on the verification result
      *
      */
-    /*
-     public static async verifyJsonLd(document: JsonSignedDocument): Promise<boolean> {
-        if (!ValidationHelper.url(request.node)) {
+    public static async verifyJsonLd(request: IJsonVerificationRequest): Promise<boolean> {
+        const resolution = await this.verificationMethod(request);
+
+        const document = request.document;
+        const proof = document.proof;
+
+        // After removing the proofValue we obtain the canonical form and that will be verified
+        const proofValue = proof.proofValue;
+        delete document.proof;
+
+        const canonical = await jsonld.canonize(document, {
+            algorithm: "URDNA2015",
+            format: "application/n-quads",
+            documentLoader: customLdContextLoader
+        });
+
+        const result = this.verifySignature(proofValue, canonical,
+            "sha512", resolution.toJSON().publicKeyBase58);
+
+        // Restore the proof value
+        document.proof = proof;
+
+        return result;
+    }
+
+    private static async verificationMethod(request: IJsonVerificationRequest): Promise<VerificationMethod> {
+        if (request.node && !ValidationHelper.url(request.node)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
-        if (!ValidationHelper.did(request.verificationMethod)) {
+        const document = request.document;
+        const proof = document.proof;
+
+        if (!proof) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+                "The provided JSON document does not include a proof");
+        }
+
+        const verificationMethod = proof.verificationMethod;
+
+        if (!ValidationHelper.did(verificationMethod)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
         }
 
-        const resolution = await DidService.resolveMethod(request.node,
-            request.verificationMethod);
+        const resolution = await DidService.resolveMethod(request.node, verificationMethod);
 
         if (resolution.type !== "Ed25519VerificationKey2018") {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 
-        return this.verifySignature(request.signatureValue, request.message,
-            request.hashAlgorithm, resolution.toJSON().publicKeyBase58);
-    }*/
+        return resolution;
+    }
 
     private static verifySignature(signature: string, message: string,
         hashAlgorithm: string, publicKeyBase58: string): boolean {
@@ -136,4 +155,3 @@ export default class IotaVerifier {
         }
     }
 }
-

@@ -26,5 +26,7 @@ export default abstract class AnchoringChannelErrorNames {
     public static NOT_SUPPORTED_SIGNATURE = "Not_Supported_Signature";
 
     public static INVALID_DATA_TYPE = "Invalid_Data_Type";
+
+    public static JSON_DOC_NOT_SIGNED = "JSON_Doc_Not_Signed";
 }
 
