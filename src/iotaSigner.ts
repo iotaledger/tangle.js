@@ -134,10 +134,8 @@ export default class IotaSigner {
         const signature = await this.sign(canonized, verificationMethod, secret, "sha256");
 
         return {
-            proof: {
-                proofValue: signature.signatureValue,
-                ...proof
-            }
+            proofValue: signature.signatureValue,
+            ...proof
         };
     }
 
@@ -193,13 +191,11 @@ export default class IotaSigner {
         const signature = await this.sign(canonized, verificationMethod, secret, "sha512");
 
         return {
-            proof: {
-                type: SignatureTypes.ED25519_2018,
-                verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
-                proofValue: signature.signatureValue,
-                proofPurpose: "dataVerification",
-                created: signature.created
-            }
+            type: SignatureTypes.ED25519_2018,
+            verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
+            proofValue: signature.signatureValue,
+            proofPurpose: "dataVerification",
+            created: signature.created
         };
     }
 }

@@ -2,6 +2,8 @@
 import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import IotaSigner from "../src/iotaSigner";
 import IotaVerifier from "../src/iotaVerifier";
+import { IJsonVerificationRequest } from "../src/models/IJsonVerificationRequest";
+import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { IVerificationRequest } from "../src/models/IVerificationRequest";
 
 
@@ -24,6 +26,14 @@ describe("Verify messages", () => {
 
   const message = "Hello";
 
+  const jsonDocument = {
+    "member1": {
+      "member11": "value 11"
+    },
+    "member2": 56789,
+    "member3": [false, true]
+  };
+
   const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
   const method = "key";
   const privateKey = "CcpYJYpyYi2uaGNZnuJpfN75RL1Y9HDqfDtvfufW7XME";
@@ -31,12 +41,15 @@ describe("Verify messages", () => {
   const verificationMethod = `${did}#${method}`;
   let signatureValue: string;
   let signatureValueSha512: string;
+  let jsonProof: ILinkedDataSignature;
 
   beforeAll(async () => {
     const signer = await IotaSigner.create(node, did);
 
     signatureValue = (await signer.sign(message, method, privateKey)).signatureValue;
     signatureValueSha512 = (await signer.sign(message, method, privateKey, "sha512")).signatureValue;
+
+    jsonProof = await signer.signJson(jsonDocument, method, privateKey);
   });
 
   test("should verify a message - sha256", async () => {
@@ -53,7 +66,6 @@ describe("Verify messages", () => {
     expect(result).toBe(true);
   });
 
-
   test("should verify a message - sha512", async () => {
     const request: IVerificationRequest = {
       message,
@@ -67,6 +79,60 @@ describe("Verify messages", () => {
 
     expect(result).toBe(true);
   });
+
+  test("should fail verification. message integrity not respected", async () => {
+    const request: IVerificationRequest = {
+      message: `${message}ab`,
+      signatureValue: signatureValueSha512,
+      verificationMethod,
+      hashAlgorithm: "sha512",
+      node
+    };
+
+    const result = await IotaVerifier.verify(request);
+
+    expect(result).toBe(false);
+  });
+
+  test("should verify a JSON document", async () => {
+    const jsonToVerify = {
+      "member1": {
+        "member11": "value 11"
+      },
+      "member3": [false, true],
+      "member2": 56789
+    };
+    const request: IJsonVerificationRequest = {
+      document: {
+        ...jsonToVerify,
+        proof: jsonProof
+      },
+      node
+    };
+
+    const result = await IotaVerifier.verifyJson(request);
+
+    expect(result).toBe(true);
+  });
+
+  test("should fail verification JSON document. integrity not respected", async () => {
+    const jsonToVerify = {
+      ...jsonDocument,
+      "member4": "abcde"
+    };
+    const request: IJsonVerificationRequest = {
+      document: {
+        ...jsonToVerify,
+        proof: jsonProof
+      },
+      node
+    };
+
+    const result = await IotaVerifier.verifyJson(request);
+
+    expect(result).toBe(false);
+  });
+
 
   test("should fail verification. signature does not correspond to the hash algorithm", async () => {
     const request: IVerificationRequest = {

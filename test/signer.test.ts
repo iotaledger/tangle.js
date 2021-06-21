@@ -25,12 +25,10 @@ import { SignatureTypes } from "../src/models/signatureTypes";
  * @param method Verification method
  */
 function assertSignature(signature: ILinkedDataSignature, signatureType: string, did: string, method: string) {
-  expect(signature.proof).toBeDefined();
-  const proof = signature.proof;
-  expect(proof.created).toBeDefined();
-  expect(proof.verificationMethod).toBe(`${did}#${method}`);
-  expect(proof.type).toBe(signatureType);
-  expect(proof.proofValue.length).toBeGreaterThan(80);
+  expect(signature.created).toBeDefined();
+  expect(signature.verificationMethod).toBe(`${did}#${method}`);
+  expect(signature.type).toBe(signatureType);
+  expect(signature.proofValue.length).toBeGreaterThan(80);
 }
 
 
@@ -71,9 +69,11 @@ describe("Sign messages", () => {
     const signer = await IotaSigner.create(node, did);
 
     const jsonDocument = {
-      "member1": "value 1",
+      "member1": {
+        "member11": "value 11"
+      },
       "member2": 56789,
-      "member3": false
+      "member3": [false, true]
     };
 
     const signature = await signer.signJson(jsonDocument, method, privateKey);

@@ -3,7 +3,9 @@ import * as crypto from "crypto";
 import { eddsa as EdDSA } from "elliptic";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
+import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import ValidationHelper from "./helpers/validationHelper";
+import { IJsonVerificationRequest } from "./models/IJsonVerificationRequest";
 import { IVerificationRequest } from "./models/IVerificationRequest";
 import DidService from "./services/didService";
 
@@ -37,6 +39,83 @@ export default class IotaVerifier {
         return this.verifySignature(request.signatureValue, request.message,
             request.hashAlgorithm, resolution.toJSON().publicKeyBase58);
     }
+
+    /**
+     * Verifies a plain JSON document containing a Linked Data Signature
+     *
+     * @param document The document
+     *
+     * @returns true or false depending on the verification result
+     *
+     */
+     public static async verifyJson(request: IJsonVerificationRequest): Promise<boolean> {
+        if (!ValidationHelper.url(request.node)) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
+                "The node has to be a URL");
+        }
+
+        const document = request.document;
+        const proof = document.proof;
+
+        const verificationMethod = proof.verificationMethod;
+
+        if (!ValidationHelper.did(verificationMethod)) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
+        }
+
+        const resolution = await DidService.resolveMethod(request.node, verificationMethod);
+
+        if (resolution.type !== "Ed25519VerificationKey2018") {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+                "Only 'Ed25519VerificationKey2018' verification methods are allowed");
+        }
+
+        // After removing the proofValue we obtain the canonical form and that will be verified
+        const proofValue = proof.proofValue;
+        delete proof.proofValue;
+
+        const canonical = JsonCanonicalization.calculate(document);
+
+        const result = this.verifySignature(proofValue, canonical, 
+            "sha256", resolution.toJSON().publicKeyBase58);
+
+        // Restore the proof value
+        proof.proofValue = proofValue;
+
+        return result;
+    }
+
+
+    /**
+     * Verifies a JSON-LD document containing a Linked Data Signature
+     *
+     * @param document The document
+     *
+     * @returns true or false depending on the verification result
+     *
+     */
+    /*
+     public static async verifyJsonLd(document: JsonSignedDocument): Promise<boolean> {
+        if (!ValidationHelper.url(request.node)) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
+                "The node has to be a URL");
+        }
+
+        if (!ValidationHelper.did(request.verificationMethod)) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
+        }
+
+        const resolution = await DidService.resolveMethod(request.node,
+            request.verificationMethod);
+
+        if (resolution.type !== "Ed25519VerificationKey2018") {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+                "Only 'Ed25519VerificationKey2018' verification methods are allowed");
+        }
+
+        return this.verifySignature(request.signatureValue, request.message,
+            request.hashAlgorithm, resolution.toJSON().publicKeyBase58);
+    }*/
 
     private static verifySignature(signature: string, message: string,
         hashAlgorithm: string, publicKeyBase58: string): boolean {
