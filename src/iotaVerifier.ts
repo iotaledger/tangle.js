@@ -11,6 +11,8 @@ import ValidationHelper from "./helpers/validationHelper";
 import { IJsonVerificationRequest } from "./models/IJsonVerificationRequest";
 import { IVerificationRequest } from "./models/IVerificationRequest";
 import DidService from "./services/didService";
+import JsonHelper from "./helpers/jsonHelper";
+import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 
 export default class IotaVerifier {
     /**
@@ -54,7 +56,7 @@ export default class IotaVerifier {
     public static async verifyJson(request: IJsonVerificationRequest): Promise<boolean> {
         const resolution = await this.verificationMethod(request);
 
-        const document = request.document;
+        const document = JsonHelper.getSignedDocument(request.document);
         const proof = document.proof;
 
         // After removing the proofValue we obtain the canonical form and that will be verified
@@ -84,7 +86,7 @@ export default class IotaVerifier {
     public static async verifyJsonLd(request: IJsonVerificationRequest): Promise<boolean> {
         const resolution = await this.verificationMethod(request);
 
-        const document = request.document;
+        const document = JsonHelper.getSignedJsonLdDocument(request.document);
         const proof = document.proof;
 
         // After removing the proofValue we obtain the canonical form and that will be verified
@@ -112,13 +114,9 @@ export default class IotaVerifier {
                 "The node has to be a URL");
         }
 
-        const document = request.document;
+        // Here the document has already been parsed
+        const document = request.document as IJsonSignedDocument;
         const proof = document.proof;
-
-        if (!proof) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
-                "The provided JSON document does not include a proof");
-        }
 
         const verificationMethod = proof.verificationMethod;
 

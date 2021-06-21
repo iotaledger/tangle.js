@@ -3,6 +3,7 @@ import * as jsonld from "jsonld";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
+import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
@@ -94,27 +95,12 @@ export default class IotaSigner {
      */
     public async signJson(doc: string | Record<string, unknown>, verificationMethod: string,
         secret: string, signatureType = SignatureTypes.JCS_ED25519_2020): Promise<ILinkedDataSignature> {
-        if ((typeof doc !== "string" && typeof doc !== "object") || Array.isArray(doc)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
-                "Please provide a Javascript object or string in JSON format");
-        }
+
+        let docToBeSigned = JsonHelper.getDocument(doc);
 
         if (signatureType !== SignatureTypes.JCS_ED25519_2020) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
                 "Only the 'JcsEd25519Signature2020' is supported");
-        }
-
-        let docToBeSigned = doc;
-        if (typeof doc === "string") {
-            try {
-                docToBeSigned = JSON.parse(doc);
-            } catch {
-                throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
-                    "Invalid JSON Format");
-            }
-        }
-        else {
-            docToBeSigned = JSON.parse(JSON.stringify(doc));
         }
 
         const proof = {
@@ -132,6 +118,9 @@ export default class IotaSigner {
 
         // We use SHA256 to calculate the digest as mandated by https://identity.foundation/JcsEd25519Signature2020/
         const signature = await this.sign(canonized, verificationMethod, secret, "sha256");
+
+        // Finally restore the original object
+        delete docToBeSigned['proof'];
 
         return {
             proofValue: signature.signatureValue,
@@ -152,32 +141,12 @@ export default class IotaSigner {
      */
     public async signJsonLd(doc: string | Record<string, unknown>, verificationMethod: string, secret: string,
         signatureType = SignatureTypes.ED25519_2018): Promise<ILinkedDataSignature> {
-        if ((typeof doc !== "string" && typeof doc !== "object") || Array.isArray(doc)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
-                "Please provide a Javascript object or string in JSON format");
-        }
 
+        const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
+        
         if (signatureType !== SignatureTypes.ED25519_2018) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
                 "Only the 'Ed25519Signature2018' is supported");
-        }
-
-        let docToBeSigned;
-        if (typeof doc === "string") {
-            try {
-                docToBeSigned = JSON.parse(doc);
-            } catch {
-                throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
-                    "Invalid JSON Format");
-            }
-        }
-        else {
-            docToBeSigned = JSON.parse(JSON.stringify(doc));
-        }
-
-        if (!docToBeSigned["@context"]) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
-                "Not a JSON-LD document. Use 'signJson' instead");
         }
 
         // RDF canonization algorithm
