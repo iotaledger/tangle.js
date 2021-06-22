@@ -12,6 +12,7 @@ import ValidationHelper from "./helpers/validationHelper";
 import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 import { IJsonVerificationRequest } from "./models/IJsonVerificationRequest";
 import { IVerificationRequest } from "./models/IVerificationRequest";
+import { LdContextURL } from "./models/ldContextURL";
 import DidService from "./services/didService";
 
 export default class IotaVerifier {
@@ -53,9 +54,10 @@ export default class IotaVerifier {
      * @returns true or false depending on the verification result
      */
     public static async verifyJson(request: IJsonVerificationRequest): Promise<boolean> {
+        const document = JsonHelper.getSignedDocument(request.document);
+
         const resolution = await this.verificationMethod(request);
 
-        const document = JsonHelper.getSignedDocument(request.document);
         const proof = document.proof;
 
         // After removing the proofValue we obtain the canonical form and that will be verified
@@ -63,8 +65,8 @@ export default class IotaVerifier {
         delete proof.proofValue;
 
         const canonical = JsonCanonicalization.calculate(document);
-        const msgHash = crypto.createHash("sha256").update(canonical)
-.digest();
+        const msgHash = crypto.
+            createHash("sha256").update(canonical).digest();
 
         const result = this.verifySignature(proofValue, msgHash, resolution.toJSON().publicKeyBase58);
 
@@ -83,24 +85,38 @@ export default class IotaVerifier {
      * @returns true or false depending on the verification result
      */
     public static async verifyJsonLd(request: IJsonVerificationRequest): Promise<boolean> {
+        const document = JsonHelper.getSignedJsonLdDocument(request.document);
+
         const resolution = await this.verificationMethod(request);
 
-        const document = JsonHelper.getSignedJsonLdDocument(request.document);
         const proof = document.proof;
 
-        // After removing the proofValue we obtain the canonical form and that will be verified
-        const proofValue = proof.proofValue;
+        const proofOptions = {
+            "@context": LdContextURL.W3C_SECURITY,
+            verificationMethod: proof.verificationMethod,
+            created: proof.created
+        };
+
+        // Remove the document proof to calculate the canonization without the proof 
         delete document.proof;
 
-        const canonical = await jsonld.canonize(document, {
+        const canonizeOptions = {
             algorithm: "URDNA2015",
             format: "application/n-quads",
             documentLoader: customLdContextLoader
-        });
+        };
 
-        const result = this.verifySignature(proofValue, canonical, resolution.toJSON().publicKeyBase58);
+        const docCanonical = await jsonld.canonize(document, canonizeOptions);
+        const docHash = crypto.createHash("sha512").update(docCanonical).digest();
 
-        // Restore the proof value
+        const proofCanonical = await jsonld.canonize(proofOptions, canonizeOptions);
+        const proofHash = crypto.createHash("sha512").update(proofCanonical).digest();
+
+        const hashToVerify = Buffer.concat([docHash, proofHash]);
+
+        const result = this.verifySignature(proof.proofValue, hashToVerify, resolution.toJSON().publicKeyBase58);
+
+        // Restore the proof value on the original document
         document.proof = proof;
 
         return result;

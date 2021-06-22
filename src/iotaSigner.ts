@@ -10,6 +10,7 @@ import ValidationHelper from "./helpers/validationHelper";
 import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
 import { ISigningRequest } from "./models/ISigningRequest";
 import { ISigningResult } from "./models/ISigningResult";
+import { LdContextURL } from "./models/ldContextURL";
 import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
 import SigningService from "./services/signingService";
@@ -94,6 +95,7 @@ export default class IotaSigner {
      */
     public async signJson(doc: string | Record<string, unknown>, verificationMethod: string,
         secret: string, signatureType = SignatureTypes.JCS_ED25519_2020): Promise<ILinkedDataSignature> {
+
         const docToBeSigned = JsonHelper.getDocument(doc);
 
         if (signatureType !== SignatureTypes.JCS_ED25519_2020) {
@@ -114,10 +116,9 @@ export default class IotaSigner {
         // JSON Canonicalization Scheme
         const canonized = JsonCanonicalization.calculate(docToBeSigned);
 
-        const digest = crypto.createHash("sha256").update(canonized)
-.digest();
-
         // We use SHA256 to calculate the digest as mandated by https://identity.foundation/JcsEd25519Signature2020/
+        const digest = crypto.createHash("sha256").update(canonized).digest();
+
         const signature = await this.sign(digest, verificationMethod, secret);
 
         // Finally restore the original object
@@ -142,6 +143,7 @@ export default class IotaSigner {
      */
     public async signJsonLd(doc: string | Record<string, unknown>, verificationMethod: string, secret: string,
         signatureType = SignatureTypes.ED25519_2018): Promise<ILinkedDataSignature> {
+
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
 
         if (signatureType !== SignatureTypes.ED25519_2018) {
@@ -149,31 +151,28 @@ export default class IotaSigner {
                 "Only the 'Ed25519Signature2018' is supported");
         }
 
-        // RDF canonization algorithm over the document
-        const canonized = await jsonld.canonize(docToBeSigned, {
+        const canonizeOptions = {
             algorithm: "URDNA2015",
             format: "application/n-quads",
             documentLoader: customLdContextLoader
-        });
+        };
 
-        const docHash = crypto.createHash("sha256").update(canonized)
-.digest();
+        // RDF canonization algorithm over the document
+        const canonized = await jsonld.canonize(docToBeSigned, canonizeOptions);
 
-        const proofLd = {
-            "@context": "https://w3id.org/security/v1",
+        const docHash = crypto.
+                            createHash("sha512").update(canonized).digest();
+
+        const proofOptionsLd = {
+            "@context": LdContextURL.W3C_SECURITY,
             verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
-            proofPurpose: "dataVerification",
             created: new Date().toISOString()
         };
 
-        const proofCanonized = await jsonld.canonize(proofLd, {
-            algorithm: "URDNA2015",
-            format: "application/n-quads",
-            documentLoader: customLdContextLoader
-        });
+        const proofOptionsCanonized = await jsonld.canonize(proofOptionsLd, canonizeOptions);
 
-        const proofOptionsHash = crypto.createHash("sha256").update(proofCanonized)
-.digest();
+        const proofOptionsHash = crypto.
+                                    createHash("sha512").update(proofOptionsCanonized).digest();
 
         const finalHash = Buffer.concat([docHash, proofOptionsHash]);
 
@@ -181,10 +180,10 @@ export default class IotaSigner {
 
         return {
             type: SignatureTypes.ED25519_2018,
-            verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
+            verificationMethod: proofOptionsLd.verificationMethod,
             proofValue: signature.signatureValue,
             proofPurpose: "dataVerification",
-            created: signature.created
+            created: proofOptionsLd.created
         };
     }
 }
