@@ -1,5 +1,5 @@
 import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
-import IotaSigner from "../src/iotaSigner";
+import { IotaSigner } from "../src/iotaSigner";
 import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { SignatureTypes } from "../src/models/signatureTypes";
 

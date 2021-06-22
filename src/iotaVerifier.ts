@@ -15,7 +15,7 @@ import { IVerificationRequest } from "./models/IVerificationRequest";
 import { LdContextURL } from "./models/ldContextURL";
 import DidService from "./services/didService";
 
-export default class IotaVerifier {
+export class IotaVerifier {
     /**
      * Verifies a Ed25519 signature corresponding to a string message
      *
@@ -65,8 +65,9 @@ export default class IotaVerifier {
         delete proof.proofValue;
 
         const canonical = JsonCanonicalization.calculate(document);
-        const msgHash = crypto.
-            createHash("sha256").update(canonical).digest();
+        const msgHash = crypto
+            .createHash("sha256").update(canonical)
+.digest();
 
         const result = this.verifySignature(proofValue, msgHash, resolution.toJSON().publicKeyBase58);
 
@@ -97,7 +98,7 @@ export default class IotaVerifier {
             created: proof.created
         };
 
-        // Remove the document proof to calculate the canonization without the proof 
+        // Remove the document proof to calculate the canonization without the proof
         delete document.proof;
 
         const canonizeOptions = {
@@ -107,10 +108,12 @@ export default class IotaVerifier {
         };
 
         const docCanonical = await jsonld.canonize(document, canonizeOptions);
-        const docHash = crypto.createHash("sha512").update(docCanonical).digest();
+        const docHash = crypto.createHash("sha512").update(docCanonical)
+.digest();
 
         const proofCanonical = await jsonld.canonize(proofOptions, canonizeOptions);
-        const proofHash = crypto.createHash("sha512").update(proofCanonical).digest();
+        const proofHash = crypto.createHash("sha512").update(proofCanonical)
+.digest();
 
         const hashToVerify = Buffer.concat([docHash, proofHash]);
 

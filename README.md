@@ -50,19 +50,18 @@ const message = "hello";
 const method = "key";
 // Private Key in base58
 const privateKey = "privateKeybase58";
-/* Optional. By default sha256 */
-const hashAlgorithm = "sha512";
-const signature = (await signer.sign(message, method, privateKey, hashAlgorithm?)).signatureValue;
+
+const signature = (await signer.sign(Buffer.from(message), method, privateKey)).signatureValue;
 ```
 
 ### Verifying messages
 
 ```ts
 const request: IVerificationRequest = {
+    type: "",
     message: "Hello",
     signatureValue,
     verificationMethod: "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
-    hashAlgorithm: "sha256",
     node: "https://chrysalis-nodes.iota.org"
 };
 

@@ -1,7 +1,7 @@
 // import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
-import IotaSigner from "../src/iotaSigner";
-import IotaVerifier from "../src/iotaVerifier";
+import { IotaSigner } from "../src/iotaSigner";
+import { IotaVerifier } from "../src/iotaVerifier";
 import { IJsonVerificationRequest } from "../src/models/IJsonVerificationRequest";
 import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { IVerificationRequest } from "../src/models/IVerificationRequest";

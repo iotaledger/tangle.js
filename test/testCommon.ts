@@ -1,4 +1,4 @@
-import IotaAnchoringChannel from "../src/iotaAnchoringChannel";
+import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 
 // Chrysalis testnet
 export const network = "https://api.lb-0.testnet.chrysalis2.com";

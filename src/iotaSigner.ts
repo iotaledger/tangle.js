@@ -21,7 +21,7 @@ import SigningService from "./services/signingService";
  *  It generates and verifies EdDSA (Ed25519) signatures
  *
  */
-export default class IotaSigner {
+export class IotaSigner {
     private readonly _did: string;
 
     private readonly _didDocument: DidDocument;
@@ -95,7 +95,6 @@ export default class IotaSigner {
      */
     public async signJson(doc: string | Record<string, unknown>, verificationMethod: string,
         secret: string, signatureType = SignatureTypes.JCS_ED25519_2020): Promise<ILinkedDataSignature> {
-
         const docToBeSigned = JsonHelper.getDocument(doc);
 
         if (signatureType !== SignatureTypes.JCS_ED25519_2020) {
@@ -117,7 +116,8 @@ export default class IotaSigner {
         const canonized = JsonCanonicalization.calculate(docToBeSigned);
 
         // We use SHA256 to calculate the digest as mandated by https://identity.foundation/JcsEd25519Signature2020/
-        const digest = crypto.createHash("sha256").update(canonized).digest();
+        const digest = crypto.createHash("sha256").update(canonized)
+.digest();
 
         const signature = await this.sign(digest, verificationMethod, secret);
 
@@ -143,7 +143,6 @@ export default class IotaSigner {
      */
     public async signJsonLd(doc: string | Record<string, unknown>, verificationMethod: string, secret: string,
         signatureType = SignatureTypes.ED25519_2018): Promise<ILinkedDataSignature> {
-
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
 
         if (signatureType !== SignatureTypes.ED25519_2018) {
@@ -160,8 +159,9 @@ export default class IotaSigner {
         // RDF canonization algorithm over the document
         const canonized = await jsonld.canonize(docToBeSigned, canonizeOptions);
 
-        const docHash = crypto.
-                            createHash("sha512").update(canonized).digest();
+        const docHash = crypto
+                            .createHash("sha512").update(canonized)
+.digest();
 
         const proofOptionsLd = {
             "@context": LdContextURL.W3C_SECURITY,
@@ -171,8 +171,9 @@ export default class IotaSigner {
 
         const proofOptionsCanonized = await jsonld.canonize(proofOptionsLd, canonizeOptions);
 
-        const proofOptionsHash = crypto.
-                                    createHash("sha512").update(proofOptionsCanonized).digest();
+        const proofOptionsHash = crypto
+                                    .createHash("sha512").update(proofOptionsCanonized)
+.digest();
 
         const finalHash = Buffer.concat([docHash, proofOptionsHash]);
 

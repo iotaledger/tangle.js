@@ -1,5 +1,5 @@
 import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
-import IotaAnchoringChannel from "../src/iotaAnchoringChannel";
+import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { network, newChannel } from "./testCommon";
 
 describe("Fetch Messages", () => {

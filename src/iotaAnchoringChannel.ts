@@ -16,7 +16,7 @@ import FetchMsgService from "./services/fetchMsgService";
 // Needed for the Streams WASM bindings
 initialize();
 
-export default class IotaAnchoringChannel {
+export class IotaAnchoringChannel {
     private _channelID: string;
 
     private readonly _node: string;
