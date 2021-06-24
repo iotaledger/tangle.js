@@ -1,6 +1,5 @@
 import AnchoringChannelError from "../errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
-import { IotaLdProofGenerator } from "../iotaLdProofGenerator";
 import { IJsonAnchoredDocument } from "../models/IJsonAnchoredDocument";
 import { IJsonSignedDocument } from "../models/IJsonSignedDocument";
 import { ILinkedDataProof } from "../models/ILinkedDataProof";

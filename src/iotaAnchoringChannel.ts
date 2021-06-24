@@ -182,7 +182,7 @@ export class IotaAnchoringChannel {
      *
      * @returns The fetch result
      */
-    public async fetch(anchorageID: string, messageID: string): Promise<IFetchResult> {
+    public async fetch(anchorageID: string, messageID?: string): Promise<IFetchResult> {
         if (!this._channelAddress) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");

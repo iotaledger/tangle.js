@@ -26,20 +26,34 @@ export default class FetchMsgService {
     }
 
     const msgID = request.msgID;
-
-    const msgLink = Address.from_string(`${subs.clone().channel_address()}:${msgID}`);
     let response;
-    try {
-      response = await subs.clone().receive_signed_packet(msgLink);
-    } catch {
-      throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
-        `The message ${msgID} has not been found on the Channel`);
+
+    // If the messageID is passed we retrieve it
+    if (msgID) {
+      const msgLink = Address.from_string(`${subs.clone().channel_address()}:${msgID}`);
+      try {
+        response = await subs.clone().receive_signed_packet(msgLink);
+      } catch {
+        throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
+          `The message ${msgID} has not been found on the Channel`);
+      }
+    }
+    // Otherwise we just fetch the next message
+    else {
+      const messages = await subs.clone().fetch_next_msgs();
+
+      if (!messages || messages.length === 0) {
+        throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
+          `There is not message anchored to ${anchorageID}`);
+      }
+
+      response = messages[0];
     }
 
     const messageContent = Buffer.from(response.get_message().get_public_payload()).toString();
     const receivedMsgID = response.get_link().copy().msg_id;
 
-    if (receivedMsgID !== msgID) {
+    if (msgID && receivedMsgID !== msgID) {
       throw new Error("Requested message ID and fetched message ID are not equal");
     }
     const pk = response.get_message().get_pk();

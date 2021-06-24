@@ -71,6 +71,22 @@ describe("Fetch Messages", () => {
         expect(fetchResponse.message).toBe(MSG_2);
     });
 
+    test("should fetch without passing the message ID. First anchorage", async () => {
+        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+
+        const response = await channel.fetch(channel.firstAnchorageID);
+
+        expect(response.message).toBe(MSG_1);
+    });
+
+    test("should fetch without passing the message ID. Non-first anchorage", async () => {
+        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+
+        const response = await channel.fetch(msgID1);
+
+        expect(response.message).toBe(MSG_2);
+    });
+
     test("should throw error if fetching a message from an anchorage which does not have anything", async () => {
         const channel = await newChannel(network);
         // First message
