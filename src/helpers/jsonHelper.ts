@@ -1,6 +1,10 @@
 import AnchoringChannelError from "../errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
+import { IotaLdProofGenerator } from "../iotaLdProofGenerator";
+import { IJsonAnchoredDocument } from "../models/IJsonAnchoredDocument";
 import { IJsonSignedDocument } from "../models/IJsonSignedDocument";
+import { ILinkedDataProof } from "../models/ILinkedDataProof";
+import { LinkedDataProofTypes } from "../models/linkedDataProofTypes";
 
 export default class JsonHelper {
     public static getDocument(doc: Record<string, unknown> | string): Record<string, unknown> {
@@ -30,7 +34,7 @@ export default class JsonHelper {
 
         if (!result.proof) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
-                "The provided JSON document does not include a proof");
+                "The provided JSON document does not include a Linked Data Signature");
         }
 
         return result as IJsonSignedDocument;
@@ -52,9 +56,46 @@ export default class JsonHelper {
 
         if (!result.proof) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
-                "The provided JSON document does not include a proof");
+                "The provided JSON-LD document does not include a Linked Data Signature");
         }
 
         return result as IJsonSignedDocument;
     }
+
+    public static getAnchoredJsonLdDocument(doc: Record<string, unknown> | string): IJsonAnchoredDocument {
+        const result = this.getJsonLdDocument(doc);
+
+        if (!result.proof) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+                "The provided JSON document does not include a proof");
+        }
+
+        const proofDetails = result.proof as ILinkedDataProof;
+
+        if (proofDetails.type !== LinkedDataProofTypes.IOTA_LD_PROOF_2021) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+                "The provided JSON document does not include an IOTA Linked Data Proof");
+        }
+
+        return result as IJsonAnchoredDocument;
+    }
+
+    public static getAnchoredDocument(doc: Record<string, unknown> | string): IJsonAnchoredDocument {
+        const result = this.getJsonLdDocument(doc);
+
+        if (!result.proof) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+                "The provided JSON document does not include a proof");
+        }
+
+        const proofDetails = result.proof as ILinkedDataProof;
+
+        if (proofDetails.type !== LinkedDataProofTypes.IOTA_LD_PROOF_2021) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+                "The provided JSON document does not include an IOTA Linked Data Proof");
+        }
+
+        return result as IJsonAnchoredDocument;
+    }
+
 }

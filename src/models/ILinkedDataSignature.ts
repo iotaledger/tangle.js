@@ -1,7 +1,5 @@
-export interface ILinkedDataSignature {
-    type: string;
-    verificationMethod: string;
-    created: string;
-    proofPurpose: string;
+import { ILinkedDataProof } from "./ILinkedDataProof";
+
+export interface ILinkedDataSignature extends ILinkedDataProof {
     proofValue: string;
 }

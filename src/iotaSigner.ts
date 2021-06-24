@@ -7,6 +7,8 @@ import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
+import { IJsonDocument } from "./models/IJsonDocument";
+import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
 import { ISigningRequest } from "./models/ISigningRequest";
 import { ISigningResult } from "./models/ISigningResult";
@@ -93,7 +95,7 @@ export class IotaSigner {
      *
      * @returns The JSON document including its corresponding Linked Data Signature
      */
-    public async signJson(doc: string | Record<string, unknown>, verificationMethod: string,
+    public async signJson(doc: string | IJsonDocument, verificationMethod: string,
         secret: string, signatureType = SignatureTypes.JCS_ED25519_2020): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getDocument(doc);
 
@@ -141,7 +143,7 @@ export class IotaSigner {
      * @returns The Linked Data Signature represented as a Linked Data Proof
      *
      */
-    public async signJsonLd(doc: string | Record<string, unknown>, verificationMethod: string, secret: string,
+    public async signJsonLd(doc: string | IJsonDocument, verificationMethod: string, secret: string,
         signatureType = SignatureTypes.ED25519_2018): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
 
