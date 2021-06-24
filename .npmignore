@@ -1,4 +1,8 @@
 DS_Store
 src
 tsconfig.json
-tslint.json
+tsconfig.eslint.json
+jest.config.js
+rollup.config.js
+.eslintrc.js
+coverage

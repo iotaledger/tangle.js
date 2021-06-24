@@ -1,5 +1,5 @@
+import { set_panic_hook as streamsPanicHook } from "@jmcanterafonseca-iota/iota_streams_wasm";
 import * as fetch from "node-fetch";
-import { set_panic_hook as streamsPanicHook } from "wasm-node/iota_streams_wasm";
 
 /**
  *   Initialization function for the Streams WASM bindings

@@ -1,4 +1,4 @@
-import { Subscriber } from "wasm-node/iota_streams_wasm";
+import { Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
 
 export interface IAnchoringRequest {
     /** The channel ID */

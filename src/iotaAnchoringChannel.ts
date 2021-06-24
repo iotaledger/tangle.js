@@ -1,4 +1,4 @@
-import { Subscriber } from "wasm-node/iota_streams_wasm";
+import { Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "./helpers/channelHelper";

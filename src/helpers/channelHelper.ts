@@ -1,5 +1,5 @@
+import { Address, Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
 import * as crypto from "crypto";
-import { Address, Subscriber } from "wasm-node/iota_streams_wasm";
 
 export class ChannelHelper {
     /**

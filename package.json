@@ -1,9 +1,9 @@
 {
-    "name": "@jmcanterafonseca-iota/iota-anchor-channels",
-    "version": "0.1.0",
+    "name": "@jmcanterafonseca-iota/anchoring-channels",
+    "version": "0.1.5",
     "description": "Powered by IOTA Streams, Anchor Channels is an easy to be used library that allows to anchor messages to the Tangle.",
     "scripts": {
-        "build-clean": "rimraf ./dist/*",
+        "build-clean": "rimraf ./es/*",
         "build-compile": "tsc",
         "build-watch": "tsc --watch",
         "build-lint": "eslint src --ext .ts",
@@ -40,6 +40,7 @@
     "homepage": "https://github.com/jmcanterafonseca-iota/iota-anchor-channels#readme",
     "dependencies": {
         "@iota/identity-wasm": "^0.3.1",
+        "@jmcanterafonseca-iota/iota_streams_wasm": "0.0.1",
         "bs58": "^4.0.1",
         "elliptic": "^6.5.4",
         "jsonld": "^5.2.0",
@@ -66,5 +67,8 @@
         "ts-jest": "^27.0.2",
         "ts-node": "^10.0.0",
         "typescript": "^4.0.3"
-    }
+    },
+    "main": "es/index.js",
+    "module": "es/index.js",
+    "typings": "typings/index.d.ts"
 }
