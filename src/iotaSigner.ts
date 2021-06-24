@@ -8,7 +8,6 @@ import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IJsonDocument } from "./models/IJsonDocument";
-import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
 import { ISigningRequest } from "./models/ISigningRequest";
 import { ISigningResult } from "./models/ISigningResult";

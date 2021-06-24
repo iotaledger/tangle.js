@@ -1,12 +1,13 @@
 import AnchoringChannelError from "../errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
 import { IJsonAnchoredDocument } from "../models/IJsonAnchoredDocument";
+import { IJsonDocument } from "../models/IJsonDocument";
 import { IJsonSignedDocument } from "../models/IJsonSignedDocument";
 import { ILinkedDataProof } from "../models/ILinkedDataProof";
 import { LinkedDataProofTypes } from "../models/linkedDataProofTypes";
 
 export default class JsonHelper {
-    public static getDocument(doc: Record<string, unknown> | string): Record<string, unknown> {
+    public static getDocument(doc: Record<string, unknown> | string): IJsonDocument  {
         if ((typeof doc !== "string" && typeof doc !== "object") || Array.isArray(doc)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
                 "Please provide a Javascript object or string in JSON format");
@@ -25,7 +26,7 @@ export default class JsonHelper {
             document = JSON.parse(JSON.stringify(doc));
         }
 
-        return document as Record<string, unknown>;
+        return document as IJsonDocument;
     }
 
     public static getSignedDocument(doc: Record<string, unknown> | string): IJsonSignedDocument {
@@ -80,7 +81,7 @@ export default class JsonHelper {
     }
 
     public static getAnchoredDocument(doc: Record<string, unknown> | string): IJsonAnchoredDocument {
-        const result = this.getJsonLdDocument(doc);
+        const result = this.getDocument(doc);
 
         if (!result.proof) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
