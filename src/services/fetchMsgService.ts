@@ -37,9 +37,8 @@ export default class FetchMsgService {
         throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
           `The message ${msgID} has not been found on the Channel`);
       }
-    }
-    // Otherwise we just fetch the next message
-    else {
+    } else {
+      // Otherwise we just fetch the next message
       const messages = await subs.clone().fetch_next_msgs();
 
       if (!messages || messages.length === 0) {

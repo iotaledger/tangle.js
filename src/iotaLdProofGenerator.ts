@@ -5,31 +5,30 @@ import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { LinkedDataProofTypes } from "./models/linkedDataProofTypes";
 
 export class IotaLdProofGenerator {
-    
-    private anchoringChannel: IotaAnchoringChannel;
-    private signer: IotaSigner;
+    private readonly anchoringChannel: IotaAnchoringChannel;
 
-    constructor(anchorChannel: IotaAnchoringChannel, signer: IotaSigner) {
-        this.anchoringChannel = this.anchoringChannel;
+    private readonly signer: IotaSigner;
+
+    constructor(anchoringChannel: IotaAnchoringChannel, signer: IotaSigner) {
+        this.anchoringChannel = anchoringChannel;
         this.signer = signer;
-    } 
+    }
 
     /**
      * Generates a Linked Data Proof for a JSON-LD document by anchoring it to the anchorage provided
-     *  
-     * @param doc Document 
+     *
+     * @param doc Document
      * @param verificationMethod fragment identifier of the verification method used to sign the document
      * @param secret the secret key used to sign the document
      * @param anchorageID Anchorage
-     * 
+     *
      * @returns Linked Data Proof
-     * 
+     *
      */
-    public async buildForJsonLd(doc: string | Record<string, unknown>, 
+    public async buildForJsonLd(doc: string | Record<string, unknown>,
         verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof> {
-
         // First of all a Linked Data Signature is generated for the document
         const linkedDataSignature = await this.signer.signJsonLd(doc, verificationMethod, secret);
 
@@ -41,20 +40,19 @@ export class IotaLdProofGenerator {
 
     /**
      * Generates a Linked Data Proof for a JSON document by anchoring it to the anchorage provided
-     *  
-     * @param doc Document 
+     *
+     * @param doc Document
      * @param verificationMethod fragment identifier of the verification method used to sign the document
      * @param secret the secret key used to sign the document
      * @param anchorageID Anchorage where to anchor the Linked Data Signature associated to the proof
-     * 
+     *
      * @returns Linked Data Proof
-     * 
+     *
      */
-    public async buildForJson(doc: string | Record<string, unknown>, 
+    public async buildForJson(doc: string | Record<string, unknown>,
         verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof> {
-
         // First of all a Linked Data Signature is generated for the document
         const linkedDataSignature = await this.signer.signJson(doc, verificationMethod, secret);
 
@@ -66,19 +64,18 @@ export class IotaLdProofGenerator {
 
     /**
      * Generates a chain of Linked Data Proofs for the JSON documents passed as parameter
-     * 
+     *
      * @param docs The chain of documents
      * @param verificationMethod The fragment identifier of the verification method used within the signer's DID
      * @param secret The private key used for signing
      * @param anchorageID Initial anchorage used to anchor the Linked Data Signatures
-     * 
-     * @return the list of Linked Data Proof 
+     *
+     * @returns the list of Linked Data Proof
      */
-    public async generateChain(docs: string[] | Record<string, unknown>[], 
+    public async generateChain(docs: string[] | Record<string, unknown>[],
         verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof[]> {
-        
         let currentAnchorageID = anchorageID;
         const result: IIotaLinkedDataProof[] = [];
 
@@ -93,19 +90,18 @@ export class IotaLdProofGenerator {
     }
 
      /**
-     * Generates a chain of Linked Data Proofs for the JSON-LD documents passed as parameter
-     * 
-     * @param docs The chain of documents
-     * @param verificationMethod The fragment identifier of the verification method used within the signer's DID
-     * @param secret The private key used for signing
-     * @param anchorageID Initial anchorage used to anchor the Linked Data Signatures
-     * 
-     * @return the list of Linked Data Proof 
-     */
+      * Generates a chain of Linked Data Proofs for the JSON-LD documents passed as parameter
+      *
+      * @param docs The chain of documents
+      * @param verificationMethod The fragment identifier of the verification method used within the signer's DID
+      * @param secret The private key used for signing
+      * @param anchorageID Initial anchorage used to anchor the Linked Data Signatures
+      *
+      * @returns the list of Linked Data Proof
+      */
     public async generateChainLd(docs: string[] | Record<string, unknown>[], verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof[]> {
-         
         let currentAnchorageID = anchorageID;
         const result: IIotaLinkedDataProof[] = [];
 

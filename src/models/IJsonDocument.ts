@@ -1,2 +1,1 @@
-export interface IJsonDocument extends Record<string, unknown> {
-}
+export type IJsonDocument = Record<string, unknown>;

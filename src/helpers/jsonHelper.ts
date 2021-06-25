@@ -7,7 +7,7 @@ import { ILinkedDataProof } from "../models/ILinkedDataProof";
 import { LinkedDataProofTypes } from "../models/linkedDataProofTypes";
 
 export default class JsonHelper {
-    public static getDocument(doc: Record<string, unknown> | string): IJsonDocument  {
+    public static getDocument(doc: Record<string, unknown> | string): IJsonDocument {
         if ((typeof doc !== "string" && typeof doc !== "object") || Array.isArray(doc)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
                 "Please provide a Javascript object or string in JSON format");
@@ -97,5 +97,4 @@ export default class JsonHelper {
 
         return result as IJsonAnchoredDocument;
     }
-
 }
