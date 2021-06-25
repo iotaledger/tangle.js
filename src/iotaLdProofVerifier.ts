@@ -52,12 +52,11 @@ export class IotaLdProofVerifier {
      * and in the order implicit in the list
      * @param docs The chain of documents to verify
      * @param node The node
-     * @param strict
      * @returns The global verification result
      */
     public static async verifyJsonChain(docs: IJsonAnchoredDocument[] | string[],
-        node: string, strict: boolean = true): Promise<boolean> {
-        return this.doVerifyChain(docs, node, false, strict);
+        node: string): Promise<boolean> {
+        return this.doVerifyChain(docs, node, false);
     }
 
     /**
@@ -65,12 +64,11 @@ export class IotaLdProofVerifier {
      * and in the order implicit in the list
      * @param docs The chain of documents to verify
      * @param node The node
-     * @param strict
      * @returns The global verification result
      */
     public static async verifyJsonLdChain(docs: IJsonAnchoredDocument[] | string[],
-        node: string, strict: boolean = true): Promise<boolean> {
-        return this.doVerifyChain(docs, node, true, strict);
+        node: string): Promise<boolean> {
+        return this.doVerifyChain(docs, node, true);
     }
 
     /**
@@ -109,7 +107,6 @@ export class IotaLdProofVerifier {
      * and in the order implicit in the list
      * @param docs The chain of documents to verify
      * @param node The node
-     * @param strict
      * @param jsonLd true if the documents must be treated as JSON-LD documents
      * @returns The global verification result
      */
