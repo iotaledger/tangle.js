@@ -46,7 +46,7 @@ function assertProofValue(proof: IIotaLinkedDataProof, channelID: string, anchor
     expect(proof.proofValue.anchorageID).toBe(anchorageID);
 }
 
-describe("Generate Linked Data Proofs", () => {
+describe("Generate IOTA Linked Data Proofs", () => {
     const node = "https://chrysalis-nodes.iota.org";
 
     const did = "did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d";
@@ -54,11 +54,11 @@ describe("Generate Linked Data Proofs", () => {
 
     const privateKey = "TEBVMPPX91ZhtBZ8R8zBP6WZpVeAnrWMnknkSHThmYk";
 
-    test("should generate a Linked Data Proof for the JSON-LD document", async () => {
+    test("should generate a Linked Data Proof for a JSON-LD document", async () => {
         const document = {
             "@context": "https://schema.org",
-            "type": "Organization",
-            "name": "IOTA Foundation"
+            type: "Organization",
+            name: "IOTA Foundation"
         };
 
         // Channel that will be used
@@ -68,7 +68,7 @@ describe("Generate Linked Data Proofs", () => {
 
         const generator = new IotaLdProofGenerator(channel, signer);
 
-        const proof = await generator.buildForJsonLd(document, method,
+        const proof = await generator.generateLd(document, method,
             privateKey,
             channel.firstAnchorageID);
 
@@ -76,10 +76,10 @@ describe("Generate Linked Data Proofs", () => {
         assertProofValue(proof, channel.channelID, channel.firstAnchorageID);
     });
 
-    test("should generate a Linked Data Proof for the JSON document", async () => {
+    test("should generate a Linked Data Proof for a JSON document", async () => {
         const document = {
-            "property1": "value1",
-            "property2": false
+            property1: "value1",
+            property2: false
         };
 
         // Channel that will be used
@@ -89,11 +89,50 @@ describe("Generate Linked Data Proofs", () => {
 
         const generator = new IotaLdProofGenerator(channel, signer);
 
-        const proof = await generator.buildForJson(document, method,
+        // We test passing the document as a string
+        const proof = await generator.generate(JSON.stringify(document), method,
             privateKey,
             channel.firstAnchorageID);
 
         assertProof(proof, LinkedDataProofTypes.IOTA_LD_PROOF_2021, did, method);
         assertProofValue(proof, channel.channelID, channel.firstAnchorageID);
+    });
+
+    test("should generate a chain of Linked Data Proof for a sequence of JSON-LD Documents", async () => {
+        const document1 = {
+            "@context": "https://schema.org",
+            type: "Person",
+            age: 22,
+            dateCreated: "2020-06-27T12:00:00Z"
+        };
+
+        const document2 = {
+            "@context": "https://schema.org",
+            type: "Person",
+            age: 23,
+            dateCreated: "2021-06-27T12:00:00Z"
+        };
+
+        // Channel that will be used
+        const channel = await IotaAnchoringChannel.create(node).bind();
+        // Signer that will be used
+        const signer = await IotaSigner.create(node, did);
+
+        const generator = new IotaLdProofGenerator(channel, signer);
+
+        const proofs = await generator.generateChainLd([document1, document2],
+            method,
+            privateKey,
+            channel.firstAnchorageID);
+
+        expect(proofs.length).toBe(2);
+
+        for (const proof of proofs) {
+            assertProof(proof, LinkedDataProofTypes.IOTA_LD_PROOF_2021, did, method);
+        }
+        assertProofValue(proofs[0], channel.channelID, channel.firstAnchorageID);
+
+        // Ensure both were anchored to the same channel ID
+        expect(proofs[0].proofValue.channelID).toBe(proofs[1].proofValue.channelID);
     });
 });

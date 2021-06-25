@@ -2,6 +2,7 @@ import { IotaAnchoringChannel } from "./iotaAnchoringChannel";
 import { IotaSigner } from "./iotaSigner";
 import { IAnchoringResult } from "./models/IAnchoringResult";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
+import { IJsonDocument } from "./models/IJsonDocument";
 import { LinkedDataProofTypes } from "./models/linkedDataProofTypes";
 
 export class IotaLdProofGenerator {
@@ -25,7 +26,7 @@ export class IotaLdProofGenerator {
      * @returns Linked Data Proof
      *
      */
-    public async buildForJsonLd(doc: string | Record<string, unknown>,
+    public async generateLd(doc: string | IJsonDocument,
         verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof> {
@@ -49,7 +50,7 @@ export class IotaLdProofGenerator {
      * @returns Linked Data Proof
      *
      */
-    public async buildForJson(doc: string | Record<string, unknown>,
+    public async generate(doc: string | IJsonDocument,
         verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof> {
@@ -72,7 +73,7 @@ export class IotaLdProofGenerator {
      *
      * @returns the list of Linked Data Proof
      */
-    public async generateChain(docs: string[] | Record<string, unknown>[],
+    public async generateChain(docs: string[] | IJsonDocument[],
         verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof[]> {
@@ -80,7 +81,7 @@ export class IotaLdProofGenerator {
         const result: IIotaLinkedDataProof[] = [];
 
         for (const doc of docs) {
-            const ldProof = await this.buildForJson(doc, verificationMethod, secret, currentAnchorageID);
+            const ldProof = await this.generate(doc, verificationMethod, secret, currentAnchorageID);
             result.push(ldProof);
             // The next anchorage is the proof Message ID
             currentAnchorageID = ldProof.proofValue.msgID;
@@ -99,14 +100,14 @@ export class IotaLdProofGenerator {
       *
       * @returns the list of Linked Data Proof
       */
-    public async generateChainLd(docs: string[] | Record<string, unknown>[], verificationMethod: string,
+    public async generateChainLd(docs: string[] | IJsonDocument[], verificationMethod: string,
         secret: string,
         anchorageID: string): Promise<IIotaLinkedDataProof[]> {
         let currentAnchorageID = anchorageID;
         const result: IIotaLinkedDataProof[] = [];
 
         for (const doc of docs) {
-            const ldProof = await this.buildForJsonLd(doc, verificationMethod, secret, currentAnchorageID);
+            const ldProof = await this.generateLd(doc, verificationMethod, secret, currentAnchorageID);
             result.push(ldProof);
             // The next anchorage is the proof Message ID
             currentAnchorageID = ldProof.proofValue.msgID;

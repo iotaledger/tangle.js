@@ -209,7 +209,7 @@ export class IotaLdProofVerifier {
         const channel = await IotaAnchoringChannel.create(node).bind(proofDetails.channelID);
         // From the channel the message is retrieved and then the Linked Data Signature provided
         const fetchResult = await channel.fetch(proofDetails.anchorageID, proofDetails.msgID);
-        const linkedDataSignature = JSON.parse(fetchResult.msgID);
+        const linkedDataSignature = JSON.parse(fetchResult.message);
 
         // now assign the Linked Data Signature as proof
         document.proof = linkedDataSignature;
