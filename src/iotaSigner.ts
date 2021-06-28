@@ -8,6 +8,7 @@ import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IJsonDocument } from "./models/IJsonDocument";
+import ILdSignatureOptions from "./models/ILdSignatureOptions";
 import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
 import { ISigningRequest } from "./models/ISigningRequest";
 import { ISigningResult } from "./models/ISigningResult";
@@ -88,24 +89,21 @@ export class IotaSigner {
      * Signs a JSON document
      *
      * @param doc The JSON document as an object or as a string
-     * @param verificationMethod  Verification method
-     * @param secret The secret
-     * @param signatureType The type of signature to be generated
+     * @param options the parameters to use to generate the signature
      *
      * @returns The JSON document including its corresponding Linked Data Signature
      */
-    public async signJson(doc: string | IJsonDocument, verificationMethod: string,
-        secret: string, signatureType = SignatureTypes.JCS_ED25519_2020): Promise<ILinkedDataSignature> {
+    public async signJson(doc: string | IJsonDocument, options: ILdSignatureOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getDocument(doc);
 
-        if (signatureType !== SignatureTypes.JCS_ED25519_2020) {
+        if (options.signatureType !== SignatureTypes.JCS_ED25519_2020) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
                 "Only the 'JcsEd25519Signature2020' is supported");
         }
 
         const proof = {
             type: SignatureTypes.JCS_ED25519_2020,
-            verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
+            verificationMethod: `${this._didDocument.id}#${options.verificationMethod}`,
             proofPurpose: "dataVerification",
             created: new Date().toISOString()
         };
@@ -120,7 +118,7 @@ export class IotaSigner {
         const digest = crypto.createHash("sha256").update(canonized)
 .digest();
 
-        const signature = await this.sign(digest, verificationMethod, secret);
+        const signature = await this.sign(digest, options.verificationMethod, options.secret);
 
         // Finally restore the original object
         delete docToBeSigned.proof;
@@ -135,18 +133,15 @@ export class IotaSigner {
      *  Signs a JSON-LD document
      *
      * @param doc The JSON-LD document as an object or as a string
-     * @param verificationMethod  Verification method
-     * @param secret The secret
-     * @param signatureType The type of signature to be generated (by default 'Ed25519Signature2018')
+     * @param options the parameters to use to generate the signature
      *
      * @returns The Linked Data Signature represented as a Linked Data Proof
      *
      */
-    public async signJsonLd(doc: string | IJsonDocument, verificationMethod: string, secret: string,
-        signatureType = SignatureTypes.ED25519_2018): Promise<ILinkedDataSignature> {
+    public async signJsonLd(doc: string | IJsonDocument, options: ILdSignatureOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
 
-        if (signatureType !== SignatureTypes.ED25519_2018) {
+        if (options.signatureType !== SignatureTypes.ED25519_2018) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
                 "Only the 'Ed25519Signature2018' is supported");
         }
@@ -166,7 +161,7 @@ export class IotaSigner {
 
         const proofOptionsLd = {
             "@context": LdContextURL.W3C_SECURITY,
-            verificationMethod: `${this._didDocument.id}#${verificationMethod}`,
+            verificationMethod: `${this._didDocument.id}#${options.verificationMethod}`,
             created: new Date().toISOString()
         };
 
@@ -178,7 +173,7 @@ export class IotaSigner {
 
         const finalHash = Buffer.concat([docHash, proofOptionsHash]);
 
-        const signature = await this.sign(finalHash, verificationMethod, secret);
+        const signature = await this.sign(finalHash, options.verificationMethod, options.secret);
 
         return {
             type: SignatureTypes.ED25519_2018,

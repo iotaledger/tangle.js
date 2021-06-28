@@ -1,5 +1,5 @@
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { IotaProofGenerator } from "../src/iotaProofGenerator";
+import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { LinkedDataProofTypes } from "../src/models/linkedDataProofTypes";
@@ -66,11 +66,13 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Signer that will be used
         const signer = await IotaSigner.create(node, did);
 
-        const generator = new IotaProofGenerator(channel, signer);
+        const generator = new IotaLdProofGenerator(channel, signer);
 
-        const proof = await generator.generateLd(document, method,
-            privateKey,
-            channel.firstAnchorageID);
+        const proof = await generator.generateLd(document, {
+            verificationMethod: method,
+            secret: privateKey,
+            anchorageID: channel.firstAnchorageID
+        });
 
         assertProof(proof, LinkedDataProofTypes.IOTA_LD_PROOF_2021, did, method);
         assertProofValue(proof, channel.channelID, channel.firstAnchorageID);
@@ -87,12 +89,14 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Signer that will be used
         const signer = await IotaSigner.create(node, did);
 
-        const generator = new IotaProofGenerator(channel, signer);
+        const generator = new IotaLdProofGenerator(channel, signer);
 
         // We test passing the document as a string
-        const proof = await generator.generate(JSON.stringify(document), method,
-            privateKey,
-            channel.firstAnchorageID);
+        const proof = await generator.generate(JSON.stringify(document), {
+            verificationMethod: method,
+            secret: privateKey,
+            anchorageID: channel.firstAnchorageID
+        });
 
         assertProof(proof, LinkedDataProofTypes.IOTA_LD_PROOF_2021, did, method);
         assertProofValue(proof, channel.channelID, channel.firstAnchorageID);
@@ -118,12 +122,13 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Signer that will be used
         const signer = await IotaSigner.create(node, did);
 
-        const generator = new IotaProofGenerator(channel, signer);
+        const generator = new IotaLdProofGenerator(channel, signer);
 
-        const proofs = await generator.generateChainLd([document1, document2],
-            method,
-            privateKey,
-            channel.firstAnchorageID);
+        const proofs = await generator.generateChainLd([document1, document2], {
+            verificationMethod: method,
+            secret: privateKey,
+            anchorageID: channel.firstAnchorageID
+        });
 
         expect(proofs.length).toBe(2);
 

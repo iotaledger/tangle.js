@@ -63,9 +63,11 @@ describe("Sign messages", () => {
       "member3": [false, true]
     };
 
-    const signature = await signer.signJson(jsonDocument, method, privateKey);
-
-    console.log(signature);
+    const signature = await signer.signJson(jsonDocument, {
+      verificationMethod: method,
+      secret: privateKey,
+      signatureType: SignatureTypes.JCS_ED25519_2020
+    });
 
     assertSignature(signature, SignatureTypes.JCS_ED25519_2020, did, method);
   });
@@ -79,7 +81,11 @@ describe("Sign messages", () => {
       name: "IOTA Foundation"
     };
 
-    const signature = await signer.signJsonLd(jsonLdDocument, method, privateKey);
+    const signature = await signer.signJsonLd(jsonLdDocument, {
+      verificationMethod: method,
+      secret: privateKey,
+      signatureType: SignatureTypes.ED25519_2018
+    });
 
     assertSignature(signature, SignatureTypes.ED25519_2018, did, method);
   });
@@ -103,7 +109,11 @@ describe("Sign messages", () => {
       "example:myField": "Example of a vendor/user extension"
     };
 
-    const signature = await signer.signJsonLd(jsonLdDocument, method, privateKey);
+    const signature = await signer.signJsonLd(jsonLdDocument, {
+      verificationMethod: method,
+      secret: privateKey,
+      signatureType: SignatureTypes.ED25519_2018
+    });
 
     assertSignature(signature, SignatureTypes.ED25519_2018, did, method);
   });

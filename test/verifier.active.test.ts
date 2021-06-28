@@ -58,9 +58,17 @@ describe("Verify messages", () => {
 
     signatureValue = (await signer.sign(Buffer.from(message), method, privateKey)).signatureValue;
 
-    jsonProof = await signer.signJson(jsonDocument, method, privateKey);
+    jsonProof = await signer.signJson(jsonDocument, {
+      verificationMethod: method,
+      secret: privateKey,
+      signatureType: SignatureTypes.JCS_ED25519_2020
+    });
 
-    jsonLdProof = await signer.signJsonLd(jsonLdDocument, method, privateKey);
+    jsonLdProof = await signer.signJsonLd(jsonLdDocument, {
+      verificationMethod: method,
+      secret: privateKey,
+      signatureType: SignatureTypes.ED25519_2018
+    });
   });
 
   test("should verify a message", async () => {
