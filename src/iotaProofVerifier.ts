@@ -16,7 +16,7 @@ import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
  *  In the future it will also need to verify
  *
  */
-export class IotaLdProofVerifier {
+export class IotaProofVerifier {
     /**
      * Verifies a JSON document
      *

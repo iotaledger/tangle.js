@@ -13,5 +13,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./iotaAnchoringChannel"), exports);
 __exportStar(require("./iotaSigner"), exports);
 __exportStar(require("./iotaVerifier"), exports);
-__exportStar(require("./iotaLdProofGenerator"), exports);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEseURBQXVDO0FBQ3ZDLCtDQUE2QjtBQUM3QixpREFBK0I7QUFDL0IseURBQXVDIn0=
+__exportStar(require("./iotaProofGenerator"), exports);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEseURBQXVDO0FBQ3ZDLCtDQUE2QjtBQUM3QixpREFBK0I7QUFDL0IsdURBQXFDIn0=

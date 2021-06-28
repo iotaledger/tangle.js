@@ -114,21 +114,19 @@ const verified = await IotaVerifier.verifyJsonLd({
 });
 ```
 
-### Linked Data Proofs generation (anchored to the Tangle) .- To be implemented
+### Linked Data Proofs generation (anchored to the Tangle)
 
 ```ts
-const anchorChannel = /* Instantiate an anchor channel */
+const anchorChannel = /* Instantiate an anchoring channel */
 const signer = /* Instantiate a signer */
-const ldProofGenerator = new IotaLdProofGenerator(anchoringChannel, signer)
-await ldProofGenerator.generate(jsonLdDocument, anchorageID)
+const proofGenerator = new IotaProofGenerator(anchoringChannel, signer);
+await proofGenerator.generate(jsonLdDocument, anchorageID)
 ```
 
-### Linked Data Proofs verification (To be implemented)
+### Linked Data Proofs verification
 
 ```ts
-const verifier = new IotaAnchorVerifier(node, seed);
-await verifier.verify(jsonDocument);
-
-await verifier.verify(jsonDocument[]);
+const verified = await IotaProofVerifier.verifyJsonLd({
+    document: anchoredDoc
+});
 ```
-

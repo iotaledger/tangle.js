@@ -5,7 +5,7 @@ import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonDocument } from "./models/IJsonDocument";
 import { LinkedDataProofTypes } from "./models/linkedDataProofTypes";
 
-export class IotaLdProofGenerator {
+export class IotaProofGenerator {
     private readonly anchoringChannel: IotaAnchoringChannel;
 
     private readonly signer: IotaSigner;

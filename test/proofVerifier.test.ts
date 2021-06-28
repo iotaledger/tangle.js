@@ -1,7 +1,7 @@
 // import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
-import { IotaLdProofVerifier } from "../src/iotaLdProofVerifier";
+import { IotaProofGenerator } from "../src/iotaProofGenerator";
+import { IotaProofVerifier } from "../src/iotaProofVerifier";
 import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "../src/models/IJsonAnchoredDocument";
@@ -62,13 +62,13 @@ describe("Verify IOTA Linked Data Proofs", () => {
 
     const signer = await IotaSigner.create(node, did);
     const channel = await IotaAnchoringChannel.create(node).bind();
-    const ldProofGenerator = new IotaLdProofGenerator(channel, signer);
+    const ldProofGenerator = new IotaProofGenerator(channel, signer);
 
     singleIotaLdProof = await ldProofGenerator.generate(jsonDocument, method,
       privateKey, channel.firstAnchorageID);
 
     const channel2 = await IotaAnchoringChannel.create(node).bind();
-    const ldProofGenerator2 = new IotaLdProofGenerator(channel2, signer);
+    const ldProofGenerator2 = new IotaProofGenerator(channel2, signer);
 
     chainIotaLdProofJsonLd = await ldProofGenerator2.generateChainLd(documentChain, method,
       privateKey, channel2.firstAnchorageID);
@@ -80,7 +80,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
       proof: singleIotaLdProof
     };
 
-    const result = await IotaLdProofVerifier.verifyJson(documentToVerify, node);
+    const result = await IotaProofVerifier.verifyJson(documentToVerify, node);
     expect(result).toBe(true);
   });
 
@@ -95,7 +95,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[1]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, node);
+    const result = await IotaProofVerifier.verifyJsonLdChain(documentsToVerify, node);
     expect(result).toBe(true);
   });
 });
