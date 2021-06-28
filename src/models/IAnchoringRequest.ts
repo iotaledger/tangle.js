@@ -6,7 +6,7 @@ export interface IAnchoringRequest {
     /** The IOTA Streams Subscriber */
     subscriber: Subscriber;
     /** The message */
-    message: string;
+    message: Buffer;
     /** The anchorage point */
     anchorageID: string;
 }

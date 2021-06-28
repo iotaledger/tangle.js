@@ -16,11 +16,11 @@ describe("Fetch Messages", () => {
         channelID = channel.channelID;
 
         // First message
-        const result = await channel.anchor(channel.firstAnchorageID, MSG_1);
+        const result = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
         msgID1 = result.msgID;
 
         // Second message
-        const result2 = await channel.anchor(result.msgID, MSG_2);
+        const result2 = await channel.anchor(Buffer.from(MSG_2), result.msgID);
         msgID2 = result2.msgID;
     });
 
@@ -53,7 +53,7 @@ describe("Fetch Messages", () => {
     test("should perform a cycle of anchor, fetch with the same channel object", async () => {
         const channel = await newChannel(network);
 
-        const anchorResponse = await channel.anchor(channel.firstAnchorageID, MSG_1);
+        const anchorResponse = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
 
         const fetchResponse = await channel.fetch(channel.firstAnchorageID, anchorResponse.msgID);
 
@@ -63,8 +63,8 @@ describe("Fetch Messages", () => {
     test("should perform a cycle of anchor, anchor, skip, fetch with the same channel object", async () => {
         const channel = await newChannel(network);
 
-        const anchorResponse1 = await channel.anchor(channel.firstAnchorageID, MSG_1);
-        const anchorResponse2 = await channel.anchor(anchorResponse1.msgID, MSG_2);
+        const anchorResponse1 = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
+        const anchorResponse2 = await channel.anchor(Buffer.from(MSG_2), anchorResponse1.msgID);
 
         const fetchResponse = await channel.fetch(anchorResponse1.msgID, anchorResponse2.msgID);
 
@@ -90,7 +90,7 @@ describe("Fetch Messages", () => {
     test("should throw error if fetching a message from an anchorage which does not have anything", async () => {
         const channel = await newChannel(network);
         // First message
-        const result = await channel.anchor(channel.firstAnchorageID, MSG_1);
+        const result = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
 
         try {
             await channel.fetch(result.msgID, msgID2);

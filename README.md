@@ -28,7 +28,7 @@ anchoringChannel.firstAnchorageID
 
 const message = "my message";
 // Obtain your anchorageID (it could be the first anchorageID of the channel)
-const result = await anchoringChannel.anchor(anchorageID, message);
+const result = await anchoringChannel.anchor(Buffer.from(message), anchorageID);
 console.log("msg ID", result.msgID);
 ```
 
@@ -36,6 +36,12 @@ console.log("msg ID", result.msgID);
 
 ```ts
 const result = await anchoringChannel.fetch(anchorageID, msgID);
+``` 
+
+## Receiving messages
+
+```ts
+const result = await anchoringChannel.receive(msgID);
 ``` 
 
 ### Signing messages (EdDSA)
@@ -58,7 +64,7 @@ const signature = (await signer.sign(Buffer.from(message), method, privateKey)).
 
 ```ts
 const request: IVerificationRequest = {
-    type: "",
+    type: "Ed25519Signature2018",
     message: "Hello",
     signatureValue,
     verificationMethod: "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
@@ -94,11 +100,13 @@ const signedDoc = {
     "type": "Organization",
     "name": "IOTA Foundation",
 
-    "proofValue": "3JTS3UaJc2aS2rxkQ1Z4GEs9HjvASnm3e2s5VT5pS8voGEBodWBBd6P7YUmq8eN92H9v1u2gmqER7Y6wXhgcywYX",
-    "type": "Ed25519Signature2018",
-    "verificationMethod": "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
-    "proofPurpose": "dataVerification",
-    "created": "2021-06-21T13:29:25.976Z"
+    proof: {
+        "proofValue": "3JTS3UaJc2aS2rxkQ1Z4GEs9HjvASnm3e2s5VT5pS8voGEBodWBBd6P7YUmq8eN92H9v1u2gmqER7Y6wXhgcywYX",
+        "type": "Ed25519Signature2018",
+        "verificationMethod": "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
+        "proofPurpose": "dataVerification",
+        "created": "2021-06-21T13:29:25.976Z"
+    }
 };
 
 const verified = await IotaVerifier.verifyJsonLd({

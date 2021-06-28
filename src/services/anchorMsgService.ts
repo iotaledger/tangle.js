@@ -44,7 +44,7 @@ export default class AnchorMsgService {
         }
       }
 
-      const publicPayload = Buffer.from(request.message);
+      const publicPayload = request.message;
       const maskedPayload = Buffer.from("");
 
       const anchoringResp = await subs.clone().send_signed_packet(anchorageLink,

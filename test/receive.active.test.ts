@@ -27,18 +27,16 @@ describe("Receive Messages", () => {
         channelID = channel.channelID;
 
         // First message
-        const result = await channel.anchor(channel.firstAnchorageID, MSG_1);
+        const result = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
         msgID1 = result.msgID;
 
         // Second message
-        const result2 = await channel.anchor(result.msgID, MSG_2);
+        const result2 = await channel.anchor(Buffer.from(MSG_2), result.msgID);
         msgID2 = result2.msgID;
 
         // Third message
-        const result3 = await channel.anchor(result2.msgID, MSG_3);
+        const result3 = await channel.anchor(Buffer.from(MSG_3), result2.msgID);
         msgID3 = result3.msgID;
-
-        console.log(msgID3);
     });
 
     test("should receive message when only announce has been seen", async () => {
