@@ -63,4 +63,32 @@ export default class FetchMsgService {
       pk
     };
   }
+
+  public static async receive(request: IFetchRequest): Promise<IFetchResult> {
+    const subs = request.subscriber;
+
+    const msgID = request.msgID;
+
+    let response;
+
+    const msgLink = Address.from_string(`${subs.clone().channel_address()}:${msgID}`);
+    try {
+      response = await subs.clone().receive_signed_packet(msgLink);
+    } catch {
+      throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
+        `The message ${msgID} has not been found on the Channel`);
+    }
+
+    // In the future we would need to check that the anchorageID is the expected one
+
+    const messageContent = Buffer.from(response.get_message().get_public_payload()).toString();
+
+    const pk = response.get_message().get_pk();
+
+    return {
+      message: messageContent,
+      msgID,
+      pk
+    };
+  }
 }
