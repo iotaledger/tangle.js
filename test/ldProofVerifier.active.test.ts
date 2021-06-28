@@ -34,20 +34,29 @@ describe("Verify IOTA Linked Data Proofs", () => {
   const jsonLdDocument1 = {
     "@context": "https://schema.org",
     type: "Person",
-    age: 22,
-    dateCreated: "2020-06-27T12:00:00Z"
+    age: 21,
+    dateCreated: "2019-06-27T12:00:00Z"
   };
 
   const jsonLdDocument2 = {
     "@context": "https://schema.org",
     type: "Person",
     age: 23,
+    dateCreated: "2020-06-27T12:00:00Z"
+  };
+
+  const jsonLdDocument3 = {
+    "@context": "https://schema.org",
+    type: "Person",
+    age: 24,
     dateCreated: "2021-06-27T12:00:00Z"
   };
 
+
   const documentChain = [
     jsonLdDocument1,
-    jsonLdDocument2
+    jsonLdDocument2,
+    jsonLdDocument3
   ];
 
   const did = "did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d";
@@ -90,7 +99,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
     expect(result).toBe(true);
   });
 
-  test("should verify a chain of Linked Data Proofs. JSON-LD", async () => {
+  test("should verify a chain of Linked Data Proofs. JSON-LD. Strict", async () => {
     const documentsToVerify: IJsonAnchoredDocument[] = [
       {
         ...jsonLdDocument1,
@@ -99,9 +108,43 @@ describe("Verify IOTA Linked Data Proofs", () => {
       {
         ...jsonLdDocument2,
         proof: chainIotaLdProofJsonLd[1]
+      },
+      {
+        ...jsonLdDocument3,
+        proof: chainIotaLdProofJsonLd[2]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node });
+    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node, strict: true });
+    expect(result).toBe(true);
+  });
+
+  test("should fail verification of a chain of Linked Data Proofs. JSON-LD. Strict", async () => {
+    const documentsToVerify: IJsonAnchoredDocument[] = [
+      {
+        ...jsonLdDocument1,
+        proof: chainIotaLdProofJsonLd[0]
+      },
+      {
+        ...jsonLdDocument3,
+        proof: chainIotaLdProofJsonLd[2]
+      }
+    ];
+    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node, strict: true });
+    expect(result).toBe(false);
+  });
+
+  test("should verify of a chain of Linked Data Proofs. JSON-LD. Non-Strict", async () => {
+    const documentsToVerify: IJsonAnchoredDocument[] = [
+      {
+        ...jsonLdDocument1,
+        proof: chainIotaLdProofJsonLd[0]
+      },
+      {
+        ...jsonLdDocument3,
+        proof: chainIotaLdProofJsonLd[2]
+      }
+    ];
+    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node, strict: false });
     expect(result).toBe(true);
   });
 });
