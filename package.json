@@ -18,6 +18,12 @@
         "node": ">=12",
         "npm": ">=7"
     },
+    "scripts": {
+        "build-channels": "npm run build --workspace='libs/anchoring-channels'",
+        "build-ld": "npm run build --workspace='libs/inked-data-proofs'",
+        "test-channels": "npm test --workspace='libs/anchoring-channels'",
+        "test-ld": "npm test --workspace='libs/linked-data-proofs'"
+    },
     "workspaces": [
         "libs/anchoring-channels",
         "libs/linked-data-proofs"
