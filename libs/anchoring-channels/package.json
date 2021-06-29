@@ -1,6 +1,6 @@
 {
-    "name": "@jmcanterafonseca-iota/anchoring-channels",
-    "version": "0.1.5",
+    "name": "@gtsc-libs/anchoring-channels",
+    "version": "0.9.0",
     "description": "Powered by IOTA Streams, Anchor Channels is an easy to be used library that allows to anchor messages to the Tangle.",
     "scripts": {
         "build-clean": "rimraf ./es/*",

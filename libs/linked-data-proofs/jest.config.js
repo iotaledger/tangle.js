@@ -1,6 +1,6 @@
 module.exports = {
     "testMatch": [
-        "<rootDir>/test/**/*.active.(test|spec).ts"
+        "<rootDir>/test/**/*.(test|spec).ts"
     ],
     "transform": {
         "^.+\\.ts$": "ts-jest"
