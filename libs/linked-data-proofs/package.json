@@ -1,5 +1,5 @@
 {
-    "name": "@gtsc-libs/linked-data-proofs",
+    "name": "@tangle.js/linked-data-proofs",
     "version": "0.9.0",
     "description": "Linked Data Proofs on the Tangle.",
     "scripts": {
@@ -20,7 +20,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/jmcanterafonseca-iota/iota-anchor-channels.git"
+        "url": "https://github.com/iotaledger/tangle.js.git"
     },
     "keywords": [
         "iota",
@@ -36,15 +36,15 @@
     "author": "Jose M. Cantera",
     "license": "Apache 2.0",
     "bugs": {
-        "url": "https://github.com/jmcanterafonseca-iota/iota-anchor-channels/issues"
+        "url": "https://github.com/iotaledger/tangle.js/issues"
     },
-    "homepage": "https://github.com/jmcanterafonseca-iota/iota-anchor-channels#readme",
+    "homepage": "https://github.com/iotaledger/tangle.js/linked-data-proofs/README.md",
     "dependencies": {
         "@iota/identity-wasm": "^0.3.1",
         "bs58": "^4.0.1",
         "elliptic": "^6.5.4",
         "jsonld": "^5.2.0",
-        "@gtsc-libs/anchoring-channels": "^0.9.0"
+        "@tangle.js/anchoring-channels": "^0.9.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^19.0.0",

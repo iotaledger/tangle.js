@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel, IAnchoringResult } from "@gtsc-libs/anchoring-channels";
+import { IotaAnchoringChannel, IAnchoringResult } from "@tangle.js/anchoring-channels";
 
 import { IotaSigner } from "./iotaSigner";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";

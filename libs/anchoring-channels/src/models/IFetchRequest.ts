@@ -1,4 +1,4 @@
-import { Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
+import { Subscriber } from "@tangle.js/iota_streams_wasm";
 
 export interface IFetchRequest {
     /** The channel ID */

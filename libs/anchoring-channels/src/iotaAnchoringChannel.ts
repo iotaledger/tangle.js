@@ -1,4 +1,4 @@
-import { Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
+import { Subscriber } from "@tangle.js/iota_streams_wasm";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import initialize from "./helpers/initializationHelper";

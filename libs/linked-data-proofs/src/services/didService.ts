@@ -1,5 +1,5 @@
-import { SeedHelper } from "@gtsc-libs/anchoring-channels";
 import { resolve as iotaDidResolve, Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
+import { SeedHelper } from "@tangle.js/anchoring-channels";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
 

@@ -1,5 +1,4 @@
-// import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
-import { IotaAnchoringChannel } from "@gtsc-libs/anchoring-channels";
+import { IotaAnchoringChannel } from "@tangle.js/anchoring-channels";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaLdProofVerifier } from "../src/iotaLdProofVerifier";
 import { IotaSigner } from "../src/iotaSigner";

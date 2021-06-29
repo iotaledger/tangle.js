@@ -1,5 +1,5 @@
 import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames }
-    from "@gtsc-libs/anchoring-channels";
+    from "@tangle.js/anchoring-channels";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import JsonHelper from "./helpers/jsonHelper";

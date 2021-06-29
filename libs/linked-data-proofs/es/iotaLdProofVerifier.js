@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IotaLdProofVerifier = void 0;
-const anchoring_channels_1 = require("@gtsc-libs/anchoring-channels");
+const anchoring_channels_1 = require("@tangle.js/anchoring-channels");
 const ldProofError_1 = __importDefault(require("./errors/ldProofError"));
 const ldProofErrorNames_1 = __importDefault(require("./errors/ldProofErrorNames"));
 const jsonHelper_1 = __importDefault(require("./helpers/jsonHelper"));

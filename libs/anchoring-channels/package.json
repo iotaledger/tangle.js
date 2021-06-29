@@ -1,5 +1,5 @@
 {
-    "name": "@gtsc-libs/anchoring-channels",
+    "name": "@tangle.js/anchoring-channels",
     "version": "0.9.0",
     "description": "Powered by IOTA Streams, Anchor Channels is an easy to be used library that allows to anchor messages to the Tangle.",
     "scripts": {
@@ -20,7 +20,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/jmcanterafonseca-iota/iota-anchor-channels.git"
+        "url": "https://github.com/iotaledger/tangle.js.git"
     },
     "keywords": [
         "iota",
@@ -35,11 +35,11 @@
     "author": "Jose M. Cantera",
     "license": "Apache 2.0",
     "bugs": {
-        "url": "https://github.com/jmcanterafonseca-iota/iota-anchor-channels/issues"
+        "url": "https://github.com/iotaledger/tangle.js.git/issues"
     },
-    "homepage": "https://github.com/jmcanterafonseca-iota/iota-anchor-channels#readme",
+    "homepage": "https://github.com/iotaledger/tangle.js.git/anchoring-channels/README.md",
     "dependencies": {
-        "@jmcanterafonseca-iota/iota_streams_wasm": "0.0.1",
+        "@tangle.js/iota_streams_wasm": "0.0.1",
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {

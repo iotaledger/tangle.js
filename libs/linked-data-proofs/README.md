@@ -73,14 +73,14 @@ const verified = await IotaVerifier.verifyJsonLd({
 ```ts
 const anchorChannel = /* Instantiate an anchoring channel */
 const signer = /* Instantiate a signer */
-const proofGenerator = new IotaProofGenerator(anchoringChannel, signer);
+const proofGenerator = new IotaLdProofGenerator(anchoringChannel, signer);
 await proofGenerator.generate(jsonLdDocument, anchorageID)
 ```
 
 ### Linked Data Proofs verification
 
 ```ts
-const verified = await IotaProofVerifier.verifyJsonLd({
+const verified = await IotaLdProofVerifier.verifyJsonLd({
     document: anchoredDoc
 });
 ```

@@ -1,9 +1,12 @@
-# GTSC Tools and Libraries
+# Tangle.js Tools and Libraries
 
-## iota-anchoring-channels
+## anchoring-channels
 
 [README](./libs/anchoring-channels)
 
-## iota-linked-data-proofs
+## linked-data-proofs
 
 [README](./libs/linked-data-proofs)
+
+## trail
+
