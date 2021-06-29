@@ -1,8 +1,8 @@
 import { Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
 import AnchoringChannelError from "./errors/anchoringChannelError";
 import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
-import { ChannelHelper } from "./helpers/channelHelper";
 import initialize from "./helpers/initializationHelper";
+import { SeedHelper } from "./helpers/seedHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
 import { IAnchoringResult } from "./models/IAnchoringResult";
@@ -34,7 +34,7 @@ export class IotaAnchoringChannel {
         this._seed = seed;
 
         if (!seed) {
-            this._seed = ChannelHelper.generateSeed();
+            this._seed = SeedHelper.generateSeed();
         }
     }
 

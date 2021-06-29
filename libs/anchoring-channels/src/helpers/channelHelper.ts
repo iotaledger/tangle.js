@@ -1,27 +1,6 @@
 import { Address, Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
-import * as crypto from "crypto";
 
 export class ChannelHelper {
-    /**
-     * Generates a new seed
-     * @param length Seed length
-     *
-     * @returns The seed
-     */
-    public static generateSeed(length: number = 20) {
-        const alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-        let seed = "";
-
-        while (seed.length < length) {
-            const bytes = crypto.randomBytes(1);
-            seed += alphabet[bytes[0] % alphabet.length];
-        }
-
-
-        return seed;
-    }
-
     /**
      *  Finds an anchorage message on the channel by going through the messages
      *

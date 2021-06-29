@@ -1,7 +1,6 @@
 import { resolve as iotaDidResolve, Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
-import AnchoringChannelError from "../errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
-import { ChannelHelper } from "../helpers/channelHelper";
+import LdProofError from "../errors/ldProofError";
+import LdProofErrorNames from "../errors/ldProofErrorNames";
 
 export default class DidService {
     /**
@@ -18,13 +17,13 @@ export default class DidService {
 
             const doc = DidDocument.fromJSON(jsonDoc);
             if (!doc.verify()) {
-                throw new AnchoringChannelError(AnchoringChannelErrorNames.DID_NOT_VERIFIED,
+                throw new LdProofError(LdProofErrorNames.DID_NOT_VERIFIED,
                     "DID cannot be verified");
             }
 
             return doc;
         } catch {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.DID_NOT_FOUND,
+            throw new LdProofError(LdProofErrorNames.DID_NOT_FOUND,
                 "DID cannot be resolved");
         }
     }
@@ -41,7 +40,7 @@ export default class DidService {
 
             return didDocument.resolveKey(didMethod);
         } catch {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.DID_NOT_FOUND,
+            throw new LdProofError(LdProofErrorNames.DID_NOT_FOUND,
                 "DID cannot be resolved");
         }
     }
@@ -61,7 +60,7 @@ export default class DidService {
         try {
             didDocument.resolveKey(`${didDocument.id}#${method}`);
         } catch {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "The DID method supplied is not valid");
         }
 
@@ -75,7 +74,7 @@ export default class DidService {
 
             return didDocument.verifyData(signature);
         } catch {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_SIGNING_KEY,
+            throw new LdProofError(LdProofErrorNames.INVALID_SIGNING_KEY,
                 "The key supplied is not valid");
         }
     }

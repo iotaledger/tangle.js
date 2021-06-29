@@ -2,8 +2,8 @@
 
 ## iota-anchoring-channels
 
-[README](./anchoring-channels)
+[README](./libs/anchoring-channels)
 
 ## iota-linked-data-proofs
 
-[README](./linked-data-proofs)
+[README](./libs/linked-data-proofs)
