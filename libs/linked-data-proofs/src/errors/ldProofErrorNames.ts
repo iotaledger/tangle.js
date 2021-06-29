@@ -1,5 +1,4 @@
 export default abstract class LdProofErrorNames {
-    
     public static OTHER_ERROR = "Runtime_Error";
 
     public static INVALID_NODE = "Invalid_Node";

@@ -10,10 +10,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noUnusedLocals": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
     "outDir": "./es",
     "resolveJsonModule": true,
     "inlineSourceMap": true

@@ -1,9 +1,9 @@
+import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames }
+    from "@gtsc-libs/anchoring-channels";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import JsonHelper from "./helpers/jsonHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames }
-    from "@gtsc-libs/anchoring-channels";
 import { IotaVerifier } from "./iotaVerifier";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "./models/IJsonAnchoredDocument";
