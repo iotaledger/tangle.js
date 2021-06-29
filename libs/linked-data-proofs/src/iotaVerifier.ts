@@ -3,8 +3,8 @@ import bs58 from "bs58";
 import * as crypto from "crypto";
 import { eddsa as EdDSA } from "elliptic";
 import * as jsonld from "jsonld";
-import AnchoringChannelError from "./errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
+import LdProofError from "./errors/ldProofError";
+import LdProofErrorNames from "./errors/ldProofErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
@@ -26,19 +26,19 @@ export class IotaVerifier {
      */
     public static async verify(request: IVerificationRequest): Promise<boolean> {
         if (!ValidationHelper.url(request.node)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
+            throw new LdProofError(LdProofErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
         if (!ValidationHelper.did(request.verificationMethod)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
+            throw new LdProofError(LdProofErrorNames.INVALID_DID, "Invalid DID");
         }
 
         const resolution = await DidService.resolveMethod(request.node,
             request.verificationMethod);
 
         if (resolution.type !== "Ed25519VerificationKey2018") {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 
@@ -127,7 +127,7 @@ export class IotaVerifier {
 
     private static async verificationMethod(request: IJsonVerificationRequest): Promise<VerificationMethod> {
         if (request.node && !ValidationHelper.url(request.node)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
+            throw new LdProofError(LdProofErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
@@ -138,13 +138,13 @@ export class IotaVerifier {
         const verificationMethod = proof.verificationMethod;
 
         if (!ValidationHelper.did(verificationMethod)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
+            throw new LdProofError(LdProofErrorNames.INVALID_DID, "Invalid DID");
         }
 
         const resolution = await DidService.resolveMethod(request.node, verificationMethod);
 
         if (resolution.type !== "Ed25519VerificationKey2018") {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 

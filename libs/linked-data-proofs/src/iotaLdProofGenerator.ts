@@ -1,6 +1,6 @@
-import { IotaAnchoringChannel } from "./iotaAnchoringChannel";
+import { IotaAnchoringChannel } from "@gtsc-libs/anchoring-channels";
+import { IAnchoringResult } from "@gtsc-libs/anchoring-channels";
 import { IotaSigner } from "./iotaSigner";
-import { IAnchoringResult } from "./models/IAnchoringResult";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonDocument } from "./models/IJsonDocument";
 import ILdProofOptions from "./models/ILdProofOptions";

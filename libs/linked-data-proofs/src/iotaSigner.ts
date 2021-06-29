@@ -1,8 +1,8 @@
 import { Document as DidDocument } from "@iota/identity-wasm/node";
 import * as crypto from "crypto";
 import * as jsonld from "jsonld";
-import AnchoringChannelError from "./errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
+import LdProofError from "./errors/ldProofError";
+import LdProofErrorNames from "./errors/ldProofErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
@@ -48,11 +48,11 @@ export class IotaSigner {
      */
     public static async create(node: string, did: string): Promise<IotaSigner> {
         if (!ValidationHelper.url(node)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE, "Node is not a URL");
+            throw new LdProofError(LdProofErrorNames.INVALID_NODE, "Node is not a URL");
         }
 
         if (!ValidationHelper.did(did)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID, "Invalid DID");
+            throw new LdProofError(LdProofErrorNames.INVALID_DID, "Invalid DID");
         }
 
         const didDoc = await DidService.resolve(node, did);
@@ -97,7 +97,7 @@ export class IotaSigner {
         const docToBeSigned = JsonHelper.getDocument(doc);
 
         if (options.signatureType !== SignatureTypes.JCS_ED25519_2020) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
+            throw new LdProofError(LdProofErrorNames.NOT_SUPPORTED_SIGNATURE,
                 "Only the 'JcsEd25519Signature2020' is supported");
         }
 
@@ -142,7 +142,7 @@ export class IotaSigner {
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
 
         if (options.signatureType !== SignatureTypes.ED25519_2018) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.NOT_SUPPORTED_SIGNATURE,
+            throw new LdProofError(LdProofErrorNames.NOT_SUPPORTED_SIGNATURE,
                 "Only the 'Ed25519Signature2018' is supported");
         }
 

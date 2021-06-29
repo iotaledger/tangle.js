@@ -1,5 +1,5 @@
-import AnchoringChannelError from "../errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
+import LdProofError from "../errors/ldProofError";
+import LdProofErrorNames from "../errors/ldProofErrorNames";
 import { IJsonAnchoredDocument } from "../models/IJsonAnchoredDocument";
 import { IJsonDocument } from "../models/IJsonDocument";
 import { IJsonSignedDocument } from "../models/IJsonSignedDocument";
@@ -9,7 +9,7 @@ import { LinkedDataProofTypes } from "../models/linkedDataProofTypes";
 export default class JsonHelper {
     public static getDocument(doc: Record<string, unknown> | string): IJsonDocument {
         if ((typeof doc !== "string" && typeof doc !== "object") || Array.isArray(doc)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
+            throw new LdProofError(LdProofErrorNames.INVALID_DATA_TYPE,
                 "Please provide a Javascript object or string in JSON format");
         }
 
@@ -19,7 +19,7 @@ export default class JsonHelper {
             try {
                 document = JSON.parse(doc);
             } catch {
-                throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
+                throw new LdProofError(LdProofErrorNames.INVALID_DATA_TYPE,
                     "Invalid JSON Format");
             }
         } else {
@@ -33,7 +33,7 @@ export default class JsonHelper {
         const result = this.getDocument(doc);
 
         if (!result.proof) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+            throw new LdProofError(LdProofErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON document does not include a Linked Data Signature");
         }
 
@@ -44,7 +44,7 @@ export default class JsonHelper {
         const result = this.getDocument(doc);
 
         if (!result["@context"]) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DATA_TYPE,
+            throw new LdProofError(LdProofErrorNames.INVALID_DATA_TYPE,
                 "Not a JSON-LD document. Use 'signJson' instead");
         }
 
@@ -55,7 +55,7 @@ export default class JsonHelper {
         const result = this.getJsonLdDocument(doc);
 
         if (!result.proof) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+            throw new LdProofError(LdProofErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON-LD document does not include a Linked Data Signature");
         }
 
@@ -66,14 +66,14 @@ export default class JsonHelper {
         const result = this.getJsonLdDocument(doc);
 
         if (!result.proof) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+            throw new LdProofError(LdProofErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON document does not include a proof");
         }
 
         const proofDetails = result.proof as ILinkedDataProof;
 
         if (proofDetails.type !== LinkedDataProofTypes.IOTA_LD_PROOF_2021) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+            throw new LdProofError(LdProofErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON document does not include an IOTA Linked Data Proof");
         }
 
@@ -84,14 +84,14 @@ export default class JsonHelper {
         const result = this.getDocument(doc);
 
         if (!result.proof) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+            throw new LdProofError(LdProofErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON document does not include a proof");
         }
 
         const proofDetails = result.proof as ILinkedDataProof;
 
         if (proofDetails.type !== LinkedDataProofTypes.IOTA_LD_PROOF_2021) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.JSON_DOC_NOT_SIGNED,
+            throw new LdProofError(LdProofErrorNames.JSON_DOC_NOT_SIGNED,
                 "The provided JSON document does not include an IOTA Linked Data Proof");
         }
 

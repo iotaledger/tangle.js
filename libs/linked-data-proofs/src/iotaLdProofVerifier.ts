@@ -1,10 +1,10 @@
-import AnchoringChannelError from "./errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
+import LdProofError from "./errors/ldProofError";
+import LdProofErrorNames from "./errors/ldProofErrorNames";
 import JsonHelper from "./helpers/jsonHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IotaAnchoringChannel } from "./iotaAnchoringChannel";
 import { IotaVerifier } from "./iotaVerifier";
-import { IFetchResult } from "./models/IFetchResult";
+import { IFetchResult } from "@gtsc-libs/anchoring-channels";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "./models/IJsonAnchoredDocument";
 import { IJsonDocument } from "./models/IJsonDocument";
@@ -242,7 +242,7 @@ export class IotaLdProofVerifier {
             fetchResult?: IFetchResult;
         }> {
         if (!ValidationHelper.url(options.node)) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
+            throw new LdProofError(LdProofErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
@@ -265,7 +265,7 @@ export class IotaLdProofVerifier {
                 fetchResult = await channel.fetch(proofDetails.anchorageID, proofDetails.msgID);
             }
         } catch (error) {
-            if (error.name === AnchoringChannelErrorNames.MSG_NOT_FOUND) {
+            if (error.name === LdProofErrorNames.MSG_NOT_FOUND) {
                 return { result: false };
             }
 
