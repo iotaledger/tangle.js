@@ -1,7 +1,7 @@
 /* eslint-disable no-duplicate-imports */
 import { Address } from "@jmcanterafonseca-iota/iota_streams_wasm";
-import AnchoringChannelError from "../errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
+import { AnchoringChannelError } from "../errors/anchoringChannelError";
+import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
 import { IFetchRequest } from "../models/IFetchRequest";
 import { IFetchResult } from "../models/IFetchResult";

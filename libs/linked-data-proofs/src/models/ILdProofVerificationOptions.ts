@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel } from "../iotaAnchoringChannel";
+import { IotaAnchoringChannel } from "@gtsc-libs/anchoring-channels";
 
 export default interface ILdProofVerificationOptions {
     /** channel to be used */

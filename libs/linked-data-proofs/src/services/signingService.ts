@@ -1,8 +1,8 @@
 import { VerificationMethod } from "@iota/identity-wasm/node";
 import bs58 from "bs58";
 import { eddsa as EdDSA } from "elliptic";
-import AnchoringChannelError from "../errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
+import LdProofError from "../errors/ldProofError";
+import LdProofErrorNames from "../errors/ldProofErrorNames";
 import { ISigningRequest } from "../models/ISigningRequest";
 import { ISigningResult } from "../models/ISigningResult";
 import DidService from "./didService";
@@ -25,11 +25,11 @@ export default class SigningService {
         try {
             methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
         } catch {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "The method has not been found on the DID Document");
         }
         if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_DID_METHOD,
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 
@@ -37,7 +37,7 @@ export default class SigningService {
             request.method, request.secret);
 
         if (!proofedOwnership) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_SIGNING_KEY,
+            throw new LdProofError(LdProofErrorNames.INVALID_SIGNING_KEY,
                 "The secret key supplied does not correspond to the verification method");
         }
 

@@ -1,4 +1,4 @@
-export default class AnchoringChannelError extends Error {
+export class AnchoringChannelError extends Error {
     public static ERR_TYPE = "AnchoringChannelError";
 
     public readonly type = AnchoringChannelError.ERR_TYPE;

@@ -1,6 +1,6 @@
 import { Author, Subscriber, Address, ChannelType, SendOptions } from "@jmcanterafonseca-iota/iota_streams_wasm";
-import AnchoringChannelError from "../errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "../errors/anchoringChannelErrorNames";
+import { AnchoringChannelError } from "../errors/anchoringChannelError";
+import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { IBindChannelRequest } from "../models/IBindChannelRequest";
 
 

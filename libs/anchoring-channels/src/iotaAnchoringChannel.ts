@@ -1,6 +1,6 @@
 import { Subscriber } from "@jmcanterafonseca-iota/iota_streams_wasm";
-import AnchoringChannelError from "./errors/anchoringChannelError";
-import AnchoringChannelErrorNames from "./errors/anchoringChannelErrorNames";
+import { AnchoringChannelError } from "./errors/anchoringChannelError";
+import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import initialize from "./helpers/initializationHelper";
 import { SeedHelper } from "./helpers/seedHelper";
 import ValidationHelper from "./helpers/validationHelper";
