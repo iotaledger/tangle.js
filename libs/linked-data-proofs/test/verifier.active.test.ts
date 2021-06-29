@@ -1,5 +1,5 @@
 // import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
-import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
+import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaSigner } from "../src/iotaSigner";
 import { IotaVerifier } from "../src/iotaVerifier";
 import { IJsonVerificationRequest } from "../src/models/IJsonVerificationRequest";
@@ -236,7 +236,7 @@ describe("Verify messages", () => {
     try {
       await IotaVerifier.verify(request);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_NODE);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_NODE);
       return;
     }
 
@@ -256,7 +256,7 @@ describe("Verify messages", () => {
     try {
       await IotaVerifier.verify(request);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_DID);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_DID);
       return;
     }
 
@@ -276,7 +276,7 @@ describe("Verify messages", () => {
     try {
       await IotaVerifier.verify(request);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.DID_NOT_FOUND);
+      expect(error.name).toBe(LdProofErrorNames.DID_NOT_FOUND);
       return;
     }
 
@@ -295,7 +295,7 @@ describe("Verify messages", () => {
     try {
       await IotaVerifier.verify(request);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.DID_NOT_FOUND);
+      expect(error.name).toBe(LdProofErrorNames.DID_NOT_FOUND);
       return;
     }
 

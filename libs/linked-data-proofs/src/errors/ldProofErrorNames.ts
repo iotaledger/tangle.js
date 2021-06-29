@@ -1,14 +1,5 @@
-export default abstract class AnchoringChannelErrorNames {
-    public static CHANNEL_NOT_BOUND = "Not_Bound";
-
-    public static ANCHORAGE_NOT_FOUND = "Anchorage_Not_Found";
-
-    public static MSG_NOT_FOUND = "Message_Not_Found";
-
-    public static CHANNEL_BINDING_ERROR = "Channel_Binding_Error";
-
-    public static CHANNEL_ALREADY_BOUND = "Channel_Already_Bound";
-
+export default abstract class LdProofErrorNames {
+    
     public static OTHER_ERROR = "Runtime_Error";
 
     public static INVALID_NODE = "Invalid_Node";
@@ -29,4 +20,3 @@ export default abstract class AnchoringChannelErrorNames {
 
     public static JSON_DOC_NOT_SIGNED = "JSON_Doc_Not_Signed";
 }
-

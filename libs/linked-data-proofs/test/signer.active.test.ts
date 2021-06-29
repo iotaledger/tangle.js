@@ -1,4 +1,4 @@
-import AnchoringChannelErrorNames from "../src/errors/anchoringChannelErrorNames";
+import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaSigner } from "../src/iotaSigner";
 import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { SignatureTypes } from "../src/models/signatureTypes";
@@ -122,7 +122,7 @@ describe("Sign messages", () => {
     try {
       await IotaSigner.create("abced", did);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_NODE);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_NODE);
       return;
     }
 
@@ -134,7 +134,7 @@ describe("Sign messages", () => {
     try {
       await IotaSigner.create(node, "did:999");
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_DID);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_DID);
       return;
     }
 
@@ -146,7 +146,7 @@ describe("Sign messages", () => {
     try {
       await IotaSigner.create(node, `${did}a`);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.DID_NOT_FOUND);
+      expect(error.name).toBe(LdProofErrorNames.DID_NOT_FOUND);
       return;
     }
 
@@ -160,7 +160,7 @@ describe("Sign messages", () => {
 
       await signer.sign(Buffer.from(message), method, "389393939");
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_SIGNING_KEY);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_SIGNING_KEY);
       return;
     }
 
@@ -173,7 +173,7 @@ describe("Sign messages", () => {
 
       await signer.sign(Buffer.from(message), method, "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5");
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_SIGNING_KEY);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_SIGNING_KEY);
       return;
     }
 
@@ -186,11 +186,10 @@ describe("Sign messages", () => {
 
       await signer.sign(Buffer.from(message), "notfoundmethod", privateKey);
     } catch (error) {
-      expect(error.name).toBe(AnchoringChannelErrorNames.INVALID_DID_METHOD);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_DID_METHOD);
       return;
     }
 
     fail("Exception not thrown");
   });
 });
-
