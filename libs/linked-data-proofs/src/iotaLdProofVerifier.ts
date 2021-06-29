@@ -2,7 +2,8 @@ import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import JsonHelper from "./helpers/jsonHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { IotaAnchoringChannel, IFetchResult } from "@gtsc-libs/anchoring-channels";
+import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames }
+    from "@gtsc-libs/anchoring-channels";
 import { IotaVerifier } from "./iotaVerifier";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "./models/IJsonAnchoredDocument";
@@ -119,7 +120,7 @@ export class IotaLdProofVerifier {
     private static async doVerifyChain(docs: IJsonAnchoredDocument[] | string[],
         jsonLd: boolean,
         options: ILdProofVerificationOptions
-        ): Promise<boolean> {
+    ): Promise<boolean> {
         const documents: IJsonAnchoredDocument[] = [];
 
         // The anchored documents are obtained
@@ -264,7 +265,7 @@ export class IotaLdProofVerifier {
                 fetchResult = await channel.fetch(proofDetails.anchorageID, proofDetails.msgID);
             }
         } catch (error) {
-            if (error.name === LdProofErrorNames.MSG_NOT_FOUND) {
+            if (error.name === AnchoringChannelErrorNames.MSG_NOT_FOUND) {
                 return { result: false };
             }
 

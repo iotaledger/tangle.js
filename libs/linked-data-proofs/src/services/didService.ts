@@ -1,6 +1,7 @@
 import { resolve as iotaDidResolve, Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
+import { SeedHelper } from "@gtsc-libs/anchoring-channels";
 
 export default class DidService {
     /**
@@ -65,7 +66,7 @@ export default class DidService {
         }
 
         try {
-            const verificationData = { "testData": ChannelHelper.generateSeed(10) };
+            const verificationData = { "testData": SeedHelper.generateSeed(10) };
 
             const signature = await didDocument.signData(verificationData, {
                 secret,
