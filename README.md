@@ -1,14 +1,23 @@
-# Tangle.js Tools and Libraries
+# Tangle.js
 
-## anchors
+A collection of libraries a tools that enable Javascript developers to create applications leveraging IOTA's Tangle. 
+
+## Libraries
+
+### anchors
 
 [README](./libs/anchors)
 
-## ld-proofs
+### ld-proofs
 
 [README](./libs/ld-proofs)
 
-## trail
+### trail
 
+Upcoming
 
-## iotax
+## Tools
+
+### iotax
+
+Upcoming
