@@ -29,9 +29,9 @@ export class IotaAnchoringChannel {
 
     private _subscriber: Subscriber;
 
-    private _authorPk: string;
+    private _authorPubKey: string;
 
-    private _publisherPk: string;
+    private _publisherPubKey: string;
 
     private constructor(node: string, seed?: string) {
         this._node = node;
@@ -78,7 +78,7 @@ export class IotaAnchoringChannel {
             this._channelAddress = channelAddress;
             this._announceMsgID = announceMsgID;
             this._channelID = `${channelAddress}:${announceMsgID}`;
-            this._authorPk = authorPk;
+            this._authorPubKey = authorPk;
         } else {
             const components: string[] = channelID.split(":");
 
@@ -104,7 +104,7 @@ export class IotaAnchoringChannel {
 
         this._subscriber = subscriber;
         // this._authorPk = authorPk;
-        this._publisherPk = subscriber.get_public_key();
+        this._publisherPubKey = subscriber.get_public_key();
 
         return this;
     }
@@ -165,8 +165,8 @@ export class IotaAnchoringChannel {
      *  @returns the Author's Public key
      *
      */
-     public get authorPk(): string {
-        return this._authorPk;
+     public get authorPubKey(): string {
+        return this._authorPubKey;
     }
 
     /**
@@ -175,8 +175,8 @@ export class IotaAnchoringChannel {
      *  @returns the publisher's Public key
      *
      */
-     public get publisherPk(): string {
-        return this._publisherPk;
+     public get publisherPubKey(): string {
+        return this._publisherPubKey;
     }
 
     /**

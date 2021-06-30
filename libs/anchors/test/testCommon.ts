@@ -19,8 +19,11 @@ export const network = "https://api.lb-0.testnet.chrysalis2.com";
 
     expect(anchoringChannel.firstAnchorageID).toBeDefined();
 
-    expect(anchoringChannel.authorPk).toBeDefined();
-    expect(anchoringChannel.publisherPk).toBeDefined();
+    expect(anchoringChannel.authorPubKey).toBeDefined();
+    expect(anchoringChannel.publisherPubKey).toBeDefined();
+
+    // If a channel is new the publisher an author pub keys shall be the same
+    expect(anchoringChannel.publisherPubKey).toBe(anchoringChannel.authorPubKey);
 
     return anchoringChannel;
 }
