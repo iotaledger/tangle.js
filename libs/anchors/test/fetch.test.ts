@@ -25,29 +25,29 @@ describe("Fetch Messages", () => {
     });
 
     test("should fetch message anchored to the first anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         const response = await channel.fetch(channel.firstAnchorageID, msgID1);
 
-        expect(response.message).toBe(MSG_1);
+        expect(response.message.toString()).toBe(MSG_1);
     });
 
     test("should fetch message anchored to non-first anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         const response = await channel.fetch(msgID1, msgID2);
 
-        expect(response.message).toBe(MSG_2);
+        expect(response.message.toString()).toBe(MSG_2);
     });
 
     test("should fetch message anchored to non-first after fetching the first one", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         const response1 = await channel.fetch(channel.firstAnchorageID, msgID1);
         const response2 = await channel.fetch(msgID1, msgID2);
 
-        expect(response1.message).toBe(MSG_1);
-        expect(response2.message).toBe(MSG_2);
+        expect(response1.message.toString()).toBe(MSG_1);
+        expect(response2.message.toString()).toBe(MSG_2);
     });
 
     test("should perform a cycle of anchor, fetch with the same channel object", async () => {
@@ -57,7 +57,7 @@ describe("Fetch Messages", () => {
 
         const fetchResponse = await channel.fetch(channel.firstAnchorageID, anchorResponse.msgID);
 
-        expect(fetchResponse.message).toBe(MSG_1);
+        expect(fetchResponse.message.toString()).toBe(MSG_1);
     });
 
     test("should perform a cycle of anchor, anchor, skip, fetch with the same channel object", async () => {
@@ -68,23 +68,23 @@ describe("Fetch Messages", () => {
 
         const fetchResponse = await channel.fetch(anchorResponse1.msgID, anchorResponse2.msgID);
 
-        expect(fetchResponse.message).toBe(MSG_2);
+        expect(fetchResponse.message.toString()).toBe(MSG_2);
     });
 
     test("should fetch without passing the message ID. First anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         const response = await channel.fetch(channel.firstAnchorageID);
 
-        expect(response.message).toBe(MSG_1);
+        expect(response.message.toString()).toBe(MSG_1);
     });
 
     test("should fetch without passing the message ID. Non-first anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         const response = await channel.fetch(msgID1);
 
-        expect(response.message).toBe(MSG_2);
+        expect(response.message.toString()).toBe(MSG_2);
     });
 
     test("should throw error if fetching a message from an anchorage which does not have anything", async () => {
@@ -103,7 +103,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should throw error if fetching a message which anchorage does not exist", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         try {
             await channel.fetch("1234567abcdef", msgID1);
@@ -116,7 +116,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should throw error if fetching a message which does not exist", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         await channel.fetch(channel.firstAnchorageID, msgID1);
 
@@ -131,7 +131,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should throw error if channel is not bound yet", async () => {
-        const channel = IotaAnchoringChannel.create(network);
+        const channel = IotaAnchoringChannel.create(undefined, network);
 
         try {
             await channel.fetch(msgID1, msgID2);

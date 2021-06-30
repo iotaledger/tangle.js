@@ -1,4 +1,4 @@
-# IOTA Anchors
+# Tangle Anchors
 
  `anchors` allows anchoring messages to the Tangle. Powered by [IOTA Streams](https://github.com/iotaledger/streams).  
 
@@ -19,7 +19,7 @@ The entities anchoring the messages (the ship owners metaphorically speaking) ar
 ### Anchoring messages
 
 ```ts
-const anchoringChannel = await IotaAnchoringChannel.create(seed).bind(channelID?);
+const anchoringChannel = await IotaAnchoringChannel.create(seed?,node?).bind(channelID?);
 
 anchoringChannel.seed
 anchoringChannel.channelID
@@ -37,13 +37,22 @@ console.log("msg ID", result.msgID);
 
 ### Fetching messages
 
+Search for the anchorageID and fetches the message anchored to it. 
+Optionally an expected message ID can be passed that allows to fail if there is no matching. 
+
 ```ts
-const result = await anchoringChannel.fetch(anchorageID, msgID);
+const result = await anchoringChannel.fetch(anchorageID, expectedMsgID?);
+
+console.log("Message content: ", result.message.toString());
+console.log("Message ID: ", result.msgID);
+console.log("Message publisher's PK: ", result.pk);
 ``` 
 
 ## Receiving messages
 
-```ts
-const result = await anchoringChannel.receive(msgID);
-``` 
+Receives a message that has already been seen on the channel. 
+Optionally an expected message ID can be passed that allows to fail if the target message is not anchored to it. 
 
+```ts
+const result = await anchoringChannel.receive(msgID, expectedAnchorageID?);
+``` 

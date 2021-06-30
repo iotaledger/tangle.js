@@ -40,15 +40,15 @@ describe("Receive Messages", () => {
     });
 
     test("should receive message when only announce has been seen", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         const response = await channel.receive(msgID1, channel.firstAnchorageID);
 
-        expect(response.message).toBe(MSG_1);
+        expect(response.message.toString()).toBe(MSG_1);
     });
 
     test("should receive messages one by one", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         const msgIDs = [msgID1, msgID2, msgID3];
         const msgs = [MSG_1, MSG_2, MSG_3];
@@ -58,13 +58,13 @@ describe("Receive Messages", () => {
         let index = 0;
         for (const msgID of msgIDs) {
             const response = await channel.receive(msgID, anchorage);
-            expect(response.message).toBe(msgs[index++]);
+            expect(response.message.toString()).toBe(msgs[index++]);
             anchorage = msgID;
         }
     });
 
     test("should not receive message if its anchorage has not been seen yet on the channel", async () => {
-        const channel = await IotaAnchoringChannel.create(network).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
 
         try {
             await channel.receive(msgID2, msgID1);

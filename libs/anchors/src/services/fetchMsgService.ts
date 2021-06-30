@@ -49,7 +49,7 @@ export default class FetchMsgService {
       response = messages[0];
     }
 
-    const messageContent = Buffer.from(response.get_message().get_public_payload()).toString();
+    const messageContent = Buffer.from(response.get_message().get_public_payload());
     const receivedMsgID = response.get_link().copy().msg_id;
 
     if (msgID && receivedMsgID !== msgID) {
@@ -81,7 +81,7 @@ export default class FetchMsgService {
 
     // In the future we would need to check that the anchorageID is the expected one
 
-    const messageContent = Buffer.from(response.get_message().get_public_payload()).toString();
+    const messageContent = Buffer.from(response.get_message().get_public_payload());
 
     const pk = response.get_message().get_pk();
 

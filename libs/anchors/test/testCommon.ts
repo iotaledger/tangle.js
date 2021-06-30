@@ -11,7 +11,7 @@ export const network = "https://api.lb-0.testnet.chrysalis2.com";
  * @returns the anchoring channel
  */
  export async function newChannel(node: string): Promise<IotaAnchoringChannel> {
-    const anchoringChannel = await IotaAnchoringChannel.create(node).bind();
+    const anchoringChannel = await IotaAnchoringChannel.create(undefined, node).bind();
 
     expect(anchoringChannel.seed).toBeDefined();
     expect(anchoringChannel.channelID).toBeDefined();

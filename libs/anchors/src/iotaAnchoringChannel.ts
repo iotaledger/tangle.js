@@ -33,30 +33,34 @@ export class IotaAnchoringChannel {
 
     private _publisherPubKey: string;
 
-    private constructor(node: string, seed?: string) {
+    private constructor(seed?: string, node?: string) {
         this._node = node;
         this._seed = seed;
 
         if (!seed) {
             this._seed = SeedHelper.generateSeed();
         }
+
+        if (!node) {
+            this._node = "https://chrysalis-nodes.iota.org";
+        }
     }
 
     /**
      * Creates a new Anchoring Channel
      *
-     * @param node  The node
      * @param seed  The seed
+     * @param node  The node
      *
      * @returns The anchoring channel
      */
-    public static create(node: string, seed?: string): IotaAnchoringChannel {
-        if (!ValidationHelper.url(node)) {
+    public static create(seed?: string, node?: string): IotaAnchoringChannel {
+        if (node && !ValidationHelper.url(node)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
-        return new IotaAnchoringChannel(node, seed);
+        return new IotaAnchoringChannel(seed, node);
     }
 
     /**

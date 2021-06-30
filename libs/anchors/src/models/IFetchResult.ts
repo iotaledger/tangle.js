@@ -4,5 +4,5 @@ export interface IFetchResult {
     /** The public key of the anchoring entity */
     pk: string;
     /** The message */
-    message: string;
+    message: Buffer;
 }
