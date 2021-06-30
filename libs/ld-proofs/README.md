@@ -9,7 +9,7 @@ Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) 
 * EdDSA (Ed25519) Signatures over plain messages
 * Linked Data Signatures for JSON-LD Documents [Ed25519Signature2018](https://w3c-ccg.github.io/lds-ed25519-2018/) 
 * Signatures for JSON Documents [JcsEd25519Signature2020](https://identity.foundation/JcsEd25519Signature2020/)
-* Linked Data Proofs anchored to the Tangle (using the [anchors](../anchors)) library (`IotaLinkedDataProof2021`). These type of proof anchors to the Tangle a Linked Data Signature together with a reference to the signed document. 
+* Linked Data Proofs anchored to the Tangle (using the [anchors](../anchors) library `IotaLinkedDataProof2021`). These type of proof anchors to the Tangle a Linked Data Signature together with a reference to the signed document. 
 
 ## API
 
