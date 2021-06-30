@@ -3,32 +3,19 @@ import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { LinkedDataProofTypes } from "../src/models/linkedDataProofTypes";
-
-/*
-
-{
-  did: 'did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d',
-  keys: {
-    public: 'DbKSCHm16ekaGpGEeaNToNUMX9WvwL4SH3ngziuYRqrz',
-    private: 'TEBVMPPX91ZhtBZ8R8zBP6WZpVeAnrWMnknkSHThmYk'
-  },
-  transactionUrl:
-  'https://explorer.iota.org/mainnet/message/470d3f43af2467169f4ff199f04e3d6ff84c1107fa9d1f340988b6e02a4a6b85'
-}
-
-*/
+import { did, privateKey } from "./testCommon";
 
 /**
  * Asserts a linked data proof
  * @param proof The proof
  * @param proofType The expected type of proof
- * @param did DID The expected DID
+ * @param sdid DID The expected DID
  * @param method Verification method
  *
  */
-function assertProof(proof: IIotaLinkedDataProof, proofType: string, did: string, method: string) {
+function assertProof(proof: IIotaLinkedDataProof, proofType: string, sdid: string, method: string) {
     expect(proof.created).toBeDefined();
-    expect(proof.verificationMethod).toBe(`${did}`);
+    expect(proof.verificationMethod).toBe(`${sdid}`);
     expect(proof.type).toBe(proofType);
 }
 
@@ -49,10 +36,7 @@ function assertProofValue(proof: IIotaLinkedDataProof, channelID: string, anchor
 describe("Generate IOTA Linked Data Proofs", () => {
     const node = "https://chrysalis-nodes.iota.org";
 
-    const did = "did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d";
     const method = "key";
-
-    const privateKey = "TEBVMPPX91ZhtBZ8R8zBP6WZpVeAnrWMnknkSHThmYk";
 
     test("should generate a Linked Data Proof for a JSON-LD document", async () => {
         const document = {
@@ -64,7 +48,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Channel that will be used
         const channel = await IotaAnchoringChannel.create(undefined, node).bind();
         // Signer that will be used
-        const signer = await IotaSigner.create(node, did);
+        const signer = await IotaSigner.create(did, node);
 
         const generator = new IotaLdProofGenerator(channel, signer);
 
@@ -87,7 +71,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Channel that will be used
         const channel = await IotaAnchoringChannel.create(undefined, node).bind();
         // Signer that will be used
-        const signer = await IotaSigner.create(node, did);
+        const signer = await IotaSigner.create(did, node);
 
         const generator = new IotaLdProofGenerator(channel, signer);
 
@@ -120,7 +104,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Channel that will be used
         const channel = await IotaAnchoringChannel.create(undefined, node).bind();
         // Signer that will be used
-        const signer = await IotaSigner.create(node, did);
+        const signer = await IotaSigner.create(did, node);
 
         const generator = new IotaLdProofGenerator(channel, signer);
 

@@ -4,20 +4,7 @@ import { IotaLdProofVerifier } from "../src/iotaLdProofVerifier";
 import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "../src/models/IJsonAnchoredDocument";
-
-/*
-
-{
-  did: 'did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d',
-  keys: {
-    public: 'DbKSCHm16ekaGpGEeaNToNUMX9WvwL4SH3ngziuYRqrz',
-    private: 'TEBVMPPX91ZhtBZ8R8zBP6WZpVeAnrWMnknkSHThmYk'
-  },
-  transactionUrl:
-  'https://explorer.iota.org/mainnet/message/470d3f43af2467169f4ff199f04e3d6ff84c1107fa9d1f340988b6e02a4a6b85'
-}
-
-*/
+import { did, privateKey } from "./testCommon";
 
 describe("Verify IOTA Linked Data Proofs", () => {
   const node = "https://chrysalis-nodes.iota.org";
@@ -58,17 +45,13 @@ describe("Verify IOTA Linked Data Proofs", () => {
     jsonLdDocument3
   ];
 
-  const did = "did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d";
   const method = "key";
 
   let singleIotaLdProof: IIotaLinkedDataProof;
   let chainIotaLdProofJsonLd: IIotaLinkedDataProof[];
 
   beforeAll(async () => {
-    // Needed to generate the LD Proofs over the documents that later will be verified
-    const privateKey = "TEBVMPPX91ZhtBZ8R8zBP6WZpVeAnrWMnknkSHThmYk";
-
-    const signer = await IotaSigner.create(node, did);
+    const signer = await IotaSigner.create(did, node);
     const channel = await IotaAnchoringChannel.create(undefined, node).bind();
     const ldProofGenerator = new IotaLdProofGenerator(channel, signer);
 

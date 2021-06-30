@@ -2,31 +2,19 @@ import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaSigner } from "../src/iotaSigner";
 import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { SignatureTypes } from "../src/models/signatureTypes";
+import { did, privateKey } from "./testCommon";
 
-/*
-
-{
-  did: 'did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d',
-  keys: {
-    public: 'DbKSCHm16ekaGpGEeaNToNUMX9WvwL4SH3ngziuYRqrz',
-    private: 'TEBVMPPX91ZhtBZ8R8zBP6WZpVeAnrWMnknkSHThmYk'
-  },
-  transactionUrl:
-  'https://explorer.iota.org/mainnet/message/470d3f43af2467169f4ff199f04e3d6ff84c1107fa9d1f340988b6e02a4a6b85'
-}
-
-*/
 
 /**
  * Asserts a signature
  * @param signature Signature
  * @param signatureType The type of signature
- * @param did DID
+ * @param sdid DID
  * @param method Verification method
  */
-function assertSignature(signature: ILinkedDataSignature, signatureType: string, did: string, method: string) {
+function assertSignature(signature: ILinkedDataSignature, signatureType: string, sdid: string, method: string) {
   expect(signature.created).toBeDefined();
-  expect(signature.verificationMethod).toBe(`${did}#${method}`);
+  expect(signature.verificationMethod).toBe(`${sdid}#${method}`);
   expect(signature.type).toBe(signatureType);
   expect(signature.proofValue.length).toBeGreaterThan(80);
 }
@@ -37,13 +25,10 @@ describe("Sign messages", () => {
 
   const message = "Hello";
 
-  const did = "did:iota:EmsBSiBR7kjuYPLMHmZnyzmZY7t985t5BBsvK3Dbiw3d";
   const method = "key";
 
-  const privateKey = "TEBVMPPX91ZhtBZ8R8zBP6WZpVeAnrWMnknkSHThmYk";
-
   test("should sign a message", async () => {
-    const signer = await IotaSigner.create(node, did);
+    const signer = await IotaSigner.create(did, node);
 
     const signature = await signer.sign(Buffer.from(message), method, privateKey);
 
@@ -53,7 +38,7 @@ describe("Sign messages", () => {
   });
 
   test("should sign a plain JSON document", async () => {
-    const signer = await IotaSigner.create(node, did);
+    const signer = await IotaSigner.create(did, node);
 
     const jsonDocument = {
       "member1": {
@@ -73,7 +58,7 @@ describe("Sign messages", () => {
   });
 
   test("should sign a JSON-LD document. Schema.org @context", async () => {
-    const signer = await IotaSigner.create(node, did);
+    const signer = await IotaSigner.create(did, node);
 
     const jsonLdDocument = {
       "@context": "https://schema.org",
@@ -91,7 +76,7 @@ describe("Sign messages", () => {
   });
 
   test("should sign a JSON-LD document. EPCIS @context", async () => {
-    const signer = await IotaSigner.create(node, did);
+    const signer = await IotaSigner.create(did, node);
 
     const jsonLdDocument = {
       "@context": [
@@ -120,7 +105,7 @@ describe("Sign messages", () => {
 
   test("should throw exception if node address is wrong", async () => {
     try {
-      await IotaSigner.create("abced", did);
+      await IotaSigner.create(did, "abced");
     } catch (error) {
       expect(error.name).toBe(LdProofErrorNames.INVALID_NODE);
       return;
@@ -132,7 +117,7 @@ describe("Sign messages", () => {
 
   test("should throw exception if DID syntax is wrong", async () => {
     try {
-      await IotaSigner.create(node, "did:999");
+      await IotaSigner.create("did:999", node);
     } catch (error) {
       expect(error.name).toBe(LdProofErrorNames.INVALID_DID);
       return;
@@ -144,7 +129,7 @@ describe("Sign messages", () => {
 
   test("should throw exception if DID does not exist", async () => {
     try {
-      await IotaSigner.create(node, `${did}a`);
+      await IotaSigner.create(`${did}a`, node);
     } catch (error) {
       expect(error.name).toBe(LdProofErrorNames.DID_NOT_FOUND);
       return;
@@ -156,7 +141,7 @@ describe("Sign messages", () => {
 
   test("should throw exception if private key has not the proper length", async () => {
     try {
-      const signer = await IotaSigner.create(node, did);
+      const signer = await IotaSigner.create(did, node);
 
       await signer.sign(Buffer.from(message), method, "389393939");
     } catch (error) {
@@ -169,7 +154,7 @@ describe("Sign messages", () => {
 
   test("should throw exception if private key is not really known", async () => {
     try {
-      const signer = await IotaSigner.create(node, did);
+      const signer = await IotaSigner.create(did, node);
 
       await signer.sign(Buffer.from(message), method, "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5");
     } catch (error) {
@@ -182,7 +167,7 @@ describe("Sign messages", () => {
 
   test("should throw exception if method does not exist on the DID", async () => {
     try {
-      const signer = await IotaSigner.create(node, did);
+      const signer = await IotaSigner.create(did, node);
 
       await signer.sign(Buffer.from(message), "notfoundmethod", privateKey);
     } catch (error) {

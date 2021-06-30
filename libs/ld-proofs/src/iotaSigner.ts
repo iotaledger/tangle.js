@@ -40,14 +40,13 @@ export class IotaSigner {
     /**
      * Creates a new signer associating it with a particular decentralized identity
      *
-     * @param node The node
-     *
      * @param did The DID that has the verification methods of the signer
+     * @param node The node
      *
      * @returns The newly created signer
      */
-    public static async create(node: string, did: string): Promise<IotaSigner> {
-        if (!ValidationHelper.url(node)) {
+    public static async create(did: string, node?: string): Promise<IotaSigner> {
+        if (node && !ValidationHelper.url(node)) {
             throw new LdProofError(LdProofErrorNames.INVALID_NODE, "Node is not a URL");
         }
 
