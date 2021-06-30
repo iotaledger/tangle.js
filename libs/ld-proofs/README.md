@@ -11,6 +11,8 @@ Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) 
 * Signatures for JSON Documents [JcsEd25519Signature2020](https://identity.foundation/JcsEd25519Signature2020/)
 * Linked Data Proofs anchored to the Tangle (using the [anchors](../anchors) library `IotaLinkedDataProof2021`). These type of proof anchors to the Tangle a Linked Data Signature together with a reference to the signed document. 
 
+The identities and their corresponding public key materials follow the [W3C DID](https://www.w3.org/TR/did-core/) specification. 
+
 ## API
 
 ### Linked Data Signature generation (Ed25519 over JSON(-LD))
@@ -31,7 +33,7 @@ const options: ISigningOptions = {
     privateKey
 };
 // Obtains a Linked Data Signature
-const proof = signer.signJsonLd(jsonLdDocument, options);
+const ldSignature = signer.signJsonLd(jsonLdDocument, options);
 ```
 
 ### Linked Data Signatures verification (Ed25519 over JSON(-LD) objects)
@@ -42,7 +44,6 @@ const signedDoc = {
     "@context": "https://schema.org",
     "type": "Organization",
     "name": "IOTA Foundation",
-
     proof: {
         "proofValue": "3JTS3UaJc2aS2rxkQ1Z4GEs9HjvASnm3e2s5VT5pS8voGEBodWBBd6P7YUmq8eN92H9v1u2gmqER7Y6wXhgcywYX",
         "type": "Ed25519Signature2018",
@@ -57,7 +58,7 @@ const verified = await IotaVerifier.verifyJsonLd(signedDoc);
 
 ### Linked Data Proofs generation (anchored to the Tangle)
 
-See also [anchors](../anchors) library. 
+See the [anchors](../anchors) library and the `IotaSigner` class. 
 
 ```ts
 const anchorChannel = /* Instantiate an anchoring channel */
@@ -65,7 +66,7 @@ const signer = /* Instantiate a signer */
 const proofGenerator = new IotaLdProofGenerator(anchoringChannel, signer);
 // Generates the Linked Data Signature and anchors it to the Tangle generating 
 // an Iota proof
-const proof = await proofGenerator.generateLd(jsonLdDocument, anchorageID);
+const tangleProof = await proofGenerator.generateLd(jsonLdDocument, anchorageID);
 ```
 
 ### Linked Data Proofs verification
