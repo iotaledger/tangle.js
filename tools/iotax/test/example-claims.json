@@ -1,0 +1,6 @@
+{ 
+    "gs1CompanyPrefix": {
+        "type": "identifier",
+        "value": "9524444"
+    }
+}

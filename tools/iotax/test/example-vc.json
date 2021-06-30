@@ -1,0 +1,17 @@
+{
+  "@context": "https://www.w3.org/2018/credentials/v1",
+  "type": [
+    "VerifiableCredential",
+    "Test"
+  ],
+  "credentialSubject": {
+    "id": "did:iota:C3p76qJ95j44ABcFnj5fdaL34whZAzr2roDACxTHJzbq"
+  },
+  "issuer": "did:iota:4ppuF2oyVyARKznTfh5GB3mMbpAUPTKJYPF7duYLCRHT",
+  "issuanceDate": "2021-06-02T16:40:31Z",
+  "proof": {
+    "type": "JcsEd25519Signature2020",
+    "verificationMethod": "#key",
+    "signatureValue": "JZFNGJWqMjb8eBy8XGFgPF35KMGb4ee4uwrUV2NR3jMBUKY7GPFSYwFR5PfvtSDqkBHu7o4Wo3zN6ox8WU3EAgg"
+  }
+}

@@ -1,0 +1,15 @@
+{
+    "@context": "https://www.w3.org/2018/credentials/v1",
+    "id": "http://example.org/ex1",
+    "type": [
+      "VerifiablePresentation",
+      "Example"
+    ],
+    "holder": "did:iota:C3p76qJ95j44ABcFnj5fdaL34whZAzr2roDACxTHJzbq",
+    "proof": {
+      "type": "JcsEd25519Signature2020",
+      "verificationMethod": "#key",
+      "signatureValue": "2CJgjiWCwZpQxzrtPsBVYdEwbsqqLhtvZBJHWzaakPapoZMdAd4EYVzAhh6RC4ged2Dc23kcB2dMeMSLkX9KEEzV"
+    }
+  }
+  

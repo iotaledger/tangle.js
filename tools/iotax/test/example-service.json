@@ -1,0 +1,6 @@
+[
+  {
+    "type": "ProductAuthenticity",
+    "serviceEndpoint": "http://localhost:8050/authenticity"
+  }
+]

@@ -1,0 +1,15 @@
+{
+    "@context": "https://www.w3.org/2018/credentials/v1",
+    "type": [ "VerifiableCredential", "GlobalIdentifierCredential" ],
+    "credentialSubject": {
+      "id": "did:iota:4CDrrLPaDSBW7EnX6apJVGFUon4ejN8jBRvJXRmZ4NP7",
+      "gs1CompanyPrefix": { "type": "identifier", "value": "9524444" }
+    },
+    "issuer": "did:iota:4CDrrLPaDSBW7EnX6apJVGFUon4ejN8jBRvJXRmZ4NP7",
+    "issuanceDate": "2021-04-11T15:34:37Z",
+    "proof": {
+      "type": "JcsEd25519Signature2020",
+      "verificationMethod": "#authentication",
+      "signatureValue": "ufD7TzA2KurnsnrUVM5EUQN6ws5DdkGMo3SSabp7Dn6sSQ5diTaMhqJiDeub21fxKi5RKt812Cm2Ugbx7jh1N"
+    }
+  }
