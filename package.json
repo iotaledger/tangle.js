@@ -19,13 +19,13 @@
         "npm": ">=7"
     },
     "scripts": {
-        "build-channels": "npm run build --workspace='libs/anchoring-channels'",
-        "build-ld": "npm run build --workspace='libs/linked-data-proofs'",
-        "test-channels": "npm test --workspace='libs/anchoring-channels'",
-        "test-ld": "npm test --workspace='libs/linked-data-proofs'"
+        "build-anchors": "npm run build --workspace='libs/anchors'",
+        "build-proofs": "npm run build --workspace='libs/ld-proofs'",
+        "test-anchors": "npm test --workspace='libs/anchors'",
+        "test-proofs": "npm test --workspace='libs/ld-proofs'"
     },
     "workspaces": [
-        "libs/anchoring-channels",
-        "libs/linked-data-proofs"
+        "libs/anchors",
+        "libs/ld-proofs"
     ]
 }

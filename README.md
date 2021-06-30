@@ -1,12 +1,14 @@
 # Tangle.js Tools and Libraries
 
-## anchoring-channels
+## anchors
 
-[README](./libs/anchoring-channels)
+[README](./libs/anchors)
 
 ## linked-data-proofs
 
-[README](./libs/linked-data-proofs)
+[README](./libs/ld-proofs)
 
 ## trail
 
+
+## iotax
