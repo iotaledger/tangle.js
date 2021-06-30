@@ -9,7 +9,7 @@ import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "./models/IJsonAnchoredDocument";
 import { IJsonDocument } from "./models/IJsonDocument";
 import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
-import ILdProofVerificationOptions from "./models/ILdProofVerificationOptions";
+import { ILdProofVerificationOptions } from "./models/ILdProofVerificationOptions";
 
 /**
  *  Linked Data Proof Verifier

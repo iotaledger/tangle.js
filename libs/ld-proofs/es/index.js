@@ -19,4 +19,6 @@ __exportStar(require("./models/ISigningOptions"), exports);
 __exportStar(require("./models/IVerificationOptions"), exports);
 __exportStar(require("./models/IIotaLinkedDataProof"), exports);
 __exportStar(require("./models/ILinkedDataSignature"), exports);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsK0NBQTZCO0FBQzdCLGlEQUErQjtBQUMvQix5REFBdUM7QUFDdkMsd0RBQXNDO0FBQ3RDLDBEQUF3QztBQUN4QywyREFBeUM7QUFDekMsZ0VBQThDO0FBQzlDLGdFQUE4QztBQUM5QyxnRUFBOEMifQ==
+__exportStar(require("./models/ILdProofOptions"), exports);
+__exportStar(require("./models/ILdProofVerificationOptions"), exports);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsK0NBQTZCO0FBQzdCLGlEQUErQjtBQUMvQix5REFBdUM7QUFDdkMsd0RBQXNDO0FBQ3RDLDBEQUF3QztBQUN4QywyREFBeUM7QUFDekMsZ0VBQThDO0FBQzlDLGdFQUE4QztBQUM5QyxnRUFBOEM7QUFDOUMsMkRBQXlDO0FBQ3pDLHVFQUFxRCJ9

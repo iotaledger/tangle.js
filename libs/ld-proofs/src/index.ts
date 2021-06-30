@@ -7,3 +7,5 @@ export * from "./models/ISigningOptions";
 export * from "./models/IVerificationOptions";
 export * from "./models/IIotaLinkedDataProof";
 export * from "./models/ILinkedDataSignature";
+export * from "./models/ILdProofOptions";
+export * from "./models/ILdProofVerificationOptions";

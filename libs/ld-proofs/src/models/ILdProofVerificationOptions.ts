@@ -1,6 +1,6 @@
 import { IotaAnchoringChannel } from "@tangle.js/anchors";
 
-export default interface ILdProofVerificationOptions {
+export interface ILdProofVerificationOptions {
     /** channel to be used */
     channel?: IotaAnchoringChannel;
     /** Node to be used */

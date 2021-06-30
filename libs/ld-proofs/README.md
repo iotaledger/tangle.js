@@ -12,51 +12,12 @@ Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) 
 
 ## API
 
-### Signing plain messages (EdDSA)
-
-```ts
-// The node is optional and by default will be IF mainnet nodes
-const node = "https://chrysalis-nodes.iota.org";
-
-// The DID contains the public cryptographic materials used by the signer
-const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
-const signer = await IotaSigner.create(did, node?);
-
-// Plain message to be signed
-const message = "hello";
-
-// Method declared on the signer's concerned DID document
-const method = "key";
-// Private Key in base58
-const privateKey = "privateKeybase58";
-
-const options: ISigningOptions = {
-    method,
-    privateKey
-};
-
-const signingResult = await signer.sign(Buffer.from(message), options);
-console.log("Signature: ", signingResult.signatureValue);
-```
-
-### Verifying plain messages
-
-```ts
-const options: IVerificationOptions = {
-    type: "Ed25519",
-    verificationMethod: "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
-    // Node is optional and it is IOTA's mainnet by default
-    node: "https://chrysalis-nodes.iota.org"
-};
-
-const verified = await IotaVerifier.verify(message, signatureValue, options);
-```
-
 ### Linked Data Signatures generation (Ed25519 over JSON(-LD))
 
 ```ts
 const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
-const signer = await IotaSigner.create(did);
+// Default node is IF Chrysalis Nodes
+const signer = await IotaSigner.create(did, node?);
 
 const jsonLdDocument = {
     "@context": "https://schema.org",
@@ -90,7 +51,7 @@ const signedDoc = {
     }
 };
 
-const verified = await IotaVerifier.verifyJsonLd(signedDoc, options?);
+const verified = await IotaVerifier.verifyJsonLd(signedDoc);
 ```
 
 ### Linked Data Proofs generation (anchored to the Tangle)
@@ -110,4 +71,45 @@ const proof = await proofGenerator.generateLd(jsonLdDocument, anchorageID)
 
 ```ts
 const verified = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc, options?);
+```
+
+### Signing plain messages
+
+Only EdDSA (Ed25519) is supported. 
+
+```ts
+// The node is optional and by default will be IF mainnet nodes
+const node = "https://chrysalis-nodes.iota.org";
+
+// The DID contains the public cryptographic materials used by the signer
+const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
+const signer = await IotaSigner.create(did);
+
+// Plain message to be signed
+const message = "hello";
+
+// Method declared on the signer's concerned DID document
+const method = "key";
+// Private Key in base58
+const privateKey = "privateKeybase58";
+
+const options: ISigningOptions = {
+    method,
+    privateKey
+};
+
+const signingResult = await signer.sign(Buffer.from(message), options);
+console.log("Signature: ", signingResult.signatureValue);
+```
+
+### Verifying plain messages
+
+```ts
+const options: IVerificationOptions = {
+    verificationMethod: "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
+    // Node is optional and it is IOTA's mainnet by default
+    node: "https://chrysalis-nodes.iota.org"
+};
+
+const verified = await IotaVerifier.verify(message, signatureValue, options);
 ```

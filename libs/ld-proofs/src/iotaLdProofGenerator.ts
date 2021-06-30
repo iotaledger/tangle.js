@@ -3,7 +3,7 @@ import { IotaAnchoringChannel, IAnchoringResult } from "@tangle.js/anchors";
 import { IotaSigner } from "./iotaSigner";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonDocument } from "./models/IJsonDocument";
-import ILdProofOptions from "./models/ILdProofOptions";
+import { ILdProofOptions } from "./models/ILdProofOptions";
 import { ISigningOptions } from "./models/ISigningOptions";
 import { LinkedDataProofTypes } from "./models/linkedDataProofTypes";
 import { SignatureTypes } from "./models/signatureTypes";

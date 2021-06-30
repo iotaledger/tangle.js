@@ -55,9 +55,9 @@ describe("Verify messages", () => {
     });
   });
 
-  test("should verify a message", async () => {
+  test("should verify a plain message", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod,
       node
     };
@@ -69,7 +69,7 @@ describe("Verify messages", () => {
 
   test("should fail verification. message integrity not respected", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.ED25519_2018,
       verificationMethod,
       node
     };
@@ -154,7 +154,7 @@ describe("Verify messages", () => {
 
   test("should fail verification. signature is corrupted", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod,
       node
     };
@@ -166,7 +166,7 @@ describe("Verify messages", () => {
 
   test("should fail verification. Identity is not the correct one", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod: "did:iota:B8y9H4tagyLhzGRP5EyHd3basposcCYCHvhVS5H9ScW1#key",
       node
     };
@@ -179,7 +179,7 @@ describe("Verify messages", () => {
   // Skipped until we generate a DID with multiple verification methods
   test.skip("should fail verification. Method is not the correct one", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod: `${did}#key2`,
       node
     };
@@ -191,7 +191,7 @@ describe("Verify messages", () => {
 
   test("should throw exception if node address is wrong", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod,
       node: "xyz"
     };
@@ -209,7 +209,7 @@ describe("Verify messages", () => {
 
   test("should throw exception if DID syntax is wrong", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod: "did:9999",
       node
     };
@@ -227,7 +227,7 @@ describe("Verify messages", () => {
 
   test("should throw exception if DID does not exist", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod: `${did}a#key`,
       node
     };
@@ -244,7 +244,7 @@ describe("Verify messages", () => {
 
   test("should throw exception if method does not exist on the DID", async () => {
     const options: IVerificationOptions = {
-      type: SignatureTypes.ED25519_2018,
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod: `${did}#key6789`,
       node
     };
