@@ -16,7 +16,11 @@ export const network = "https://api.lb-0.testnet.chrysalis2.com";
     expect(anchoringChannel.seed).toBeDefined();
     expect(anchoringChannel.channelID).toBeDefined();
     expect(anchoringChannel.channelAddr).toBeDefined();
+
     expect(anchoringChannel.firstAnchorageID).toBeDefined();
+
+    expect(anchoringChannel.authorPk).toBeDefined();
+    expect(anchoringChannel.publisherPk).toBeDefined();
 
     return anchoringChannel;
 }

@@ -29,6 +29,10 @@ export class IotaAnchoringChannel {
 
     private _subscriber: Subscriber;
 
+    private _authorPk: string;
+
+    private _publisherPk: string;
+
     private constructor(node: string, seed?: string) {
         this._node = node;
         this._seed = seed;
@@ -69,10 +73,12 @@ export class IotaAnchoringChannel {
                 `Channel already bound to ${this._channelID}`);
         }
         if (!channelID) {
-            const { channelAddress, announceMsgID } = await ChannelService.createChannel(this._node, this._seed);
+            const { channelAddress, announceMsgID, authorPk } =
+                        await ChannelService.createChannel(this._node, this._seed);
             this._channelAddress = channelAddress;
             this._announceMsgID = announceMsgID;
             this._channelID = `${channelAddress}:${announceMsgID}`;
+            this._authorPk = authorPk;
         } else {
             const components: string[] = channelID.split(":");
 
@@ -92,7 +98,13 @@ export class IotaAnchoringChannel {
             channelID: this._channelID
         };
 
-        this._subscriber = await ChannelService.bindToChannel(bindRequest);
+        // The author's PK for the time being is not set because cannot be obtained from the
+        // announce message
+        const { subscriber } = await ChannelService.bindToChannel(bindRequest);
+
+        this._subscriber = subscriber;
+        // this._authorPk = authorPk;
+        this._publisherPk = subscriber.get_public_key();
 
         return this;
     }
@@ -145,6 +157,26 @@ export class IotaAnchoringChannel {
      */
     public get seed(): string {
         return this._seed;
+    }
+
+    /**
+     *  Returns the channel's author Public Key
+     *
+     *  @returns the Author's Public key
+     *
+     */
+     public get authorPk(): string {
+        return this._authorPk;
+    }
+
+    /**
+     *  Returns the channel's publisher Public Key
+     *
+     *  @returns the publisher's Public key
+     *
+     */
+     public get publisherPk(): string {
+        return this._publisherPk;
     }
 
     /**

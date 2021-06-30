@@ -18,7 +18,7 @@ export default class ChannelService {
      *
      */
     public static async createChannel(node: string, seed: string):
-        Promise<{ channelAddress: string; announceMsgID: string }> {
+        Promise<{ channelAddress: string; announceMsgID: string; authorPk: string }> {
         const options = new SendOptions(node, true);
         const auth = new Author(seed, options.clone(), ChannelType.SingleBranch);
 
@@ -27,7 +27,8 @@ export default class ChannelService {
 
         return {
             announceMsgID: announceLink.msg_id,
-            channelAddress: auth.channel_address()
+            channelAddress: auth.channel_address(),
+            authorPk: auth.get_public_key()
         };
     }
 
@@ -39,18 +40,21 @@ export default class ChannelService {
      *
      * @returns IOTA Streams Subscriber object
      */
-    public static async bindToChannel(request: IBindChannelRequest): Promise<Subscriber> {
+    public static async bindToChannel(request: IBindChannelRequest): Promise<{
+        subscriber: Subscriber;
+        authorPk: string;
+    }> {
         try {
             const options = new SendOptions(request.node, true);
-            const subs = new Subscriber(request.seed, options.clone());
+            const subscriber = new Subscriber(request.seed, options.clone());
 
             // Channel contains the channel address and the announce messageID
             const channel = request.channelID;
             const announceLink = Address.from_string(channel).copy();
 
-            await subs.clone().receive_announcement(announceLink);
+            /* const announcement = */ await subscriber.clone().receive_announcement(announceLink);
 
-            return subs;
+            return { subscriber, authorPk: /* announcement.get_message().get_pk()*/ "" };
         } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
                 `Cannot bind to channel ${request.channelID}`);
