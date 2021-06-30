@@ -38,6 +38,8 @@ console.log("msg ID", result.msgID);
 ### Fetching messages
 
 Search for the anchorageID and fetches the message anchored to it. 
+
+
 Optionally an expected message ID can be passed that allows to fail if there is no matching. 
 
 ```ts
@@ -48,7 +50,7 @@ console.log("Message ID: ", result.msgID);
 console.log("Message publisher's PK: ", result.pk);
 ``` 
 
-## Receiving messages
+### Receiving messages
 
 Receives a message that has already been seen on the channel. 
 Optionally an expected message ID can be passed that allows to fail if the target message is not anchored to it. 
