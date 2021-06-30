@@ -4,7 +4,7 @@
 
 [README](./libs/anchors)
 
-## linked-data-proofs
+## ld-proofs
 
 [README](./libs/ld-proofs)
 
