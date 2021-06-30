@@ -280,15 +280,15 @@ export class IotaLdProofVerifier {
         let result: boolean;
 
         if (jsonLd) {
-            result = await IotaVerifier.verifyJsonLd({
-                document: document as unknown as IJsonSignedDocument,
-                node: options.node
-            });
+            result = await IotaVerifier.verifyJsonLd(
+                document as unknown as IJsonSignedDocument,
+                { node: options.node }
+            );
         } else {
-            result = await IotaVerifier.verifyJson({
-                document: document as unknown as IJsonSignedDocument,
-                node: options.node
-            });
+            result = await IotaVerifier.verifyJson(
+               document as unknown as IJsonSignedDocument,
+               { node: options.node }
+            );
         }
 
         // Restore the original document

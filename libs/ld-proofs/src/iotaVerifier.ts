@@ -10,8 +10,8 @@ import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
-import { IJsonVerificationRequest } from "./models/IJsonVerificationRequest";
-import { IVerificationRequest } from "./models/IVerificationRequest";
+import { IJsonVerificationOptions } from "./models/IJsonVerificationOptions";
+import { IVerificationOptions } from "./models/IVerificationOptions";
 import { LdContextURL } from "./models/ldContextURL";
 import DidService from "./services/didService";
 
@@ -19,44 +19,50 @@ export class IotaVerifier {
     /**
      * Verifies a Ed25519 signature corresponding to a string message
      *
-     * @param request The verification request
+     * @param  message the message to be verified
+     * @param  signatureValue the signature value
+     *
+     * @param options The verification request
      *
      * @returns true or false depending on the verification result
      *
      */
-    public static async verify(request: IVerificationRequest): Promise<boolean> {
-        if (!ValidationHelper.url(request.node)) {
+    public static async verify(message: Buffer, signatureValue: string,
+        options: IVerificationOptions): Promise<boolean> {
+        if (options.node && !ValidationHelper.url(options.node)) {
             throw new LdProofError(LdProofErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
-        if (!ValidationHelper.did(request.verificationMethod)) {
+        if (!ValidationHelper.did(options.verificationMethod)) {
             throw new LdProofError(LdProofErrorNames.INVALID_DID, "Invalid DID");
         }
 
-        const resolution = await DidService.resolveMethod(request.node,
-            request.verificationMethod);
+        const resolution = await DidService.resolveMethod(options.node,
+            options.verificationMethod);
 
         if (resolution.type !== "Ed25519VerificationKey2018") {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 
-        return this.verifySignature(request.signatureValue, request.message,
+        return this.verifySignature(signatureValue, message,
             resolution.toJSON().publicKeyBase58);
     }
 
     /**
      * Verifies a plain JSON document containing a Linked Data Signature
      *
-     * @param request Verification request
+     * @param doc The document to verify
+     * @param options The verification options
      *
      * @returns true or false depending on the verification result
      */
-    public static async verifyJson(request: IJsonVerificationRequest): Promise<boolean> {
-        const document = JsonHelper.getSignedDocument(request.document);
+    public static async verifyJson(doc: IJsonSignedDocument | string,
+        options: IJsonVerificationOptions): Promise<boolean> {
+        const document = JsonHelper.getSignedDocument(doc);
 
-        const resolution = await this.verificationMethod(request);
+        const resolution = await this.verificationMethod(document, options.node);
 
         const proof = document.proof;
 
@@ -67,7 +73,7 @@ export class IotaVerifier {
         const canonical = JsonCanonicalization.calculate(document);
         const msgHash = crypto
             .createHash("sha256").update(canonical)
-.digest();
+            .digest();
 
         const result = this.verifySignature(proofValue, msgHash, resolution.toJSON().publicKeyBase58);
 
@@ -81,14 +87,15 @@ export class IotaVerifier {
     /**
      * Verifies a JSON-LD document containing a Linked Data Signature
      *
-     * @param request Verification request
-     *
+     * @param doc The document to be verified
+     * @param options The verification options
      * @returns true or false depending on the verification result
      */
-    public static async verifyJsonLd(request: IJsonVerificationRequest): Promise<boolean> {
-        const document = JsonHelper.getSignedJsonLdDocument(request.document);
+    public static async verifyJsonLd(doc: IJsonSignedDocument | string,
+        options: IJsonVerificationOptions): Promise<boolean> {
+        const document = JsonHelper.getSignedJsonLdDocument(doc);
 
-        const resolution = await this.verificationMethod(request);
+        const resolution = await this.verificationMethod(document, options.node);
 
         const proof = document.proof;
 
@@ -109,11 +116,11 @@ export class IotaVerifier {
 
         const docCanonical = await jsonld.canonize(document, canonizeOptions);
         const docHash = crypto.createHash("sha512").update(docCanonical)
-.digest();
+            .digest();
 
         const proofCanonical = await jsonld.canonize(proofOptions, canonizeOptions);
         const proofHash = crypto.createHash("sha512").update(proofCanonical)
-.digest();
+            .digest();
 
         const hashToVerify = Buffer.concat([docHash, proofHash]);
 
@@ -125,14 +132,12 @@ export class IotaVerifier {
         return result;
     }
 
-    private static async verificationMethod(request: IJsonVerificationRequest): Promise<VerificationMethod> {
-        if (request.node && !ValidationHelper.url(request.node)) {
+    private static async verificationMethod(document: IJsonSignedDocument, node: string): Promise<VerificationMethod> {
+        if (node && !ValidationHelper.url(node)) {
             throw new LdProofError(LdProofErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
-        // Here the document has already been parsed
-        const document = request.document as IJsonSignedDocument;
         const proof = document.proof;
 
         const verificationMethod = proof.verificationMethod;
@@ -141,7 +146,7 @@ export class IotaVerifier {
             throw new LdProofError(LdProofErrorNames.INVALID_DID, "Invalid DID");
         }
 
-        const resolution = await DidService.resolveMethod(request.node, verificationMethod);
+        const resolution = await DidService.resolveMethod(node, verificationMethod);
 
         if (resolution.type !== "Ed25519VerificationKey2018") {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
