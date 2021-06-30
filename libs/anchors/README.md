@@ -26,8 +26,8 @@ anchoringChannel.channelID
 anchoringChannel.channelAddr
 anchoringChannel.firstAnchorageID
 
-anchoringChannel.publisherPK
-anchoringChannel.authorPK
+anchoringChannel.publisherPubKey
+anchoringChannel.authorPubKey
 
 const message = "my message";
 // Obtain your anchorageID (it could be the first anchorageID of the channel)
@@ -37,7 +37,7 @@ console.log("msg ID", result.msgID);
 
 ### Fetching messages
 
-Search for the anchorageID and fetches the message anchored to it. 
+Searches for the anchorageID and fetches the message anchored to it. 
 
 
 Optionally an expected message ID can be passed that allows to fail if there is no matching. 
@@ -53,6 +53,8 @@ console.log("Message publisher's PK: ", result.pk);
 ### Receiving messages
 
 Receives a message that has already been seen on the channel. 
+
+
 Optionally an expected message ID can be passed that allows to fail if the target message is not anchored to it. 
 
 ```ts
