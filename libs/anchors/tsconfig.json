@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2015.iterable"
+    ],
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "outDir": "./es",
+    "resolveJsonModule": true,
+    "inlineSourceMap": true
+  },
+  "include": [
+    "src"
+  ]
+}
