@@ -19,6 +19,8 @@
         "npm": ">=7"
     },
     "scripts": {
+        "test": "npm run test --workspaces",
+        "build": "npm run build --workspaces",
         "build-anchors": "npm run build --workspace='libs/anchors'",
         "build-proofs": "npm run build --workspace='libs/ld-proofs'",
         "test-anchors": "npm test --workspace='libs/anchors'",
