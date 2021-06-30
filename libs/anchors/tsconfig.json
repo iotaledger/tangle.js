@@ -12,7 +12,9 @@
     "noUnusedLocals": true,
     "outDir": "./es",
     "resolveJsonModule": true,
-    "inlineSourceMap": true
+    "inlineSourceMap": true,
+    "declaration": true,
+    "declarationDir": "typings",
   },
   "include": [
     "src"

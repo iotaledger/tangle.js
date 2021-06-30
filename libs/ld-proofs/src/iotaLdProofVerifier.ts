@@ -272,7 +272,7 @@ export class IotaLdProofVerifier {
             throw error;
         }
 
-        const linkedDataSignature = JSON.parse(fetchResult.message);
+        const linkedDataSignature = JSON.parse(fetchResult.message.toString());
 
         // now assign the Linked Data Signature as proof
         document.proof = linkedDataSignature;

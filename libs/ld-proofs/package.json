@@ -3,7 +3,7 @@
     "version": "0.9.0",
     "description": "Linked Data Proofs on the Tangle.",
     "scripts": {
-        "build-clean": "rimraf ./es/*",
+        "build-clean": "rimraf ./es/* ./typings/*",
         "build-compile": "tsc",
         "build-watch": "tsc --watch",
         "build-lint": "eslint src --ext .ts",
@@ -14,9 +14,7 @@
         "package-umd": "rollup --config rollup.config.js",
         "package-umd-min": "rollup --config rollup.config.js --environment MINIFY:true",
         "package": "run-s package-umd package-umd-min",
-        "dist-clean": "rimraf ./dist/* ./typings/*",
-        "typings": "tsc --emitDeclarationOnly --declaration true --declarationDir typings",
-        "dist": "run-s dist-clean build test package typings"
+        "dist": "run-s dist-clean build test package"
     },
     "repository": {
         "type": "git",
