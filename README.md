@@ -1,6 +1,6 @@
 # Tangle.js
 
-A collection of libraries a tools that enable Javascript developers to create applications leveraging IOTA's Tangle. 
+A collection of libraries and tools that enable Javascript developers to create applications leveraging IOTA's Tangle. 
 
 ## Libraries
 
