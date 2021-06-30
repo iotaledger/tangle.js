@@ -8,8 +8,8 @@ import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IJsonDocument } from "./models/IJsonDocument";
-import ILdSignatureOptions from "./models/ILdSignatureOptions";
 import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
+import { ISigningOptions } from "./models/ISigningOptions";
 import { ISigningRequest } from "./models/ISigningRequest";
 import { ISigningResult } from "./models/ISigningResult";
 import { LdContextURL } from "./models/ldContextURL";
@@ -64,18 +64,17 @@ export class IotaSigner {
      * Signs a string message using the Ed25519 signature algorithm
      *
      * @param message The message
-     * @param method The method used for signing (referred as a DID fragment identifier)
-     * @param secret The secret
+     * @param options The signing options
      *
      * @returns The signature details including its value encoded in Base58
      *
      */
-    public async sign(message: Buffer, method: string, secret: string): Promise<ISigningResult> {
+    public async sign(message: Buffer, options: ISigningOptions): Promise<ISigningResult> {
         const request: ISigningRequest = {
             didDocument: this._didDocument,
             type: SignatureTypes.ED25519_2018,
-            method,
-            secret,
+            method: options.verificationMethod,
+            secret: options.secret,
             message
         };
 
@@ -92,7 +91,7 @@ export class IotaSigner {
      *
      * @returns The JSON document including its corresponding Linked Data Signature
      */
-    public async signJson(doc: string | IJsonDocument, options: ILdSignatureOptions): Promise<ILinkedDataSignature> {
+    public async signJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getDocument(doc);
 
         if (options.signatureType !== SignatureTypes.JCS_ED25519_2020) {
@@ -117,7 +116,7 @@ export class IotaSigner {
         const digest = crypto.createHash("sha256").update(canonized)
 .digest();
 
-        const signature = await this.sign(digest, options.verificationMethod, options.secret);
+        const signature = await this.sign(digest, options);
 
         // Finally restore the original object
         delete docToBeSigned.proof;
@@ -137,7 +136,7 @@ export class IotaSigner {
      * @returns The Linked Data Signature represented as a Linked Data Proof
      *
      */
-    public async signJsonLd(doc: string | IJsonDocument, options: ILdSignatureOptions): Promise<ILinkedDataSignature> {
+    public async signJsonLd(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
 
         if (options.signatureType !== SignatureTypes.ED25519_2018) {
@@ -172,7 +171,7 @@ export class IotaSigner {
 
         const finalHash = Buffer.concat([docHash, proofOptionsHash]);
 
-        const signature = await this.sign(finalHash, options.verificationMethod, options.secret);
+        const signature = await this.sign(finalHash, options);
 
         return {
             type: SignatureTypes.ED25519_2018,

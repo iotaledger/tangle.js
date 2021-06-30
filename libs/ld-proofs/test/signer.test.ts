@@ -30,7 +30,10 @@ describe("Sign messages", () => {
   test("should sign a message", async () => {
     const signer = await IotaSigner.create(did, node);
 
-    const signature = await signer.sign(Buffer.from(message), method, privateKey);
+    const signature = await signer.sign(Buffer.from(message), {
+      verificationMethod: method,
+      secret: privateKey
+    });
 
     expect(signature.created).toBeDefined();
     expect(signature.verificationMethod).toBe(`${did}#${method}`);
@@ -143,7 +146,10 @@ describe("Sign messages", () => {
     try {
       const signer = await IotaSigner.create(did, node);
 
-      await signer.sign(Buffer.from(message), method, "389393939");
+      await signer.sign(Buffer.from(message), {
+        verificationMethod: method,
+        secret: "389393939"
+      });
     } catch (error) {
       expect(error.name).toBe(LdProofErrorNames.INVALID_SIGNING_KEY);
       return;
@@ -156,7 +162,10 @@ describe("Sign messages", () => {
     try {
       const signer = await IotaSigner.create(did, node);
 
-      await signer.sign(Buffer.from(message), method, "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5");
+      await signer.sign(Buffer.from(message), {
+        verificationMethod: method,
+        secret: "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5"
+      });
     } catch (error) {
       expect(error.name).toBe(LdProofErrorNames.INVALID_SIGNING_KEY);
       return;
@@ -169,7 +178,10 @@ describe("Sign messages", () => {
     try {
       const signer = await IotaSigner.create(did, node);
 
-      await signer.sign(Buffer.from(message), "notfoundmethod", privateKey);
+      await signer.sign(Buffer.from(message), {
+        verificationMethod: "notfoundmethod",
+        secret: privateKey
+      });
     } catch (error) {
       expect(error.name).toBe(LdProofErrorNames.INVALID_DID_METHOD);
       return;

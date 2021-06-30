@@ -4,7 +4,7 @@ import { IotaSigner } from "./iotaSigner";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
 import { IJsonDocument } from "./models/IJsonDocument";
 import ILdProofOptions from "./models/ILdProofOptions";
-import ILdSignatureOptions from "./models/ILdSignatureOptions";
+import { ISigningOptions } from "./models/ISigningOptions";
 import { LinkedDataProofTypes } from "./models/linkedDataProofTypes";
 import { SignatureTypes } from "./models/signatureTypes";
 
@@ -29,7 +29,7 @@ export class IotaLdProofGenerator {
      */
     public async generateLd(doc: string | IJsonDocument, options: ILdProofOptions): Promise<IIotaLinkedDataProof> {
         // First of all a Linked Data Signature is generated for the document
-        const signatureOptions: ILdSignatureOptions = {
+        const signatureOptions: ISigningOptions = {
             signatureType: SignatureTypes.ED25519_2018,
             verificationMethod: options.verificationMethod,
             secret: options.secret
@@ -56,7 +56,7 @@ export class IotaLdProofGenerator {
      */
     public async generate(doc: string | IJsonDocument, options: ILdProofOptions): Promise<IIotaLinkedDataProof> {
         // First of all a Linked Data Signature is generated for the document
-        const signatureOptions: ILdSignatureOptions = {
+        const signatureOptions: ISigningOptions = {
             signatureType: SignatureTypes.JCS_ED25519_2020,
             verificationMethod: options.verificationMethod,
             secret: options.secret

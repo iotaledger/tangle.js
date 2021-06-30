@@ -38,7 +38,10 @@ describe("Verify messages", () => {
   beforeAll(async () => {
     const signer = await IotaSigner.create(did, node);
 
-    signatureValue = (await signer.sign(Buffer.from(message), method, privateKey)).signatureValue;
+    signatureValue = (await signer.sign(Buffer.from(message), {
+      verificationMethod: method,
+      secret: privateKey
+    })).signatureValue;
 
     jsonProof = await signer.signJson(jsonDocument, {
       verificationMethod: method,
