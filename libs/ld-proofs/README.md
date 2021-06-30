@@ -4,15 +4,16 @@
 
 ## How it works
 
-Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) specification this library allows to generate and verify Linked Data Proofs associated to plain messages or JSON(-LD) documents. Two different kind of Linked Data Proofs can be generated:
+Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) specification this library allows to generate and verify Linked Data Proofs associated to plain messages or JSON(-LD) documents. Different kind of Linked Data Proofs can be generated:
 
 * EdDSA (Ed25519) Signatures over plain messages
-* Linked Data Signatures (`Ed25519Signature2018` for JSON-LD or `Jcs`)
-* Linked Data Proofs anchored to the Tangle (using the [anchors](../anchors)) library (`Iota`). These type of proof anchors to the Tangle a Linked Data Signature together with a reference to the signed document. 
+* Linked Data Signatures for JSON-LD Documents [Ed25519Signature2018](https://w3c-ccg.github.io/lds-ed25519-2018/) 
+* Signatures for JSON Documents [JcsEd25519Signature2020](https://identity.foundation/JcsEd25519Signature2020/)
+* Linked Data Proofs anchored to the Tangle (using the [anchors](../anchors)) library (`IotaLinkedDataProof2021`). These type of proof anchors to the Tangle a Linked Data Signature together with a reference to the signed document. 
 
 ## API
 
-### Linked Data Signatures generation (Ed25519 over JSON(-LD))
+### Linked Data Signature generation (Ed25519 over JSON(-LD))
 
 ```ts
 const did = "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP";
@@ -64,12 +65,15 @@ const signer = /* Instantiate a signer */
 const proofGenerator = new IotaLdProofGenerator(anchoringChannel, signer);
 // Generates the Linked Data Signature and anchors it to the Tangle generating 
 // an Iota proof
-const proof = await proofGenerator.generateLd(jsonLdDocument, anchorageID)
+const proof = await proofGenerator.generateLd(jsonLdDocument, anchorageID);
 ```
 
 ### Linked Data Proofs verification
 
 ```ts
+const anchoredDoc = {
+
+};
 const verified = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc, options?);
 ```
 

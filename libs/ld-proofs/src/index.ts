@@ -9,3 +9,5 @@ export * from "./models/IIotaLinkedDataProof";
 export * from "./models/ILinkedDataSignature";
 export * from "./models/ILdProofOptions";
 export * from "./models/ILdProofVerificationOptions";
+export * from "./models/signatureTypes";
+export * from "./models/linkedDataProofTypes";
