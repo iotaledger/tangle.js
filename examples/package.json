@@ -1,0 +1,27 @@
+{
+  "name": "@tangle.js/examples",
+  "version": "0.0.1",
+  "description": "Tangle.js examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iotaledger/tangle.js.git"
+  },
+  "keywords": [
+    "tangle.js",
+    "examples"
+  ],
+  "author": "Jose M. Cantera",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/iotaledger/tangle.js/issues"
+  },
+  "homepage": "https://github.com/iotaledger/tangle.js#readme",
+  "dependencies": {
+    "@tangle.js/anchors": "^0.9.0",
+    "@tangle.js/ld-proofs": "^0.9.0"
+  }
+}
