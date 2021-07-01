@@ -13,9 +13,20 @@ export class IotaLdProofGenerator {
 
     private readonly signer: IotaSigner;
 
-    constructor(anchoringChannel: IotaAnchoringChannel, signer: IotaSigner) {
+    private constructor(anchoringChannel: IotaAnchoringChannel, signer: IotaSigner) {
         this.anchoringChannel = anchoringChannel;
         this.signer = signer;
+    }
+
+    /**
+     * Creates a new instance of LD Proof Generator
+     *
+     * @param anchoringChannel The anchoring channel to be used
+     * @param signer The signer to be used
+     * @returns The LD Proof generator
+     */
+    public static create(anchoringChannel: IotaAnchoringChannel, signer: IotaSigner): IotaLdProofGenerator {
+        return new IotaLdProofGenerator(anchoringChannel, signer);
     }
 
     /**

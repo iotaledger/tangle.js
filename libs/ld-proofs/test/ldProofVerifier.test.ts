@@ -54,7 +54,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
   beforeAll(async () => {
     const signer = await IotaSigner.create(did, node);
     const channel = await IotaAnchoringChannel.create(undefined, node).bind();
-    const ldProofGenerator = new IotaLdProofGenerator(channel, signer);
+    const ldProofGenerator = IotaLdProofGenerator.create(channel, signer);
 
     singleIotaLdProof = await ldProofGenerator.generate(jsonDocument, {
       verificationMethod: method,
@@ -63,7 +63,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
     });
 
     const channel2 = await IotaAnchoringChannel.create(undefined, node).bind();
-    const ldProofGenerator2 = new IotaLdProofGenerator(channel2, signer);
+    const ldProofGenerator2 = IotaLdProofGenerator.create(channel2, signer);
 
     chainIotaLdProofJsonLd = await ldProofGenerator2.generateChainLd(documentChain, {
       verificationMethod: method,

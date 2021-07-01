@@ -50,7 +50,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Signer that will be used
         const signer = await IotaSigner.create(did, node);
 
-        const generator = new IotaLdProofGenerator(channel, signer);
+        const generator = IotaLdProofGenerator.create(channel, signer);
 
         const proof = await generator.generateLd(document, {
             verificationMethod: method,
@@ -73,7 +73,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Signer that will be used
         const signer = await IotaSigner.create(did, node);
 
-        const generator = new IotaLdProofGenerator(channel, signer);
+        const generator = IotaLdProofGenerator.create(channel, signer);
 
         // We test passing the document as a string
         const proof = await generator.generate(JSON.stringify(document), {
@@ -106,7 +106,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         // Signer that will be used
         const signer = await IotaSigner.create(did, node);
 
-        const generator = new IotaLdProofGenerator(channel, signer);
+        const generator = IotaLdProofGenerator.create(channel, signer);
 
         const proofs = await generator.generateChainLd([document1, document2], {
             verificationMethod: method,
