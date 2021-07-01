@@ -49,7 +49,7 @@ async function main() {
       ...document,
       proof: ldSignature
     };
-    const result = await IotaVerifier.verifyJsonLd(signedDoc, {});
+    const result = await IotaVerifier.verifyJsonLd(signedDoc);
     
     console.log("Verified: ", result);
 }

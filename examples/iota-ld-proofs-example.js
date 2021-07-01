@@ -43,7 +43,7 @@ async function main() {
     console.log("Anchoring to the Tangle ...");
     console.log(document);
 
-    const ldProofGenerator = new IotaLdProofGenerator(anchoringChannel,signer);
+    const ldProofGenerator = IotaLdProofGenerator.create(anchoringChannel,signer);
 
     const ldProof = await ldProofGenerator.generateLd(document, {
       verificationMethod: "key",
@@ -58,7 +58,7 @@ async function main() {
       ...document,
       proof: ldProof
     };
-    const result = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc, { node: "https://chrysalis-nodes.iota.org"});
+    const result = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc);
     
     console.log("Verified: ", result); 
 }
