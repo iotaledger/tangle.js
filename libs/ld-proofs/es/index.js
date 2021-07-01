@@ -17,10 +17,11 @@ __exportStar(require("./iotaLdProofVerifier"), exports);
 __exportStar(require("./models/ISigningResult"), exports);
 __exportStar(require("./models/ISigningOptions"), exports);
 __exportStar(require("./models/IVerificationOptions"), exports);
+__exportStar(require("./models/IJsonVerificationOptions"), exports);
 __exportStar(require("./models/IIotaLinkedDataProof"), exports);
 __exportStar(require("./models/ILinkedDataSignature"), exports);
 __exportStar(require("./models/ILdProofOptions"), exports);
 __exportStar(require("./models/ILdProofVerificationOptions"), exports);
 __exportStar(require("./models/signatureTypes"), exports);
 __exportStar(require("./models/linkedDataProofTypes"), exports);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsK0NBQTZCO0FBQzdCLGlEQUErQjtBQUMvQix5REFBdUM7QUFDdkMsd0RBQXNDO0FBQ3RDLDBEQUF3QztBQUN4QywyREFBeUM7QUFDekMsZ0VBQThDO0FBQzlDLGdFQUE4QztBQUM5QyxnRUFBOEM7QUFDOUMsMkRBQXlDO0FBQ3pDLHVFQUFxRDtBQUNyRCwwREFBd0M7QUFDeEMsZ0VBQThDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsK0NBQTZCO0FBQzdCLGlEQUErQjtBQUMvQix5REFBdUM7QUFDdkMsd0RBQXNDO0FBQ3RDLDBEQUF3QztBQUN4QywyREFBeUM7QUFDekMsZ0VBQThDO0FBQzlDLG9FQUFrRDtBQUNsRCxnRUFBOEM7QUFDOUMsZ0VBQThDO0FBQzlDLDJEQUF5QztBQUN6Qyx1RUFBcUQ7QUFDckQsMERBQXdDO0FBQ3hDLGdFQUE4QyJ9
