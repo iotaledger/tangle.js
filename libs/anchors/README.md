@@ -56,7 +56,7 @@ console.log("Message publisher's PK: ", result.pk);
 Receives a message that has already been seen on the channel. 
 
 
-Optionally an expected message ID can be passed that allows to fail 
+Optionally an expected anchorage ID can be passed that allows to fail 
 if the target message is not actually anchored to the expected anchorage. 
 
 ```ts
