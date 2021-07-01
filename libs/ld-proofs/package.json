@@ -1,7 +1,7 @@
 {
     "name": "@tangle.js/ld-proofs",
-    "version": "0.9.0",
-    "description": "Linked Data Proofs on the Tangle.",
+    "version": "0.9.1",
+    "description": "Linked Data Proofs on the Tangle. Powered by IOTA Identity & IOTA Streams",
     "scripts": {
         "build-clean": "rimraf ./es/* ./typings/*",
         "build-compile": "tsc",
@@ -24,9 +24,11 @@
         "iota",
         "chrysalis",
         "streams",
+        "identity",
         "linked",
         "data",
-        "proofs"
+        "proofs",
+        "signatures"
     ],
     "engines": {
         "node": "12.x"

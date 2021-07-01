@@ -28,10 +28,10 @@ export class IotaLdProofVerifier {
      *
      */
     public static async verifyJson(doc: IJsonAnchoredDocument | string,
-        options: ILdProofVerificationOptions): Promise<boolean> {
+        options?: ILdProofVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getAnchoredDocument(doc);
 
-        return (await this.doVerify(document, false, options)).result;
+        return (await this.doVerify(document, false, undefined, options)).result;
     }
 
     /**
@@ -44,10 +44,10 @@ export class IotaLdProofVerifier {
      *
      */
     public static async verifyJsonLd(doc: IJsonAnchoredDocument | string,
-        options: ILdProofVerificationOptions): Promise<boolean> {
+        options?: ILdProofVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getAnchoredJsonLdDocument(doc);
 
-        return (await this.doVerify(document, true, options)).result;
+        return (await this.doVerify(document, true, undefined, options)).result;
     }
 
     /**
@@ -59,7 +59,7 @@ export class IotaLdProofVerifier {
      * @returns The global verification result
      */
     public static async verifyJsonChain(docs: IJsonAnchoredDocument[] | string[],
-        options: ILdProofVerificationOptions): Promise<boolean> {
+        options?: ILdProofVerificationOptions): Promise<boolean> {
         return this.doVerifyChain(docs, false, options);
     }
 
@@ -72,7 +72,7 @@ export class IotaLdProofVerifier {
      * @returns The global verification result
      */
     public static async verifyJsonLdChain(docs: IJsonAnchoredDocument[] | string[],
-        options: ILdProofVerificationOptions): Promise<boolean> {
+        options?: ILdProofVerificationOptions): Promise<boolean> {
         return this.doVerifyChain(docs, true, options);
     }
 
@@ -89,7 +89,7 @@ export class IotaLdProofVerifier {
      */
     public static async verifyJsonChainSingleProof(docs: IJsonSignedDocument[] | string[],
         proof: IIotaLinkedDataProof,
-        options: ILdProofVerificationOptions): Promise<boolean> {
+        options?: ILdProofVerificationOptions): Promise<boolean> {
         return this.doVerifyChainSingleProof(docs, proof, false, options);
     }
 
@@ -104,7 +104,7 @@ export class IotaLdProofVerifier {
      */
     public static async verifyJsonLdChainSingleProof(docs: IJsonSignedDocument[] | string[],
         proof: IIotaLinkedDataProof,
-        options: ILdProofVerificationOptions): Promise<boolean> {
+        options?: ILdProofVerificationOptions): Promise<boolean> {
         return this.doVerifyChainSingleProof(docs, proof, true, options);
     }
 
@@ -119,7 +119,7 @@ export class IotaLdProofVerifier {
      */
     private static async doVerifyChain(docs: IJsonAnchoredDocument[] | string[],
         jsonLd: boolean,
-        options: ILdProofVerificationOptions
+        options?: ILdProofVerificationOptions
     ): Promise<boolean> {
         const documents: IJsonAnchoredDocument[] = [];
 
@@ -160,7 +160,7 @@ export class IotaLdProofVerifier {
                 verificationOptions.strict = options.strict;
             }
 
-            const verificationResult = await this.doVerify(document, jsonLd, verificationOptions);
+            const verificationResult = await this.doVerify(document, jsonLd, channel, verificationOptions);
 
             if (!verificationResult.result) {
                 return false;
@@ -174,7 +174,7 @@ export class IotaLdProofVerifier {
     private static async doVerifyChainSingleProof(docs: IJsonDocument[] | string[],
         proof: IIotaLinkedDataProof,
         jsonLd: boolean,
-        options: ILdProofVerificationOptions): Promise<boolean> {
+        options?: ILdProofVerificationOptions): Promise<boolean> {
         const proofDetails = proof.proofValue;
 
         let currentAnchorageID = proofDetails.anchorageID;
@@ -198,7 +198,6 @@ export class IotaLdProofVerifier {
 
         const verificationOptions: ILdProofVerificationOptions = {
             node: options.node,
-            channel,
             strict: true
         };
 
@@ -220,6 +219,7 @@ export class IotaLdProofVerifier {
 
             const verificationResult = await this.doVerify(doc as unknown as IJsonAnchoredDocument,
                 jsonLd,
+                channel,
                 verificationOptions
             );
 
@@ -237,7 +237,8 @@ export class IotaLdProofVerifier {
 
     private static async doVerify(document: IJsonAnchoredDocument,
         jsonLd: boolean,
-        options: ILdProofVerificationOptions): Promise<{
+        channel: IotaAnchoringChannel,
+        options?: ILdProofVerificationOptions): Promise<{
             result: boolean;
             fetchResult?: IFetchResult;
         }> {
@@ -251,7 +252,6 @@ export class IotaLdProofVerifier {
 
         let fetchResult: IFetchResult;
 
-        let channel = options.channel;
         if (!channel) {
             channel = await IotaAnchoringChannel.create(undefined, options.node).bind(proofDetails.channelID);
         }
