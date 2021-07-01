@@ -112,7 +112,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[2]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node, strict: true });
+    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify);
     expect(result).toBe(false);
   });
 
@@ -127,7 +127,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[2]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node, strict: false });
+    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { strict: false });
     expect(result).toBe(true);
   });
 
