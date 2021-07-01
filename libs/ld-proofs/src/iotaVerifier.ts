@@ -92,7 +92,7 @@ export class IotaVerifier {
      * @returns true or false depending on the verification result
      */
     public static async verifyJsonLd(doc: IJsonSignedDocument | string,
-        options: IJsonVerificationOptions): Promise<boolean> {
+        options?: IJsonVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getSignedJsonLdDocument(doc);
 
         const resolution = await this.verificationMethod(document, options?.node);

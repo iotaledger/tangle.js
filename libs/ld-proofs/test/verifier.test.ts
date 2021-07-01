@@ -131,7 +131,7 @@ describe("Verify messages", () => {
       proof: jsonLdProof
     };
 
-    const result = await IotaVerifier.verifyJsonLd(signedDoc, { node });
+    const result = await IotaVerifier.verifyJsonLd(signedDoc);
 
     expect(result).toBe(true);
   });
