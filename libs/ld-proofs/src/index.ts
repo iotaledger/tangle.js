@@ -5,6 +5,7 @@ export * from "./iotaLdProofVerifier";
 export * from "./models/ISigningResult";
 export * from "./models/ISigningOptions";
 export * from "./models/IVerificationOptions";
+export * from "./models/IJsonVerificationOptions";
 export * from "./models/IIotaLinkedDataProof";
 export * from "./models/ILinkedDataSignature";
 export * from "./models/ILdProofOptions";

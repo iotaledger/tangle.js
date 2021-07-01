@@ -93,7 +93,7 @@ describe("Verify messages", () => {
       proof: jsonProof
     };
 
-    const result = await IotaVerifier.verifyJson(docToVerify, { node });
+    const result = await IotaVerifier.verifyJson(docToVerify);
 
     expect(result).toBe(true);
   });

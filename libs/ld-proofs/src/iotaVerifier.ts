@@ -38,7 +38,7 @@ export class IotaVerifier {
             throw new LdProofError(LdProofErrorNames.INVALID_DID, "Invalid DID");
         }
 
-        const resolution = await DidService.resolveMethod(options.node,
+        const resolution = await DidService.resolveMethod(options?.node,
             options.verificationMethod);
 
         if (resolution.type !== "Ed25519VerificationKey2018") {
@@ -51,7 +51,7 @@ export class IotaVerifier {
     }
 
     /**
-     * Verifies a plain JSON document containing a Linked Data Signature
+     * Verifies a JSON document containing a Linked Data Signature
      *
      * @param doc The document to verify
      * @param options The verification options
@@ -59,10 +59,10 @@ export class IotaVerifier {
      * @returns true or false depending on the verification result
      */
     public static async verifyJson(doc: IJsonSignedDocument | string,
-        options: IJsonVerificationOptions): Promise<boolean> {
+        options?: IJsonVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getSignedDocument(doc);
 
-        const resolution = await this.verificationMethod(document, options.node);
+        const resolution = await this.verificationMethod(document, options?.node);
 
         const proof = document.proof;
 
@@ -95,7 +95,7 @@ export class IotaVerifier {
         options: IJsonVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getSignedJsonLdDocument(doc);
 
-        const resolution = await this.verificationMethod(document, options.node);
+        const resolution = await this.verificationMethod(document, options?.node);
 
         const proof = document.proof;
 
