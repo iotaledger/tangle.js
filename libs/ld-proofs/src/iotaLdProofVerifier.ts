@@ -87,7 +87,7 @@ export class IotaLdProofVerifier {
      *
      * @returns The global result of the verification
      */
-    public static async verifyJsonChainSingleProof(docs: IJsonSignedDocument[] | string[],
+    public static async verifyJsonChainSingleProof(docs: IJsonDocument[] | string[],
         proof: IIotaLinkedDataProof,
         options?: ILdProofVerificationOptions): Promise<boolean> {
         return this.doVerifyChainSingleProof(docs, proof, false, options);
@@ -102,7 +102,7 @@ export class IotaLdProofVerifier {
      *
      * @returns The global result of the verification
      */
-    public static async verifyJsonLdChainSingleProof(docs: IJsonSignedDocument[] | string[],
+    public static async verifyJsonLdChainSingleProof(docs: IJsonDocument[] | string[],
         proof: IIotaLinkedDataProof,
         options?: ILdProofVerificationOptions): Promise<boolean> {
         return this.doVerifyChainSingleProof(docs, proof, true, options);
@@ -157,7 +157,7 @@ export class IotaLdProofVerifier {
             // The first needs to properly position on the channel
             if (index === 0) {
                 verificationOptions.strict = false;
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+                // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
             } else if (options && options.strict === false) {
                 verificationOptions.strict = false;
             } else {
@@ -203,21 +203,23 @@ export class IotaLdProofVerifier {
 
         const verificationOptions: ILdProofVerificationOptions = {
             node: options?.node,
-            strict: true
+            // As we always are going to need to a fetch strict is false
+            // However in the future there should be at the anchoring channel level
+            // a function that allows to do a strict fetch next
+            strict: false
         };
 
         let index = 0;
         for (const doc of documents) {
+            // Clone it to use it locally
             const docProof = JSON.parse(JSON.stringify(proof));
+
             // The anchorageID has to be updated for this new built proof
-            proof.proofValue.anchorageID = currentAnchorageID;
+            docProof.proofValue.anchorageID = currentAnchorageID;
             // The messageID is only relevant for the first one
-            if (index++ !== 0) {
-                delete proof.proofValue.msgID;
-                // First verification is not strict as we have to position on the channel
-                verificationOptions.strict = false;
-            } else {
-                verificationOptions.strict = true;
+            if (index !== 0) {
+                // The message ID no longer applies
+                delete docProof.proofValue.msgID;
             }
 
             doc.proof = docProof;
@@ -235,6 +237,8 @@ export class IotaLdProofVerifier {
             currentAnchorageID = verificationResult.fetchResult.msgID;
 
             delete doc.proof;
+
+            index++;
         }
 
         return true;

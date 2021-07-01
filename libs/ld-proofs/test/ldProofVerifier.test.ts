@@ -4,6 +4,7 @@ import { IotaLdProofVerifier } from "../src/iotaLdProofVerifier";
 import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "../src/models/IJsonAnchoredDocument";
+import { IJsonDocument } from "../src/models/IJsonDocument";
 import { did, privateKey } from "./testCommon";
 
 describe("Verify IOTA Linked Data Proofs", () => {
@@ -127,6 +128,15 @@ describe("Verify IOTA Linked Data Proofs", () => {
       }
     ];
     const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node, strict: false });
+    expect(result).toBe(true);
+  });
+
+  test("should verify of a chain of Linked Data Proofs using an starting proof. JSON-LD", async () => {
+    const documentsToVerify: IJsonDocument[] = [
+     jsonLdDocument1,
+     jsonLdDocument2
+    ];
+    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(documentsToVerify, chainIotaLdProofJsonLd[0]);
     expect(result).toBe(true);
   });
 });
