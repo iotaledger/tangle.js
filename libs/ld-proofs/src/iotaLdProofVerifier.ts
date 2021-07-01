@@ -135,14 +135,15 @@ export class IotaLdProofVerifier {
             documents.push(doc);
         }
 
+        const node = options?.node;
+
         // The Channel will be used to verify the proofs
         const channelID = documents[0].proof.proofValue.channelID;
-        const channel = await IotaAnchoringChannel.create(undefined, options.node).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, node).bind(channelID);
 
         let index = 0;
-        const verificationOptions = {
-            ...options,
-            channel
+        const verificationOptions: ILdProofVerificationOptions = {
+            ...options
         };
 
         for (const document of documents) {
@@ -156,8 +157,11 @@ export class IotaLdProofVerifier {
             // The first needs to properly position on the channel
             if (index === 0) {
                 verificationOptions.strict = false;
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+            } else if (options && options.strict === false) {
+                verificationOptions.strict = false;
             } else {
-                verificationOptions.strict = options.strict;
+                verificationOptions.strict = true;
             }
 
             const verificationResult = await this.doVerify(document, jsonLd, channel, verificationOptions);
@@ -168,6 +172,7 @@ export class IotaLdProofVerifier {
 
             index++;
         }
+
         return true;
     }
 
@@ -194,10 +199,10 @@ export class IotaLdProofVerifier {
         }
 
         const channelID = proofDetails.channelID;
-        const channel = await IotaAnchoringChannel.create(undefined, options.node).bind(channelID);
+        const channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(channelID);
 
         const verificationOptions: ILdProofVerificationOptions = {
-            node: options.node,
+            node: options?.node,
             strict: true
         };
 
@@ -242,7 +247,7 @@ export class IotaLdProofVerifier {
             result: boolean;
             fetchResult?: IFetchResult;
         }> {
-        if (!ValidationHelper.url(options.node)) {
+        if (options?.node && !ValidationHelper.url(options.node)) {
             throw new LdProofError(LdProofErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
@@ -253,12 +258,13 @@ export class IotaLdProofVerifier {
         let fetchResult: IFetchResult;
 
         if (!channel) {
-            channel = await IotaAnchoringChannel.create(undefined, options.node).bind(proofDetails.channelID);
+            channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(proofDetails.channelID);
         }
 
         try {
             // In strict mode we just receive the message
-            if (options.strict) {
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+            if (!options || options.strict === true) {
                 fetchResult = await channel.receive(proofDetails.msgID, proofDetails.anchorageID);
             } else {
                 // In non strict mode we can jump to the right anchorage
@@ -282,12 +288,12 @@ export class IotaLdProofVerifier {
         if (jsonLd) {
             result = await IotaVerifier.verifyJsonLd(
                 document as unknown as IJsonSignedDocument,
-                { node: options.node }
+                { node: options?.node }
             );
         } else {
             result = await IotaVerifier.verifyJson(
-               document as unknown as IJsonSignedDocument,
-               { node: options.node }
+                document as unknown as IJsonSignedDocument,
+                { node: options?.node }
             );
         }
 
