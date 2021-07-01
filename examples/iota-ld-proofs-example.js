@@ -24,7 +24,7 @@ async function main() {
     console.log("Creating a signer with DID", myDID);
     const signer = await IotaSigner.create(myDID);
 
-    console.log("Creating an anchoring channel ...");
+    console.log("Creating and binding an anchoring channel ...");
     const anchoringChannel = await IotaAnchoringChannel.create().bind();
     console.log(anchoringChannel.channelID);
 

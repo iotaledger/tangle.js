@@ -131,6 +131,36 @@ describe("Verify IOTA Linked Data Proofs", () => {
     expect(result).toBe(true);
   });
 
+  test.skip("should fail verification of a chain of Linked Data Proofs. Wrong Order. Non-Strict", async () => {
+    const documentsToVerify: IJsonAnchoredDocument[] = [
+      {
+        ...jsonLdDocument3,
+        proof: chainIotaLdProofJsonLd[2]
+      },
+      {
+        ...jsonLdDocument1,
+        proof: chainIotaLdProofJsonLd[0]
+      }
+    ];
+    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { strict: false });
+    expect(result).toBe(false);
+  });
+
+  test.skip("should fail verification of a chain of Linked Data Proofs. Wrong Order. Strict", async () => {
+    const documentsToVerify: IJsonAnchoredDocument[] = [
+      {
+        ...jsonLdDocument3,
+        proof: chainIotaLdProofJsonLd[2]
+      },
+      {
+        ...jsonLdDocument1,
+        proof: chainIotaLdProofJsonLd[0]
+      }
+    ];
+    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify);
+    expect(result).toBe(false);
+  });
+
   test("should verify of a chain of Linked Data Proofs using an starting proof. JSON-LD", async () => {
     const documentsToVerify: IJsonDocument[] = [
      jsonLdDocument1,
@@ -138,5 +168,15 @@ describe("Verify IOTA Linked Data Proofs", () => {
     ];
     const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(documentsToVerify, chainIotaLdProofJsonLd[0]);
     expect(result).toBe(true);
+  });
+
+  test("should fail verification on a chain of Linked Data Proofs using an starting proof. JSON-LD", async () => {
+    const documentsToVerify: IJsonDocument[] = [
+     jsonLdDocument1,
+     jsonLdDocument3,
+     jsonLdDocument2
+    ];
+    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(documentsToVerify, chainIotaLdProofJsonLd[0]);
+    expect(result).toBe(false);
   });
 });
