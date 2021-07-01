@@ -4,12 +4,12 @@
 
 ## How it works
 
-Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) specification this library allows to generate and verify Linked Data Proofs associated to plain messages or JSON(-LD) documents. Different kind of Linked Data Proofs can be generated:
+Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) proposed specification this library allows the generation and verification of Linked Data Proofs associated to plain messages or JSON(-LD) documents. Different kinds of Linked Data Proofs can be generated:
 
 * EdDSA (Ed25519) Signatures over plain messages
 * Linked Data Signatures for JSON-LD Documents [Ed25519Signature2018](https://w3c-ccg.github.io/lds-ed25519-2018/) 
-* Signatures for JSON Documents [JcsEd25519Signature2020](https://identity.foundation/JcsEd25519Signature2020/)
-* Linked Data Proofs anchored to the Tangle (using the [anchors](../anchors) library `IotaLinkedDataProof2021`). These type of proof anchors to the Tangle a Linked Data Signature together with a reference to the signed document. 
+* Linked Data Signatures for JSON Documents [JcsEd25519Signature2020](https://identity.foundation/JcsEd25519Signature2020/)
+* Linked Data Proofs anchored to the Tangle (using the [anchors](../anchors) library). The proof's type is `IotaLinkedDataProof2021`. This type of proof anchors to the Tangle a Linked Data Signature together with a reference to the signed document. 
 
 The identities and their corresponding public key materials follow the [W3C DID](https://www.w3.org/TR/did-core/) specification. 
 
@@ -29,8 +29,9 @@ const jsonLdDocument = {
 };
 
 const options: ISigningOptions = {
-    method,
-    privateKey
+    verificationMethod,
+    secret: privateKey,
+    signatureType: "Ed25519Signature2018"
 };
 // Obtains a Linked Data Signature
 const ldSignature = signer.signJsonLd(jsonLdDocument, options);
@@ -44,7 +45,7 @@ const signedDoc = {
     "@context": "https://schema.org",
     "type": "Organization",
     "name": "IOTA Foundation",
-    proof: {
+    "proof": {
         "proofValue": "3JTS3UaJc2aS2rxkQ1Z4GEs9HjvASnm3e2s5VT5pS8voGEBodWBBd6P7YUmq8eN92H9v1u2gmqER7Y6wXhgcywYX",
         "type": "Ed25519Signature2018",
         "verificationMethod": "did:iota:2pu42SstXrg7uMEGHS5qkBDEJ1hrbrYtWQReMUvkCrDP#key",
@@ -53,6 +54,7 @@ const signedDoc = {
     }
 };
 
+// True if verified. False otherwise. 
 const verified = await IotaVerifier.verifyJsonLd(signedDoc);
 ```
 
@@ -63,19 +65,37 @@ See the [anchors](../anchors) library and the `IotaSigner` class.
 ```ts
 const anchorChannel = /* Instantiate an anchoring channel */
 const signer = /* Instantiate a signer */
-const proofGenerator = new IotaLdProofGenerator(anchoringChannel, signer);
+const proofGenerator = IotaLdProofGenerator.create(anchoringChannel, signer);
 // Generates the Linked Data Signature and anchors it to the Tangle generating 
 // an Iota proof
-const tangleProof = await proofGenerator.generateLd(jsonLdDocument, anchorageID);
+const tangleProof = await proofGenerator.generateLd(jsonLdDocument, {
+    verificationMethod,
+    secret,
+    signatureType: "Ed25519Signature2018"
+    anchorageID: anchoringChannel.firstAnchorageID
+});
 ```
 
 ### Linked Data Proofs verification
 
 ```ts
 const anchoredDoc = {
-
+    "@context": "https://schema.org",
+    "type": "Organization",
+    "name": "IOTA Foundation",
+    "proof": {
+        "type": "IotaLinkedDataProof2021",
+        "verificationMethod": "did:iota:yUxEqDGgL2WF4sQq2TEzdmDjDkRsHKL5TcLWrdAjmb4",
+        "proofPurpose": "dataVerification",
+        "proofValue": {
+            "channelID": "1761e16e50dd6c95f7155979b5691b0a4390559f6ff0287a297cc2ae818312c40000000000000000:7bc48fb8fe5dccdb81dd5dcd",
+            "anchorageID": "e7b123ed4c6a803538a52233",
+            "msgID": "1fa6dde995dd6320bc0f7958"
+        },
+        "created": "2021-07-01T10:21:50.338Z"
+    }
 };
-const verified = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc, options?);
+const verified = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc);
 ```
 
 ### Signing plain messages
@@ -99,8 +119,8 @@ const method = "key";
 const privateKey = "privateKeybase58";
 
 const options: ISigningOptions = {
-    method,
-    privateKey
+    verificationMethod: method,
+    secret: privateKey
 };
 
 const signingResult = await signer.sign(Buffer.from(message), options);
