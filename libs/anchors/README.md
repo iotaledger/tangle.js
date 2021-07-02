@@ -62,3 +62,9 @@ if the target message is not actually anchored to the expected anchorage.
 ```ts
 const result = await anchoringChannel.receive(msgID, expectedAnchorageID?);
 ``` 
+
+### Fetching messages iteratively
+
+```ts
+const next = await anchoringChannel.fetchNext();
+```

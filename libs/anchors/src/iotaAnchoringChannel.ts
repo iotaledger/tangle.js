@@ -78,7 +78,7 @@ export class IotaAnchoringChannel {
         }
         if (!channelID) {
             const { channelAddress, announceMsgID, authorPk } =
-                        await ChannelService.createChannel(this._node, this._seed);
+                await ChannelService.createChannel(this._node, this._seed);
             this._channelAddress = channelAddress;
             this._announceMsgID = announceMsgID;
             this._channelID = `${channelAddress}:${announceMsgID}`;
@@ -169,7 +169,7 @@ export class IotaAnchoringChannel {
      *  @returns the Author's Public key
      *
      */
-     public get authorPubKey(): string {
+    public get authorPubKey(): string {
         return this._authorPubKey;
     }
 
@@ -179,7 +179,7 @@ export class IotaAnchoringChannel {
      *  @returns the publisher's Public key
      *
      */
-     public get publisherPubKey(): string {
+    public get publisherPubKey(): string {
         return this._publisherPubKey;
     }
 
@@ -235,6 +235,20 @@ export class IotaAnchoringChannel {
     }
 
     /**
+     * Fetches the next message anchored to the channel
+     *
+     * @returns The fetch result or undefined if no more messages can be fetched
+     */
+    public async fetchNext(): Promise<IFetchResult | undefined> {
+        if (!this._channelAddress) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
+                "Unbound anchoring channel. Please call bind first");
+        }
+
+        return FetchMsgService.fetchNext(this._subscriber);
+    }
+
+    /**
      * Receives a previously anchored message
      * provided its anchorage has already been seen on the channel
      *
@@ -243,7 +257,7 @@ export class IotaAnchoringChannel {
      *
      * @returns The message received and associated metadata
      */
-     public async receive(messageID: string, anchorageID?: string): Promise<IFetchResult> {
+    public async receive(messageID: string, anchorageID?: string): Promise<IFetchResult> {
         if (!this._channelAddress) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");

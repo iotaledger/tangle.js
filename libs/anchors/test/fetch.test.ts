@@ -89,6 +89,31 @@ describe("Fetch Messages", () => {
         expect(response.message.toString()).toBe(MSG_2);
     });
 
+    test("should fetch using fetchNext method", async () => {
+        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+
+        const response = await channel.fetchNext();
+
+        expect(response.msgID).toBe(msgID1);
+        expect(response.message.toString()).toBe(MSG_1);
+
+        const response2 = await channel.fetchNext();
+
+        expect(response2.msgID).toBe(msgID2);
+        expect(response2.message.toString()).toBe(MSG_2);
+
+        const response3 = await channel.fetchNext();
+        expect(response3).toBeUndefined();
+    });
+
+    test("should return undefined if fetchNext on an empty channel", async () => {
+        const channel = await newChannel(network);
+
+        const response = await channel.fetchNext();
+
+        expect(response).toBeUndefined();
+    });
+
     test("should throw error if fetching a message from an anchorage which does not have anything", async () => {
         const channel = await newChannel(network);
         // First message

@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { Address } from "@tangle.js/iota_streams_wasm";
+import { Address, Subscriber } from "@tangle.js/iota_streams_wasm";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
@@ -90,5 +90,23 @@ export default class FetchMsgService {
       msgID,
       pk
     };
+  }
+
+  public static async fetchNext(subscriber: Subscriber): Promise<IFetchResult | undefined> {
+    const messages = await subscriber.clone().fetch_next_msgs();
+
+    if (!messages || messages.length === 0) {
+      return;
+    }
+
+    const msg = messages[0];
+
+    const result: IFetchResult = {
+      msgID: msg.get_link().copy().msg_id,
+      pk: msg.get_message().get_pk(),
+      message: Buffer.from(msg.get_message().get_public_payload())
+    };
+
+    return result;
   }
 }
