@@ -38,7 +38,7 @@
     "@iota/iota.js": "^1.5.3",
     "@iota/pow-neon.js": "^0.1.1",
     "yargs": "^15.4.1",
-    "@tangle.js/anchors": "0.9.0"
+    "@tangle.js/anchors": "0.9.1"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",
