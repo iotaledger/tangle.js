@@ -15,19 +15,21 @@
     },
     "license": "Apache-2.0",
     "engines": {
-        "node": ">=12",
+        "node": ">=14",
         "npm": ">=7"
     },
     "scripts": {
         "test": "npm run test --workspaces",
         "build": "npm run build --workspaces",
         "build-anchors": "npm run build --workspace='libs/anchors'",
+        "build-iotax": "npm run build --workspace='tools/iotax'",
         "build-proofs": "npm run build --workspace='libs/ld-proofs'",
         "test-anchors": "npm test --workspace='libs/anchors'",
         "test-proofs": "npm test --workspace='libs/ld-proofs'"
     },
     "workspaces": [
         "libs/anchors",
-        "libs/ld-proofs"
+        "libs/ld-proofs",
+        "tools/iotax"
     ]
 }
