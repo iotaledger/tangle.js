@@ -1,6 +1,6 @@
 {
     "name": "@tangle.js/anchors",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "description": "Anchoring messages to the Tangle. Powered by IOTA Streams",
     "scripts": {
         "build-clean": "rimraf ./es/* ./typings/*",
@@ -28,7 +28,7 @@
         "channels"
     ],
     "engines": {
-        "node": "12.x"
+        "node": "14.x"
     },
     "author": "Jose M. Cantera",
     "license": "Apache 2.0",

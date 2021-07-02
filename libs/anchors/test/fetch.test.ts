@@ -76,6 +76,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetch(channel.firstAnchorageID);
 
+        expect(response.msgID).toBe(msgID1);
         expect(response.message.toString()).toBe(MSG_1);
     });
 
@@ -84,6 +85,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetch(msgID1);
 
+        expect(response.msgID).toBe(msgID2);
         expect(response.message.toString()).toBe(MSG_2);
     });
 

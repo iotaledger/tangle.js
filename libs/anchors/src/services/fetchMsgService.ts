@@ -59,7 +59,7 @@ export default class FetchMsgService {
 
     return {
       message: messageContent,
-      msgID,
+      msgID: receivedMsgID,
       pk
     };
   }
