@@ -182,8 +182,6 @@ export class IotaLdProofVerifier {
         options?: ILdProofVerificationOptions): Promise<boolean> {
         const proofDetails = proof.proofValue;
 
-        let currentAnchorageID = proofDetails.anchorageID;
-
         const documents: IJsonDocument[] = [];
 
         for (const document of docs) {
@@ -198,47 +196,79 @@ export class IotaLdProofVerifier {
             documents.push(doc);
         }
 
+        let isStrict = true;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+        if (options?.strict === false) {
+            isStrict = false;
+        }
+
         const channelID = proofDetails.channelID;
         const channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(channelID);
 
+        // First the first document has to be verified and as usual strict is false for the first
         const verificationOptions: ILdProofVerificationOptions = {
             node: options?.node,
-            // As we always are going to need to a fetch strict is false
-            // However in the future there should be at the anchoring channel level
-            // a function that allows to do a strict fetch next
             strict: false
         };
+        // Clone it to use it locally
+        const docProof = JSON.parse(JSON.stringify(proof));
+        const doc = documents[0] as unknown as IJsonAnchoredDocument;
+        doc.proof = docProof;
+        const verificationResult = await this.doVerify(
+            doc,
+            jsonLd,
+            channel,
+            verificationOptions
+        );
 
-        let index = 0;
-        for (const doc of documents) {
-            // Clone it to use it locally
-            const docProof = JSON.parse(JSON.stringify(proof));
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+        if (verificationResult.result === false) {
+            return false;
+        }
 
-            // The anchorageID has to be updated for this new built proof
-            docProof.proofValue.anchorageID = currentAnchorageID;
-            // The messageID is only relevant for the first one
-            if (index !== 0) {
-                // The message ID no longer applies
-                delete docProof.proofValue.msgID;
+        // In strict mode we should test the anchorageID but unfortunately that is a IOTA Streams limitation
+        // let currentAnchorageID = verificationResult.fetchResult.msgID;
+
+        // Verification of the rest of documents
+        for (let index = 1; index < documents.length; index++) {
+            const aDoc = documents[index] as IJsonSignedDocument;
+
+            let fetchResult = await channel.fetchNext();
+
+            let verified = false;
+            while (!verified && fetchResult) {
+                const linkedDataSignature = JSON.parse(fetchResult.message.toString());
+
+                // now assign the Linked Data Signature as proof
+                aDoc.proof = linkedDataSignature;
+
+                if (jsonLd) {
+                    verified = await IotaVerifier.verifyJsonLd(
+                        aDoc,
+                        { node: options?.node }
+                    );
+                } else {
+                    verified = await IotaVerifier.verifyJson(
+                        aDoc,
+                        { node: options?.node }
+                    );
+                }
+
+                if (!verified) {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+                    if (isStrict === false) {
+                        fetchResult = await channel.fetchNext();
+                    } else {
+                        return false;
+                    }
+                }
             }
 
-            doc.proof = docProof;
-
-            const verificationResult = await this.doVerify(doc as unknown as IJsonAnchoredDocument,
-                jsonLd,
-                channel,
-                verificationOptions
-            );
-
-            if (!verificationResult.result) {
+            if (!verified || !fetchResult) {
                 return false;
             }
 
-            currentAnchorageID = verificationResult.fetchResult.msgID;
-
-            delete doc.proof;
-
-            index++;
+            delete aDoc.proof;
         }
 
         return true;
@@ -265,14 +295,18 @@ export class IotaLdProofVerifier {
             channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(proofDetails.channelID);
         }
 
+        const targetMsgID = proofDetails.msgID;
+
         try {
-            // In strict mode we just receive the message
+            // In strict mode we just fetch the next message
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-            if (!options || options.strict === true) {
-                fetchResult = await channel.receive(proofDetails.msgID, proofDetails.anchorageID);
+            if (!options || options.strict === undefined || options.strict === true) {
+                fetchResult = await channel.fetchNext();
             } else {
-                // In non strict mode we can jump to the right anchorage
-                fetchResult = await channel.fetch(proofDetails.anchorageID, proofDetails.msgID);
+                fetchResult = await channel.fetchNext();
+                while (fetchResult && fetchResult.msgID !== targetMsgID) {
+                    fetchResult = await channel.fetchNext();
+                }
             }
         } catch (error) {
             if (error.name === AnchoringChannelErrorNames.MSG_NOT_FOUND) {
@@ -280,6 +314,11 @@ export class IotaLdProofVerifier {
             }
 
             throw error;
+        }
+
+        // If this is not the message expected the verification has failed
+        if (!fetchResult || fetchResult.msgID !== targetMsgID) {
+            return { result: false };
         }
 
         const linkedDataSignature = JSON.parse(fetchResult.message.toString());
