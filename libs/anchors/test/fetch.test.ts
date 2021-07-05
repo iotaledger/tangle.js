@@ -9,17 +9,23 @@ describe("Fetch Messages", () => {
     let msgID1: string;
     let msgID2: string;
 
+    let seed: string;
+
     let channelID: string;
 
     beforeAll(async () => {
         const channel = await newChannel(network);
         channelID = channel.channelID;
+        seed = channel.seed;
+
+        console.log("ChannelID:", channelID);
+        console.log("Seed:", seed);
 
         // First message
         const result = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
         msgID1 = result.msgID;
 
-        // Second message
+        // Second message (using the same subscriber's seed)
         const result2 = await channel.anchor(Buffer.from(MSG_2), result.msgID);
         msgID2 = result2.msgID;
     });
@@ -112,6 +118,24 @@ describe("Fetch Messages", () => {
         const response = await channel.fetchNext();
 
         expect(response).toBeUndefined();
+    });
+
+    test("should only fetch one with 'fetchNext' if generated with different seeds", async () => {
+        const channel = await newChannel(network);
+        const response = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
+
+        // Here we are anchoring with a different seed
+        const channel2 = await IotaAnchoringChannel.create(undefined, network).bind(channel.channelID);
+        await channel2.anchor(Buffer.from(MSG_2), response.msgID);
+
+        const channel3 = await IotaAnchoringChannel.create(undefined, network).bind(channel.channelID);
+
+        const fetchNextResponse = await channel3.fetchNext();
+        expect(fetchNextResponse.message.toString()).toBe(MSG_1);
+
+        const fetchNextResponse2 = await channel3.fetchNext();
+        // As the message was anchored with a different seed (i.e. different subscribers)
+        expect(fetchNextResponse2).toBeUndefined();
     });
 
     test("should throw error if fetching a message from an anchorage which does not have anything", async () => {
