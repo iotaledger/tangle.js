@@ -30,14 +30,13 @@ iotax [command]
 Commands:
   iotax did      DID operations
   iotax vc       VC  Operations
-  iotax channel  IOTA Streams Anchoring Channel operations
+  iotax channel  Anchoring Channels operations
   iotax msg      Tangle message (indexation payloads) operations
 
 Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
   --testnet  IOTA testnet                                               [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
 ```
@@ -57,7 +56,6 @@ Options:
   --version   Show version number                                      [boolean]
   --mainnet   IOTA Mainnet                                             [boolean]
   --testnet   IOTA testnet                                              [boolean]
-  --comnet    IOTA Comnet                                              [boolean]
   --net, -n   Node's endpoint or other IOTA network                     [string]
   --help      Show help                                                [boolean]
 ```
@@ -73,7 +71,6 @@ Options:
   --version     Show version number                                      [boolean]
   --mainnet     IOTA Mainnet                                             [boolean]
   --testnet     IOTA testnet                                              [boolean]
-  --comnet      IOTA Comnet                                              [boolean]
   --net, -n     Node's endpoint or other IOTA network                     [string]
   --help        Show help                                                [boolean]
   --didService  List of DID services (JSON Array)                        [string]
@@ -90,7 +87,6 @@ Options:
   --version   Show version number                                      [boolean]
   --mainnet   IOTA Mainnet                                             [boolean]
   --testnet   IOTA testnet                                              [boolean]
-  --comnet    IOTA Comnet                                              [boolean]
   --net, -n   Node's endpoint or other IOTA network                     [string]
   --help      Show help                                                [boolean]
   --did      DID to be resolved                              [string] [required]
@@ -111,7 +107,6 @@ Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
   --testnet  IOTA testnet                                               [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
   --method   Verification Method                             [string] [required]
@@ -128,7 +123,6 @@ Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
   --testnet  IOTA testnet                                               [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
   --method   Verification Method                             [string] [required]
@@ -153,7 +147,6 @@ Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
   --testnet  IOTA testnet                                               [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
   --vc       Verifiable Credential to be verified (As JSON)  [string] [required]
@@ -169,7 +162,6 @@ Options:
   --version  Show version number                                       [boolean]
   --testnet  IOTA Chrysalis Testnet                                    [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
   --vc       VC to be presented                              [string] [required]
@@ -189,61 +181,90 @@ Anchoring Channels operations (Powered by IOTA Streams)
 
 ```
 Commands:
-  iotax channel anchor  Anchors a message to an IOTA Streams Channel
-  iotax channel fetch   Fetches one or more messages previously anchored to an
-                        IOTA Streams Channel
+  iotax.js channel create   Creates a new anchoring channel
+  iotax.js channel anchor   Anchors a message to an IOTA Streams Channel
+  iotax.js channel fetch    Fetches one message previously anchored
+  iotax.js channel inspect  Inspects an anchoring channel, visiting all messages
+                            anchored with the same seed
 
 Options:
   --version  Show version number                                       [boolean]
   --testnet  IOTA Chrysalis Testnet                                    [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
 ````
 
+### Anchoring Channel Creation
+
+```
+iotax.js channel create
+
+Creates a new anchoring channel
+
+Options:
+      --version  Show version number                                   [boolean]
+      --testnet  IOTA Chrysalis Testnet                                [boolean]
+      --mainnet  IOTA Chrysalis Mainnet                                [boolean]
+  -n, --net      Node's endpoint or other IOTA network                  [string]
+      --help     Show help                                             [boolean]
+      --seed     IOTA Streams Author's seed for creating the channel    [string]
+```
+
 ### Anchor message
 
 ```
-iotax channel anchor
-
 Anchors a message to an IOTA Streams Channel
 
 Options:
-  --version      Show version number                                   [boolean]
-  --testnet      IOTA Chrysalis Testnet                                [boolean]
-  --mainnet      IOTA Chrysalis Mainnet                                [boolean]
-  --comnet       IOTA Comnet                                           [boolean]
-  --net, -n       Node's endpoint or other IOTA network                     [string]
-  --help         Show help                                             [boolean]
-  --seed, -s     IOTA Streams Channel seed                              [string]
-  --msg          (JSON) Message content to be anchored       [string] [required]
-  --channel      ID of the Channel ('address:announceMsgID') to anchor the
-                 message to                                             [string]
-  --anchorageID  The anchorage point (message) ID to anchor the message to
-                                                                        [string]
+      --version      Show version number                               [boolean]
+      --testnet      IOTA Chrysalis Testnet                            [boolean]
+      --mainnet      IOTA Chrysalis Mainnet                            [boolean]
+  -n, --net          Node's endpoint or other IOTA network              [string]
+      --help         Show help                                         [boolean]
+      --seed         IOTA Streams Subscriber's seed to use to anchor the message
+                                                             [string] [required]
+      --msg          (JSON) Message content to be anchored   [string] [required]
+      --channelID    ID of the Channel ('address:announceMsgID') to anchor the
+                     message to                              [string] [required]
+      --anchorageID  The anchorage point (message) ID to anchor the message to
+                                                             [string] [required]
 ```
 
-### Fetch message(s)
+### Fetch message
 
 ```
-iotax channel fetch
-
-Fetches one or more messages previously anchored to an IOTA Streams Channel
+Fetches one message previously anchored
 
 Options:
-  --version      Show version number                                   [boolean]
-  --testnet      IOTA Chrysalis Testnet                                [boolean]
-  --mainnet      IOTA Chrysalis Mainnet                                [boolean]
-  --comnet       IOTA Comnet                                           [boolean]
-  --net, -n      Node's endpoint or other IOTA network                     [string]
-  --help         Show help                                             [boolean]
-  --seed, -s     IOTA Streams Channel seed                              [string]
-  --channel      ID of the Channel ('address:announceMsgID') from which to fetch
-                 the message                                            [string]
-  --msgID        ID of the message to be fetched                        [string]
-  --anchorageID  ID of the anchorage where the message(s) to be fetched are
-                 anchored to                                            [string]
+      --version      Show version number                               [boolean]
+      --testnet      IOTA Chrysalis Testnet                            [boolean]
+      --mainnet      IOTA Chrysalis Mainnet                            [boolean]
+  -n, --net          Node's endpoint or other IOTA network              [string]
+      --help         Show help                                         [boolean]
+      --seed         IOTA Streams Subscriber's seed to fetch on the channel
+                                                                        [string]
+      --channelID    ID of the Channel ('address:announceMsgID') from which to
+                     fetch the message                       [string] [required]
+      --msgID        ID of the message to be fetched                    [string]
+      --anchorageID  ID of the anchorage where the message to be fetched is
+                     anchored to                             [string] [required]
+```
+
+### Inspect message
+
+```
+Inspects an anchoring channel, visiting all messages anchored with the same seed
+
+Options:
+      --version    Show version number                                 [boolean]
+      --testnet    IOTA Chrysalis Testnet                              [boolean]
+      --mainnet    IOTA Chrysalis Mainnet                              [boolean]
+  -n, --net        Node's endpoint or other IOTA network                [string]
+      --help       Show help                                           [boolean]
+      --seed       IOTA Streams Subscriber's seed to inspect the channel[string]
+      --channelID  ID of the Channel ('address:announceMsgID') from which to
+                   fetch the message                         [string] [required]
 ```
 
 ## Tangle Messages
@@ -259,7 +280,6 @@ Commands:
   --version  Show version number                                       [boolean]
   --testnet  IOTA Chrysalis Testnet                                    [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
   --help     Show help                                                 [boolean]
 ```
@@ -275,7 +295,6 @@ Options:
   --version  Show version number                                       [boolean]
   --testnet  IOTA Chrysalis Testnet                                    [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
   --help     Show help                                                 [boolean]
   --msg      Message content to be submitted                 [string] [required]
@@ -293,7 +312,6 @@ Options:
   --version  Show version number                                       [boolean]
   --testnet  IOTA Chrysalis Testnet                                    [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --comnet   IOTA Comnet                                               [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
   --help     Show help                                                 [boolean]
   --msgID    ID of the message to be retrieved               [string] [required]

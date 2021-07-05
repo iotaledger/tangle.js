@@ -38,7 +38,7 @@ export default class FetchMsgCommand implements ICommand {
 
   public name: string = "fetch";
 
-  public description: string = "Fetches one or more messages previously anchored to an IOTA Streams Channel";
+  public description: string = "Fetches one message previously anchored";
 
   public async execute(args: Arguments): Promise<boolean> {
     return FetchMsgCommandExecutor.execute(args);

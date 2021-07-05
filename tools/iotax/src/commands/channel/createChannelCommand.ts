@@ -8,7 +8,7 @@ const params: ICommandParam[] = [
     name: "seed",
     options: {
       type: "string",
-      description: "IOTA Streams author's seed for creating the channel",
+      description: "IOTA Streams Author's seed for creating the channel",
       required: false
     }
   }
@@ -19,7 +19,7 @@ export default class CreateChannelCommand implements ICommand {
 
   public name: string = "create";
 
-  public description: string = "Creates a new IOTA anchoring channel";
+  public description: string = "Creates a new anchoring channel";
 
   public async execute(args: Arguments): Promise<boolean> {
     return CreateChannelCommandExecutor.execute(args);

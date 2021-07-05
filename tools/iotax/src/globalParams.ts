@@ -19,14 +19,6 @@ export const globalParams: ICommandParam[] = [
     }
   },
   {
-    name: "comnet",
-    options: {
-      type: "boolean",
-      description: "IOTA Comnet",
-      global: true
-    }
-  },
-  {
     name: "net",
     options: {
       alias: "n",
@@ -38,9 +30,8 @@ export const globalParams: ICommandParam[] = [
 ];
 
 export const globalConflicts = {
-  mainnet: ["testnet", "comnet", "net"],
-  testnet: ["mainnet", "comnet", "net"],
-  comnet: ["mainnet", "testnet", "net"]
+  mainnet: ["testnet", "net"],
+  testnet: ["mainnet", "net"]
 };
 
 /**

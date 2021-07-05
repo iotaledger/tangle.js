@@ -21,7 +21,7 @@ export default class InspectChannelCommand implements ICommand {
 
   public name: string = "inspect";
 
-  public description: string = "Inspects the channel, visiting all messages anchored with the same seed";
+  public description: string = "Inspects an anchoring channel, visiting all messages anchored with the same seed";
 
   public async execute(args: Arguments): Promise<boolean> {
     return InspectChannelCommandExecutor.execute(args);
