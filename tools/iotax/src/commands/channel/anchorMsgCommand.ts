@@ -1,12 +1,17 @@
 import { Arguments, Argv } from "yargs";
-import { isDefined } from "../../globalParams";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
-import { seedParam } from "../commonParams";
 import AnchorMsgCommandExecutor from "./anchorMsgCommandExecutor";
 
 const params: ICommandParam[] = [
-  seedParam,
+  {
+    name: "seed",
+    options: {
+      type: "string",
+      description: "IOTA Streams Subscriber's seed to use to anchor the message",
+      required: true
+    }
+  },
   {
     name: "msg",
     options: {
@@ -16,11 +21,11 @@ const params: ICommandParam[] = [
     }
   },
   {
-    name: "channel",
+    name: "channelID",
     options: {
       type: "string",
       description: "ID of the Channel ('address:announceMsgID') to anchor the message to",
-      required: false
+      required: true
     }
   },
   {
@@ -28,7 +33,7 @@ const params: ICommandParam[] = [
     options: {
       type: "string",
       description: "The anchorage point (message) ID to anchor the message to",
-      required: false
+      required: true
     }
   }
 ];
@@ -48,25 +53,5 @@ export default class AnchorMsgCommand implements ICommand {
     params.forEach(aParam => {
       yargs.option(aParam.name, aParam.options);
     });
-
-    yargs.check(anchorMsgChecks, false);
-  }
-}
-
-/**
- * Check that the proper parameters are passed
- *
- * @param argv The command line arguments
- *
- * @returns boolean or throws an exception
- *
- */
- function anchorMsgChecks(argv) {
-  if (!isDefined(argv, "anchorageID") && isDefined(argv, "channel")) {
-    throw new Error(
-      "When specifying a channel you need to also specify the anchorageID point"
-    );
-  } else {
-    return true;
   }
 }

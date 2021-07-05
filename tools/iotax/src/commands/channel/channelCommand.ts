@@ -2,13 +2,18 @@ import { Arguments, Argv } from "yargs";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
 import AnchorMsgCommand from "./anchorMsgCommand";
+import CreateChannelCommand from "./createChannelCommand";
 import FetchMsgCommand from "./fetchMsgCommand";
+import InspectChannelCommand from "./inspectChannelCommand";
+
 
 const params: ICommandParam[] = [];
 
 const subCommands: Record<string, ICommand> = {
+  create: new CreateChannelCommand(),
   anchor: new AnchorMsgCommand(),
-  fetch: new FetchMsgCommand()
+  fetch: new FetchMsgCommand(),
+  inspect: new InspectChannelCommand()
 };
 
 export class ChannelCommand implements ICommand {

@@ -1,5 +1,4 @@
 import { Arguments } from "yargs";
-import ICommandParam from "../ICommandParam";
 
 const COMNET_URL = "https://nodes.comnet.thetangle.org";
 const TESTNET_URL = "https://api.lb-0.testnet.chrysalis2.com";
@@ -21,16 +20,6 @@ providers[MAINNET_URL] = "mainnet";
 export function providerName(network: string): string {
   return providers[network];
 }
-
-export const seedParam: ICommandParam = {
-  name: "seed",
-  options: {
-    alias: "s",
-    type: "string",
-    description: "IOTA Streams Channel seed",
-    global: false
-  }
-};
 
 /**
  * Obtains the network params

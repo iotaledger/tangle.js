@@ -2,19 +2,19 @@ import { Arguments, Argv } from "yargs";
 import { isDefined } from "../../globalParams";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
-import { seedParam } from "../commonParams";
+import { channelParam } from "./channelParams";
 import FetchMsgCommandExecutor from "./fetchMsgCommandExecutor";
 
 const params: ICommandParam[] = [
-  seedParam,
   {
-    name: "channel",
+    name: "seed",
     options: {
       type: "string",
-      description: "ID of the Channel ('address:announceMsgID') from which to fetch the message",
+      description: "IOTA Streams Subscriber's seed to fetch on the channel",
       required: false
     }
   },
+  channelParam,
   {
     name: "msgID",
     options: {
@@ -27,8 +27,8 @@ const params: ICommandParam[] = [
     name: "anchorageID",
     options: {
       type: "string",
-      description: "ID of the anchorage where the message(s) to be fetched are anchored to",
-      required: false
+      description: "ID of the anchorage where the message to be fetched is anchored to",
+      required: true
     }
   }
 ];

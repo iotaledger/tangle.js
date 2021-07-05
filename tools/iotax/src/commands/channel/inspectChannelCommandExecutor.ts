@@ -4,7 +4,7 @@ import { Arguments } from "yargs";
 import { isDefined } from "../../globalParams";
 import { getNetworkParams } from "../commonParams";
 
-export default class FetchMsgCommandExecutor {
+export default class InspectChannelCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
     const node = getNetworkParams(args).network;
 
@@ -18,19 +18,20 @@ export default class FetchMsgCommandExecutor {
     try {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
+
       const channel = await IotaAnchoringChannel.create(seed, node).bind(channelID);
 
-      const anchorageID = args.anchorageID as string;
-      const msgID = args.msgID as string;
-      const result = await channel.fetch(anchorageID, msgID);
+      let messageDetails = await channel.fetchNext();
+      while (messageDetails !== undefined) {
+        const output = {
+          message: messageDetails.message.toString(),
+          publicKey: messageDetails.pk,
+          msgID: messageDetails.msgID
+        };
+        console.log(output);
 
-      const output = {
-        message: result.message.toString(),
-        publicKey: result.pk,
-        msgID: result.msgID
-      };
-
-      console.log(output);
+        messageDetails = await channel.fetchNext();
+      }
     } catch (error) {
       console.error("Error:", error);
       return false;
