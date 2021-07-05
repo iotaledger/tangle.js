@@ -251,7 +251,7 @@ Options:
                      anchored to                             [string] [required]
 ```
 
-### Inspect message
+### Inspect channel
 
 ```
 Inspects an anchoring channel, visiting all messages anchored with the same seed
@@ -265,6 +265,20 @@ Options:
       --seed       IOTA Streams Subscriber's seed to inspect the channel[string]
       --channelID  ID of the Channel ('address:announceMsgID') from which to
                    fetch the message                         [string] [required]
+```
+
+## Seed generation
+
+```
+Creates a new seed to be used to interact with anchoring channels
+
+Options:
+      --version  Show version number                                   [boolean]
+      --testnet  IOTA Chrysalis Testnet                                [boolean]
+      --mainnet  IOTA Chrysalis Mainnet                                [boolean]
+  -n, --net      Node's endpoint or other IOTA network                  [string]
+      --help     Show help                                             [boolean]
+      --size     Size of the seed                                       [number]
 ```
 
 ## Tangle Messages
