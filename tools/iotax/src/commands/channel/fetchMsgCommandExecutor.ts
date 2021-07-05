@@ -1,19 +1,13 @@
 /* eslint-disable no-duplicate-imports */
-import { IotaAnchoringChannel, SeedHelper } from "@tangle.js/anchors";
+import { IotaAnchoringChannel } from "@tangle.js/anchors";
 import { Arguments } from "yargs";
-import { isDefined } from "../../globalParams";
 import { getNetworkParams } from "../commonParams";
 
 export default class FetchMsgCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
     const node = getNetworkParams(args).network;
 
-    let seed = "";
-    if (!isDefined(args, "seed")) {
-      seed = SeedHelper.generateSeed();
-    } else {
-      seed = args.seed as string;
-    }
+    const seed = args.seed as string;
 
     try {
       // Channel contains the channel address + the announce messageID

@@ -240,7 +240,7 @@ Options:
   -n, --net          Node's endpoint or other IOTA network              [string]
       --help         Show help                                         [boolean]
       --seed         IOTA Streams Subscriber's seed to fetch on the channel
-                                                                        [string]
+                                                             [string] [required]
       --channelID    ID of the Channel ('address:announceMsgID') from which to
                      fetch the message                       [string] [required]
       --msgID        ID of the message to be fetched                    [string]
@@ -251,7 +251,7 @@ Options:
 ### Inspect channel
 
 ```
-Inspects an anchoring channel, visiting all messages anchored with the same seed
+Inspects an anchoring channel, visiting all messages anchored. 
 
 Options:
       --version    Show version number                                 [boolean]
@@ -259,7 +259,8 @@ Options:
       --mainnet    IOTA Chrysalis Mainnet                              [boolean]
   -n, --net        Node's endpoint or other IOTA network                [string]
       --help       Show help                                           [boolean]
-      --seed       IOTA Streams Subscriber's seed to inspect the channel[string]
+      --seed       IOTA Streams Subscriber's seed to inspect the channel
+                                                             [string] [required]
       --channelID  ID of the Channel ('address:announceMsgID') from which to
                    fetch the message                         [string] [required]
 ```

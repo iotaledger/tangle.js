@@ -10,7 +10,7 @@ const params: ICommandParam[] = [
     options: {
       type: "string",
       description: "IOTA Streams Subscriber's seed to inspect the channel",
-      required: false
+      required: true
     }
   },
   channelParam
