@@ -186,6 +186,8 @@ Commands:
   iotax.js channel fetch    Fetches one message previously anchored
   iotax.js channel inspect  Inspects an anchoring channel, visiting all messages
                             anchored with the same seed
+  iotax.js channel seed     Creates a new seed to be used to interact with
+                            anchoring channels
 
 Options:
   --version  Show version number                                       [boolean]
