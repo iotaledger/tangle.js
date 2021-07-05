@@ -5,6 +5,7 @@ import AnchorMsgCommand from "./anchorMsgCommand";
 import CreateChannelCommand from "./createChannelCommand";
 import FetchMsgCommand from "./fetchMsgCommand";
 import InspectChannelCommand from "./inspectChannelCommand";
+import SeedChannelCommand from "./seedChannelCommand";
 
 
 const params: ICommandParam[] = [];
@@ -13,7 +14,8 @@ const subCommands: Record<string, ICommand> = {
   create: new CreateChannelCommand(),
   anchor: new AnchorMsgCommand(),
   fetch: new FetchMsgCommand(),
-  inspect: new InspectChannelCommand()
+  inspect: new InspectChannelCommand(),
+  seed: new SeedChannelCommand()
 };
 
 export class ChannelCommand implements ICommand {

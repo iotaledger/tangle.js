@@ -19,7 +19,8 @@ export default class AnchorMsgCommandExecutor {
       console.log({
         channelID: channel.channelID,
         ...result,
-        seed
+        seed,
+        publicKey: channel.publisherPubKey
       });
     } catch (error) {
       console.error("Error:", error);

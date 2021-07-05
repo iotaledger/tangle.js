@@ -65,7 +65,7 @@ export const globalCheckFunction = argv => {
   if (!isDefined(argv, "net") &&
     !isDefined(argv, "testnet") && !isDefined(argv, "comnet") && !isDefined(argv, "mainnet")) {
     throw new Error(
-      "Missing network. Use --mainnet, --testnet, --comnet or provide a custom URL using --net"
+      "Missing network. Use --mainnet, --testnet or provide a custom URL using --net"
     );
   } else {
     return true;
