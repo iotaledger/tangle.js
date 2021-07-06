@@ -31,10 +31,11 @@ const jsonLdDocument = {
 const options: ISigningOptions = {
     verificationMethod,
     secret: privateKey,
-    signatureType: "Ed25519Signature2018"
+    signatureType: SignatureTypes.ED25519_2018 
+}
 };
 // Obtains a Linked Data Signature
-const ldSignature = signer.signJsonLd(jsonLdDocument, options);
+const ldSignature = signer.signJson(jsonLdDocument, options);
 ```
 
 ### Linked Data Signatures verification (Ed25519 over JSON(-LD) objects)
@@ -55,7 +56,7 @@ const signedDoc = {
 };
 
 // True if verified. False otherwise. 
-const verified = await IotaVerifier.verifyJsonLd(signedDoc);
+const verified = await IotaVerifier.verifyJson(signedDoc);
 ```
 
 ### Linked Data Proofs generation (anchored to the Tangle)
@@ -68,10 +69,10 @@ const signer = /* Instantiate a signer */
 const proofGenerator = IotaLdProofGenerator.create(anchoringChannel, signer);
 // Generates the Linked Data Signature and anchors it to the Tangle generating 
 // an Iota proof
-const tangleProof = await proofGenerator.generateLd(jsonLdDocument, {
+const tangleProof = await proofGenerator.generate(jsonLdDocument, {
     verificationMethod,
     secret,
-    signatureType: "Ed25519Signature2018"
+    signatureType: "Ed25519Signature2018",
     anchorageID: anchoringChannel.firstAnchorageID
 });
 ```
@@ -95,7 +96,7 @@ const anchoredDoc = {
         "created": "2021-07-01T10:21:50.338Z"
     }
 };
-const verified = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc);
+const verified = await IotaLdProofVerifier.verifyJson(anchoredDoc);
 ```
 
 ### Signing plain messages
@@ -119,6 +120,7 @@ const method = "key";
 const privateKey = "privateKeybase58";
 
 const options: ISigningOptions = {
+    signatureType: SignatureTypes.PLAIN_ED25519,
     verificationMethod: method,
     secret: privateKey
 };
