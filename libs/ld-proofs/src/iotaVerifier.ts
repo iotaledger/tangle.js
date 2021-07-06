@@ -13,6 +13,7 @@ import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 import { IJsonVerificationOptions } from "./models/IJsonVerificationOptions";
 import { IVerificationOptions } from "./models/IVerificationOptions";
 import { LdContextURL } from "./models/ldContextURL";
+import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
 
 export class IotaVerifier {
@@ -51,7 +52,7 @@ export class IotaVerifier {
     }
 
     /**
-     * Verifies a JSON document containing a Linked Data Signature
+     * Verifies a JSON(-LD) document containing a Linked Data Signature
      *
      * @param doc The document to verify
      * @param options The verification options
@@ -59,6 +60,30 @@ export class IotaVerifier {
      * @returns true or false depending on the verification result
      */
     public static async verifyJson(doc: IJsonSignedDocument | string,
+        options?: IJsonVerificationOptions): Promise<boolean> {
+        const document = JsonHelper.getSignedDocument(doc);
+        if (document.proof.type === SignatureTypes.JCS_ED25519_2020) {
+            return this.doVerifyJson(document, options);
+        }
+
+        if (document.proof.type === SignatureTypes.ED25519_2018) {
+            return this.doVerifyJsonLd(document, options);
+        }
+
+        // Otherwise exception is thrown
+        throw new LdProofError(LdProofErrorNames.NOT_SUPPORTED_SIGNATURE,
+            `Only '${SignatureTypes.JCS_ED25519_2020}' and '${SignatureTypes.ED25519_2018}' are supported`);
+    }
+
+    /**
+     * Verifies a JSON document containing a Linked Data Signature
+     *
+     * @param doc The document to verify
+     * @param options The verification options
+     *
+     * @returns true or false depending on the verification result
+     */
+    private static async doVerifyJson(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getSignedDocument(doc);
 
@@ -91,7 +116,7 @@ export class IotaVerifier {
      * @param options The verification options
      * @returns true or false depending on the verification result
      */
-    public static async verifyJsonLd(doc: IJsonSignedDocument | string,
+    private static async doVerifyJsonLd(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getSignedJsonLdDocument(doc);
 

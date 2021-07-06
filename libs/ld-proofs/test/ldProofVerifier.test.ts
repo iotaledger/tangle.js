@@ -5,6 +5,7 @@ import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { IJsonAnchoredDocument } from "../src/models/IJsonAnchoredDocument";
 import { IJsonDocument } from "../src/models/IJsonDocument";
+import { SignatureTypes } from "../src/models/signatureTypes";
 import { did, privateKey } from "./testCommon";
 
 describe("Verify IOTA Linked Data Proofs", () => {
@@ -57,6 +58,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
     const channel = await IotaAnchoringChannel.bindNew({ node });
     const ldProofGenerator = IotaLdProofGenerator.create(channel, signer);
     singleIotaLdProof = await ldProofGenerator.generate(jsonDocument, {
+      signatureType: SignatureTypes.JCS_ED25519_2020,
       verificationMethod: method,
       secret: privateKey,
       anchorageID: channel.firstAnchorageID
@@ -64,7 +66,8 @@ describe("Verify IOTA Linked Data Proofs", () => {
 
     const channel3 = await IotaAnchoringChannel.bindNew({ node });
     const ldProofGenerator3 = IotaLdProofGenerator.create(channel3, signer);
-    singleIotaLdProofJsonLd = await ldProofGenerator3.generateLd(jsonLdDocument1, {
+    singleIotaLdProofJsonLd = await ldProofGenerator3.generate(jsonLdDocument1, {
+      signatureType: SignatureTypes.ED25519_2018,
       verificationMethod: method,
       secret: privateKey,
       anchorageID: channel3.firstAnchorageID
@@ -72,7 +75,8 @@ describe("Verify IOTA Linked Data Proofs", () => {
 
     const channel2 = await IotaAnchoringChannel.bindNew({ node });
     const ldProofGenerator2 = IotaLdProofGenerator.create(channel2, signer);
-    chainIotaLdProofJsonLd = await ldProofGenerator2.generateChainLd(documentChain, {
+    chainIotaLdProofJsonLd = await ldProofGenerator2.generateChain(documentChain, {
+      signatureType: SignatureTypes.ED25519_2018,
       verificationMethod: method,
       secret: privateKey,
       anchorageID: channel2.firstAnchorageID
@@ -120,7 +124,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
     // A change to the document to force verification fail
     documentToVerify.age = 45;
 
-    const result = await IotaLdProofVerifier.verifyJsonLd(documentToVerify, { node });
+    const result = await IotaLdProofVerifier.verifyJson(documentToVerify, { node });
     expect(result).toBe(false);
   });
 
@@ -139,7 +143,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[2]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node, strict: true });
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify, { node, strict: true });
     expect(result).toBe(true);
   });
 
@@ -150,7 +154,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[0]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { node });
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify, { node });
     expect(result).toBe(true);
   });
 
@@ -172,7 +176,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[2]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify);
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify);
     expect(result).toBe(false);
   });
 
@@ -187,7 +191,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[2]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify);
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify);
     expect(result).toBe(false);
   });
 
@@ -202,7 +206,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[2]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { strict: false });
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify, { strict: false });
     expect(result).toBe(true);
   });
 
@@ -217,7 +221,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[0]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify, { strict: false });
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify, { strict: false });
     expect(result).toBe(false);
   });
 
@@ -232,7 +236,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: chainIotaLdProofJsonLd[0]
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify);
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify);
     expect(result).toBe(false);
   });
 
@@ -247,7 +251,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         proof: undefined
       }
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChain(documentsToVerify);
+    const result = await IotaLdProofVerifier.verifyJsonChain(documentsToVerify);
     expect(result).toBe(false);
   });
 
@@ -256,7 +260,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
       jsonLdDocument1,
       jsonLdDocument2
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(documentsToVerify, chainIotaLdProofJsonLd[0]);
+    const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(documentsToVerify, chainIotaLdProofJsonLd[0]);
     expect(result).toBe(true);
   });
 
@@ -265,7 +269,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
       jsonLdDocument1,
       jsonLdDocument3
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(
+    const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(
       documentsToVerify,
       chainIotaLdProofJsonLd[0], {
       strict: false
@@ -275,7 +279,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
 
   test("should verify a chain of Linked Data Proofs using an starting proof. JSON-LD. 1 document", async () => {
     const documentsToVerify: IJsonDocument[] = [jsonLdDocument3];
-    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(
+    const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(
       documentsToVerify,
       chainIotaLdProofJsonLd[2]
     );
@@ -287,7 +291,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
       jsonLdDocument1,
       jsonLdDocument3
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(
+    const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(
       documentsToVerify,
       chainIotaLdProofJsonLd[0], {
       strict: true
@@ -300,7 +304,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
       jsonLdDocument1,
       jsonLdDocument3
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(
+    const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(
       documentsToVerify,
       chainIotaLdProofJsonLd[1], {
       strict: true
@@ -313,7 +317,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
       jsonLdDocument1,
       jsonLdDocument3
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(
+    const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(
       documentsToVerify,
       chainIotaLdProofJsonLd[1], {
       strict: false
@@ -327,7 +331,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
       jsonLdDocument3,
       jsonLdDocument2
     ];
-    const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(documentsToVerify, chainIotaLdProofJsonLd[0]);
+    const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(documentsToVerify, chainIotaLdProofJsonLd[0]);
     expect(result).toBe(false);
   });
 
@@ -338,7 +342,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
         jsonLdDocument3,
         jsonLdDocument2
       ];
-      const result = await IotaLdProofVerifier.verifyJsonLdChainSingleProof(
+      const result = await IotaLdProofVerifier.verifyJsonChainSingleProof(
         documentsToVerify,
         chainIotaLdProofJsonLd[0], {
         strict: false

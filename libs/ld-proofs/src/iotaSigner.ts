@@ -84,6 +84,28 @@ export class IotaSigner {
     }
 
     /**
+     * Signs a JSON(-LD) document
+     *
+     * @param doc The JSON(-LD) document as an object or as a string
+     * @param options the parameters to use to generate the signature
+     *
+     * @returns The JSON document including its corresponding Linked Data Signature
+     */
+    public async signJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
+        if (options.signatureType === SignatureTypes.JCS_ED25519_2020) {
+            return this.doSignJson(doc, options);
+        }
+
+        if (options.signatureType === SignatureTypes.ED25519_2018) {
+            return this.doSignJsonLd(doc, options);
+        }
+
+        // Otherwise exception is thrown
+        throw new LdProofError(LdProofErrorNames.NOT_SUPPORTED_SIGNATURE,
+            `Only '${SignatureTypes.JCS_ED25519_2020}' and '${SignatureTypes.ED25519_2018}' are supported`);
+    }
+
+    /**
      * Signs a JSON document
      *
      * @param doc The JSON document as an object or as a string
@@ -91,7 +113,7 @@ export class IotaSigner {
      *
      * @returns The JSON document including its corresponding Linked Data Signature
      */
-    public async signJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
+    private async doSignJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getDocument(doc);
 
         if (options.signatureType !== SignatureTypes.JCS_ED25519_2020) {
@@ -114,7 +136,7 @@ export class IotaSigner {
 
         // We use SHA256 to calculate the digest as mandated by https://identity.foundation/JcsEd25519Signature2020/
         const digest = crypto.createHash("sha256").update(canonized)
-.digest();
+            .digest();
 
         const signature = await this.sign(digest, options);
 
@@ -136,7 +158,7 @@ export class IotaSigner {
      * @returns The Linked Data Signature represented as a Linked Data Proof
      *
      */
-    public async signJsonLd(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
+    private async doSignJsonLd(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
 
         if (options.signatureType !== SignatureTypes.ED25519_2018) {
@@ -154,8 +176,8 @@ export class IotaSigner {
         const canonized = await jsonld.canonize(docToBeSigned, canonizeOptions);
 
         const docHash = crypto
-                            .createHash("sha512").update(canonized)
-.digest();
+            .createHash("sha512").update(canonized)
+            .digest();
 
         const proofOptionsLd = {
             "@context": LdContextURL.W3C_SECURITY,
@@ -166,8 +188,8 @@ export class IotaSigner {
         const proofOptionsCanonized = await jsonld.canonize(proofOptionsLd, canonizeOptions);
 
         const proofOptionsHash = crypto
-                                    .createHash("sha512").update(proofOptionsCanonized)
-.digest();
+            .createHash("sha512").update(proofOptionsCanonized)
+            .digest();
 
         const finalHash = Buffer.concat([docHash, proofOptionsHash]);
 

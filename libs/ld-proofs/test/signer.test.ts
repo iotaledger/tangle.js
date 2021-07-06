@@ -32,7 +32,8 @@ describe("Sign messages", () => {
 
     const signature = await signer.sign(Buffer.from(message), {
       verificationMethod: method,
-      secret: privateKey
+      secret: privateKey,
+      signatureType: SignatureTypes.PLAIN_ED25519
     });
 
     expect(signature.created).toBeDefined();
@@ -69,7 +70,7 @@ describe("Sign messages", () => {
       name: "IOTA Foundation"
     };
 
-    const signature = await signer.signJsonLd(jsonLdDocument, {
+    const signature = await signer.signJson(jsonLdDocument, {
       verificationMethod: method,
       secret: privateKey,
       signatureType: SignatureTypes.ED25519_2018
@@ -97,13 +98,32 @@ describe("Sign messages", () => {
       "example:myField": "Example of a vendor/user extension"
     };
 
-    const signature = await signer.signJsonLd(jsonLdDocument, {
+    const signature = await signer.signJson(jsonLdDocument, {
       verificationMethod: method,
       secret: privateKey,
       signatureType: SignatureTypes.ED25519_2018
     });
 
     assertSignature(signature, SignatureTypes.ED25519_2018, did, method);
+  });
+
+  test("should throw exception if trying to sign plain JSON with 'Ed255192018'", async () => {
+    const signer = await IotaSigner.create(did, node);
+
+    const jsonDocument = {
+      type: "Organization",
+      name: "IOTA Foundation"
+    };
+
+    try {
+      await signer.signJson(jsonDocument, {
+        verificationMethod: method,
+        secret: privateKey,
+        signatureType: SignatureTypes.ED25519_2018
+      });
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   test("should throw exception if node address is wrong", async () => {
@@ -147,6 +167,7 @@ describe("Sign messages", () => {
       const signer = await IotaSigner.create(did, node);
 
       await signer.sign(Buffer.from(message), {
+        signatureType: SignatureTypes.PLAIN_ED25519,
         verificationMethod: method,
         secret: "389393939"
       });
@@ -163,6 +184,7 @@ describe("Sign messages", () => {
       const signer = await IotaSigner.create(did, node);
 
       await signer.sign(Buffer.from(message), {
+        signatureType: SignatureTypes.PLAIN_ED25519,
         verificationMethod: method,
         secret: "H9TTFqrUVHnZk1nNv1B8zBWyg9bxJCZrCCVEcBLbNSV5"
       });
@@ -179,6 +201,7 @@ describe("Sign messages", () => {
       const signer = await IotaSigner.create(did, node);
 
       await signer.sign(Buffer.from(message), {
+        signatureType: SignatureTypes.PLAIN_ED25519,
         verificationMethod: "notfoundmethod",
         secret: privateKey
       });

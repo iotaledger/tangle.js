@@ -19,9 +19,9 @@ import { ILdProofVerificationOptions } from "./models/ILdProofVerificationOption
  */
 export class IotaLdProofVerifier {
     /**
-     * Verifies a JSON document
+     * Verifies a JSON(-LD) document
      *
-     * @param doc The JSON document
+     * @param doc The JSON(-LD) document
      * @param options The verification options
      *
      * @returns true or false with the verification result
@@ -41,37 +41,11 @@ export class IotaLdProofVerifier {
             throw error;
         }
 
-        return this.doVerifyDoc(document, false, undefined, options);
+        return this.doVerifyDoc(document, undefined, options);
     }
 
     /**
-     * Verifies a JSON-LD document
-     *
-     * @param doc The JSON-LD document
-     * @param options The verification options
-     *
-     * @returns true or false with the verification result
-     *
-     */
-    public static async verifyJsonLd(doc: IJsonAnchoredDocument | string,
-        options?: ILdProofVerificationOptions): Promise<boolean> {
-        let document: IJsonAnchoredDocument;
-
-        try {
-            document = JsonHelper.getAnchoredJsonLdDocument(doc);
-        } catch (error) {
-            if (error.name === LdProofErrorNames.JSON_DOC_NOT_SIGNED) {
-                return false;
-            }
-
-            throw error;
-        }
-
-        return this.doVerifyDoc(document, true, undefined, options);
-    }
-
-    /**
-     * Verifies a chain of JSON documents ensuring that are anchored to the same channel
+     * Verifies a chain of JSON(-LD) documents ensuring that are anchored to the same channel
      * and in the order implicit in the list
      * @param docs The chain of documents to verify
      * @param options The verification options
@@ -80,24 +54,11 @@ export class IotaLdProofVerifier {
      */
     public static async verifyJsonChain(docs: IJsonAnchoredDocument[] | string[],
         options?: ILdProofVerificationOptions): Promise<boolean> {
-        return this.doVerifyChain(docs, false, options);
+        return this.doVerifyChain(docs, options);
     }
 
     /**
-     * Verifies a chain of JSON-LD documents ensuring that are anchored to the same channel
-     * and in the order implicit in the list
-     * @param docs The chain of documents to verify
-     * @param options The verification options
-     *
-     * @returns The global verification result
-     */
-    public static async verifyJsonLdChain(docs: IJsonAnchoredDocument[] | string[],
-        options?: ILdProofVerificationOptions): Promise<boolean> {
-        return this.doVerifyChain(docs, true, options);
-    }
-
-    /**
-     * Verifies a list of JSON documents using the proof passed as parameter
+     * Verifies a list of JSON(-LD) documents using the proof passed as parameter
      * The individual proofs of the events shall be found on the Channel specified
      *
      * @param docs The documents
@@ -110,35 +71,18 @@ export class IotaLdProofVerifier {
     public static async verifyJsonChainSingleProof(docs: IJsonDocument[] | string[],
         proof: IIotaLinkedDataProof,
         options?: ILdProofVerificationOptions): Promise<boolean> {
-        return this.doVerifyChainSingleProof(docs, proof, false, options);
-    }
-
-    /**
-     * Verifies a list of JSON-LD documents using the proof passed as parameter
-     *
-     * @param docs The documents
-     * @param proof The proof that points to the Channel used for verification
-     * @param options The verification options
-     *
-     * @returns The global result of the verification
-     */
-    public static async verifyJsonLdChainSingleProof(docs: IJsonDocument[] | string[],
-        proof: IIotaLinkedDataProof,
-        options?: ILdProofVerificationOptions): Promise<boolean> {
-        return this.doVerifyChainSingleProof(docs, proof, true, options);
+        return this.doVerifyChainSingleProof(docs, proof, options);
     }
 
     /**
      * Verifies a chain of JSON(LD) documents ensuring that are anchored to the same channel
      * and in the order implicit in the list
      * @param docs The chain of documents to verify
-     * @param jsonLd true if the documents must be treated as JSON-LD documents
      * @param options the verification options
      *
      * @returns The global verification result
      */
     private static async doVerifyChain(docs: IJsonAnchoredDocument[] | string[],
-        jsonLd: boolean,
         options?: ILdProofVerificationOptions
     ): Promise<boolean> {
         const documents: IJsonAnchoredDocument[] = [];
@@ -147,11 +91,7 @@ export class IotaLdProofVerifier {
         for (const document of docs) {
             let doc;
             try {
-                if (jsonLd) {
-                    doc = JsonHelper.getAnchoredJsonLdDocument(document);
-                } else {
-                    doc = JsonHelper.getAnchoredDocument(document);
-                }
+                doc = JsonHelper.getAnchoredDocument(document);
             } catch (error) {
                 if (error.name === LdProofErrorNames.JSON_DOC_NOT_SIGNED) {
                     return false;
@@ -175,7 +115,6 @@ export class IotaLdProofVerifier {
             if (error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
                 return false;
             }
-
             throw error;
         }
 
@@ -202,7 +141,7 @@ export class IotaLdProofVerifier {
                 verificationOptions.strict = true;
             }
 
-            const verificationResult = await this.doVerifyChainedDoc(document, jsonLd, channel, verificationOptions);
+            const verificationResult = await this.doVerifyChainedDoc(document, channel, verificationOptions);
 
             if (!verificationResult.result) {
                 return false;
@@ -216,20 +155,13 @@ export class IotaLdProofVerifier {
 
     private static async doVerifyChainSingleProof(docs: IJsonDocument[] | string[],
         proof: IIotaLinkedDataProof,
-        jsonLd: boolean,
         options?: ILdProofVerificationOptions): Promise<boolean> {
         const proofDetails = proof.proofValue;
 
         const documents: IJsonDocument[] = [];
 
         for (const document of docs) {
-            let doc;
-
-            if (jsonLd) {
-                doc = JsonHelper.getDocument(document);
-            } else {
-                doc = JsonHelper.getJsonLdDocument(document);
-            }
+            const doc = JsonHelper.getDocument(document);
 
             documents.push(doc);
         }
@@ -259,7 +191,6 @@ export class IotaLdProofVerifier {
         // First document is verified as single document
         const verificationResult = await this.doVerifyDoc(
             doc,
-            jsonLd,
             channel,
             options
         );
@@ -288,17 +219,10 @@ export class IotaLdProofVerifier {
                 // now assign the Linked Data Signature as proof
                 aDoc.proof = linkedDataSignature;
 
-                if (jsonLd) {
-                    verified = await IotaVerifier.verifyJsonLd(
-                        aDoc,
-                        { node: options?.node }
-                    );
-                } else {
-                    verified = await IotaVerifier.verifyJson(
-                        aDoc,
-                        { node: options?.node }
-                    );
-                }
+                verified = await IotaVerifier.verifyJson(
+                    aDoc,
+                    { node: options?.node }
+                );
 
                 if (!verified) {
                     // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
@@ -321,7 +245,6 @@ export class IotaLdProofVerifier {
     }
 
     private static async doVerifyDoc(document: IJsonAnchoredDocument,
-        jsonLd: boolean,
         channel?: IotaAnchoringChannel,
         options?: ILdProofVerificationOptions): Promise<boolean> {
         if (options?.node && !ValidationHelper.url(options.node)) {
@@ -357,25 +280,16 @@ export class IotaLdProofVerifier {
         // now assign the Linked Data Signature as proof
         document.proof = linkedDataSignature;
 
-        let result: boolean;
+        const result = await IotaVerifier.verifyJson(
+            document as unknown as IJsonSignedDocument,
+            { node: options?.node }
+        );
 
-        if (jsonLd) {
-            result = await IotaVerifier.verifyJsonLd(
-                document as unknown as IJsonSignedDocument,
-                { node: options?.node }
-            );
-        } else {
-            result = await IotaVerifier.verifyJson(
-                document as unknown as IJsonSignedDocument,
-                { node: options?.node }
-            );
-        }
 
         return result;
     }
 
     private static async doVerifyChainedDoc(document: IJsonAnchoredDocument,
-        jsonLd: boolean,
         channel: IotaAnchoringChannel,
         options?: ILdProofVerificationOptions): Promise<{
             result: boolean;
@@ -422,19 +336,10 @@ export class IotaLdProofVerifier {
         // now assign the Linked Data Signature as proof
         document.proof = linkedDataSignature;
 
-        let result: boolean;
-
-        if (jsonLd) {
-            result = await IotaVerifier.verifyJsonLd(
-                document as unknown as IJsonSignedDocument,
-                { node: options?.node }
-            );
-        } else {
-            result = await IotaVerifier.verifyJson(
-                document as unknown as IJsonSignedDocument,
-                { node: options?.node }
-            );
-        }
+        const result = await IotaVerifier.verifyJson(
+            document as unknown as IJsonSignedDocument,
+            { node: options?.node }
+        );
 
         // Restore the original document
         document.proof = linkedDataProof;

@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IotaLdProofGenerator = void 0;
 const linkedDataProofTypes_1 = require("./models/linkedDataProofTypes");
-const signatureTypes_1 = require("./models/signatureTypes");
 class IotaLdProofGenerator {
     constructor(anchoringChannel, signer) {
         this.anchoringChannel = anchoringChannel;
@@ -28,30 +27,7 @@ class IotaLdProofGenerator {
         return new IotaLdProofGenerator(anchoringChannel, signer);
     }
     /**
-     * Generates a Linked Data Proof for a JSON-LD document by anchoring it to the anchorage provided
-     *
-     * @param doc Document
-     * @param options containing the parameters to be used to generate the proof
-     *
-     * @returns Linked Data Proof
-     *
-     */
-    generateLd(doc, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // First of all a Linked Data Signature is generated for the document
-            const signatureOptions = {
-                signatureType: signatureTypes_1.SignatureTypes.ED25519_2018,
-                verificationMethod: options.verificationMethod,
-                secret: options.secret
-            };
-            const linkedDataSignature = yield this.signer.signJsonLd(doc, signatureOptions);
-            // Now we take the Linked Data Signature and anchor it to Tangle through the Channel
-            const anchoringResult = yield this.anchoringChannel.anchor(Buffer.from(JSON.stringify(linkedDataSignature)), options.anchorageID);
-            return this.buildLdProof(anchoringResult);
-        });
-    }
-    /**
-     * Generates a Linked Data Proof for a JSON document by anchoring it to the anchorage provided
+     * Generates a Linked Data Proof for a JSON(-LD) document by anchoring it to the anchorage provided
      *
      * @param doc Document
      * @param options containing the parameters to be used to generate the proof
@@ -61,20 +37,14 @@ class IotaLdProofGenerator {
      */
     generate(doc, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            // First of all a Linked Data Signature is generated for the document
-            const signatureOptions = {
-                signatureType: signatureTypes_1.SignatureTypes.JCS_ED25519_2020,
-                verificationMethod: options.verificationMethod,
-                secret: options.secret
-            };
-            const linkedDataSignature = yield this.signer.signJson(doc, signatureOptions);
+            const linkedDataSignature = yield this.signer.signJson(doc, options);
             // Now we take the Linked Data Signature and anchor it to Tangle through the Channel
             const anchoringResult = yield this.anchoringChannel.anchor(Buffer.from(JSON.stringify(linkedDataSignature)), options.anchorageID);
             return this.buildLdProof(anchoringResult);
         });
     }
     /**
-     * Generates a chain of Linked Data Proofs for the JSON documents passed as parameter
+     * Generates a chain of Linked Data Proofs for the JSON(-LD) documents passed as parameter
      *
      * @param docs The chain of documents
      * @param options the Parameters to be used when generating the chain of proofs
@@ -87,27 +57,6 @@ class IotaLdProofGenerator {
             const proofOptions = Object.assign({}, options);
             for (const doc of docs) {
                 const ldProof = yield this.generate(doc, proofOptions);
-                result.push(ldProof);
-                // The next anchorage is the proof Message ID
-                proofOptions.anchorageID = ldProof.proofValue.msgID;
-            }
-            return result;
-        });
-    }
-    /**
-     * Generates a chain of Linked Data Proofs for the JSON-LD documents passed as parameter
-     *
-     * @param docs The chain of documents
-     * @param options the Parameters to be used when generating the chain of proofs
-     *
-     * @returns the list of Linked Data Proof
-     */
-    generateChainLd(docs, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = [];
-            const proofOptions = Object.assign({}, options);
-            for (const doc of docs) {
-                const ldProof = yield this.generateLd(doc, proofOptions);
                 result.push(ldProof);
                 // The next anchorage is the proof Message ID
                 proofOptions.anchorageID = ldProof.proofValue.msgID;
@@ -132,4 +81,4 @@ class IotaLdProofGenerator {
     }
 }
 exports.IotaLdProofGenerator = IotaLdProofGenerator;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW90YUxkUHJvb2ZHZW5lcmF0b3IuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW90YUxkUHJvb2ZHZW5lcmF0b3IudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBT0Esd0VBQXFFO0FBQ3JFLDREQUF5RDtBQUV6RCxNQUFhLG9CQUFvQjtJQUs3QixZQUFvQixnQkFBc0MsRUFBRSxNQUFrQjtRQUMxRSxJQUFJLENBQUMsZ0JBQWdCLEdBQUcsZ0JBQWdCLENBQUM7UUFDekMsSUFBSSxDQUFDLE1BQU0sR0FBRyxNQUFNLENBQUM7SUFDekIsQ0FBQztJQUVEOzs7Ozs7T0FNRztJQUNJLE1BQU0sQ0FBQyxNQUFNLENBQUMsZ0JBQXNDLEVBQUUsTUFBa0I7UUFDM0UsT0FBTyxJQUFJLG9CQUFvQixDQUFDLGdCQUFnQixFQUFFLE1BQU0sQ0FBQyxDQUFDO0lBQzlELENBQUM7SUFFRDs7Ozs7Ozs7T0FRRztJQUNVLFVBQVUsQ0FBQyxHQUEyQixFQUFFLE9BQXdCOztZQUN6RSxxRUFBcUU7WUFDckUsTUFBTSxnQkFBZ0IsR0FBb0I7Z0JBQ3RDLGFBQWEsRUFBRSwrQkFBYyxDQUFDLFlBQVk7Z0JBQzFDLGtCQUFrQixFQUFFLE9BQU8sQ0FBQyxrQkFBa0I7Z0JBQzlDLE1BQU0sRUFBRSxPQUFPLENBQUMsTUFBTTthQUN6QixDQUFDO1lBQ0YsTUFBTSxtQkFBbUIsR0FBRyxNQUFNLElBQUksQ0FBQyxNQUFNLENBQUMsVUFBVSxDQUFDLEdBQUcsRUFBRSxnQkFBZ0IsQ0FBQyxDQUFDO1lBRWhGLG9GQUFvRjtZQUNwRixNQUFNLGVBQWUsR0FBRyxNQUFNLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxNQUFNLENBQ3RELE1BQU0sQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxtQkFBbUIsQ0FBQyxDQUFDLEVBQ2hELE9BQU8sQ0FBQyxXQUFXLENBQ3RCLENBQUM7WUFFRixPQUFPLElBQUksQ0FBQyxZQUFZLENBQUMs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
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW90YUxkUHJvb2ZHZW5lcmF0b3IuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW90YUxkUHJvb2ZHZW5lcmF0b3IudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBTUEsd0VBQXFFO0FBRXJFLE1BQWEsb0JBQW9CO0lBSzdCLFlBQW9CLGdCQUFzQyxFQUFFLE1BQWtCO1FBQzFFLElBQUksQ0FBQyxnQkFBZ0IsR0FBRyxnQkFBZ0IsQ0FBQztRQUN6QyxJQUFJLENBQUMsTUFBTSxHQUFHLE1BQU0sQ0FBQztJQUN6QixDQUFDO0lBRUQ7Ozs7OztPQU1HO0lBQ0ksTUFBTSxDQUFDLE1BQU0sQ0FBQyxnQkFBc0MsRUFBRSxNQUFrQjtRQUMzRSxPQUFPLElBQUksb0JBQW9CLENBQUMsZ0JBQWdCLEVBQUUsTUFBTSxDQUFDLENBQUM7SUFDOUQsQ0FBQztJQUVEOzs7Ozs7OztPQVFHO0lBQ1UsUUFBUSxDQUFDLEdBQTJCLEVBQUUsT0FBd0I7O1lBQ3ZFLE1BQU0sbUJBQW1CLEdBQUcsTUFBTSxJQUFJLENBQUMsTUFBTSxDQUFDLFFBQVEsQ0FBQyxHQUFHLEVBQUUsT0FBTyxDQUFDLENBQUM7WUFFckUsb0ZBQW9GO1lBQ3BGLE1BQU0sZUFBZSxHQUFHLE1BQU0sSUFBSSxDQUFDLGdCQUFnQixDQUFDLE1BQU0sQ0FDdEQsTUFBTSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsU0FBUyxDQUFDLG1CQUFtQixDQUFDLENBQUMsRUFDaEQsT0FBTyxDQUFDLFdBQVcsQ0FDdEIsQ0FBQztZQUVGLE9BQU8sSUFBSSxDQUFDLFlBQVksQ0FBQyxlQUFlLENBQUMsQ0FBQztRQUM5QyxDQUFDO0tBQUE7SUFFRDs7Ozs7OztPQU9HO0lBQ1UsYUFBYSxDQUFDLElBQWdDLEVBQ3ZELE9BQXdCOztZQUN4QixNQUFNLE1BQU0sR0FBMkIsRUFBRSxDQUFDO1lBRTFDLE1BQU0sWUFBWSxxQkFDWCxPQUFPLENBQ2IsQ0FBQztZQUVGLEtBQUssTUFBTSxHQUFHLElBQUksSUFBSSxFQUFFO2dCQUNwQixNQUFNLE9BQU8sR0FBRyxNQUFNLElBQUksQ0FBQyxRQUFRLENBQUMsR0FBRyxFQUFFLFlBQVksQ0FBQyxDQUFDO2dCQUN2RCxNQUFNLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxDQUFDO2dCQUNyQiw2Q0FBNkM7Z0JBQzdDLFlBQVksQ0FBQyxXQUFXLEdBQUcsT0FBTyxDQUFDLFVBQVUsQ0FBQyxLQUFLLENBQUM7YUFDdkQ7WUFFRCxPQUFPLE1BQU0sQ0FBQztRQUNsQixDQUFDO0tBQUE7SUFFTyxZQUFZLENBQUMsZUFBaUM7UUFDbEQsTUFBTSxlQUFlLEdBQXlCO1lBQzFDLElBQUksRUFBRSwyQ0FBb0IsQ0FBQyxrQkFBa0I7WUFDN0MsZ0dBQWdHO1lBQ2hHLGtCQUFrQixFQUFFLElBQUksQ0FBQyxNQUFNLENBQUMsR0FBRztZQUNuQyxZQUFZLEVBQUUsa0JBQWtCO1lBQ2hDLFVBQVUsRUFBRTtnQkFDUixTQUFTLEVBQUUsSUFBSSxDQUFDLGdCQUFnQixDQUFDLFNBQVM7Z0JBQzFDLFdBQVcsRUFBRSxlQUFlLENBQUMsV0FBVztnQkFDeEMsS0FBSyxFQUFFLGVBQWUsQ0FBQyxLQUFLO2FBQy9CO1lBQ0QsT0FBTyxFQUFFLElBQUksSUFBSSxFQUFFLENBQUMsV0FBVyxFQUFFO1NBQ3BDLENBQUM7UUFFRixPQUFPLGVBQWUsQ0FBQztJQUMzQixDQUFDO0NBQ0o7QUFwRkQsb0RBb0ZDIn0=

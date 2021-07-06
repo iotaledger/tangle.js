@@ -3,6 +3,7 @@ import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { LinkedDataProofTypes } from "../src/models/linkedDataProofTypes";
+import { SignatureTypes } from "../src/models/signatureTypes";
 import { did, privateKey } from "./testCommon";
 
 /**
@@ -52,7 +53,8 @@ describe("Generate IOTA Linked Data Proofs", () => {
 
         const generator = IotaLdProofGenerator.create(channel, signer);
 
-        const proof = await generator.generateLd(document, {
+        const proof = await generator.generate(document, {
+            signatureType: SignatureTypes.ED25519_2018,
             verificationMethod: method,
             secret: privateKey,
             anchorageID: channel.firstAnchorageID
@@ -77,6 +79,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
 
         // We test passing the document as a string
         const proof = await generator.generate(JSON.stringify(document), {
+            signatureType: SignatureTypes.JCS_ED25519_2020,
             verificationMethod: method,
             secret: privateKey,
             anchorageID: channel.firstAnchorageID
@@ -108,7 +111,8 @@ describe("Generate IOTA Linked Data Proofs", () => {
 
         const generator = IotaLdProofGenerator.create(channel, signer);
 
-        const proofs = await generator.generateChainLd([document1, document2], {
+        const proofs = await generator.generateChain([document1, document2], {
+            signatureType: SignatureTypes.ED25519_2018,
             verificationMethod: method,
             secret: privateKey,
             anchorageID: channel.firstAnchorageID

@@ -38,6 +38,7 @@ describe("Verify messages", () => {
     const signer = await IotaSigner.create(did, node);
 
     signatureValue = (await signer.sign(Buffer.from(message), {
+      signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod: method,
       secret: privateKey
     })).signatureValue;
@@ -48,7 +49,7 @@ describe("Verify messages", () => {
       signatureType: SignatureTypes.JCS_ED25519_2020
     });
 
-    jsonLdProof = await signer.signJsonLd(jsonLdDocument, {
+    jsonLdProof = await signer.signJson(jsonLdDocument, {
       verificationMethod: method,
       secret: privateKey,
       signatureType: SignatureTypes.ED25519_2018
@@ -131,7 +132,7 @@ describe("Verify messages", () => {
       proof: jsonLdProof
     };
 
-    const result = await IotaVerifier.verifyJsonLd(signedDoc);
+    const result = await IotaVerifier.verifyJson(signedDoc);
 
     expect(result).toBe(true);
   });
@@ -147,7 +148,7 @@ describe("Verify messages", () => {
       proof: jsonLdProof
     };
 
-    const result = await IotaVerifier.verifyJsonLd(signedDoc, { node });
+    const result = await IotaVerifier.verifyJson(signedDoc, { node });
 
     expect(result).toBe(false);
   });
