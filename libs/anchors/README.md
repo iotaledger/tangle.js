@@ -23,22 +23,24 @@ The entities anchoring the messages (the ship owners, metaphorically speaking) a
 const anchoringChannel = await IotaAnchoringChannel.bindNew();
 
 // Creation of a new channel by the Author
+// Channel details contains all the relevant info about the channel just created
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed());
 
-// Properties available
+// Properties available on a Channel object
 
-anchoringChannel.seed
+anchoringChannel.seed        // The seed of the Subscriber currently bound to the channel
 anchoringChannel.channelID
 anchoringChannel.channelAddr
 anchoringChannel.firstAnchorageID
 
-anchoringChannel.subscriberPubKey
-anchoringChannel.authorPubKey
+anchoringChannel.subscriberPubKey  // The Subscriber's Public Key (can be the same as Author's)
+anchoringChannel.authorPubKey      // The Author's Public Key 
 ```
 
 ### Channel instantiation from ID
 
 ```ts
+// Instantiation and binding as Subscriber using the seed
 const anchoringChannel = await IotaAnchoringChannel.fromID(channelID).bind(seed);
 ```
 
