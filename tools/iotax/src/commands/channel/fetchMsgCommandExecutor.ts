@@ -12,7 +12,7 @@ export default class FetchMsgCommandExecutor {
     try {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
-      const channel = await IotaAnchoringChannel.create(seed, node).bind(channelID);
+      const channel = await IotaAnchoringChannel.fromID(channelID, { node }).bind(seed);
 
       const anchorageID = args.anchorageID as string;
       const msgID = args.msgID as string;
