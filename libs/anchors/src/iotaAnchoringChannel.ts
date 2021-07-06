@@ -20,7 +20,7 @@ import FetchMsgService from "./services/fetchMsgService";
 initialize();
 
 export class IotaAnchoringChannel {
-    private static readonly DEFAULT_NODE = "https://chrysalis-nodes.iota.org";
+    public static readonly DEFAULT_NODE = "https://chrysalis-nodes.iota.org";
 
     private readonly _channelID: string;
 
@@ -102,7 +102,8 @@ export class IotaAnchoringChannel {
             if (!node) {
                 node = this.DEFAULT_NODE;
             }
-            return new IotaAnchoringChannel(components[0], components[1], node, options.authorPubKey);
+            const authorPubKey = options?.authorPubKey;
+            return new IotaAnchoringChannel(components[0], components[1], node, authorPubKey);
         }
         throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
             `Invalid channel identifier: ${channelID}`);

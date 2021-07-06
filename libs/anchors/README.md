@@ -19,7 +19,8 @@ The entities anchoring the messages (the ship owners, metaphorically speaking) a
 ### Anchoring messages
 
 ```ts
-const anchoringChannel = await IotaAnchoringChannel.create(seed?,node?).bind(channelID?);
+// Seed generated automatically. Channel on the mainnet
+const anchoringChannel = await IotaAnchoringChannel.buildNew();
 
 anchoringChannel.seed
 anchoringChannel.channelID
@@ -63,7 +64,7 @@ if the target message is not actually anchored to the expected anchorage.
 const result = await anchoringChannel.receive(msgID, expectedAnchorageID?);
 ``` 
 
-### Fetching messages iteratively
+### Visiting messages iteratively
 
 ```ts
 const next = await anchoringChannel.fetchNext();
