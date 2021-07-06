@@ -1,4 +1,5 @@
 import { IotaAnchoringChannel } from "@tangle.js/anchors";
+import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaSigner } from "../src/iotaSigner";
 import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
@@ -127,5 +128,33 @@ describe("Generate IOTA Linked Data Proofs", () => {
 
         // Ensure both were anchored to the same channel ID
         expect(proofs[0].proofValue.channelID).toBe(proofs[1].proofValue.channelID);
+    });
+
+    test("should fail generation of a Linked Data Proof for a plain JSON document as 'Ed255192018'", async () => {
+        const document = {
+            type: "Organization",
+            name: "IOTA Foundation"
+        };
+
+        // Channel that will be used
+        const channel = await IotaAnchoringChannel.bindNew({ node });
+        // Signer that will be used
+        const signer = await IotaSigner.create(did, node);
+
+        const generator = IotaLdProofGenerator.create(channel, signer);
+
+        try {
+            await generator.generate(document, {
+                signatureType: SignatureTypes.ED25519_2018,
+                verificationMethod: method,
+                secret: privateKey,
+                anchorageID: channel.firstAnchorageID
+            });
+        } catch (error) {
+            expect(error.name).toBe(LdProofErrorNames.INVALID_DATA_TYPE);
+            return;
+        }
+
+        fail("Exception not thrown");
     });
 });

@@ -122,8 +122,11 @@ describe("Sign messages", () => {
         signatureType: SignatureTypes.ED25519_2018
       });
     } catch (error) {
-      console.log(error);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_DATA_TYPE);
+      return;
     }
+
+    fail("Exception not thrown");
   });
 
   test("should throw exception if node address is wrong", async () => {
