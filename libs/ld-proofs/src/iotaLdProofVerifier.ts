@@ -31,7 +31,7 @@ export class IotaLdProofVerifier {
         options?: ILdProofVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getAnchoredDocument(doc);
 
-        return (await this.doVerify(document, false, undefined, options)).result;
+        return this.doVerifyDoc(document, false, undefined, options);
     }
 
     /**
@@ -47,7 +47,7 @@ export class IotaLdProofVerifier {
         options?: ILdProofVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getAnchoredJsonLdDocument(doc);
 
-        return (await this.doVerify(document, true, undefined, options)).result;
+        return this.doVerifyDoc(document, true, undefined, options);
     }
 
     /**
@@ -139,7 +139,18 @@ export class IotaLdProofVerifier {
 
         // The Channel will be used to verify the proofs
         const channelID = documents[0].proof.proofValue.channelID;
-        const channel = await IotaAnchoringChannel.create(undefined, node).bind(channelID);
+        let channel: IotaAnchoringChannel;
+
+        // If channel cannot be bound the proof will fail
+        try {
+            channel = await IotaAnchoringChannel.create(undefined, node).bind(channelID);
+        } catch (error) {
+            if (error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
+                return false;
+            }
+
+            throw error;
+        }
 
         let index = 0;
         const verificationOptions: ILdProofVerificationOptions = {
@@ -164,7 +175,7 @@ export class IotaLdProofVerifier {
                 verificationOptions.strict = true;
             }
 
-            const verificationResult = await this.doVerify(document, jsonLd, channel, verificationOptions);
+            const verificationResult = await this.doVerifyChainedDoc(document, jsonLd, channel, verificationOptions);
 
             if (!verificationResult.result) {
                 return false;
@@ -203,26 +214,34 @@ export class IotaLdProofVerifier {
         }
 
         const channelID = proofDetails.channelID;
-        const channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(channelID);
+        let channel: IotaAnchoringChannel;
+        try {
+            channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(channelID);
+        } catch (error) {
+            if (error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
+                return false;
+            }
 
-        // First the first document has to be verified and as usual strict is false for the first
-        const verificationOptions: ILdProofVerificationOptions = {
-            node: options?.node,
-            strict: false
-        };
+            throw error;
+        }
+
         // Clone it to use it locally
         const docProof = JSON.parse(JSON.stringify(proof));
         const doc = documents[0] as unknown as IJsonAnchoredDocument;
         doc.proof = docProof;
-        const verificationResult = await this.doVerify(
+        // First document is verified as single document
+        const verificationResult = await this.doVerifyDoc(
             doc,
             jsonLd,
             channel,
-            verificationOptions
+            options
         );
 
+        // Restore the original document
+        delete doc.proof;
+
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-        if (verificationResult.result === false) {
+        if (verificationResult === false) {
             return false;
         }
 
@@ -274,7 +293,61 @@ export class IotaLdProofVerifier {
         return true;
     }
 
-    private static async doVerify(document: IJsonAnchoredDocument,
+    private static async doVerifyDoc(document: IJsonAnchoredDocument,
+        jsonLd: boolean,
+        channel?: IotaAnchoringChannel,
+        options?: ILdProofVerificationOptions): Promise<boolean> {
+        if (options?.node && !ValidationHelper.url(options.node)) {
+            throw new LdProofError(LdProofErrorNames.INVALID_NODE,
+                "The node has to be a URL");
+        }
+
+        const proofDetails = document.proof.proofValue;
+
+        let fetchResult;
+
+        let targetChannel: IotaAnchoringChannel = channel;
+
+        try {
+            if (!channel) {
+                targetChannel = await IotaAnchoringChannel.create(
+                    undefined, options?.node).bind(proofDetails.channelID);
+            }
+            fetchResult = await targetChannel.fetch(proofDetails.anchorageID, proofDetails.msgID);
+        } catch (error) {
+            if (error.name === AnchoringChannelErrorNames.MSG_NOT_FOUND ||
+                error.name === AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND ||
+                error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
+                return false;
+            }
+
+            // If it is not the controlled error the error is thrown
+            throw error;
+        }
+
+        const linkedDataSignature = JSON.parse(fetchResult.message.toString());
+
+        // now assign the Linked Data Signature as proof
+        document.proof = linkedDataSignature;
+
+        let result: boolean;
+
+        if (jsonLd) {
+            result = await IotaVerifier.verifyJsonLd(
+                document as unknown as IJsonSignedDocument,
+                { node: options?.node }
+            );
+        } else {
+            result = await IotaVerifier.verifyJson(
+                document as unknown as IJsonSignedDocument,
+                { node: options?.node }
+            );
+        }
+
+        return result;
+    }
+
+    private static async doVerifyChainedDoc(document: IJsonAnchoredDocument,
         jsonLd: boolean,
         channel: IotaAnchoringChannel,
         options?: ILdProofVerificationOptions): Promise<{
@@ -290,10 +363,6 @@ export class IotaLdProofVerifier {
         const proofDetails = document.proof.proofValue;
 
         let fetchResult: IFetchResult;
-
-        if (!channel) {
-            channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(proofDetails.channelID);
-        }
 
         const targetMsgID = proofDetails.msgID;
 
