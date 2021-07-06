@@ -28,7 +28,7 @@ class SeedHelper {
      *
      * @returns The seed
      */
-    static generateSeed(length = 20) {
+    static generateSeed(length = 80) {
         const alphabet = "abcdefghijklmnopqrstuvwxyz";
         let seed = "";
         while (seed.length < length) {

@@ -7,94 +7,142 @@ import ValidationHelper from "./helpers/validationHelper";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
 import { IAnchoringResult } from "./models/IAnchoringResult";
 import { IBindChannelRequest } from "./models/IBindChannelRequest";
+import { IChannelDetails } from "./models/IChannelDetails";
+import { IChannelOptions } from "./models/IChannelOptions";
 import { IFetchRequest } from "./models/IFetchRequest";
 import { IFetchResult } from "./models/IFetchResult";
 import AnchorMsgService from "./services/anchorMsgService";
 import ChannelService from "./services/channelService";
 import FetchMsgService from "./services/fetchMsgService";
 
+
 // Needed for the Streams WASM bindings
 initialize();
 
 export class IotaAnchoringChannel {
-    private _channelID: string;
+    public static readonly DEFAULT_NODE = "https://chrysalis-nodes.iota.org";
+
+    private readonly _channelID: string;
 
     private readonly _node: string;
 
-    private readonly _seed: string;
+    private _seed: string;
 
-    private _channelAddress: string;
+    private readonly _channelAddress: string;
 
-    private _announceMsgID: string;
+    private readonly _announceMsgID: string;
 
     private _subscriber: Subscriber;
 
-    private _authorPubKey: string;
+    private readonly _authorPubKey: string;
 
-    private _publisherPubKey: string;
+    private _subscriberPubKey: string;
 
-    private constructor(seed?: string, node?: string) {
+    // authorPubKey param will disappear in the future
+    private constructor(channelAddr: string, announceMsgID: string, node: string, authorPubKey: string) {
         this._node = node;
-        this._seed = seed;
 
-        if (!seed) {
-            this._seed = SeedHelper.generateSeed();
-        }
+        this._channelID = `${channelAddr}:${announceMsgID}`;
+        this._channelAddress = channelAddr;
+        this._announceMsgID = announceMsgID;
 
-        if (!node) {
-            this._node = "https://chrysalis-nodes.iota.org";
-        }
+        this._authorPubKey = authorPubKey;
     }
 
     /**
      * Creates a new Anchoring Channel
      *
-     * @param seed  The seed
-     * @param node  The node
+     * @param seed Author's seed
+     * @param options  The options
+     * @param options.node The node used to create the channel
      *
-     * @returns The anchoring channel
+     * @returns The anchoring channel details
      */
-    public static create(seed?: string, node?: string): IotaAnchoringChannel {
-        if (node && !ValidationHelper.url(node)) {
+    public static async create(seed: string, options?: IChannelOptions): Promise<IChannelDetails> {
+        if (options?.node && !ValidationHelper.url(options?.node)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
                 "The node has to be a URL");
         }
 
-        return new IotaAnchoringChannel(seed, node);
+        let node = options?.node;
+
+        if (!node) {
+            node = this.DEFAULT_NODE;
+        }
+
+        const { channelAddress, announceMsgID, authorPk } =
+            await ChannelService.createChannel(node, seed);
+
+        const details: IChannelDetails = {
+            channelAddr: channelAddress,
+            channelID: `${channelAddress}:${announceMsgID}`,
+            firstAnchorageID: announceMsgID,
+            authorPubKey: authorPk,
+            authorSeed: seed,
+            node
+        };
+
+        return details;
     }
 
     /**
-     * Binds to an existing channel or creates a new binding
+     * Instantiates an existing Anchoring Channel from a Channel ID
      *
      * @param channelID in the form of 'channel_address:announce_msg_id'
+     * @param options Channel options
      *
      * @returns reference to the channel
      *
      */
-    public async bind(channelID?: string): Promise<IotaAnchoringChannel> {
+    public static fromID(channelID: string, options?: IChannelOptions): IotaAnchoringChannel {
+        const components: string[] = channelID.split(":");
+
+        if (Array.isArray(components) && components.length === 2) {
+            let node = options?.node;
+
+            if (!node) {
+                node = this.DEFAULT_NODE;
+            }
+            const authorPubKey = options?.authorPubKey;
+            return new IotaAnchoringChannel(components[0], components[1], node, authorPubKey);
+        }
+        throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
+            `Invalid channel identifier: ${channelID}`);
+    }
+
+    /**
+     *  Creates a new IotaAnchoringChannel and subscribes to it using the Author's seed
+     *
+     *  i.e. Author === Subscriber
+     *  A new Seed is automatically generated
+     *
+     * @param options The channel creation options
+     * @returns The Anchoring Channel
+     */
+    public static async bindNew(options?: IChannelOptions): Promise<IotaAnchoringChannel> {
+        const details = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), options);
+        // Temporarily until Streams exposed it on the Subscriber
+        let opts = options;
+        if (!opts) {
+            opts = {};
+        }
+        opts.authorPubKey = details.authorPubKey;
+        return IotaAnchoringChannel.fromID(details.channelID, opts).bind(details.authorSeed);
+    }
+
+    /**
+     * Binds the channel so that the subscriber is instantiated using the seed passed as parameter
+     *
+     * @param seed The Subscriber (publisher) seed
+     * @returns a Reference to the channel
+     *
+     */
+    public async bind(seed: string): Promise<IotaAnchoringChannel> {
         if (this._subscriber) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_ALREADY_BOUND,
                 `Channel already bound to ${this._channelID}`);
         }
-        if (!channelID) {
-            const { channelAddress, announceMsgID, authorPk } =
-                await ChannelService.createChannel(this._node, this._seed);
-            this._channelAddress = channelAddress;
-            this._announceMsgID = announceMsgID;
-            this._channelID = `${channelAddress}:${announceMsgID}`;
-            this._authorPubKey = authorPk;
-        } else {
-            const components: string[] = channelID.split(":");
-
-            if (Array.isArray(components) && components.length === 2) {
-                this._channelID = channelID;
-                this._channelAddress = components[0];
-                this._announceMsgID = components[1];
-            } else {
-                throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
-                    `Invalid channel identifier: ${channelID}`);
-            }
-        }
+        this._seed = seed;
 
         const bindRequest: IBindChannelRequest = {
             node: this._node,
@@ -108,7 +156,7 @@ export class IotaAnchoringChannel {
 
         this._subscriber = subscriber;
         // this._authorPk = authorPk;
-        this._publisherPubKey = subscriber.get_public_key();
+        this._subscriberPubKey = subscriber.get_public_key();
 
         return this;
     }
@@ -154,7 +202,7 @@ export class IotaAnchoringChannel {
     }
 
     /**
-     *  Returns the channel's seed
+     *  Returns the channel's publisher seed
      *
      *  @returns seed
      *
@@ -179,8 +227,8 @@ export class IotaAnchoringChannel {
      *  @returns the publisher's Public key
      *
      */
-    public get publisherPubKey(): string {
-        return this._publisherPubKey;
+    public get subscriberPubKey(): string {
+        return this._subscriberPubKey;
     }
 
     /**
@@ -193,7 +241,7 @@ export class IotaAnchoringChannel {
      *
      */
     public async anchor(message: Buffer, anchorageID: string): Promise<IAnchoringResult> {
-        if (!this._channelAddress) {
+        if (!this._subscriber) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");
         }
@@ -219,7 +267,7 @@ export class IotaAnchoringChannel {
      * @returns The fetch result
      */
     public async fetch(anchorageID: string, messageID?: string): Promise<IFetchResult> {
-        if (!this._channelAddress) {
+        if (!this._subscriber) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");
         }
@@ -240,7 +288,7 @@ export class IotaAnchoringChannel {
      * @returns The fetch result or undefined if no more messages can be fetched
      */
     public async fetchNext(): Promise<IFetchResult | undefined> {
-        if (!this._channelAddress) {
+        if (!this._subscriber) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");
         }
@@ -258,7 +306,7 @@ export class IotaAnchoringChannel {
      * @returns The message received and associated metadata
      */
     public async receive(messageID: string, anchorageID?: string): Promise<IFetchResult> {
-        if (!this._channelAddress) {
+        if (!this._subscriber) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_NOT_BOUND,
                 "Unbound anchoring channel. Please call bind first");
         }

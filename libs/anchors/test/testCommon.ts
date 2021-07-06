@@ -11,8 +11,19 @@ export const network = "https://api.lb-0.testnet.chrysalis2.com";
  * @returns the anchoring channel
  */
  export async function newChannel(node: string): Promise<IotaAnchoringChannel> {
-    const anchoringChannel = await IotaAnchoringChannel.create(undefined, node).bind();
+    const anchoringChannel = await IotaAnchoringChannel.bindNew({ node });
 
+    assertChannel(anchoringChannel);
+
+    return anchoringChannel;
+}
+
+/**
+ * Asserts an anchoring channel
+ *
+ * @param anchoringChannel The anchoring channel to assert
+ */
+export function assertChannel(anchoringChannel: IotaAnchoringChannel) {
     expect(anchoringChannel.seed).toBeDefined();
     expect(anchoringChannel.channelID).toBeDefined();
     expect(anchoringChannel.channelAddr).toBeDefined();
@@ -20,10 +31,8 @@ export const network = "https://api.lb-0.testnet.chrysalis2.com";
     expect(anchoringChannel.firstAnchorageID).toBeDefined();
 
     expect(anchoringChannel.authorPubKey).toBeDefined();
-    expect(anchoringChannel.publisherPubKey).toBeDefined();
+    expect(anchoringChannel.subscriberPubKey).toBeDefined();
 
     // If a channel is new the publisher an author pub keys shall be the same
-    expect(anchoringChannel.publisherPubKey).toBe(anchoringChannel.authorPubKey);
-
-    return anchoringChannel;
+    expect(anchoringChannel.subscriberPubKey).toBe(anchoringChannel.authorPubKey);
 }

@@ -16,19 +16,35 @@ The entities anchoring the messages (the ship owners, metaphorically speaking) a
 
 ## API
 
-### Anchoring messages
+### Channel creation
 
 ```ts
-const anchoringChannel = await IotaAnchoringChannel.create(seed?,node?).bind(channelID?);
+// Seed generated automatically. Channel on the mainnet. Author === Subscriber. 
+const anchoringChannel = await IotaAnchoringChannel.bindNew();
+
+// Creation of a new channel by the Author
+const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed());
+
+// Properties available
 
 anchoringChannel.seed
 anchoringChannel.channelID
 anchoringChannel.channelAddr
 anchoringChannel.firstAnchorageID
 
-anchoringChannel.publisherPubKey
+anchoringChannel.subscriberPubKey
 anchoringChannel.authorPubKey
+```
 
+### Channel instantiation from ID
+
+```ts
+const anchoringChannel = await IotaAnchoringChannel.fromID(channelID).bind(seed);
+```
+
+### Anchoring messages
+
+```ts
 const message = "my message";
 // Obtain your anchorageID (it could be the first anchorageID of the channel)
 const result = await anchoringChannel.anchor(Buffer.from(message), anchorageID);
@@ -63,7 +79,7 @@ if the target message is not actually anchored to the expected anchorage.
 const result = await anchoringChannel.receive(msgID, expectedAnchorageID?);
 ``` 
 
-### Fetching messages iteratively
+### Traversing messages
 
 ```ts
 const next = await anchoringChannel.fetchNext();

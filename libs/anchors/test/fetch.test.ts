@@ -1,4 +1,5 @@
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
+import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { network, newChannel } from "./testCommon";
 
@@ -9,17 +10,17 @@ describe("Fetch Messages", () => {
     let msgID1: string;
     let msgID2: string;
 
-    let seed: string;
+    let authorSeed: string;
 
     let channelID: string;
 
     beforeAll(async () => {
         const channel = await newChannel(network);
         channelID = channel.channelID;
-        seed = channel.seed;
+        authorSeed = channel.seed;
 
         console.log("ChannelID:", channelID);
-        console.log("Seed:", seed);
+        console.log("Author's Seed:", authorSeed);
 
         // First message
         const result = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
@@ -31,7 +32,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should fetch message anchored to the first anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const response = await channel.fetch(channel.firstAnchorageID, msgID1);
 
@@ -39,7 +40,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should fetch message anchored to non-first anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const response = await channel.fetch(msgID1, msgID2);
 
@@ -47,7 +48,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should fetch message anchored to non-first after fetching the first one", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const response1 = await channel.fetch(channel.firstAnchorageID, msgID1);
         const response2 = await channel.fetch(msgID1, msgID2);
@@ -78,7 +79,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should fetch without passing the message ID. First anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const response = await channel.fetch(channel.firstAnchorageID);
 
@@ -87,7 +88,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should fetch without passing the message ID. Non-first anchorage", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const response = await channel.fetch(msgID1);
 
@@ -96,7 +97,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should fetch using fetchNext method", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const response = await channel.fetchNext();
 
@@ -125,10 +126,12 @@ describe("Fetch Messages", () => {
         const response = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
 
         // Here we are anchoring with a different seed
-        const channel2 = await IotaAnchoringChannel.create(undefined, network).bind(channel.channelID);
+        const channel2 =
+            await IotaAnchoringChannel.fromID(channel.channelID, { node: network }).bind(SeedHelper.generateSeed());
         await channel2.anchor(Buffer.from(MSG_2), response.msgID);
 
-        const channel3 = await IotaAnchoringChannel.create(undefined, network).bind(channel.channelID);
+        const channel3 =
+            await IotaAnchoringChannel.fromID(channel.channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const fetchNextResponse = await channel3.fetchNext();
         expect(fetchNextResponse.message.toString()).toBe(MSG_1);
@@ -154,7 +157,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should throw error if fetching a message which anchorage does not exist", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         try {
             await channel.fetch("1234567abcdef", msgID1);
@@ -167,7 +170,7 @@ describe("Fetch Messages", () => {
     });
 
     test("should throw error if fetching a message which does not exist", async () => {
-        const channel = await IotaAnchoringChannel.create(undefined, network).bind(channelID);
+        const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         await channel.fetch(channel.firstAnchorageID, msgID1);
 
@@ -182,7 +185,8 @@ describe("Fetch Messages", () => {
     });
 
     test("should throw error if channel is not bound yet", async () => {
-        const channel = IotaAnchoringChannel.create(undefined, network);
+        const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { node: network });
+        const channel = IotaAnchoringChannel.fromID(channelDetails.channelID, { node: network });
 
         try {
             await channel.fetch(msgID1, msgID2);

@@ -46,7 +46,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         };
 
         // Channel that will be used
-        const channel = await IotaAnchoringChannel.create(undefined, node).bind();
+        const channel = await IotaAnchoringChannel.bindNew({ node });
         // Signer that will be used
         const signer = await IotaSigner.create(did, node);
 
@@ -69,7 +69,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         };
 
         // Channel that will be used
-        const channel = await IotaAnchoringChannel.create(undefined, node).bind();
+        const channel = await IotaAnchoringChannel.bindNew({ node });
         // Signer that will be used
         const signer = await IotaSigner.create(did, node);
 
@@ -102,7 +102,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
         };
 
         // Channel that will be used
-        const channel = await IotaAnchoringChannel.create(undefined, node).bind();
+        const channel = await IotaAnchoringChannel.bindNew({ node });
         // Signer that will be used
         const signer = await IotaSigner.create(did, node);
 

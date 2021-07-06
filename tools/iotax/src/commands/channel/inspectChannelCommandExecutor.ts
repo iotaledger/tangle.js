@@ -13,7 +13,7 @@ export default class InspectChannelCommandExecutor {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
 
-      const channel = await IotaAnchoringChannel.create(seed, node).bind(channelID);
+      const channel = await IotaAnchoringChannel.fromID(channelID, { node }).bind(seed);
 
       let messageDetails = await channel.fetchNext();
       while (messageDetails !== undefined) {

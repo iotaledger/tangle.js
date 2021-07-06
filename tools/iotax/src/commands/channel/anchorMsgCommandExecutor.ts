@@ -13,14 +13,14 @@ export default class AnchorMsgCommandExecutor {
       // The address of the anchorage message
       const anchorageID = args.anchorageID as string;
 
-      const channel = await IotaAnchoringChannel.create(seed, node).bind(channelID);
+      const channel = await IotaAnchoringChannel.fromID(channelID, { node }).bind(seed);
 
       const result = await channel.anchor(Buffer.from(args.msg as string), anchorageID);
       console.log({
         channelID: channel.channelID,
         ...result,
         seed,
-        publicKey: channel.publisherPubKey
+        publicKey: channel.subscriberPubKey
       });
     } catch (error) {
       console.error("Error:", error);

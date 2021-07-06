@@ -11,18 +11,13 @@ export default class CreateChannelCommandExecutor {
       let seed = "";
 
       if (!isDefined(args, "seed")) {
-        seed = SeedHelper.generateSeed();
+        seed = SeedHelper.generateSeed(25);
       } else {
         seed = args.seed as string;
       }
 
-      const channel = await IotaAnchoringChannel.create(seed, node).bind();
-      console.log({
-        channelID: channel.channelID,
-        firstAnchorageID: channel.firstAnchorageID,
-        authorPubKey: channel.authorPubKey,
-        seed
-      });
+      const channelDetails = await IotaAnchoringChannel.create(seed, { node });
+      console.log(channelDetails);
     } catch (error) {
       console.error("Error:", error);
       return false;
