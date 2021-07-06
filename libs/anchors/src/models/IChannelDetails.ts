@@ -2,6 +2,8 @@
 export interface IChannelDetails {
     /** ID of the channel */
     channelID: string;
+    /** Channel Address */
+    channelAddr: string;
     /** First anchorage ID */
     firstAnchorageID: string;
     /** Author's seed */

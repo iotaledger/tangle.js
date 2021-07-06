@@ -20,16 +20,20 @@ export default class ChannelService {
     public static async createChannel(node: string, seed: string):
         Promise<{ channelAddress: string; announceMsgID: string; authorPk: string }> {
         const options = new SendOptions(node, true);
-        const auth = new Author(seed, options.clone(), ChannelType.SingleBranch);
+        try {
+            const auth = new Author(seed, options.clone(), ChannelType.SingleBranch);
 
-        const response = await auth.clone().send_announce();
-        const announceLink = response.get_link().copy();
+            const response = await auth.clone().send_announce();
+            const announceLink = response.get_link().copy();
 
-        return {
-            announceMsgID: announceLink.msg_id,
-            channelAddress: auth.channel_address(),
-            authorPk: auth.get_public_key()
-        };
+            return {
+                announceMsgID: announceLink.msg_id,
+                channelAddress: auth.channel_address(),
+                authorPk: auth.get_public_key()
+            };
+        } catch (error) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.OTHER_ERROR, error.message);
+        }
     }
 
     /**

@@ -36,7 +36,7 @@ export class IotaAnchoringChannel {
 
     private readonly _authorPubKey: string;
 
-    private _publisherPubKey: string;
+    private _subscriberPubKey: string;
 
     // authorPubKey param will disappear in the future
     private constructor(channelAddr: string, announceMsgID: string, node: string, authorPubKey: string) {
@@ -74,6 +74,7 @@ export class IotaAnchoringChannel {
             await ChannelService.createChannel(node, seed);
 
         const details: IChannelDetails = {
+            channelAddr: channelAddress,
             channelID: `${channelAddress}:${announceMsgID}`,
             firstAnchorageID: announceMsgID,
             authorPubKey: authorPk,
@@ -110,14 +111,15 @@ export class IotaAnchoringChannel {
     }
 
     /**
-     *  Builds a new IotaAnchoringChannel by creating it and binding it using the Author's seed
+     *  Creates a new IotaAnchoringChannel and subscribes to it using the Author's seed
+     *
      *  i.e. Author === Subscriber
      *  A new Seed is automatically generated
      *
      * @param options The channel creation options
      * @returns The Anchoring Channel
      */
-    public static async buildNew(options?: IChannelOptions): Promise<IotaAnchoringChannel> {
+    public static async bindNew(options?: IChannelOptions): Promise<IotaAnchoringChannel> {
         const details = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), options);
         // Temporarily until Streams exposed it on the Subscriber
         let opts = options;
@@ -154,7 +156,7 @@ export class IotaAnchoringChannel {
 
         this._subscriber = subscriber;
         // this._authorPk = authorPk;
-        this._publisherPubKey = subscriber.get_public_key();
+        this._subscriberPubKey = subscriber.get_public_key();
 
         return this;
     }
@@ -225,8 +227,8 @@ export class IotaAnchoringChannel {
      *  @returns the publisher's Public key
      *
      */
-    public get publisherPubKey(): string {
-        return this._publisherPubKey;
+    public get subscriberPubKey(): string {
+        return this._subscriberPubKey;
     }
 
     /**

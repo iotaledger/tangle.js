@@ -7,7 +7,7 @@ export class SeedHelper {
      *
      * @returns The seed
      */
-    public static generateSeed(length: number = 20) {
+    public static generateSeed(length: number = 80) {
         const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
         let seed = "";
