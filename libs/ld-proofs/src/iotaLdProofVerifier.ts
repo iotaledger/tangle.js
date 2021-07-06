@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames }
+import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames, SeedHelper }
     from "@tangle.js/anchors";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
@@ -170,7 +170,7 @@ export class IotaLdProofVerifier {
 
         // If channel cannot be bound the proof will fail
         try {
-            channel = await IotaAnchoringChannel.create(undefined, node).bind(channelID);
+            channel = await IotaAnchoringChannel.fromID(channelID, { node }).bind(SeedHelper.generateSeed());
         } catch (error) {
             if (error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
                 return false;
@@ -243,7 +243,7 @@ export class IotaLdProofVerifier {
         const channelID = proofDetails.channelID;
         let channel: IotaAnchoringChannel;
         try {
-            channel = await IotaAnchoringChannel.create(undefined, options?.node).bind(channelID);
+            channel = await IotaAnchoringChannel.fromID(channelID, options).bind(SeedHelper.generateSeed());
         } catch (error) {
             if (error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
                 return false;
@@ -337,8 +337,8 @@ export class IotaLdProofVerifier {
 
         try {
             if (!channel) {
-                targetChannel = await IotaAnchoringChannel.create(
-                    undefined, options?.node).bind(proofDetails.channelID);
+                targetChannel = await IotaAnchoringChannel.fromID(
+                    proofDetails.channelID, options).bind(SeedHelper.generateSeed());
             }
             fetchResult = await targetChannel.fetch(proofDetails.anchorageID, proofDetails.msgID);
         } catch (error) {
