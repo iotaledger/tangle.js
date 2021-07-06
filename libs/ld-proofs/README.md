@@ -72,7 +72,7 @@ const proofGenerator = IotaLdProofGenerator.create(anchoringChannel, signer);
 const tangleProof = await proofGenerator.generate(jsonLdDocument, {
     verificationMethod,
     secret,
-    signatureType: "Ed25519Signature2018",
+    signatureType: SignatureTypes.ED25519_2018,
     anchorageID: anchoringChannel.firstAnchorageID
 });
 ```
