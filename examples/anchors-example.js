@@ -3,7 +3,7 @@ const { IotaAnchoringChannel } = require("@tangle.js/anchors");
 // Example on how to use the anchors library
 async function main() {
   console.log("Creating a channel over the Chrysalis mainnet ...");
-  const myChannel = await IotaAnchoringChannel.create().bind();
+  const myChannel = await IotaAnchoringChannel.bindNew();
   console.log("Channel ID: ", myChannel.channelID);
 
   console.log("Anchoring a message to ", myChannel.firstAnchorageID, "...");

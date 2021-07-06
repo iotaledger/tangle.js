@@ -1,5 +1,5 @@
 const { IotaAnchoringChannel } = require("@tangle.js/anchors");
-const { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier } = require("@tangle.js/ld-proofs");
+const { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } = require("@tangle.js/ld-proofs");
 
 const { document } = require("./events.js");
 
@@ -35,13 +35,14 @@ async function anchorEPCISDocument(epcisDocument) {
   }
 
   console.log("Preparing channel, signer and LD Proof generator ...");
-  const anchoringChannel = await IotaAnchoringChannel.create().bind();
+  const anchoringChannel = await IotaAnchoringChannel.bindNew();
   const did = "did:iota:yUxEqDGgL2WF4sQq2TEzdmDjDkRsHKL5TcLWrdAjmb4";
   const signer = await IotaSigner.create(did);
   const ldProofGenerator = IotaLdProofGenerator.create(anchoringChannel, signer);
   
   console.log("Generating LD Proofs on the Tangle ...");
-  const proofs =  await ldProofGenerator.generateChainLd(eventList, {
+  const proofs =  await ldProofGenerator.generateChain(eventList, {
+    signatureType: SignatureTypes.ED25519_2018,
     anchorageID: anchoringChannel.firstAnchorageID,
     verificationMethod: "key",
     secret: "GxFKbdCAbaLfQcca6jrdfi9LCkngpDNKbBJb9wev1Yvm"
@@ -52,14 +53,14 @@ async function anchorEPCISDocument(epcisDocument) {
    // eventList[0]["eventTime"] = new Date().toISOString();
 
    console.log("Verifying events ...");
-   const result = await IotaLdProofVerifier.verifyJsonLdChain([
-       {
-        ...eventList[1],
-        proof: proofs[1]
-       },
+   const result = await IotaLdProofVerifier.verifyJsonChain([
        {
         ...eventList[0],
         proof: proofs[0]
+       },
+       {
+        ...eventList[1],
+        proof: proofs[1]
        }
    ]);
 

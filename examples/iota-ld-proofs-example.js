@@ -1,6 +1,5 @@
-const { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier } = require("@tangle.js/ld-proofs");
+const { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } = require("@tangle.js/ld-proofs");
 const { IotaAnchoringChannel } = require("@tangle.js/anchors");
-
 
 /**
  
@@ -25,7 +24,7 @@ async function main() {
     const signer = await IotaSigner.create(myDID);
 
     console.log("Creating and binding an anchoring channel ...");
-    const anchoringChannel = await IotaAnchoringChannel.create().bind();
+    const anchoringChannel = await IotaAnchoringChannel.bindNew();
     console.log(anchoringChannel.channelID);
 
     const document = {
@@ -45,7 +44,8 @@ async function main() {
 
     const ldProofGenerator = IotaLdProofGenerator.create(anchoringChannel,signer);
 
-    const ldProof = await ldProofGenerator.generateLd(document, {
+    const ldProof = await ldProofGenerator.generate(document, {
+      signatureType: SignatureTypes.ED25519_2018,
       verificationMethod: "key",
       secret: "8XghdzhFGWrferW8v1PwpV86gtHKALKzxhGKSi4vGs3R",
       anchorageID: anchoringChannel.firstAnchorageID
@@ -58,7 +58,7 @@ async function main() {
       ...document,
       proof: ldProof
     };
-    const result = await IotaLdProofVerifier.verifyJsonLd(anchoredDoc);
+    const result = await IotaLdProofVerifier.verifyJson(anchoredDoc);
     
     console.log("Verified: ", result); 
 }

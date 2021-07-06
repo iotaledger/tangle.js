@@ -1,4 +1,4 @@
-const { IotaSigner, IotaVerifier } = require("@tangle.js/ld-proofs");
+const { IotaSigner, IotaVerifier, SignatureTypes } = require("@tangle.js/ld-proofs");
 
 /**
  
@@ -36,7 +36,8 @@ async function main() {
     console.log("Signing ...");
     console.log(document);
 
-    const ldSignature = await signer.signJsonLd(document, {
+    const ldSignature = await signer.signJson(document, {
+      signatureType: SignatureTypes.ED25519_2018,
       verificationMethod: "key",
       secret: "8XghdzhFGWrferW8v1PwpV86gtHKALKzxhGKSi4vGs3R",
       signatureType: "Ed25519Signature2018"
@@ -49,7 +50,7 @@ async function main() {
       ...document,
       proof: ldSignature
     };
-    const result = await IotaVerifier.verifyJsonLd(signedDoc);
+    const result = await IotaVerifier.verifyJson(signedDoc);
     
     console.log("Verified: ", result);
 }
