@@ -29,7 +29,17 @@ export class IotaLdProofVerifier {
      */
     public static async verifyJson(doc: IJsonAnchoredDocument | string,
         options?: ILdProofVerificationOptions): Promise<boolean> {
-        const document = JsonHelper.getAnchoredDocument(doc);
+        let document: IJsonAnchoredDocument;
+
+        try {
+            document = JsonHelper.getAnchoredDocument(doc);
+        } catch (error) {
+            if (error.name === LdProofErrorNames.JSON_DOC_NOT_SIGNED) {
+                return false;
+            }
+
+            throw error;
+        }
 
         return this.doVerifyDoc(document, false, undefined, options);
     }
@@ -45,7 +55,17 @@ export class IotaLdProofVerifier {
      */
     public static async verifyJsonLd(doc: IJsonAnchoredDocument | string,
         options?: ILdProofVerificationOptions): Promise<boolean> {
-        const document = JsonHelper.getAnchoredJsonLdDocument(doc);
+        let document: IJsonAnchoredDocument;
+
+        try {
+            document = JsonHelper.getAnchoredJsonLdDocument(doc);
+        } catch (error) {
+            if (error.name === LdProofErrorNames.JSON_DOC_NOT_SIGNED) {
+                return false;
+            }
+
+            throw error;
+        }
 
         return this.doVerifyDoc(document, true, undefined, options);
     }
@@ -126,10 +146,17 @@ export class IotaLdProofVerifier {
         // The anchored documents are obtained
         for (const document of docs) {
             let doc;
-            if (jsonLd) {
-                doc = JsonHelper.getAnchoredJsonLdDocument(document);
-            } else {
-                doc = JsonHelper.getAnchoredDocument(document);
+            try {
+                if (jsonLd) {
+                    doc = JsonHelper.getAnchoredJsonLdDocument(document);
+                } else {
+                    doc = JsonHelper.getAnchoredDocument(document);
+                }
+            } catch (error) {
+                if (error.name === LdProofErrorNames.JSON_DOC_NOT_SIGNED) {
+                    return false;
+                }
+                throw error;
             }
 
             documents.push(doc);

@@ -54,12 +54,12 @@ async function anchorEPCISDocument(epcisDocument) {
    console.log("Verifying events ...");
    const result = await IotaLdProofVerifier.verifyJsonLdChain([
        {
-        ...eventList[0],
-        proof: proofs[0]
-       },
-       {
         ...eventList[1],
         proof: proofs[1]
+       },
+       {
+        ...eventList[0],
+        proof: proofs[0]
        }
    ]);
 
