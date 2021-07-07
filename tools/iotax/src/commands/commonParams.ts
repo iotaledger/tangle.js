@@ -1,13 +1,13 @@
 import { Arguments } from "yargs";
 
-const COMNET_URL = "https://nodes.comnet.thetangle.org";
 const TESTNET_URL = "https://api.lb-0.testnet.chrysalis2.com";
 const MAINNET_URL = "https://chrysalis-nodes.iota.org";
+
+export const PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
 
 const providers: { [key: string]: string } = Object.create(null);
 
 providers[TESTNET_URL] = "testnet";
-providers[COMNET_URL] = "comnet";
 providers[MAINNET_URL] = "mainnet";
 
 /**
@@ -37,10 +37,6 @@ export function getNetworkParams(args: Arguments): { network: string } {
 
   if (args.testnet) {
     network = TESTNET_URL;
-  }
-
-  if (args.comnet) {
-    network = COMNET_URL;
   }
 
   if (args.mainnet) {

@@ -1,6 +1,7 @@
 /* eslint-disable no-duplicate-imports */
-import { Document, resolve as iotaDidResolve, VerifiableCredential, VerifiablePresentation } from "@iota/identity-wasm/node";
+import { Document, VerifiableCredential, VerifiablePresentation } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
+import { IdentityHelper } from "../identityHelper";
 import { validateVc } from "./vcCommand";
 
 
@@ -24,9 +25,8 @@ export default class PresentVcCommandExecutor {
         holderDid = (credentialObj.credentialSubject as Credential).id;
       }
 
-      const holderDoc: Document = await iotaDidResolve(holderDid, {
-        network: "mainnet"
-      });
+      const identityClient = IdentityHelper.getClient(args.network as string);
+      const holderDoc: Document = await identityClient.resolve(holderDid);
 
       const holderDocument = Document.fromJSON(holderDoc);
 

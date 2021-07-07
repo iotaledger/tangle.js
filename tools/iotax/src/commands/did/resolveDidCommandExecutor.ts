@@ -1,16 +1,17 @@
-import { resolve as iotaDidResolve } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
+import { getNetworkParams } from "../commonParams";
+import { IdentityHelper } from "../identityHelper";
 
 export default class ResolveDidCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
     const did = args.did as string;
 
     try {
-      const document = await iotaDidResolve(did, {
-        network: "mainnet"
-      });
+      const identityClient = IdentityHelper.getClient(getNetworkParams(args).network);
 
-      console.log(document);
+      const resolution = await identityClient.resolve(did);
+
+      console.log(resolution.document);
     } catch (error) {
       console.error("Error:", error);
       return false;

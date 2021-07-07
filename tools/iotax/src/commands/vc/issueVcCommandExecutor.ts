@@ -1,6 +1,7 @@
 /* eslint-disable no-duplicate-imports */
-import { Document, resolve as iotaDidResolve, VerifiableCredential } from "@iota/identity-wasm/node";
+import { VerifiableCredential, Document } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
+import { IdentityHelper } from "../identityHelper";
 
 export default class IssueVcCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
@@ -16,16 +17,14 @@ export default class IssueVcCommandExecutor {
     try {
       claims.id = subjectId;
 
-      const issDoc: Document = await iotaDidResolve(issuerDid, {
-        network: "mainnet"
-      });
+      const resolution = await IdentityHelper.getClient(args.network as string).resolve(issuerDid);
 
-      const issDocument = Document.fromJSON(issDoc);
+      const issDocument = Document.fromJSON(resolution.document);
 
       const credentialMetadata: {[key: string]: unknown} = {
         id: args.id as string,
         type: args.type as string,
-        issuer: issDoc.id,
+        issuer: issuerDid,
         credentialSubject: claims
       };
 

@@ -1,7 +1,9 @@
 /* eslint-disable no-duplicate-imports */
-import { Document, KeyType, publish as iotaDidPublish } from "@iota/identity-wasm/node";
+import { Document, KeyType } from "@iota/identity-wasm/node";
 import type { NewDocument } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
+import { getNetworkParams } from "../commonParams";
+import { IdentityHelper } from "../identityHelper";
 import { IService } from "./IService";
 
 export default class CreateDidCommandExecutor {
@@ -21,9 +23,9 @@ export default class CreateDidCommandExecutor {
 
     finalDocument.sign(key);
 
-    const transactionId = await iotaDidPublish(finalDocument, {
-      network: "mainnet"
-    });
+    const identityClient = IdentityHelper.getClient(getNetworkParams(args).network);
+
+    const transactionId = await identityClient.publishDocument(finalDocument);
 
     console.log({
       did: finalDocument.toJSON().id,
