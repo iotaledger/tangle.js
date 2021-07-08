@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "libs/proofs/**"
+      - "libs/ld-proofs/**"
       - ".github/workflows/proofs-test.yaml"
   pull_request:
     types: [opened, synchronize]
