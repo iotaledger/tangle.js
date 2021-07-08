@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import yargs from "yargs";
-import IotaxConfigurator from "./iotaxConfigurator";
+import TcliConfigurator from "./tcliConfigurator";
 
 try {
-  IotaxConfigurator.parseCommandLine(yargs);
+  TcliConfigurator.parseCommandLine(yargs);
 } catch (error) {
     console.log("Error while parsing command line:", error);
 }

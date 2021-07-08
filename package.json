@@ -22,7 +22,7 @@
         "test": "npm run test --workspaces",
         "build": "npm run build --workspaces",
         "build-anchors": "npm run build --workspace='libs/anchors'",
-        "build-iotax": "npm run build --workspace='tools/iotax'",
+        "build-tcli": "npm run build --workspace='tools/tangle-cli'",
         "build-proofs": "npm run build --workspace='libs/ld-proofs'",
         "test-anchors": "npm test --workspace='libs/anchors'",
         "test-proofs": "npm test --workspace='libs/ld-proofs'"
@@ -30,6 +30,6 @@
     "workspaces": [
         "libs/anchors",
         "libs/ld-proofs",
-        "tools/iotax"
+        "tools/tangle-cli"
     ]
 }

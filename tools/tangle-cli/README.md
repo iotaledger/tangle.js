@@ -1,16 +1,16 @@
-# iotax
+# tangle-cli
 
 CLI for developing applications on the Tangle
 
 ## Installation
 
 ```
-npm install -g @jmcanterafonseca-iota/iotax
+npm install -g @tangle.js/tcli
 ```
 
 ## Run 
 
-On the command line just run ```iotax```
+On the command line just run ```tcli```
 
 ## Commands
 
@@ -20,13 +20,13 @@ On the command line just run ```iotax```
 * [Tangle Messages](#tangle-messages)
 
 ```
-iotax [command]
+tcli [command]
 
 Commands:
-  iotax did      DID operations
-  iotax vc       VC  Operations
-  iotax channel  Anchoring Channels operations
-  iotax msg      Tangle message (indexation payloads) operations
+  tcli did      DID operations
+  tcli vc       VC  Operations
+  tcli channel  Anchoring Channels operations
+  tcli msg      Tangle message (indexation payloads) operations
 
 Options:
   --version  Show version number                                       [boolean]
@@ -39,13 +39,13 @@ Options:
 ## DID 
 
 ```
-iotax did
+tcli did
 
 DID Operations
 
 Commands:
-  iotax did create   DID Creation
-  iotax did resolve  DID Resolution
+  tcli did create   DID Creation
+  tcli did resolve  DID Resolution
 
 Options:
   --version   Show version number                                      [boolean]
@@ -58,7 +58,7 @@ Options:
 ### DID Creation
 
 ```
-iotax did create
+tcli did create
 
 DID Creation
 
@@ -74,7 +74,7 @@ Options:
 ### DID Resolution
 
 ```
-iotax did resolve
+tcli did resolve
 
 DID Resolution
 
@@ -90,13 +90,13 @@ Options:
 ## Verifiable Credentials (VC)
 
 ```
-iotax vc
+tcli vc
 
 Verifiable Credential operations
 
 Commands:
-  iotax vc issue   VC issuance
-  iotax vc verify  VC verification
+  tcli vc issue   VC issuance
+  tcli vc verify  VC verification
 
 Options:
   --version  Show version number                                       [boolean]
@@ -110,7 +110,7 @@ Options:
 ### Issuing a VC
 
 ```
-iotax vc issue
+tcli vc issue
 
 VC issuance
 
@@ -134,7 +134,7 @@ Options:
 ### Verifying a VC or a VP
 
 ```
-iotax vc verify
+tcli vc verify
 
 VC verification
 
@@ -151,7 +151,7 @@ Options:
 ### Presenting a VC
 
 ```
-iotax vc present
+tcli vc present
 
 Options:
   --version  Show version number                                       [boolean]
@@ -176,12 +176,12 @@ Anchoring Channels operations (Powered by IOTA Streams)
 
 ```
 Commands:
-  iotax.js channel create   Creates a new anchoring channel
-  iotax.js channel anchor   Anchors a message to an IOTA Streams Channel
-  iotax.js channel fetch    Fetches one message previously anchored
-  iotax.js channel inspect  Inspects an anchoring channel, visiting all messages
+  tcli channel create   Creates a new anchoring channel
+  tcli channel anchor   Anchors a message to an IOTA Streams Channel
+  tcli channel fetch    Fetches one message previously anchored
+  tcli channel inspect  Inspects an anchoring channel, visiting all messages
                             anchored with the same seed
-  iotax.js channel seed     Creates a new seed to be used to interact with
+  tcli channel seed     Creates a new seed to be used to interact with
                             anchoring channels
 
 Options:
@@ -195,7 +195,7 @@ Options:
 ### Anchoring Channel Creation
 
 ```
-iotax.js channel create
+tcli channel create
 
 Creates a new anchoring channel
 
@@ -211,6 +211,8 @@ Options:
 ### Anchor message
 
 ```
+tcli channel anchor
+
 Anchors a message to an IOTA Streams Channel
 
 Options:
@@ -231,6 +233,8 @@ Options:
 ### Fetch message
 
 ```
+tcli channel fetch
+
 Fetches one message previously anchored
 
 Options:
@@ -251,6 +255,8 @@ Options:
 ### Inspect channel
 
 ```
+tcli channel inspect
+
 Inspects an anchoring channel, visiting all messages anchored. 
 
 Options:
@@ -268,6 +274,8 @@ Options:
 ## Seed generation
 
 ```
+tcli channel seed
+
 Creates a new seed to be used to interact with anchoring channels
 
 Options:
@@ -285,8 +293,8 @@ Options:
 Tangle message (indexation payloads) operations
 
 Commands:
-  iotax msg submit  Message (indexation payload) submission
-  iotax msg get     Message retrieval
+  tcli msg submit  Message (indexation payload) submission
+  tcli msg get     Message retrieval
 
   Options:
   --version  Show version number                                       [boolean]
@@ -299,7 +307,7 @@ Commands:
 ### Submit a message (indexation payload)
 
 ```
-iotax msg submit
+tcli msg submit
 
 Message (indexation payload) submission
 
@@ -316,7 +324,7 @@ Options:
 ### Retrieve a message
 
 ```
-iotax msg get
+tcli msg get
 
 Message retrieval
 

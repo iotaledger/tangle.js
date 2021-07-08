@@ -3,7 +3,7 @@ import commandRegistry from "./commandRegistry";
 import { globalCheckFunction, globalConflicts, globalParams } from "./globalParams";
 import ICommand from "./ICommand";
 
-export default class IotaxConfigurator {
+export default class TcliConfigurator {
   public static parseCommandLine(yargs: Argv): Arguments {
     globalParams.forEach(aParam => {
       yargs.option(aParam.name, aParam.options);

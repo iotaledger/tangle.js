@@ -18,6 +18,6 @@ Upcoming
 
 ## Tools
 
-### iotax
+### tangle-cli
 
-Upcoming
+[README](./tools/tangle-cli)

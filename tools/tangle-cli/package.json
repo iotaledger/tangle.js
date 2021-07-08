@@ -1,9 +1,9 @@
 {
-  "name": "@tangle.js/iotax",
-  "version": "1.5.8",
-  "description": "CLI for IOTA Chrysalis",
+  "name": "@tangle.js/tcli",
+  "version": "1.5.9",
+  "description": "CLI for Tangle.js",
   "bin": {
-    "iotax": "./dist/iotax.js"
+    "tcli": "./dist/tcli.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,7 +12,7 @@
     "build-watch": "tsc --watch",
     "build-lint": "eslint src --ext .ts",
     "build": "npm-run-all build-clean build-compile build-lint",
-    "start": "node ./dist/iotax"
+    "start": "node ./dist/tcli"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,7 @@
   "bugs": {
     "url": "https://github.com/iotaledger/tangle.js/issues"
   },
-  "homepage": "https://github.com/iotaledger/tangle.js/tools/iotax#readme",
+  "homepage": "https://github.com/iotaledger/tangle.js/tools/tangle-cli#readme",
   "dependencies": {
     "@iota/identity-wasm": "0.3.4",
     "@iota/iota.js": "^1.5.3",
