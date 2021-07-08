@@ -26,7 +26,7 @@ export default class PresentVcCommandExecutor {
       }
 
       const identityClient = IdentityHelper.getClient(args.network as string);
-      const holderDoc: Document = await identityClient.resolve(holderDid);
+      const holderDoc: Document = (await identityClient.resolve(holderDid)).document;
 
       const holderDocument = Document.fromJSON(holderDoc);
 

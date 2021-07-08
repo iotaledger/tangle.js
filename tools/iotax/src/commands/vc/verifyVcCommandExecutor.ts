@@ -1,8 +1,5 @@
-import { Client as IdentityClient, Network, Config as IdentityConfig } from "@iota/identity-wasm/node";
-
 import { Arguments } from "yargs";
 import { isDefined } from "../../globalParams";
-import { PERMANODE_URL } from "../commonParams";
 import { IdentityHelper } from "../identityHelper";
 import { validateVp, validateVc } from "./vcCommand";
 
@@ -24,11 +21,7 @@ export default class VerifyVcCommandExecutor {
     }
 
     try {
-      const identityConfig = new IdentityConfig();
-      identityConfig.setNetwork(Network.mainnet());
-      identityConfig.setNode(Network.mainnet().defaultNodeURL);
-      identityConfig.setPermanode(PERMANODE_URL);
-      const identityClient = IdentityClient.fromConfig(identityConfig);
+      const identityClient = IdentityHelper.getClient(args.network as string);
 
       const verification = await identityClient.checkPresentation(vp);
 
