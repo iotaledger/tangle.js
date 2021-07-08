@@ -1,7 +1,8 @@
-import { resolve as iotaDidResolve, Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
+import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
 import { SeedHelper } from "@tangle.js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
+import { IdentityHelper } from "../helpers/identityHelper";
 
 export default class DidService {
     /**
@@ -12,9 +13,9 @@ export default class DidService {
      */
     public static async resolve(node: string, did: string): Promise<DidDocument> {
         try {
-            const jsonDoc = await iotaDidResolve(did, {
-                network: "mainnet"
-            });
+            const identityClient = IdentityHelper.getClient(node);
+
+            const jsonDoc = (await identityClient.resolve(did)).document;
 
             const doc = DidDocument.fromJSON(jsonDoc);
             if (!doc.verify()) {
