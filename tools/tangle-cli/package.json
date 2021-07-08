@@ -1,6 +1,6 @@
 {
   "name": "@tangle.js/tcli",
-  "version": "1.5.9",
+  "version": "1.6.1",
   "description": "CLI for Tangle.js",
   "bin": {
     "tcli": "./dist/tcli.js"
@@ -36,7 +36,6 @@
   "dependencies": {
     "@iota/identity-wasm": "0.3.4",
     "@iota/iota.js": "^1.5.3",
-    "@iota/pow-neon.js": "^0.1.1",
     "yargs": "^15.4.1",
     "@tangle.js/anchors": "0.9.1"
   },
