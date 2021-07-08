@@ -32,7 +32,6 @@ const options: ISigningOptions = {
     verificationMethod,
     secret: privateKey,
     signatureType: SignatureTypes.ED25519_2018 
-}
 };
 // Obtains a Linked Data Signature
 const ldSignature = signer.signJson(jsonLdDocument, options);
