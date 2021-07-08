@@ -24,6 +24,7 @@ jobs:
         run: npm install -g npm@7
       - name: Library Test
         run: |
+          rm package-lock.json
           npm install
           npm run build-anchors
           npm run test-anchors
