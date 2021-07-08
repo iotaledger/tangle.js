@@ -1,7 +1,7 @@
 import { Arguments } from "yargs";
 import { isDefined } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
-import { validateVp, validateVc } from "./vcCommand";
+import { VcHelper } from "./vcHelper";
 
 export default class VerifyVcCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
@@ -15,7 +15,7 @@ export default class VerifyVcCommandExecutor {
   public static async doVerifyPresentation(args: Arguments): Promise<boolean> {
     const vp = args.vp as string;
 
-    if (!validateVp(vp).result) {
+    if (!VcHelper.validateVp(vp).result) {
       console.log("Error:", "Not a VerifiablePresentation");
       return false;
     }
@@ -38,7 +38,7 @@ export default class VerifyVcCommandExecutor {
     const vc = args.vc as string;
 
     try {
-      if (!validateVc(vc).result) {
+      if (!VcHelper.validateVc(vc).result) {
         console.log("Error:", "Not a VerifiableCredential");
         return false;
       }

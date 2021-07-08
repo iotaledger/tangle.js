@@ -2,7 +2,7 @@
 import { Document, VerifiableCredential, VerifiablePresentation } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
 import { IdentityHelper } from "../identityHelper";
-import { validateVc } from "./vcCommand";
+import { VcHelper } from "./vcHelper";
 
 
 export default class PresentVcCommandExecutor {
@@ -13,7 +13,7 @@ export default class PresentVcCommandExecutor {
     let holderDid = args.holder as string;
 
     try {
-      const { result, credentialObj } = validateVc(credential);
+      const { result, credentialObj } = VcHelper.validateVc(credential);
 
       if (!result) {
         console.log("Error:", "Not a VerifiableCredential");
