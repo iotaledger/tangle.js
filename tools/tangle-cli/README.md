@@ -20,7 +20,7 @@ On the command line just run ```tcli```
 * [Decentralized Identities](#did)
 * [Verifiable Credentials](#verifiable-credentials-vc)
 * [Anchoring Channels](#anchoring-channels) (Powered by IOTA Streams)
-* [Tangle Messages](#tangle-messages)
+* [Tangle Indexed Messages](#tangle-messages)
 
 ```
 tcli [command]
