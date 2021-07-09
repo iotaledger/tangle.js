@@ -9,9 +9,9 @@
 
 The main purpose is to be able to anchor messages to the IOTA Tangle so that their sequentiality, integrity, authenticity and immutability is preserved. Different applications can benefit from this feature. One of the applications (implemented by the [ld-proofs](../ld-proofs) library) is the generation of Linked Data Proofs for JSON(-LD) documents. 
 
-You can imagine an Anchoring Channel as a port's dock where different ships can be anchored and where multiple anchorages are available. The library allows anchoring the ships, and once a ship is anchored, such ship itself turns into another anchorage. Actually, when you anchor a new ship, you anchor it both to the dock and to another ship, which is also playing the anchorage role.
+You can imagine an Anchoring Channel as a (public) port's dock where different ships can be anchored and where multiple anchorages are available. The library allows anchoring the ships, and once a ship is anchored, such ship itself turns into another anchorage. Actually, when you anchor a new ship, you anchor it both to the dock and to another ship, which is also playing the anchorage role.
 
-An Anchoring Channel is just an IOTA Streams Channel which can contain as many anchorages as needed. The first anchorage is the announce message of such an IOTA Streams Channel. Anchorages are identified by an ID (the ID of a message). 
+An Anchoring Channel is just a (public) IOTA Streams Channel which can contain as many anchorages as needed. The first anchorage is the announce message of such an IOTA Streams Channel. Anchorages are identified by an ID (the ID of a message). 
 
 After anchoring a message, such anchored message can turn itself into another anchorage. 
 
