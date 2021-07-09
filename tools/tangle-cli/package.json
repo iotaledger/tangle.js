@@ -1,9 +1,9 @@
 {
-  "name": "@tangle.js/tcli",
+  "name": "@tangle.js/tangle-cli",
   "version": "1.6.1",
   "description": "CLI for Tangle.js",
   "bin": {
-    "tcli": "./dist/tcli.js"
+    "tcli": "./bin/tcli.sh"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,8 +12,7 @@
     "build-watch": "tsc --watch",
     "build-lint": "eslint src --ext .ts",
     "build": "npm-run-all build-clean build-compile build-lint",
-    "start": "node ./dist/tcli",
-    "prepare": "npm run build"
+    "start": "node ./dist/tcli"
   },
   "repository": {
     "type": "git",
