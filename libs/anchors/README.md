@@ -3,7 +3,7 @@
  `anchors` allows anchoring messages to the Tangle. Powered by [IOTA Streams](https://github.com/iotaledger/streams). 
 
  [![Github Test Workflow](https://github.com/jmcanterafonseca-iota/tangle.js/workflows/Anchors%20Test/badge.svg)](https://github.com/jmcanterafonseca-iota/tangle.js/actions/workflows/anchors-test.yaml)
- [![npm badge](https://img.shields.io/npm/dm/%40tangle.js%2Fanchors.svg)](https://www.npmjs.com/package/@tangle.js/anchors)
+ [![npm badge](https://img.shields.io/npm/dm/%40tangle-js%2Fanchors.svg)](https://www.npmjs.com/package/@tangle-js/anchors)
 
 ## How it works
 

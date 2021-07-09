@@ -3,7 +3,7 @@
 CLI for developing applications on the Tangle
 
 [![Github Test Workflow](https://github.com/jmcanterafonseca-iota/tangle.js/workflows/tcli%20Test/badge.svg)](https://github.com/jmcanterafonseca-iota/tangle.js/actions/workflows/tcli-test.yaml)
- [![npm badge](https://img.shields.io/npm/dm/%40tangle.js%2Ftangle-cli.svg)](https://www.npmjs.com/package/@tangle.js/tangle-cli)
+ [![npm badge](https://img.shields.io/npm/dm/%40tangle-js%2Ftangle-cli.svg)](https://www.npmjs.com/package/@tangle-js/tangle-cli)
 
 ## Installation
 
