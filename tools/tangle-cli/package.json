@@ -1,9 +1,9 @@
 {
   "name": "@tangle.js/tangle-cli",
-  "version": "1.6.2",
+  "version": "1.6.6",
   "description": "CLI for Tangle.js",
   "bin": {
-    "tcli": "./bin/tcli.sh"
+    "tcli": "./bin/tcli"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
