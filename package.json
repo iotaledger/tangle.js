@@ -1,5 +1,5 @@
 {
-    "name": "@tangle.js/tangle.js",
+    "name": "@tangle-js/tangle.js",
     "version": "0.9.0",
     "description": "Tangle.js tools and libraries. MonoRepo",
     "keywords": [

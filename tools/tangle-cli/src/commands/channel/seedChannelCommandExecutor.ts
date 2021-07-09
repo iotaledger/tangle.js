@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { SeedHelper } from "@tangle.js/anchors";
+import { SeedHelper } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
 
 export default class SeedChannelCommandExecutor {

@@ -57,13 +57,13 @@ The README of each library or tool includes a minimal API Guide.
 ### anchors
 
 ```
-npm install @tangle.js/anchors
+npm install @tangle-js/anchors
 ```
 
 ### ld-proofs
 
 ```
-npm install @tangle.js/ld-proofs
+npm install @tangle-js/ld-proofs
 ```
 
 ### trail
@@ -73,7 +73,7 @@ Upcoming
 ### tangle-cli
 
 ```
-npm install -g @tangle.js/tangle-cli
+npm install -g @tangle-js/tangle-cli
 ```
 
 ## Supporting the project

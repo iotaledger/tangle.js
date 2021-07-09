@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel, SeedHelper } from "@tangle.js/anchors";
+import { IotaAnchoringChannel, SeedHelper } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
 import { isDefined } from "../../globalParams";
 import { getNetworkParams } from "../commonParams";

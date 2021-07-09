@@ -1,5 +1,5 @@
 import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames, SeedHelper }
-    from "@tangle.js/anchors";
+    from "@tangle-js/anchors";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import JsonHelper from "./helpers/jsonHelper";

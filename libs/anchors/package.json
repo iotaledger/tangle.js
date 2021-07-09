@@ -1,5 +1,5 @@
 {
-    "name": "@tangle.js/anchors",
+    "name": "@tangle-js/anchors",
     "version": "0.9.1",
     "description": "Anchoring messages to the Tangle. Powered by IOTA Streams",
     "scripts": {

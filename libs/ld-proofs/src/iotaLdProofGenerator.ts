@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel, IAnchoringResult } from "@tangle.js/anchors";
+import { IotaAnchoringChannel, IAnchoringResult } from "@tangle-js/anchors";
 
 import { IotaSigner } from "./iotaSigner";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";

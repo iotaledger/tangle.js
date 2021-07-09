@@ -8,7 +8,7 @@ CLI for developing applications on the Tangle
 ## Installation
 
 ```
-npm install -g @tangle.js/tangle-cli
+npm install -g @tangle-js/tangle-cli
 ```
 
 ## Run 

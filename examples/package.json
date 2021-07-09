@@ -1,5 +1,5 @@
 {
-  "name": "@tangle.js/examples",
+  "name": "@tangle-js/examples",
   "version": "0.0.1",
   "description": "Tangle.js examples",
   "main": "index.js",
@@ -21,8 +21,8 @@
   },
   "homepage": "https://github.com/iotaledger/tangle.js#readme",
   "dependencies": {
-    "@tangle.js/anchors": "^0.9.1",
-    "@tangle.js/ld-proofs": "^0.9.2",
+    "@tangle-js/anchors": "^0.9.1",
+    "@tangle-js/ld-proofs": "^0.9.2",
     "epcis2.js": "^0.0.2-beta.1"
   }
 }

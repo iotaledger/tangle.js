@@ -1,5 +1,5 @@
 import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
-import { SeedHelper } from "@tangle.js/anchors";
+import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
 import { IdentityHelper } from "../helpers/identityHelper";

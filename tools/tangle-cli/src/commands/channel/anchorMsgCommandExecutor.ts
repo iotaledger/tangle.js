@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { IotaAnchoringChannel } from "@tangle.js/anchors";
+import { IotaAnchoringChannel } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../commonParams";
 

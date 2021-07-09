@@ -1,5 +1,5 @@
 {
-  "name": "@tangle.js/tangle-cli",
+  "name": "@tangle-js/tangle-cli",
   "version": "0.9.0",
   "description": "CLI for Tangle.js",
   "bin": {
@@ -37,7 +37,7 @@
     "@iota/identity-wasm": "0.3.4",
     "@iota/iota.js": "^1.5.3",
     "yargs": "^15.4.1",
-    "@tangle.js/anchors": "0.9.1"
+    "@tangle-js/anchors": "0.9.1"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",

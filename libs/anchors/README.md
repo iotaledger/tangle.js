@@ -17,6 +17,12 @@ After anchoring a message, such anchored message can turn itself into another an
 
 The entities anchoring the messages (the ship owners, metaphorically speaking) are authenticated by means of EdDSA (Ed25519). 
 
+## Installation
+
+```
+npm install @tangle-js/anchors
+```
+
 ## API
 
 ### Channel creation

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IotaLdProofVerifier = void 0;
-const anchors_1 = require("@tangle.js/anchors");
+const anchors_1 = require("@tangle-js/anchors");
 const ldProofError_1 = __importDefault(require("./errors/ldProofError"));
 const ldProofErrorNames_1 = __importDefault(require("./errors/ldProofErrorNames"));
 const jsonHelper_1 = __importDefault(require("./helpers/jsonHelper"));

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const node_1 = require("@iota/identity-wasm/node");
-const anchors_1 = require("@tangle.js/anchors");
+const anchors_1 = require("@tangle-js/anchors");
 const ldProofError_1 = __importDefault(require("../errors/ldProofError"));
 const ldProofErrorNames_1 = __importDefault(require("../errors/ldProofErrorNames"));
 const identityHelper_1 = require("../helpers/identityHelper");
