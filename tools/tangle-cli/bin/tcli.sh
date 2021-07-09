@@ -1,3 +1,3 @@
 #!/bin/sh
 
-node ./dist/tcli.js
+node ./dist/tcli
