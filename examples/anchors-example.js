@@ -1,4 +1,4 @@
-const { IotaAnchoringChannel } = require("@tangle.js/anchors");
+const { IotaAnchoringChannel } = require("@tangle-js/anchors");
 
 // Example on how to use the anchors library
 async function main() {

@@ -1,5 +1,5 @@
-const { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } = require("@tangle.js/ld-proofs");
-const { IotaAnchoringChannel } = require("@tangle.js/anchors");
+const { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } = require("@tangle-js/ld-proofs");
+const { IotaAnchoringChannel } = require("@tangle-js/anchors");
 
 /**
  
