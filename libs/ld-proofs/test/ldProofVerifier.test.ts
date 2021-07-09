@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel } from "@tangle.js/anchors";
+import { IotaAnchoringChannel } from "@tangle-js/anchors";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaLdProofVerifier } from "../src/iotaLdProofVerifier";
 import { IotaSigner } from "../src/iotaSigner";
