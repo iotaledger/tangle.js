@@ -2,6 +2,9 @@
 
 `ld-proofs` enables Linked Data Proofs on the Tangle. Powered by [IOTA Identity](https://github.com/iotaledger/identity.rs) and [IOTA Streams](https://github.com/iotaledger/streams). 
 
+[![Github Test Workflow](https://github.com/jmcanterafonseca-iota/tangle.js/workflows/Proofs%20Test/badge.svg)](https://github.com/jmcanterafonseca-iota/tangle.js/actions/workflows/proofs-test.yaml)
+ [![npm badge](https://img.shields.io/npm/dm/%40tangle.js%2Fld-proofs.svg)](https://www.npmjs.com/package/@tangle.js/ld-proofs)
+
 ## How it works
 
 Aligned with the [W3C Linked Data Proofs](https://w3c-ccg.github.io/ld-proofs/) proposed specification this library allows the generation and verification of Linked Data Proofs associated to plain messages or JSON(-LD) documents. Different kinds of Linked Data Proofs can be generated:
