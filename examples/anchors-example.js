@@ -5,6 +5,7 @@ async function main() {
   console.log("Creating a channel over the Chrysalis mainnet ...");
   const myChannel = await IotaAnchoringChannel.bindNew();
   console.log("Channel ID: ", myChannel.channelID);
+  console.log("Seed: ", myChannel.seed);
 
   console.log("Anchoring a message to ", myChannel.firstAnchorageID, "...");
   const anchorResult = await myChannel.anchor(Buffer.from("hello, world 1"), myChannel.firstAnchorageID);
