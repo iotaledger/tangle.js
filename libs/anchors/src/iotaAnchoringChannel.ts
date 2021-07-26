@@ -180,6 +180,7 @@ export class IotaAnchoringChannel {
         const bindRequest: IBindChannelRequest = {
             node: this._node,
             seed: this._seed,
+            encrypted: this._encrypted,
             channelID: this._channelID
         };
 

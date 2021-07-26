@@ -65,11 +65,13 @@ describe("Build Anchoring Channel", () => {
         expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[1]);
     });
 
-    test.skip("should instantiate an existing encrypted anchoring channel from an ID", async () => {
+    test("should instantiate an existing encrypted anchoring channel from an ID", async () => {
         const seed = SeedHelper.generateSeed();
         const channelDetails = await IotaAnchoringChannel.create(seed, { encrypted: true });
 
-        const channel = await IotaAnchoringChannel.fromID(channelDetails.channelID).bind(seed);
+        const channel = await IotaAnchoringChannel.fromID(
+            channelDetails.channelID, { encrypted: true }
+        ).bind(seed);
 
         expect(channel.seed).toBe(seed);
         expect(channel.encrypted).toBe(true);

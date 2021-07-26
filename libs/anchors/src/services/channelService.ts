@@ -67,6 +67,17 @@ export default class ChannelService {
 
             /* const announcement = */ await subscriber.clone().receive_announcement(announceLink);
 
+            if (request.encrypted) {
+                console.log("Receiving a KeyLoad");
+
+                const keyLoadMsgID = request.channelID.split(":")[2];
+                const keyLoadLinkStr = `${request.channelID.split(":")[0]}:${keyLoadMsgID}`;
+                 const keyLoadLink = Address.from_string(keyLoadLinkStr).copy();
+                await subscriber.clone().receive_keyload(keyLoadLink);
+
+                console.log("KeyLoad Received!!!");
+            }
+
             return { subscriber, authorPk: /* announcement.get_message().get_pk()*/ "" };
         } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
