@@ -2,16 +2,28 @@
 
  `anchors` allows anchoring messages to the Tangle. Powered by [IOTA Streams](https://github.com/iotaledger/streams). 
 
- [![Github Test Workflow](https://github.com/iotaledger/tangle.js/workflows/Anchors%20Test/badge.svg)](https://github.com/iotaledger/tangle.js/actions/workflows/anchors-test.yaml)
+ [![Github Test Workflow](https://github.com/iotaledger/tangle.js/workflows/Anchors%20Test/badge.svg)]
+ (https://github.com/iotaledger/tangle.js/actions/workflows/anchors-test.yaml)
  [![npm badge](https://img.shields.io/npm/dm/%40tangle-js%2Fanchors.svg)](https://www.npmjs.com/package/@tangle-js/anchors)
 
 ## How it works
 
-The main purpose is to be able to anchor messages to the IOTA Tangle so that their sequentiality, integrity, authenticity and immutability is preserved. Different applications can benefit from this feature. One of the applications (implemented by the [ld-proofs](../ld-proofs) library) is the generation of Linked Data Proofs for JSON(-LD) documents. 
+The main purpose is to be able to anchor messages to the IOTA Tangle so that their sequentiality, 
+integrity, authenticity and immutability is preserved. Different applications can benefit from this feature. 
+One of the applications (implemented by the [ld-proofs](../ld-proofs) library) is the generation 
+of Linked Data Proofs for JSON(-LD) documents. 
 
-You can imagine an Anchoring Channel as a (public or private) port's dock where different ships can be anchored and where an anchorage is always available. The library allows anchoring a new arriving ship, and once it is anchored, such ship itself turns into the next anchorage. Actually, when you anchor a new ship, you anchor it both to the dock and to another ship, which is also playing the anchorage role.
+You can imagine an Anchoring Channel as a (public or private) port's dock where different ships 
+can be anchored and where an anchorage is always available. The library allows anchoring a new 
+arriving ship, and once it is anchored, such ship itself turns into the next anchorage. 
+Actually, when you anchor a new ship, you anchor it both to the dock and to another ship, 
+which is also playing the anchorage role.
 
-An Anchoring Channel is just an IOTA Streams (*Single Branch*) Channel configured in **Single Publisher** mode. The publisher is usually both the Author and **the only** Subscriber of the Channel. The channel can contain as many anchorages as needed but **each anchorage can only anchor one message**. In public channels the first anchorage is the announce message the underlying IOTA Streams Channel. In encrypted channels the first anchorage is a keyLoad message anchored to the channel's announce message. 
+An Anchoring Channel is just an IOTA Streams (*Single Branch*) Channel configured in **Single Publisher** mode. 
+The publisher is usually both the Author and **the only** Subscriber of the Channel. 
+The channel can contain as many anchorages as needed but **each anchorage can only anchor one message**. 
+In public channels the first anchorage is the announce message of the underlying IOTA Streams Channel. 
+In encrypted channels the first anchorage is a keyLoad message anchored to the channel's announce message. 
 
 Anchorages are identified by an ID (the ID of a message). 
 
@@ -31,7 +43,7 @@ npm install @tangle-js/anchors
 
 ```ts
 // Seed generated automatically. Channel on the mainnet. Author === Subscriber. 
-// Public channel
+// Channel with public payloads
 const anchoringChannel = await IotaAnchoringChannel.bindNew();
 
 // Channel with masked payloads
@@ -40,7 +52,7 @@ const anchoringChannel = await IotaAnchoringChannel.bindNew({ encrypted: true })
 // Creation of a new channel by the Author
 // Channel details contains all the relevant info about the channel just created
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed());
-
+// with masked payloads
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { encrypted: true });
 
 // Properties available on a Channel object
@@ -62,7 +74,7 @@ const anchoringChannel = await IotaAnchoringChannel.fromID(channelID).bind(seed)
 ```
 
 ```ts
-// Instantiation and binding as Subscriber using the seed. Channel with Masked payloads
+// With Masked payloads
 const anchoringChannel = await IotaAnchoringChannel.fromID(channelID, { encrypted: true }).bind(seed);
 ```
 
@@ -94,7 +106,6 @@ console.log("Message publisher's PK: ", result.pk);
 ### Receiving messages
 
 Receives a message that has already been seen on the channel. 
-
 
 Optionally an expected anchorage ID can be passed that allows to fail 
 if the target message is not actually anchored to the expected anchorage. 
