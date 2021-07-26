@@ -34,6 +34,8 @@ export class IotaAnchoringChannel {
 
     private readonly _announceMsgID: string;
 
+    private readonly _keyLoadMsgID: string;
+
     private _subscriber: Subscriber;
 
     private readonly _authorPubKey: string;
@@ -41,13 +43,19 @@ export class IotaAnchoringChannel {
     private _subscriberPubKey: string;
 
     // authorPubKey param will disappear in the future
-    private constructor(channelAddr: string, announceMsgID: string, node: string,
-        encrypted: boolean, authorPubKey: string) {
+    private constructor(channelID: string, node: string, encrypted: boolean, authorPubKey: string) {
         this._node = node;
 
-        this._channelID = `${channelAddr}:${announceMsgID}`;
-        this._channelAddress = channelAddr;
-        this._announceMsgID = announceMsgID;
+        this._channelID = channelID;
+
+        const components = channelID.split(":");
+
+        this._channelAddress = components[0];
+        this._announceMsgID = components[1];
+
+        if (encrypted) {
+            this._keyLoadMsgID = components[2];
+        }
 
         this._encrypted = encrypted;
 
@@ -96,7 +104,8 @@ export class IotaAnchoringChannel {
             firstAnchorageID,
             authorPubKey: authorPk,
             authorSeed: seed,
-            node
+            node,
+            encrypted
         };
 
         return details;
@@ -114,19 +123,21 @@ export class IotaAnchoringChannel {
     public static fromID(channelID: string, options?: IChannelOptions): IotaAnchoringChannel {
         const components: string[] = channelID.split(":");
 
-        if (Array.isArray(components) && components.length === 2) {
+        let encrypted = false;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+        if (options?.encrypted === true) {
+            encrypted = true;
+        }
+
+        if (Array.isArray(components) &&
+            ((components.length === 2 && !encrypted) || (components.length === 3 && encrypted))) {
             let node = options?.node;
 
             if (!node) {
                 node = this.DEFAULT_NODE;
             }
             const authorPubKey = options?.authorPubKey;
-            let encrypted = false;
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-            if (options?.encrypted === true) {
-                encrypted = true;
-            }
-            return new IotaAnchoringChannel(components[0], components[1], node, encrypted, authorPubKey);
+            return new IotaAnchoringChannel(channelID, node, encrypted, authorPubKey);
         }
         throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
             `Invalid channel identifier: ${channelID}`);
@@ -210,7 +221,13 @@ export class IotaAnchoringChannel {
      *
      */
     public get firstAnchorageID(): string {
-        return this._announceMsgID;
+        let result = this._keyLoadMsgID;
+
+        if (!result) {
+            result = this._announceMsgID;
+        }
+
+        return result;
     }
 
     /**
@@ -259,7 +276,7 @@ export class IotaAnchoringChannel {
      *  @returns boolean
      *
      */
-     public get encrypted(): boolean {
+    public get encrypted(): boolean {
         return this._encrypted;
     }
 

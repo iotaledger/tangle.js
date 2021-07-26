@@ -22,6 +22,8 @@ describe("Build Anchoring Channel", () => {
         expect(channelDetails.channelID).toBeDefined();
         expect(channelDetails.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
         expect(channelDetails.firstAnchorageID).toBe(channelDetails.channelID.split(":")[1]);
+        // Only two components in a non-encrypted channel
+        expect(channelDetails.channelID.split(":")[2]).toBeUndefined();
     });
 
     test("should create an encrypted anchoring channel", async () => {
@@ -30,6 +32,8 @@ describe("Build Anchoring Channel", () => {
 
         expect(channelDetails.authorPubKey).toBeDefined();
         expect(channelDetails.authorSeed).toBe(seed);
+        expect(channelDetails.encrypted).toBe(true);
+
         expect(channelDetails.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
         expect(channelDetails.channelID).toBeDefined();
         expect(channelDetails.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
@@ -59,6 +63,22 @@ describe("Build Anchoring Channel", () => {
         expect(channel.channelID).toBe(channelDetails.channelID);
         expect(channel.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
         expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[1]);
+    });
+
+    test.skip("should instantiate an existing encrypted anchoring channel from an ID", async () => {
+        const seed = SeedHelper.generateSeed();
+        const channelDetails = await IotaAnchoringChannel.create(seed, { encrypted: true });
+
+        const channel = await IotaAnchoringChannel.fromID(channelDetails.channelID).bind(seed);
+
+        expect(channel.seed).toBe(seed);
+        expect(channel.encrypted).toBe(true);
+
+        expect(channel.subscriberPubKey).toBe(channelDetails.authorPubKey);
+        expect(channel.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
+        expect(channel.channelID).toBe(channelDetails.channelID);
+        expect(channel.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
+        expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
     });
 
     test("should fail instantiation if ID is incorrect", async () => {
