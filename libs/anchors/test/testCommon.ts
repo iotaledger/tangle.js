@@ -19,12 +19,30 @@ export const network = "https://api.lb-0.testnet.chrysalis2.com";
 }
 
 /**
+ * Creates a new encrypted anchoring channel
+ *
+ *  @param node The node on which the chanel is created
+ *
+ * @returns the anchoring channel
+ */
+ export async function newEncryptedChannel(node: string): Promise<IotaAnchoringChannel> {
+    const anchoringChannel = await IotaAnchoringChannel.bindNew({ node, encrypted: true });
+
+    assertChannel(anchoringChannel, true);
+
+    return anchoringChannel;
+}
+
+/**
  * Asserts an anchoring channel
  *
  * @param anchoringChannel The anchoring channel to assert
+ * @param encrypted whether it should be encrypted or not
  */
-export function assertChannel(anchoringChannel: IotaAnchoringChannel) {
+export function assertChannel(anchoringChannel: IotaAnchoringChannel, encrypted: boolean = false) {
     expect(anchoringChannel.seed).toBeDefined();
+    expect(anchoringChannel.encrypted).toBe(encrypted);
+
     expect(anchoringChannel.channelID).toBeDefined();
     expect(anchoringChannel.channelAddr).toBeDefined();
 

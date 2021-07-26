@@ -10,13 +10,18 @@ export default class FetchMsgService {
   public static async fetch(request: IFetchRequest): Promise<IFetchResult> {
     const subs = request.subscriber;
 
-    const announceMsgID = request.channelID.split(":")[1];
+    const components = request.channelID.split(":");
+    let targetMsgID = components[1];
+    // If it is encrypted the first anchorage is the keyLoad
+    if (request.encrypted) {
+      targetMsgID = components[2];
+    }
 
     const anchorageID = request.anchorageID;
 
     let found = true;
 
-    if (anchorageID !== announceMsgID) {
+    if (anchorageID !== targetMsgID) {
       ({ found } = await ChannelHelper.findAnchorage(subs, anchorageID));
     }
 
@@ -49,7 +54,12 @@ export default class FetchMsgService {
       response = messages[0];
     }
 
-    const messageContent = Buffer.from(response.get_message().get_public_payload());
+    let messageContent = Buffer.from(response.get_message().get_public_payload());
+
+    if (request.encrypted) {
+      messageContent = Buffer.from(response.get_message().get_masked_payload());
+    }
+
     const receivedMsgID = response.get_link().copy().msg_id;
 
     if (msgID && receivedMsgID !== msgID) {
@@ -81,7 +91,10 @@ export default class FetchMsgService {
 
     // In the future we would need to check that the anchorageID is the expected one
 
-    const messageContent = Buffer.from(response.get_message().get_public_payload());
+    let messageContent = Buffer.from(response.get_message().get_public_payload());
+    if (request.encrypted) {
+      messageContent = Buffer.from(response.get_message().get_masked_payload());
+    }
 
     const pk = response.get_message().get_pk();
 
@@ -92,7 +105,7 @@ export default class FetchMsgService {
     };
   }
 
-  public static async fetchNext(subscriber: Subscriber): Promise<IFetchResult | undefined> {
+  public static async fetchNext(subscriber: Subscriber, encrypted: boolean): Promise<IFetchResult | undefined> {
     const messages = await subscriber.clone().fetch_next_msgs();
 
     if (!messages || messages.length === 0) {
@@ -106,6 +119,10 @@ export default class FetchMsgService {
       pk: msg.get_message().get_pk(),
       message: Buffer.from(msg.get_message().get_public_payload())
     };
+
+    if (encrypted) {
+      result.message = Buffer.from(msg.get_message().get_masked_payload());
+    }
 
     return result;
   }

@@ -298,6 +298,7 @@ export class IotaAnchoringChannel {
 
         const request: IAnchoringRequest = {
             channelID: this._channelID,
+            encrypted: this._encrypted,
             subscriber: this._subscriber,
             message,
             anchorageID
@@ -324,6 +325,7 @@ export class IotaAnchoringChannel {
 
         const request: IFetchRequest = {
             channelID: this._channelID,
+            encrypted: this._encrypted,
             subscriber: this._subscriber,
             msgID: messageID,
             anchorageID
@@ -343,7 +345,7 @@ export class IotaAnchoringChannel {
                 "Unbound anchoring channel. Please call bind first");
         }
 
-        return FetchMsgService.fetchNext(this._subscriber);
+        return FetchMsgService.fetchNext(this._subscriber, this._encrypted);
     }
 
     /**
@@ -363,6 +365,7 @@ export class IotaAnchoringChannel {
 
         const request: IFetchRequest = {
             channelID: this._channelID,
+            encrypted: this._encrypted,
             subscriber: this._subscriber,
             msgID: messageID,
             anchorageID

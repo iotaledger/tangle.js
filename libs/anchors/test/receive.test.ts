@@ -1,7 +1,7 @@
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { network, newChannel } from "./testCommon";
+import { network, newChannel, newEncryptedChannel } from "./testCommon";
 
     // No search is made over the channel
     /* channel.receive(msgID, anchorageID) --> Just receives the message i.e the messages has had to be seen */
@@ -23,6 +23,10 @@ describe("Receive Messages", () => {
 
     let channelID: string;
 
+    let encryptedMsgID1: string;
+
+    let encryptedChannelID: string;
+
     beforeAll(async () => {
         const channel = await newChannel(network);
         channelID = channel.channelID;
@@ -38,12 +42,28 @@ describe("Receive Messages", () => {
         // Third message
         const result3 = await channel.anchor(Buffer.from(MSG_3), result2.msgID);
         msgID3 = result3.msgID;
+
+        const encryptedChannel = await newEncryptedChannel(network);
+        encryptedChannelID = encryptedChannel.channelID;
+
+        const encResult = await encryptedChannel.anchor(Buffer.from(MSG_1), encryptedChannel.firstAnchorageID);
+        encryptedMsgID1 = encResult.msgID;
     });
 
     test("should receive message when only announce has been seen", async () => {
         const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
         const response = await channel.receive(msgID1, channel.firstAnchorageID);
+
+        expect(response.message.toString()).toBe(MSG_1);
+    });
+
+    test("should receive message when only announce and keyLoad has been seen", async () => {
+        const channel = await IotaAnchoringChannel.fromID(
+            encryptedChannelID, { node: network, encrypted: true }
+        ).bind(SeedHelper.generateSeed());
+
+        const response = await channel.receive(encryptedMsgID1, channel.firstAnchorageID);
 
         expect(response.message.toString()).toBe(MSG_1);
     });
