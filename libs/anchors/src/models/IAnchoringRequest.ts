@@ -1,4 +1,4 @@
-import { Subscriber } from "@tangle.js/iota_streams_wasm";
+import { Subscriber } from "@tangle.js/streams-wasm/node";
 
 export interface IAnchoringRequest {
     /** The channel ID */

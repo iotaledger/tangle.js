@@ -24,6 +24,18 @@ describe("Build Anchoring Channel", () => {
         expect(channelDetails.firstAnchorageID).toBe(channelDetails.channelID.split(":")[1]);
     });
 
+    test("should create an encrypted anchoring channel", async () => {
+        const seed = SeedHelper.generateSeed();
+        const channelDetails = await IotaAnchoringChannel.create(seed, { encrypted: true });
+
+        expect(channelDetails.authorPubKey).toBeDefined();
+        expect(channelDetails.authorSeed).toBe(seed);
+        expect(channelDetails.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
+        expect(channelDetails.channelID).toBeDefined();
+        expect(channelDetails.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
+        expect(channelDetails.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
+    });
+
     test("should fail creation if the same seed is used", async () => {
         const seed = SeedHelper.generateSeed();
         const channelDetails = await IotaAnchoringChannel.create(seed);

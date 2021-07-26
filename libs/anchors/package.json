@@ -1,6 +1,6 @@
 {
     "name": "@tangle-js/anchors",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "description": "Anchoring messages to the Tangle. Powered by IOTA Streams",
     "scripts": {
         "build-clean": "rimraf ./es/* ./typings/*",
@@ -37,7 +37,7 @@
     },
     "homepage": "https://github.com/iotaledger/tangle.js.git/anchors/README.md",
     "dependencies": {
-        "@tangle.js/iota_streams_wasm": "0.0.1",
+        "@tangle.js/streams-wasm": "1.1.1",
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {

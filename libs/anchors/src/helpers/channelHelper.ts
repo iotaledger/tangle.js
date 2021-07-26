@@ -1,4 +1,4 @@
-import { Address, Subscriber } from "@tangle.js/iota_streams_wasm";
+import { Address, Subscriber } from "@tangle.js/streams-wasm/node";
 
 export class ChannelHelper {
     /**

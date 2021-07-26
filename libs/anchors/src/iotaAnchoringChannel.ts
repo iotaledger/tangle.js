@@ -1,4 +1,4 @@
-import { Subscriber } from "@tangle.js/iota_streams_wasm";
+import { Subscriber } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import initialize from "./helpers/initializationHelper";
@@ -28,6 +28,8 @@ export class IotaAnchoringChannel {
 
     private _seed: string;
 
+    private readonly _encrypted: boolean;
+
     private readonly _channelAddress: string;
 
     private readonly _announceMsgID: string;
@@ -39,12 +41,15 @@ export class IotaAnchoringChannel {
     private _subscriberPubKey: string;
 
     // authorPubKey param will disappear in the future
-    private constructor(channelAddr: string, announceMsgID: string, node: string, authorPubKey: string) {
+    private constructor(channelAddr: string, announceMsgID: string, node: string,
+        encrypted: boolean, authorPubKey: string) {
         this._node = node;
 
         this._channelID = `${channelAddr}:${announceMsgID}`;
         this._channelAddress = channelAddr;
         this._announceMsgID = announceMsgID;
+
+        this._encrypted = encrypted;
 
         this._authorPubKey = authorPubKey;
     }
@@ -70,13 +75,25 @@ export class IotaAnchoringChannel {
             node = this.DEFAULT_NODE;
         }
 
-        const { channelAddress, announceMsgID, authorPk } =
-            await ChannelService.createChannel(node, seed);
+        let encrypted = false;
+
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+        if (options?.encrypted === true) {
+            encrypted = true;
+        }
+
+        const { channelAddress, announceMsgID, keyLoadMsgID, authorPk } =
+            await ChannelService.createChannel(node, seed, encrypted);
+
+        let firstAnchorageID = announceMsgID;
+        if (keyLoadMsgID) {
+            firstAnchorageID = keyLoadMsgID;
+        }
 
         const details: IChannelDetails = {
             channelAddr: channelAddress,
-            channelID: `${channelAddress}:${announceMsgID}`,
-            firstAnchorageID: announceMsgID,
+            channelID: `${channelAddress}:${announceMsgID}${keyLoadMsgID ? `:${keyLoadMsgID}` : ""}`,
+            firstAnchorageID,
             authorPubKey: authorPk,
             authorSeed: seed,
             node
@@ -104,7 +121,12 @@ export class IotaAnchoringChannel {
                 node = this.DEFAULT_NODE;
             }
             const authorPubKey = options?.authorPubKey;
-            return new IotaAnchoringChannel(components[0], components[1], node, authorPubKey);
+            let encrypted = false;
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+            if (options?.encrypted === true) {
+                encrypted = true;
+            }
+            return new IotaAnchoringChannel(components[0], components[1], node, encrypted, authorPubKey);
         }
         throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
             `Invalid channel identifier: ${channelID}`);
@@ -222,13 +244,23 @@ export class IotaAnchoringChannel {
     }
 
     /**
-     *  Returns the channel's publisher Public Key
+     *  Returns the channel's subscriber Public Key
      *
-     *  @returns the publisher's Public key
+     *  @returns the subscriber's Public key
      *
      */
     public get subscriberPubKey(): string {
         return this._subscriberPubKey;
+    }
+
+    /**
+     *  Returns whether the channel is encrypted or not
+     *
+     *  @returns boolean
+     *
+     */
+     public get encrypted(): boolean {
+        return this._encrypted;
     }
 
     /**
