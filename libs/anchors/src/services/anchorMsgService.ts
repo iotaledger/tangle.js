@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { Address } from "@tangle.js/iota_streams_wasm";
+import { Address } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
@@ -23,18 +23,24 @@ export default class AnchorMsgService {
       // The address of the anchorage message
       const anchorageID = request.anchorageID;
 
+      const encrypted = request.encrypted;
+
       // The subscriber
       const subs = request.subscriber;
 
-      const announceMsgID = request.channelID.split(":")[1];
+      const components = request.channelID.split(":");
+      let targetMsgID = components[1];
+      if (encrypted) {
+        targetMsgID = components[2];
+      }
 
       let anchorageLink: Address;
       let found = true;
 
-      if (announceMsgID === anchorageID) {
+      if (targetMsgID === anchorageID) {
         anchorageLink = Address.from_string(request.channelID).copy();
       } else {
-         // If we are not anchoring to the announce Msg ID we find the proper anchorage
+        // If we are not anchoring to the announce Msg ID we find the proper anchorage
         // Iteratively retrieve messages until We find the one to anchor to
         ({ found, anchorageLink } = await ChannelHelper.findAnchorage(subs, anchorageID));
 
@@ -44,8 +50,12 @@ export default class AnchorMsgService {
         }
       }
 
-      const publicPayload = request.message;
-      const maskedPayload = Buffer.from("");
+      let publicPayload = request.message;
+      let maskedPayload = Buffer.from("");
+      if (encrypted) {
+        maskedPayload = publicPayload;
+        publicPayload = Buffer.from("");
+      }
 
       const anchoringResp = await subs.clone().send_signed_packet(anchorageLink,
         publicPayload, maskedPayload);

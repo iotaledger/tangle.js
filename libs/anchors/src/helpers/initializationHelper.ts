@@ -1,4 +1,4 @@
-import { set_panic_hook as streamsPanicHook } from "@tangle.js/iota_streams_wasm";
+import { set_panic_hook as streamsPanicHook } from "@tangle.js/streams-wasm/node";
 import * as fetch from "node-fetch";
 
 /**

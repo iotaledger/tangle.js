@@ -12,4 +12,6 @@ export interface IChannelDetails {
     authorPubKey: string;
     /** Node */
     node: string;
+    /** encrypted or not encrypted */
+    encrypted: boolean;
 }
