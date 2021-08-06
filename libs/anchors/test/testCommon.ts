@@ -1,7 +1,7 @@
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 
 // Chrysalis testnet
-export const network = "https://api.lb-0.testnet.chrysalis2.com";
+export const network = "https://api.lb-0.h.chrysalis-devnet.iota.cafe";
 // export const network = "https://chrysalis-nodes.evrythng.iota.org";
 
 /**
