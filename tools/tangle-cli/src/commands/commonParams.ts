@@ -1,6 +1,6 @@
 import { Arguments } from "yargs";
 
-const TESTNET_URL = "https://api.lb-0.testnet.chrysalis2.com";
+const TESTNET_URL = "https://api.lb-0.h.chrysalis-devnet.iota.cafe";
 const MAINNET_URL = "https://chrysalis-nodes.iota.org";
 
 export const PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
