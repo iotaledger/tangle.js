@@ -38,7 +38,7 @@ export default class AnchorMsgService {
       let found = true;
 
       if (targetMsgID === anchorageID) {
-        anchorageLink = Address.from_string(request.channelID).copy();
+        anchorageLink = ChannelHelper.parseAddress(request.channelID);
       } else {
         // If we are not anchoring to the announce Msg ID we find the proper anchorage
         // Iteratively retrieve messages until We find the one to anchor to
@@ -60,7 +60,7 @@ export default class AnchorMsgService {
       const anchoringResp = await subs.clone().send_signed_packet(anchorageLink,
         publicPayload, maskedPayload);
 
-      const msgID = anchoringResp.get_link().msg_id;
+      const msgID = anchoringResp.link.copy().msgId.toString();
 
       return {
         anchorageID,

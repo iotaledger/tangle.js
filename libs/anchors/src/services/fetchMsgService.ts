@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { Address, Subscriber } from "@tangle.js/streams-wasm/node";
+import { Subscriber } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
@@ -35,7 +35,7 @@ export default class FetchMsgService {
 
     // If the messageID is passed we retrieve it
     if (msgID) {
-      const msgLink = Address.from_string(`${subs.clone().channel_address()}:${msgID}`);
+      const msgLink = ChannelHelper.parseAddress(`${subs.clone().channel_address()}:${msgID}`);
       try {
         response = await subs.clone().receive_signed_packet(msgLink);
       } catch {
@@ -54,23 +54,23 @@ export default class FetchMsgService {
       response = messages[0];
     }
 
-    let messageContent = Buffer.from(response.get_message().get_public_payload());
+    let messageContent = Buffer.from(response.message.get_public_payload());
 
     if (request.encrypted) {
-      messageContent = Buffer.from(response.get_message().get_masked_payload());
+      messageContent = Buffer.from(response.message.get_masked_payload());
     }
 
-    const receivedMsgID = response.get_link().copy().msg_id;
+    const receivedMsgID = response.link.copy().msgId.toString();
 
     if (msgID && receivedMsgID !== msgID) {
       throw new Error("Requested message ID and fetched message ID are not equal");
     }
-    const pk = response.get_message().get_pk();
+    // const pk = response.message.get_pk();
 
     return {
       message: messageContent,
       msgID: receivedMsgID,
-      pk
+      pk: ""
     };
   }
 
@@ -81,7 +81,7 @@ export default class FetchMsgService {
 
     let response;
 
-    const msgLink = Address.from_string(`${subs.clone().channel_address()}:${msgID}`);
+    const msgLink = ChannelHelper.parseAddress(`${subs.clone().channel_address()}:${msgID}`);
     try {
       response = await subs.clone().receive_signed_packet(msgLink);
     } catch {
@@ -91,17 +91,17 @@ export default class FetchMsgService {
 
     // In the future we would need to check that the anchorageID is the expected one
 
-    let messageContent = Buffer.from(response.get_message().get_public_payload());
+    let messageContent = Buffer.from(response.message.get_public_payload());
     if (request.encrypted) {
-      messageContent = Buffer.from(response.get_message().get_masked_payload());
+      messageContent = Buffer.from(response.message.get_masked_payload());
     }
 
-    const pk = response.get_message().get_pk();
+    // const pk = response.message.get_pk();
 
     return {
       message: messageContent,
       msgID,
-      pk
+      pk: ""
     };
   }
 
@@ -115,13 +115,13 @@ export default class FetchMsgService {
     const msg = messages[0];
 
     const result: IFetchResult = {
-      msgID: msg.get_link().copy().msg_id,
-      pk: msg.get_message().get_pk(),
-      message: Buffer.from(msg.get_message().get_public_payload())
+      msgID: msg.link.copy().msgId.toString(),
+      pk: /* msg.message.get_pk(),*/ "",
+      message: Buffer.from(msg.message.get_public_payload())
     };
 
     if (encrypted) {
-      result.message = Buffer.from(msg.get_message().get_masked_payload());
+      result.message = Buffer.from(msg.message.get_masked_payload());
     }
 
     return result;

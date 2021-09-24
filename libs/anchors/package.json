@@ -37,7 +37,7 @@
     },
     "homepage": "https://github.com/iotaledger/tangle.js.git/anchors/README.md",
     "dependencies": {
-        "@tangle.js/streams-wasm": "1.1.1",
+        "@tangle.js/streams-wasm": "1.2.0",
         "node-fetch": "^2.6.1"
     },
     "devDependencies": {

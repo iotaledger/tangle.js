@@ -1,6 +1,7 @@
 import { Author, Subscriber, Address, ChannelType, SendOptions } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
+import { ChannelHelper } from "../helpers/channelHelper";
 import { IBindChannelRequest } from "../models/IBindChannelRequest";
 
 
@@ -25,7 +26,7 @@ export default class ChannelService {
             const auth = new Author(seed, options.clone(), ChannelType.SingleBranch);
 
             const response = await auth.clone().send_announce();
-            const announceLink = response.get_link().copy();
+            const announceLink = response.link.copy();
 
             let keyLoadMsgID: string;
 
@@ -35,7 +36,7 @@ export default class ChannelService {
             }
 
             return {
-                announceMsgID: announceLink.msg_id,
+                announceMsgID: announceLink.msgId.toString(),
                 channelAddress: auth.channel_address(),
                 authorPk: auth.get_public_key(),
                 keyLoadMsgID
@@ -63,7 +64,7 @@ export default class ChannelService {
 
             // Channel contains the channel address and the announce messageID
             const channel = request.channelID;
-            const announceLink = Address.from_string(channel).copy();
+            const announceLink = ChannelHelper.parseAddress(channel);
 
             /* const announcement = */ await subscriber.clone().receive_announcement(announceLink);
 
@@ -72,7 +73,7 @@ export default class ChannelService {
 
                 const keyLoadMsgID = request.channelID.split(":")[2];
                 const keyLoadLinkStr = `${request.channelID.split(":")[0]}:${keyLoadMsgID}`;
-                 const keyLoadLink = Address.from_string(keyLoadLinkStr).copy();
+                 const keyLoadLink = ChannelHelper.parseAddress(keyLoadLinkStr);
                 await subscriber.clone().receive_keyload(keyLoadLink);
 
                 console.log("KeyLoad Received!!!");
@@ -97,15 +98,15 @@ export default class ChannelService {
         const subscrResponse = await subs.clone().send_subscribe(announceLinkCopy);
         console.log("Subscribe sent");
 
-        const subscribeLink = subscrResponse.get_link().copy();
+        const subscribeLink = subscrResponse.link.copy();
         await auth.clone().receive_subscribe(subscribeLink);
         console.log("Subscription finalized");
 
         announceLinkCopy = announceLink.copy();
 
         const keyLoadResponse = await auth.clone().send_keyload_for_everyone(announceLinkCopy);
-        const keyLoadLinkCopy = keyLoadResponse.get_link().copy();
+        const keyLoadLinkCopy = keyLoadResponse.link.copy();
 
-       return keyLoadLinkCopy.msg_id as string;
+       return keyLoadLinkCopy.msgId.toString();
     }
 }
