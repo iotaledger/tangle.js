@@ -14,7 +14,7 @@ const subCommands: Record<string, ICommand> = {
 };
 
 const checkFunction = argv => {
-  if (argv.testnet || argv.comnet || argv.net) {
+  if (argv.devnet || argv.net) {
     throw new Error("Only the mainnet is supported for VCs");
   }
 
