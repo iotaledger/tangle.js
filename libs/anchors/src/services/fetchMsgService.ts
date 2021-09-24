@@ -35,8 +35,8 @@ export default class FetchMsgService {
 
     // If the messageID is passed we retrieve it
     if (msgID) {
-      const msgLink = ChannelHelper.parseAddress(`${subs.clone().channel_address()}:${msgID}`);
       try {
+        const msgLink = ChannelHelper.parseAddress(`${subs.clone().channel_address()}:${msgID}`);
         response = await subs.clone().receive_signed_packet(msgLink);
       } catch {
         throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,

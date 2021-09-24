@@ -26,17 +26,17 @@ export class ChannelHelper {
         let found = false;
         let anchorageLink: Address;
 
-        // First we try to read such message
-        const candidateLink = new Address(
-            ChannelAddress.parse(subs.clone().channel_address()),
-            MsgId.parse(anchorageID)
-        );
-
         let response;
+
         try {
+            // First we try to read such message
+            const candidateLink = new Address(
+                ChannelAddress.parse(subs.clone().channel_address()),
+                MsgId.parse(anchorageID)
+            );
             response = await subs.clone().receive_signed_packet(candidateLink);
         } catch {
-           // The message has not been found
+            // The message has not been found
         }
 
         if (response) {
