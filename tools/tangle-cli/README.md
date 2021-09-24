@@ -34,7 +34,7 @@ Commands:
 Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
-  --testnet  IOTA testnet                                               [boolean]
+  --devnet   IOTA devnet                                                [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
 ```
@@ -53,7 +53,7 @@ Commands:
 Options:
   --version   Show version number                                      [boolean]
   --mainnet   IOTA Mainnet                                             [boolean]
-  --testnet   IOTA testnet                                              [boolean]
+  --devnet    IOTA devnet                                               [boolean]
   --net, -n   Node's endpoint or other IOTA network                     [string]
   --help      Show help                                                [boolean]
 ```
@@ -68,7 +68,7 @@ DID Creation
 Options:
   --version     Show version number                                      [boolean]
   --mainnet     IOTA Mainnet                                             [boolean]
-  --testnet     IOTA testnet                                              [boolean]
+  --devnet      IOTA devnet                                               [boolean]
   --net, -n     Node's endpoint or other IOTA network                     [string]
   --help        Show help                                                [boolean]
   --didService  List of DID services (JSON Array)                        [string]
@@ -84,7 +84,7 @@ DID Resolution
 Options:
   --version   Show version number                                      [boolean]
   --mainnet   IOTA Mainnet                                             [boolean]
-  --testnet   IOTA testnet                                              [boolean]
+  --devnet    IOTA devnet                                               [boolean]
   --net, -n   Node's endpoint or other IOTA network                     [string]
   --help      Show help                                                [boolean]
   --did      DID to be resolved                              [string] [required]
@@ -104,7 +104,7 @@ Commands:
 Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
-  --testnet  IOTA testnet                                               [boolean]
+  --devnet   IOTA devnet                                                [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
   --method   Verification Method                             [string] [required]
@@ -120,7 +120,7 @@ VC issuance
 Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
-  --testnet  IOTA testnet                                               [boolean]
+  --devnet   IOTA devnet                                                [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
   --method   Verification Method                             [string] [required]
@@ -144,7 +144,7 @@ VC verification
 Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
-  --testnet  IOTA testnet                                               [boolean]
+  --devnet   IOTA devnet                                                [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
   --vc       Verifiable Credential to be verified (As JSON)  [string] [required]
@@ -158,7 +158,7 @@ tcli vc present
 
 Options:
   --version  Show version number                                       [boolean]
-  --testnet  IOTA Chrysalis Testnet                                    [boolean]
+  --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
@@ -189,7 +189,7 @@ Commands:
 
 Options:
   --version  Show version number                                       [boolean]
-  --testnet  IOTA Chrysalis Testnet                                    [boolean]
+  --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
@@ -204,7 +204,7 @@ Creates a new anchoring channel
 
 Options:
       --version  Show version number                                   [boolean]
-      --testnet  IOTA Chrysalis Testnet                                [boolean]
+      --devnet   IOTA Chrysalis devnet                                 [boolean]
       --mainnet  IOTA Chrysalis Mainnet                                [boolean]
   -n, --net      Node's endpoint or other IOTA network                  [string]
       --help     Show help                                             [boolean]
@@ -220,7 +220,7 @@ Anchors a message to an IOTA Streams Channel
 
 Options:
       --version      Show version number                               [boolean]
-      --testnet      IOTA Chrysalis Testnet                            [boolean]
+      --devnet       IOTA Chrysalis devnet                             [boolean]
       --mainnet      IOTA Chrysalis Mainnet                            [boolean]
   -n, --net          Node's endpoint or other IOTA network              [string]
       --help         Show help                                         [boolean]
@@ -242,7 +242,7 @@ Fetches one message previously anchored
 
 Options:
       --version      Show version number                               [boolean]
-      --testnet      IOTA Chrysalis Testnet                            [boolean]
+      --devnet       IOTA Chrysalis devnet                             [boolean]
       --mainnet      IOTA Chrysalis Mainnet                            [boolean]
   -n, --net          Node's endpoint or other IOTA network              [string]
       --help         Show help                                         [boolean]
@@ -264,7 +264,7 @@ Inspects an anchoring channel, visiting all messages anchored.
 
 Options:
       --version    Show version number                                 [boolean]
-      --testnet    IOTA Chrysalis Testnet                              [boolean]
+      --devnet     IOTA Chrysalis devnet                               [boolean]
       --mainnet    IOTA Chrysalis Mainnet                              [boolean]
   -n, --net        Node's endpoint or other IOTA network                [string]
       --help       Show help                                           [boolean]
@@ -283,7 +283,7 @@ Creates a new seed to be used to interact with anchoring channels
 
 Options:
       --version  Show version number                                   [boolean]
-      --testnet  IOTA Chrysalis Testnet                                [boolean]
+      --devnet   IOTA Chrysalis devnet                                 [boolean]
       --mainnet  IOTA Chrysalis Mainnet                                [boolean]
   -n, --net      Node's endpoint or other IOTA network                  [string]
       --help     Show help                                             [boolean]
@@ -301,7 +301,7 @@ Commands:
 
   Options:
   --version  Show version number                                       [boolean]
-  --testnet  IOTA Chrysalis Testnet                                    [boolean]
+  --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
   --help     Show help                                                 [boolean]
@@ -316,7 +316,7 @@ Message (indexation payload) submission
 
 Options:
   --version  Show version number                                       [boolean]
-  --testnet  IOTA Chrysalis Testnet                                    [boolean]
+  --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
   --help     Show help                                                 [boolean]
@@ -333,7 +333,7 @@ Message retrieval
 
 Options:
   --version  Show version number                                       [boolean]
-  --testnet  IOTA Chrysalis Testnet                                    [boolean]
+  --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
   --help     Show help                                                 [boolean]
