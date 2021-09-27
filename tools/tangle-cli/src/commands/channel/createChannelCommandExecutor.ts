@@ -2,10 +2,12 @@ import { IotaAnchoringChannel, SeedHelper } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
 import { isDefined } from "../../globalParams";
 import { getNetworkParams } from "../commonParams";
+import { ChannelHelper } from "./channelHelper";
 
 export default class CreateChannelCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
     const node = getNetworkParams(args).network;
+    const encrypted = ChannelHelper.getEncrypted(args);
 
     try {
       let seed = "";
@@ -16,7 +18,7 @@ export default class CreateChannelCommandExecutor {
         seed = args.seed as string;
       }
 
-      const channelDetails = await IotaAnchoringChannel.create(seed, { node });
+      const channelDetails = await IotaAnchoringChannel.create(seed, { node, encrypted });
       console.log(channelDetails);
     } catch (error) {
       console.error("Error:", error);

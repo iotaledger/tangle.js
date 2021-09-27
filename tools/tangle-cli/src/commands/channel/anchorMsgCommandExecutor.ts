@@ -1,11 +1,13 @@
 /* eslint-disable no-duplicate-imports */
-import { IotaAnchoringChannel } from "@tangle-js/anchors";
+import { IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
-import { getNetworkParams } from "../commonParams";
+import { getNetworkParams, providerName } from "../commonParams";
+import { ChannelHelper } from "./channelHelper";
 
 export default class AnchorMsgCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
     const node = getNetworkParams(args).network;
+    const encrypted = ChannelHelper.getEncrypted(args);
 
     try {
       const seed = args.seed as string;
@@ -13,14 +15,18 @@ export default class AnchorMsgCommandExecutor {
       // The address of the anchorage message
       const anchorageID = args.anchorageID as string;
 
-      const channel = await IotaAnchoringChannel.fromID(channelID, { node }).bind(seed);
+      const channel = await IotaAnchoringChannel.fromID(channelID, { node, encrypted }).bind(seed);
 
       const result = await channel.anchor(Buffer.from(args.msg as string), anchorageID);
+
+      const msgIDLayer1 = await ProtocolHelper.getMsgIdL1(channel, result.msgID);
+
       console.log({
         channelID: channel.channelID,
         ...result,
         seed,
-        publicKey: channel.subscriberPubKey
+        publicKey: channel.authorPubKey,
+        explorerURL: `https://explorer.iota.org/${providerName(node)}/message/${msgIDLayer1}`
       });
     } catch (error) {
       console.error("Error:", error);

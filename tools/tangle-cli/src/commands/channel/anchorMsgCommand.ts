@@ -2,6 +2,7 @@ import { Arguments, Argv } from "yargs";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
 import AnchorMsgCommandExecutor from "./anchorMsgCommandExecutor";
+import { encryptedParam } from "./channelParams";
 
 const params: ICommandParam[] = [
   {
@@ -35,7 +36,8 @@ const params: ICommandParam[] = [
       description: "The anchorage point (message) ID to anchor the message to",
       required: true
     }
-  }
+  },
+  encryptedParam
 ];
 
 export default class AnchorMsgCommand implements ICommand {
