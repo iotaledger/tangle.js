@@ -1,6 +1,18 @@
-import { Address, Subscriber } from "@tangle.js/streams-wasm/node";
+import { Address, ChannelAddress, MsgId, Subscriber } from "@tangle.js/streams-wasm/node";
 
 export class ChannelHelper {
+    /**
+     * Converts an address representing as a two component string (channel addr: message Id)
+     * into an Address object
+     *
+     * @param addressStr the address string
+     * @returns the Address object
+     */
+    public static parseAddress(addressStr: string): Address {
+        const [channelAddr, msgId] = addressStr.split(":");
+        return new Address(ChannelAddress.parse(channelAddr), MsgId.parse(msgId));
+    }
+
     /**
      *  Finds an anchorage message on the channel by going through the messages
      *
@@ -14,18 +26,21 @@ export class ChannelHelper {
         let found = false;
         let anchorageLink: Address;
 
-        // First we try to read such message
-        const candidateLink = Address.from_string(`${subs.clone().channel_address()}:${anchorageID}`);
-
         let response;
+
         try {
+            // First we try to read such message
+            const candidateLink = new Address(
+                ChannelAddress.parse(subs.clone().channel_address()),
+                MsgId.parse(anchorageID)
+            );
             response = await subs.clone().receive_signed_packet(candidateLink);
         } catch {
-           // The message has not been found
+            // The message has not been found
         }
 
         if (response) {
-            anchorageLink = response.get_link().copy();
+            anchorageLink = response.link.copy();
             found = true;
         }
 
@@ -37,9 +52,9 @@ export class ChannelHelper {
             }
 
             // In our case only one message is expected
-            anchorageLink = messages[0].get_link().copy();
+            anchorageLink = messages[0].link.copy();
 
-            if (anchorageLink.msg_id === anchorageID) {
+            if (anchorageLink.msgId.toString() === anchorageID) {
                 found = true;
             }
         }

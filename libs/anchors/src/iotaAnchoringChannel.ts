@@ -38,12 +38,11 @@ export class IotaAnchoringChannel {
 
     private _subscriber: Subscriber;
 
-    private readonly _authorPubKey: string;
+    private _authorPubKey: string;
 
     private _subscriberPubKey: string;
 
-    // authorPubKey param will disappear in the future
-    private constructor(channelID: string, node: string, encrypted: boolean, authorPubKey: string) {
+    private constructor(channelID: string, node: string, encrypted: boolean) {
         this._node = node;
 
         this._channelID = channelID;
@@ -58,8 +57,6 @@ export class IotaAnchoringChannel {
         }
 
         this._encrypted = encrypted;
-
-        this._authorPubKey = authorPubKey;
     }
 
     /**
@@ -136,8 +133,7 @@ export class IotaAnchoringChannel {
             if (!node) {
                 node = this.DEFAULT_NODE;
             }
-            const authorPubKey = options?.authorPubKey;
-            return new IotaAnchoringChannel(channelID, node, encrypted, authorPubKey);
+            return new IotaAnchoringChannel(channelID, node, encrypted);
         }
         throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
             `Invalid channel identifier: ${channelID}`);
@@ -159,7 +155,6 @@ export class IotaAnchoringChannel {
         if (!opts) {
             opts = {};
         }
-        opts.authorPubKey = details.authorPubKey;
         return IotaAnchoringChannel.fromID(details.channelID, opts).bind(details.authorSeed);
     }
 
@@ -186,10 +181,10 @@ export class IotaAnchoringChannel {
 
         // The author's PK for the time being is not set because cannot be obtained from the
         // announce message
-        const { subscriber } = await ChannelService.bindToChannel(bindRequest);
+        const { subscriber, authorPk } = await ChannelService.bindToChannel(bindRequest);
 
+        this._authorPubKey = authorPk;
         this._subscriber = subscriber;
-        // this._authorPk = authorPk;
         this._subscriberPubKey = subscriber.get_public_key();
 
         return this;

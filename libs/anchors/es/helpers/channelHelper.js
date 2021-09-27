@@ -13,6 +13,17 @@ exports.ChannelHelper = void 0;
 const node_1 = require("@tangle.js/streams-wasm/node");
 class ChannelHelper {
     /**
+     * Converts an address representing as a two component string (channel addr: message Id)
+     * into an Address object
+     *
+     * @param addressStr the address string
+     * @returns the Address object
+     */
+    static parseAddress(addressStr) {
+        const [channelAddr, msgId] = addressStr.split(":");
+        return new node_1.Address(node_1.ChannelAddress.parse(channelAddr), node_1.MsgId.parse(msgId));
+    }
+    /**
      *  Finds an anchorage message on the channel by going through the messages
      *
      * @param subs  Subscriber
@@ -24,17 +35,17 @@ class ChannelHelper {
         return __awaiter(this, void 0, void 0, function* () {
             let found = false;
             let anchorageLink;
-            // First we try to read such message
-            const candidateLink = node_1.Address.from_string(`${subs.clone().channel_address()}:${anchorageID}`);
             let response;
             try {
+                // First we try to read such message
+                const candidateLink = new node_1.Address(node_1.ChannelAddress.parse(subs.clone().channel_address()), node_1.MsgId.parse(anchorageID));
                 response = yield subs.clone().receive_signed_packet(candidateLink);
             }
             catch (_a) {
                 // The message has not been found
             }
             if (response) {
-                anchorageLink = response.get_link().copy();
+                anchorageLink = response.link.copy();
                 found = true;
             }
             // Iteratively retrieve messages until We find the one to anchor to
@@ -44,8 +55,8 @@ class ChannelHelper {
                     break;
                 }
                 // In our case only one message is expected
-                anchorageLink = messages[0].get_link().copy();
-                if (anchorageLink.msg_id === anchorageID) {
+                anchorageLink = messages[0].link.copy();
+                if (anchorageLink.msgId.toString() === anchorageID) {
                     found = true;
                 }
             }
@@ -54,4 +65,4 @@ class ChannelHelper {
     }
 }
 exports.ChannelHelper = ChannelHelper;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2hhbm5lbEhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9oZWxwZXJzL2NoYW5uZWxIZWxwZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsdURBQW1FO0FBRW5FLE1BQWEsYUFBYTtJQUN0Qjs7Ozs7OztPQU9HO0lBQ0ksTUFBTSxDQUFPLGFBQWEsQ0FBQyxJQUFnQixFQUFFLFdBQW1COztZQUVuRSxJQUFJLEtBQUssR0FBRyxLQUFLLENBQUM7WUFDbEIsSUFBSSxhQUFzQixDQUFDO1lBRTNCLG9DQUFvQztZQUNwQyxNQUFNLGFBQWEsR0FBRyxjQUFPLENBQUMsV0FBVyxDQUFDLEdBQUcsSUFBSSxDQUFDLEtBQUssRUFBRSxDQUFDLGVBQWUsRUFBRSxJQUFJLFdBQVcsRUFBRSxDQUFDLENBQUM7WUFFOUYsSUFBSSxRQUFRLENBQUM7WUFDYixJQUFJO2dCQUNBLFFBQVEsR0FBRyxNQUFNLElBQUksQ0FBQyxLQUFLLEVBQUUsQ0FBQyxxQkFBcUIsQ0FBQyxhQUFhLENBQUMsQ0FBQzthQUN0RTtZQUFDLFdBQU07Z0JBQ0wsaUNBQWlDO2FBQ25DO1lBRUQsSUFBSSxRQUFRLEVBQUU7Z0JBQ1YsYUFBYSxHQUFHLFFBQVEsQ0FBQyxRQUFRLEVBQUUsQ0FBQyxJQUFJLEVBQUUsQ0FBQztnQkFDM0MsS0FBSyxHQUFHLElBQUksQ0FBQzthQUNoQjtZQUVELG1FQUFtRTtZQUNuRSxPQUFPLENBQUMsS0FBSyxFQUFFO2dCQUNYLE1BQU0sUUFBUSxHQUFHLE1BQU0sSUFBSSxDQUFDLEtBQUssRUFBRSxDQUFDLGVBQWUsRUFBRSxDQUFDO2dCQUN0RCxJQUFJLENBQUMsUUFBUSxJQUFJLFFBQVEsQ0FBQyxNQUFNLEtBQUssQ0FBQyxFQUFFO29CQUNwQyxNQUFNO2lCQUNUO2dCQUVELDJDQUEyQztnQkFDM0MsYUFBYSxHQUFHLFFBQVEsQ0FBQyxDQUFDLENBQUMsQ0FBQyxRQUFRLEVBQUUsQ0FBQyxJQUFJLEVBQUUsQ0FBQztnQkFFOUMsSUFBSSxhQUFhLENBQUMsTUFBTSxLQUFLLFdBQVcsRUFBRTtvQkFDdEMsS0FBSyxHQUFHLElBQUksQ0FBQztpQkFDaEI7YUFDSjtZQUVELE9BQU8sRUFBRSxLQUFLLEVBQUUsYUFBYSxFQUFFLENBQUM7UUFDcEMsQ0FBQztLQUFBO0NBQ0o7QUE5Q0Qsc0NBOENDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2hhbm5lbEhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9oZWxwZXJzL2NoYW5uZWxIZWxwZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsdURBQTBGO0FBRTFGLE1BQWEsYUFBYTtJQUN0Qjs7Ozs7O09BTUc7SUFDSSxNQUFNLENBQUMsWUFBWSxDQUFDLFVBQWtCO1FBQ3pDLE1BQU0sQ0FBQyxXQUFXLEVBQUUsS0FBSyxDQUFDLEdBQUcsVUFBVSxDQUFDLEtBQUssQ0FBQyxHQUFHLENBQUMsQ0FBQztRQUNuRCxPQUFPLElBQUksY0FBTyxDQUFDLHFCQUFjLENBQUMsS0FBSyxDQUFDLFdBQVcsQ0FBQyxFQUFFLFlBQUssQ0FBQyxLQUFLLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQztJQUM5RSxDQUFDO0lBRUQ7Ozs7Ozs7T0FPRztJQUNJLE1BQU0sQ0FBTyxhQUFhLENBQUMsSUFBZ0IsRUFBRSxXQUFtQjs7WUFFbkUsSUFBSSxLQUFLLEdBQUcsS0FBSyxDQUFDO1lBQ2xCLElBQUksYUFBc0IsQ0FBQztZQUUzQixJQUFJLFFBQVEsQ0FBQztZQUViLElBQUk7Z0JBQ0Esb0NBQW9DO2dCQUNwQyxNQUFNLGFBQWEsR0FBRyxJQUFJLGNBQU8sQ0FDN0IscUJBQWMsQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLEtBQUssRUFBRSxDQUFDLGVBQWUsRUFBRSxDQUFDLEVBQ3BELFlBQUssQ0FBQyxLQUFLLENBQUMsV0FBVyxDQUFDLENBQzNCLENBQUM7Z0JBQ0YsUUFBUSxHQUFHLE1BQU0sSUFBSSxDQUFDLEtBQUssRUFBRSxDQUFDLHFCQUFxQixDQUFDLGFBQWEsQ0FBQyxDQUFDO2FBQ3RFO1lBQUMsV0FBTTtnQkFDSixpQ0FBaUM7YUFDcEM7WUFFRCxJQUFJLFFBQVEsRUFBRTtnQkFDVixhQUFhLEdBQUcsUUFBUSxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUUsQ0FBQztnQkFDckMsS0FBSyxHQUFHLElBQUksQ0FBQzthQUNoQjtZQUVELG1FQUFtRTtZQUNuRSxPQUFPLENBQUMsS0FBSyxFQUFFO2dCQUNYLE1BQU0sUUFBUSxHQUFHLE1BQU0sSUFBSSxDQUFDLEtBQUssRUFBRSxDQUFDLGVBQWUsRUFBRSxDQUFDO2dCQUN0RCxJQUFJLENBQUMsUUFBUSxJQUFJLFFBQVEsQ0FBQyxNQUFNLEtBQUssQ0FBQyxFQUFFO29CQUNwQyxNQUFNO2lCQUNUO2dCQUVELDJDQUEyQztnQkFDM0MsYUFBYSxHQUFHLFFBQVEsQ0FBQyxDQUFDLENBQUMsQ0FBQyxJQUFJLENBQUMsSUFBSSxFQUFFLENBQUM7Z0JBRXhDLElBQUksYUFBYSxDQUFDLEtBQUssQ0FBQyxRQUFRLEVBQUUsS0FBSyxXQUFXLEVBQUU7b0JBQ2hELEtBQUssR0FBRyxJQUFJLENBQUM7aUJBQ2hCO2FBQ0o7WUFFRCxPQUFPLEVBQUUsS0FBSyxFQUFFLGFBQWEsRUFBRSxDQUFDO1FBQ3BDLENBQUM7S0FBQTtDQUNKO0FBN0RELHNDQTZEQyJ9
