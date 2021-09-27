@@ -1,6 +1,6 @@
 {
   "name": "@tangle-js/tangle-cli",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "CLI for Tangle.js",
   "bin": {
     "tcli": "./bin/tcli"
