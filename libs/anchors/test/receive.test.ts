@@ -55,6 +55,7 @@ describe("Receive Messages", () => {
 
         const response = await channel.receive(msgID1, channel.firstAnchorageID);
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.message.toString()).toBe(MSG_1);
     });
 
@@ -65,6 +66,7 @@ describe("Receive Messages", () => {
 
         const response = await channel.receive(encryptedMsgID1, channel.firstAnchorageID);
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.message.toString()).toBe(MSG_1);
     });
 

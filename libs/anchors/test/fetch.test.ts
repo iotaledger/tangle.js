@@ -52,6 +52,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetch(channel.firstAnchorageID, msgID1);
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.message.toString()).toBe(MSG_1);
     });
 
@@ -62,6 +63,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetch(channel.firstAnchorageID, encryptedMsgID1);
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.message.toString()).toBe(MSG_1);
     });
 
@@ -70,6 +72,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetch(msgID1, msgID2);
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.message.toString()).toBe(MSG_2);
     });
 
@@ -80,6 +83,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetch(encryptedMsgID1, encryptedMsgID2);
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.message.toString()).toBe(MSG_2);
     });
 
@@ -130,6 +134,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetch(channel.firstAnchorageID);
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.msgID).toBe(msgID1);
         expect(response.message.toString()).toBe(MSG_1);
     });
@@ -148,6 +153,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetchNext();
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.msgID).toBe(msgID1);
         expect(response.message.toString()).toBe(MSG_1);
 
@@ -167,6 +173,7 @@ describe("Fetch Messages", () => {
 
         const response = await channel.fetchNext();
 
+        expect(response.pk).toBe(channel.authorPubKey);
         expect(response.msgID).toBe(encryptedMsgID1);
         expect(response.message.toString()).toBe(MSG_1);
 

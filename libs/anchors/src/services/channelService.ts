@@ -66,7 +66,7 @@ export default class ChannelService {
             const channel = request.channelID;
             const announceLink = ChannelHelper.parseAddress(channel);
 
-            /* const announcement = */ await subscriber.clone().receive_announcement(announceLink);
+            await subscriber.clone().receive_announcement(announceLink);
 
             if (request.encrypted) {
                 console.log("Receiving a KeyLoad");
@@ -79,7 +79,7 @@ export default class ChannelService {
                 console.log("KeyLoad Received!!!");
             }
 
-            return { subscriber, authorPk: /* announcement.get_message().get_pk()*/ "" };
+            return { subscriber, authorPk: subscriber.author_public_key() };
         } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
                 `Cannot bind to channel ${request.channelID}`);
