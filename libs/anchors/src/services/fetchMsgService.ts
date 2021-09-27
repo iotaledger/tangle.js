@@ -65,12 +65,12 @@ export default class FetchMsgService {
     if (msgID && receivedMsgID !== msgID) {
       throw new Error("Requested message ID and fetched message ID are not equal");
     }
-    // const pk = response.message.get_pk();
+    const pk = response.message.get_identifier();
 
     return {
       message: messageContent,
       msgID: receivedMsgID,
-      pk: ""
+      pk
     };
   }
 
@@ -96,12 +96,12 @@ export default class FetchMsgService {
       messageContent = Buffer.from(response.message.get_masked_payload());
     }
 
-    // const pk = response.message.get_pk();
+    const pk = response.message.get_identifier();
 
     return {
       message: messageContent,
       msgID,
-      pk: ""
+      pk
     };
   }
 
@@ -116,7 +116,7 @@ export default class FetchMsgService {
 
     const result: IFetchResult = {
       msgID: msg.link.copy().msgId.toString(),
-      pk: /* msg.message.get_pk(),*/ "",
+      pk: msg.message.get_identifier(),
       message: Buffer.from(msg.message.get_public_payload())
     };
 
