@@ -14,7 +14,7 @@ of Linked Data Proofs for JSON(-LD) documents.
 
 You can imagine an Anchoring Channel as a (public or private) port's dock where different ships 
 can be anchored and where an anchorage is always available. The library allows anchoring a new 
-arriving ship, and once it is anchored, such ship itself turns into the next anchorage. 
+arriving ship, and once it is anchored, such ship itself turns into an anchorage. 
 Actually, when you anchor a new ship, you anchor it both to the dock and to another ship, 
 which is also playing the anchorage role.
 
@@ -117,4 +117,12 @@ const result = await anchoringChannel.receive(msgID, expectedAnchorageID?);
 
 ```ts
 const next = await anchoringChannel.fetchNext();
+```
+
+### L1 Message Mapping
+
+```ts
+const layer1MsgID = ProtocolHelper.getMsgIdL1(anchoringChannel,msgID);
+
+const layer1Index = ProtocolHelper.getIndexL1(channelAddr, msgID);
 ```
