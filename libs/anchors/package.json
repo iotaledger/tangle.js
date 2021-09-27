@@ -38,7 +38,8 @@
     "homepage": "https://github.com/iotaledger/tangle.js.git/anchors/README.md",
     "dependencies": {
         "@tangle.js/streams-wasm": "1.2.0",
-        "node-fetch": "^2.6.1"
+        "node-fetch": "^2.6.1",
+        "@iota/iota.js": "^1.6.3"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^19.0.0",

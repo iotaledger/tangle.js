@@ -1,5 +1,6 @@
 export * from "./iotaAnchoringChannel";
 export * from "./helpers/seedHelper";
+export * from "./helpers/protocolHelper";
 export * from "./models/IAnchoringResult";
 export * from "./models/IFetchResult";
 export * from "./models/IChannelOptions";
