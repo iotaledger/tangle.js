@@ -9,3 +9,11 @@ export const channelParam: ICommandParam =
         required: true
     }
 };
+
+export const encryptedParam: ICommandParam = {
+    name: "encrypted",
+    options: {
+        type: "boolean",
+        description: "Whether the channel must be encrypted or not"
+    }
+};

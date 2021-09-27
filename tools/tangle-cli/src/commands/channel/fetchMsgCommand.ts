@@ -2,7 +2,7 @@ import { Arguments, Argv } from "yargs";
 import { isDefined } from "../../globalParams";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
-import { channelParam } from "./channelParams";
+import { channelParam, encryptedParam } from "./channelParams";
 import FetchMsgCommandExecutor from "./fetchMsgCommandExecutor";
 
 const params: ICommandParam[] = [
@@ -30,7 +30,8 @@ const params: ICommandParam[] = [
       description: "ID of the anchorage where the message to be fetched is anchored to",
       required: true
     }
-  }
+  },
+  encryptedParam
 ];
 
 export default class FetchMsgCommand implements ICommand {

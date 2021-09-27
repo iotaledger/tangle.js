@@ -18,7 +18,7 @@ export class ProtocolHelper {
      *
      * @returns the tangle index encoded in hexadecimal chars
      */
-    public static getL1Index(channelAddress: string, messageId: string): string {
+    public static getIndexL1(channelAddress: string, messageId: string): string {
         const addr = new Address(ChannelAddress.parse(channelAddress), MsgId.parse(messageId));
 
         return addr.toMsgIndexHex();
@@ -33,7 +33,7 @@ export class ProtocolHelper {
      *
      * @returns the Layer 1 message ID
      */
-    public static async getL1MsgId(channel: IotaAnchoringChannel, messageId: string): Promise<string> {
+    public static async getMsgIdL1(channel: IotaAnchoringChannel, messageId: string): Promise<string> {
         const addr = new Address(ChannelAddress.parse(channel.channelAddr), MsgId.parse(messageId));
         const index = addr.toMsgIndex();
 
@@ -43,7 +43,7 @@ export class ProtocolHelper {
 
         if (messagesResponse.count === 0) {
             throw new AnchoringChannelError(
-                AnchoringChannelErrorNames.MSG_NOT_FOUND, "L1 message have not beeen found");
+                AnchoringChannelErrorNames.L1_MSG_NOT_FOUND, "L1 message has not been found");
         }
 
         return messagesResponse.messageIds[0];

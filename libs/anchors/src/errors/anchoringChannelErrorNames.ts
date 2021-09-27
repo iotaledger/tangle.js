@@ -12,5 +12,7 @@ export abstract class AnchoringChannelErrorNames {
     public static OTHER_ERROR = "Runtime_Error";
 
     public static INVALID_NODE = "Invalid_Node";
+
+    public static L1_MSG_NOT_FOUND = "Layer1_Message_Not_Found";
 }
 

@@ -1,7 +1,7 @@
 import { Arguments, Argv } from "yargs";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
-import { channelParam } from "./channelParams";
+import { channelParam, encryptedParam } from "./channelParams";
 import InspectChannelCommandExecutor from "./inspectChannelCommandExecutor";
 
 const params: ICommandParam[] = [
@@ -13,7 +13,8 @@ const params: ICommandParam[] = [
       required: true
     }
   },
-  channelParam
+  channelParam,
+  encryptedParam
 ];
 
 export default class InspectChannelCommand implements ICommand {

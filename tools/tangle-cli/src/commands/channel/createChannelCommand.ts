@@ -1,6 +1,7 @@
 import { Arguments, Argv } from "yargs";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
+import { encryptedParam } from "./channelParams";
 import CreateChannelCommandExecutor from "./createChannelCommandExecutor";
 
 const params: ICommandParam[] = [
@@ -11,7 +12,8 @@ const params: ICommandParam[] = [
       description: "IOTA Streams Author's seed for creating the channel",
       required: false
     }
-  }
+  },
+  encryptedParam
 ];
 
 export default class CreateChannelCommand implements ICommand {
