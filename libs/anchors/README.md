@@ -22,7 +22,8 @@ An Anchoring Channel is just an IOTA Streams (*Single Branch*) Channel configure
 The publisher is usually both the Author and **the only** Subscriber of the Channel. 
 The channel can contain as many anchorages as needed but **each anchorage can only anchor one message**. 
 In public channels the first anchorage is the announce message of the underlying IOTA Streams Channel. 
-In encrypted channels the first anchorage is a keyLoad message anchored to the channel's announce message. 
+In private channels the first anchorage is a keyLoad message anchored to the channel's announce message. 
+In both private and public channels messages can be encrypted if needed. 
 
 Anchorages are identified by an ID (the ID of a message). 
 
@@ -42,17 +43,26 @@ npm install @tangle-js/anchors
 
 ```ts
 // Seed generated automatically. Channel on the mainnet. Author === Subscriber. 
-// Channel with public payloads
+// Public channel
 const anchoringChannel = await IotaAnchoringChannel.bindNew();
 
-// Channel with masked payloads
+// Public Channel with masked payloads
 const anchoringChannel = await IotaAnchoringChannel.bindNew({ encrypted: true });
 
-// Creation of a new channel by the Author
+// Private Channel with masked payloads
+const anchoringChannel = await IotaAnchoringChannel.bindNew({ encrypted: true, isPrivate: true });
+
+// Creation of a new public channel by the Author
 // Channel details contains all the relevant info about the channel just created
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed());
-// with masked payloads
+// same but with masked payloads
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { encrypted: true });
+
+// Creation of a new private channel by the Author
+const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { isPrivate: true });
+// same but with masked payloads
+const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { isPrivate: true, encrypted: true });
+
 
 // Properties available on a Channel object
 
@@ -75,6 +85,12 @@ const anchoringChannel = await IotaAnchoringChannel.fromID(channelID).bind(seed)
 ```ts
 // With Masked payloads
 const anchoringChannel = await IotaAnchoringChannel.fromID(channelID, { encrypted: true }).bind(seed);
+```
+
+```ts
+// Private Channel instantiation with Masked payloads, the seed must correspond to an authorized subscriber, 
+// for instance the Author itself
+const anchoringChannel = await IotaAnchoringChannel.fromID(channelID, { isPrivate: true, encrypted: true }).bind(seed);
 ```
 
 ### Anchoring messages

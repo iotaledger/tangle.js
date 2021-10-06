@@ -5,6 +5,8 @@ export interface IBindChannelRequest {
     channelID: string;
     /** Whether the channel is encrypted */
     encrypted: boolean;
+     /** Whether the channel is private */
+     isPrivate: boolean;
     /** The seed */
     seed: string;
 }

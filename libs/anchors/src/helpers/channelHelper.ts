@@ -10,7 +10,7 @@ export class ChannelHelper {
      */
     public static parseAddress(addressStr: string): Address {
         const [channelAddr, msgId] = addressStr.split(":");
-        return new Address(ChannelAddress.parse(channelAddr), MsgId.parse(msgId));
+        return new Address(ChannelAddress.parse(channelAddr).copy(), MsgId.parse(msgId));
     }
 
     /**

@@ -14,4 +14,6 @@ export interface IChannelDetails {
     node: string;
     /** encrypted or not encrypted */
     encrypted: boolean;
+    /** isPrivate? */
+    isPrivate: boolean;
 }

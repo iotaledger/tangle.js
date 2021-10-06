@@ -18,9 +18,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SeedHelper = void 0;
+const node_1 = require("@tangle.js/streams-wasm/node");
 const crypto = __importStar(require("crypto"));
+const iotaAnchoringChannel_1 = require("../iotaAnchoringChannel");
 class SeedHelper {
     /**
      * Generates a new seed
@@ -37,6 +48,20 @@ class SeedHelper {
         }
         return seed;
     }
+    /**
+     * Given a seed obtains the corresponding Ed25519 public key
+     *
+     * @param seed The seed
+     * @returns the public key
+     *
+     */
+    static publicKeyFromSeed(seed) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // The node is just a formality to fill all the params
+            const author = new node_1.Author(seed, new node_1.SendOptions(iotaAnchoringChannel_1.IotaAnchoringChannel.DEFAULT_NODE, true), node_1.ChannelType.SingleBranch);
+            return author.clone().get_public_key();
+        });
+    }
 }
 exports.SeedHelper = SeedHelper;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VlZEhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9oZWxwZXJzL3NlZWRIZWxwZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLCtDQUFpQztBQUVqQyxNQUFhLFVBQVU7SUFDbkI7Ozs7O09BS0c7SUFDSSxNQUFNLENBQUMsWUFBWSxDQUFDLFNBQWlCLEVBQUU7UUFDMUMsTUFBTSxRQUFRLEdBQUcsNEJBQTRCLENBQUM7UUFFOUMsSUFBSSxJQUFJLEdBQUcsRUFBRSxDQUFDO1FBRWQsT0FBTyxJQUFJLENBQUMsTUFBTSxHQUFHLE1BQU0sRUFBRTtZQUN6QixNQUFNLEtBQUssR0FBRyxNQUFNLENBQUMsV0FBVyxDQUFDLENBQUMsQ0FBQyxDQUFDO1lBQ3BDLElBQUksSUFBSSxRQUFRLENBQUMsS0FBSyxDQUFDLENBQUMsQ0FBQyxHQUFHLFFBQVEsQ0FBQyxNQUFNLENBQUMsQ0FBQztTQUNoRDtRQUdELE9BQU8sSUFBSSxDQUFDO0lBQ2hCLENBQUM7Q0FDSjtBQXBCRCxnQ0FvQkMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VlZEhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9oZWxwZXJzL3NlZWRIZWxwZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLHVEQUFnRjtBQUNoRiwrQ0FBaUM7QUFDakMsa0VBQStEO0FBRS9ELE1BQWEsVUFBVTtJQUNuQjs7Ozs7T0FLRztJQUNJLE1BQU0sQ0FBQyxZQUFZLENBQUMsU0FBaUIsRUFBRTtRQUMxQyxNQUFNLFFBQVEsR0FBRyw0QkFBNEIsQ0FBQztRQUU5QyxJQUFJLElBQUksR0FBRyxFQUFFLENBQUM7UUFFZCxPQUFPLElBQUksQ0FBQyxNQUFNLEdBQUcsTUFBTSxFQUFFO1lBQ3pCLE1BQU0sS0FBSyxHQUFHLE1BQU0sQ0FBQyxXQUFXLENBQUMsQ0FBQyxDQUFDLENBQUM7WUFDcEMsSUFBSSxJQUFJLFFBQVEsQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDLEdBQUcsUUFBUSxDQUFDLE1BQU0sQ0FBQyxDQUFDO1NBQ2hEO1FBR0QsT0FBTyxJQUFJLENBQUM7SUFDaEIsQ0FBQztJQUVEOzs7Ozs7T0FNRztJQUNLLE1BQU0sQ0FBTyxpQkFBaUIsQ0FBQyxJQUFZOztZQUMvQyxzREFBc0Q7WUFDdEQsTUFBTSxNQUFNLEdBQUcsSUFBSSxhQUFNLENBQUMsSUFBSSxFQUMxQixJQUFJLGtCQUFXLENBQUMsMkNBQW9CLENBQUMsWUFBWSxFQUFFLElBQUksQ0FBQyxFQUFFLGtCQUFXLENBQUMsWUFBWSxDQUFDLENBQUM7WUFFeEYsT0FBTyxNQUFNLENBQUMsS0FBSyxFQUFFLENBQUMsY0FBYyxFQUFFLENBQUM7UUFDM0MsQ0FBQztLQUFBO0NBQ0o7QUFuQ0QsZ0NBbUNDIn0=

@@ -24,13 +24,14 @@ export default class AnchorMsgService {
       const anchorageID = request.anchorageID;
 
       const encrypted = request.encrypted;
+      const isPrivate = request.isPrivate;
 
       // The subscriber
       const subs = request.subscriber;
 
       const components = request.channelID.split(":");
       let targetMsgID = components[1];
-      if (encrypted) {
+      if (isPrivate) {
         targetMsgID = components[2];
       }
 
@@ -38,7 +39,7 @@ export default class AnchorMsgService {
       let found = true;
 
       if (targetMsgID === anchorageID) {
-        anchorageLink = ChannelHelper.parseAddress(request.channelID);
+        anchorageLink = ChannelHelper.parseAddress(`${components[0]}:${targetMsgID}`);
       } else {
         // If we are not anchoring to the announce Msg ID we find the proper anchorage
         // Iteratively retrieve messages until We find the one to anchor to

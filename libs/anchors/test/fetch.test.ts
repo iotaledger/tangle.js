@@ -1,7 +1,7 @@
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { network, newChannel, newEncryptedChannel } from "./testCommon";
+import { network, newChannel, newEncryptedChannel, newPrivateChannel } from "./testCommon";
 
 describe("Fetch Messages", () => {
     const MSG_1 = "Hello 1";
@@ -17,6 +17,11 @@ describe("Fetch Messages", () => {
     let encryptedChannelID: string;
     let encryptedMsgID1: string;
     let encryptedMsgID2: string;
+
+    let privateChannelID: string;
+    let privateChannelSeed: string;
+    let privateMsgID1: string;
+    let privateMsgID2: string;
 
     beforeAll(async () => {
         const channel = await newChannel(network);
@@ -45,6 +50,19 @@ describe("Fetch Messages", () => {
         // Second message (using the same subscriber's seed)
         const encResult2 = await encryptedChannel.anchor(Buffer.from(MSG_2), encResult.msgID);
         encryptedMsgID2 = encResult2.msgID;
+
+        const privateChannel = await newPrivateChannel(network);
+        console.log("Private ChannelID:", privateChannel.channelID);
+        privateChannelID = privateChannel.channelID;
+        privateChannelSeed = privateChannel.seed;
+
+        // First message on the private channel
+        const privateResult = await privateChannel.anchor(Buffer.from(MSG_1), privateChannel.firstAnchorageID);
+        privateMsgID1 = privateResult.msgID;
+
+        // Second message on the private channel
+        const privateResult2 = await privateChannel.anchor(Buffer.from(MSG_2), privateResult.msgID);
+        privateMsgID2 = privateResult2.msgID;
     });
 
     test("should fetch message anchored to the first anchorage", async () => {
@@ -62,6 +80,17 @@ describe("Fetch Messages", () => {
         ).bind(SeedHelper.generateSeed());
 
         const response = await channel.fetch(channel.firstAnchorageID, encryptedMsgID1);
+
+        expect(response.pk).toBe(channel.authorPubKey);
+        expect(response.message.toString()).toBe(MSG_1);
+    });
+
+    test("should fetch message anchored to the first anchorage - private", async () => {
+        const channel = await IotaAnchoringChannel.fromID(
+            privateChannelID, { node: network, encrypted: true, isPrivate: true }
+        ).bind(privateChannelSeed);
+
+        const response = await channel.fetch(channel.firstAnchorageID, privateMsgID1);
 
         expect(response.pk).toBe(channel.authorPubKey);
         expect(response.message.toString()).toBe(MSG_1);
@@ -87,6 +116,17 @@ describe("Fetch Messages", () => {
         expect(response.message.toString()).toBe(MSG_2);
     });
 
+    test("should fetch message anchored to non-first anchorage - private", async () => {
+        const channel = await IotaAnchoringChannel.fromID(
+            privateChannelID, { node: network, encrypted: true, isPrivate: true }
+        ).bind(privateChannelSeed);
+
+        const response = await channel.fetch(privateMsgID1, privateMsgID2);
+
+        expect(response.pk).toBe(channel.authorPubKey);
+        expect(response.message.toString()).toBe(MSG_2);
+    });
+
     test("should fetch message anchored to non-first after fetching the first one", async () => {
         const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
 
@@ -107,6 +147,17 @@ describe("Fetch Messages", () => {
         expect(fetchResponse.message.toString()).toBe(MSG_1);
     });
 
+    test("should perform a cycle of anchor, fetch with the same channel object - private non encrypted",
+        async () => {
+            const channel = await IotaAnchoringChannel.bindNew({ node: network, isPrivate: true });
+
+            const anchorResponse = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
+
+            const fetchResponse = await channel.fetch(channel.firstAnchorageID, anchorResponse.msgID);
+
+            expect(fetchResponse.message.toString()).toBe(MSG_1);
+        });
+
     test("should perform a cycle of anchor, anchor, skip, fetch with the same channel object", async () => {
         const channel = await newChannel(network);
 
@@ -118,16 +169,29 @@ describe("Fetch Messages", () => {
         expect(fetchResponse.message.toString()).toBe(MSG_2);
     });
 
-    test("should perform a cycle of anchor, anchor, skip, fetch with the same channel object - encrypted", async () => {
-        const channel = await newEncryptedChannel(network);
+    test("should perform a cycle of anchor, anchor, skip, fetch with the same channel object - encrypted",
+        async () => {
+            const channel = await newEncryptedChannel(network);
 
-        const anchorResponse1 = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
-        const anchorResponse2 = await channel.anchor(Buffer.from(MSG_2), anchorResponse1.msgID);
+            const anchorResponse1 = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
+            const anchorResponse2 = await channel.anchor(Buffer.from(MSG_2), anchorResponse1.msgID);
 
-        const fetchResponse = await channel.fetch(anchorResponse1.msgID, anchorResponse2.msgID);
+            const fetchResponse = await channel.fetch(anchorResponse1.msgID, anchorResponse2.msgID);
 
-        expect(fetchResponse.message.toString()).toBe(MSG_2);
-    });
+            expect(fetchResponse.message.toString()).toBe(MSG_2);
+        });
+
+    test("should perform a cycle of anchor, anchor, skip, fetch with the same channel object - private",
+        async () => {
+            const channel = await newPrivateChannel(network);
+
+            const anchorResponse1 = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
+            const anchorResponse2 = await channel.anchor(Buffer.from(MSG_2), anchorResponse1.msgID);
+
+            const fetchResponse = await channel.fetch(anchorResponse1.msgID, anchorResponse2.msgID);
+
+            expect(fetchResponse.message.toString()).toBe(MSG_2);
+        });
 
     test("should fetch without passing the message ID. First anchorage", async () => {
         const channel = await IotaAnchoringChannel.fromID(channelID, { node: network }).bind(SeedHelper.generateSeed());
@@ -166,20 +230,20 @@ describe("Fetch Messages", () => {
         expect(response3).toBeUndefined();
     });
 
-    test("should fetch using fetchNext method - encrypted", async () => {
+    test("should fetch using fetchNext method - private", async () => {
         const channel = await IotaAnchoringChannel.fromID(
-            encryptedChannelID, { node: network, encrypted: true }
-        ).bind(SeedHelper.generateSeed());
+            privateChannelID, { node: network, isPrivate: true, encrypted: true }
+        ).bind(privateChannelSeed);
 
         const response = await channel.fetchNext();
 
         expect(response.pk).toBe(channel.authorPubKey);
-        expect(response.msgID).toBe(encryptedMsgID1);
+        expect(response.msgID).toBe(privateMsgID1);
         expect(response.message.toString()).toBe(MSG_1);
 
         const response2 = await channel.fetchNext();
 
-        expect(response2.msgID).toBe(encryptedMsgID2);
+        expect(response2.msgID).toBe(privateMsgID2);
         expect(response2.message.toString()).toBe(MSG_2);
 
         const response3 = await channel.fetchNext();

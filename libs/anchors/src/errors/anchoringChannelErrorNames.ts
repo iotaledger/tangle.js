@@ -14,5 +14,6 @@ export abstract class AnchoringChannelErrorNames {
     public static INVALID_NODE = "Invalid_Node";
 
     public static L1_MSG_NOT_FOUND = "Layer1_Message_Not_Found";
-}
 
+    public static CHANNEL_BINDING_PERMISSION_ERROR = "Channel_Binding_Permission_Error";
+}

@@ -1,7 +1,7 @@
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { network, newChannel, newEncryptedChannel } from "./testCommon";
+import { network, newChannel, newEncryptedChannel, newPrivateChannel } from "./testCommon";
 
     // No search is made over the channel
     /* channel.receive(msgID, anchorageID) --> Just receives the message i.e the messages has had to be seen */
@@ -23,9 +23,12 @@ describe("Receive Messages", () => {
 
     let channelID: string;
 
+    let encryptedChannelID: string;
     let encryptedMsgID1: string;
 
-    let encryptedChannelID: string;
+    let privateChannelID: string;
+    let privateChannelSeed: string;
+    let privateMsgID1: string;
 
     beforeAll(async () => {
         const channel = await newChannel(network);
@@ -48,6 +51,13 @@ describe("Receive Messages", () => {
 
         const encResult = await encryptedChannel.anchor(Buffer.from(MSG_1), encryptedChannel.firstAnchorageID);
         encryptedMsgID1 = encResult.msgID;
+
+        const privateChannel = await newPrivateChannel(network);
+        privateChannelID = privateChannel.channelID;
+        privateChannelSeed = privateChannel.seed;
+
+        const privateResult = await privateChannel.anchor(Buffer.from(MSG_1), privateChannel.firstAnchorageID);
+        privateMsgID1 = privateResult.msgID;
     });
 
     test("should receive message when only announce has been seen", async () => {
@@ -60,6 +70,28 @@ describe("Receive Messages", () => {
     });
 
     test("should receive message when only announce and keyLoad has been seen", async () => {
+        const channel = await IotaAnchoringChannel.fromID(
+            privateChannelID, { node: network, encrypted: true, isPrivate: true }
+        ).bind(privateChannelSeed);
+
+        const response = await channel.receive(privateMsgID1, channel.firstAnchorageID);
+
+        expect(response.pk).toBe(channel.authorPubKey);
+        expect(response.message.toString()).toBe(MSG_1);
+    });
+
+    test("should receive message from private non-encrypted channel", async () => {
+        const channel = await IotaAnchoringChannel.bindNew({ node: network, isPrivate: true });
+
+        const anchorResponse = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
+
+        const response = await channel.receive(anchorResponse.msgID, channel.firstAnchorageID);
+
+        expect(response.pk).toBe(channel.authorPubKey);
+        expect(response.message.toString()).toBe(MSG_1);
+    });
+
+    test("should receive message from encrypted channel", async () => {
         const channel = await IotaAnchoringChannel.fromID(
             encryptedChannelID, { node: network, encrypted: true }
         ).bind(SeedHelper.generateSeed());
