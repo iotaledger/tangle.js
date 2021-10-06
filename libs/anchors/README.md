@@ -59,7 +59,6 @@ const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { encrypted: true });
 
 // Creation of a new private channel by the Author
-// Channel details contains all the relevant info about the channel just created
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { isPrivate: true });
 // same but with masked payloads
 const channelDetails = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), { isPrivate: true, encrypted: true });
@@ -89,7 +88,8 @@ const anchoringChannel = await IotaAnchoringChannel.fromID(channelID, { encrypte
 ```
 
 ```ts
-// Private Channel instantiation with Masked payloads
+// Private Channel instantiation with Masked payloads, the seed must correspond to an authorized subscriber, 
+// for instance the Author itself
 const anchoringChannel = await IotaAnchoringChannel.fromID(channelID, { isPrivate: true, encrypted: true }).bind(seed);
 ```
 
