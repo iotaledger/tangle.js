@@ -4,7 +4,7 @@ import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { network, newChannel, newEncryptedChannel } from "./testCommon";
 
 
-describe("Anchor Messages", () => {
+describe.skip("Anchor Messages", () => {
     const message = Buffer.from("Hello");
 
     test("should anchor a message to the initial anchorage", async () => {

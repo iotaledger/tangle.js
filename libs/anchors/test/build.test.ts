@@ -18,6 +18,9 @@ describe("Build Anchoring Channel", () => {
 
         expect(channelDetails.authorPubKey).toBeDefined();
         expect(channelDetails.authorSeed).toBe(seed);
+        expect(channelDetails.encrypted).toBe(false);
+        expect(channelDetails.isPrivate).toBe(false);
+
         expect(channelDetails.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
         expect(channelDetails.channelID).toBeDefined();
         expect(channelDetails.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
@@ -33,6 +36,37 @@ describe("Build Anchoring Channel", () => {
         expect(channelDetails.authorPubKey).toBeDefined();
         expect(channelDetails.authorSeed).toBe(seed);
         expect(channelDetails.encrypted).toBe(true);
+        expect(channelDetails.isPrivate).toBe(false);
+
+        expect(channelDetails.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
+        expect(channelDetails.channelID).toBeDefined();
+        expect(channelDetails.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
+        expect(channelDetails.firstAnchorageID).toBe(channelDetails.channelID.split(":")[1]);
+    });
+
+    test("should create an anchoring channel - private", async () => {
+        const seed = SeedHelper.generateSeed();
+        const channelDetails = await IotaAnchoringChannel.create(seed, { isPrivate: true });
+
+        expect(channelDetails.authorPubKey).toBeDefined();
+        expect(channelDetails.authorSeed).toBe(seed);
+        expect(channelDetails.encrypted).toBe(false);
+        expect(channelDetails.isPrivate).toBe(true);
+
+        expect(channelDetails.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
+        expect(channelDetails.channelID).toBeDefined();
+        expect(channelDetails.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
+        expect(channelDetails.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
+    });
+
+    test("should create an anchoring channel - private and encrypted", async () => {
+        const seed = SeedHelper.generateSeed();
+        const channelDetails = await IotaAnchoringChannel.create(seed, { isPrivate: true, encrypted: true });
+
+        expect(channelDetails.authorPubKey).toBeDefined();
+        expect(channelDetails.authorSeed).toBe(seed);
+        expect(channelDetails.encrypted).toBe(true);
+        expect(channelDetails.isPrivate).toBe(true);
 
         expect(channelDetails.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
         expect(channelDetails.channelID).toBeDefined();
@@ -65,12 +99,12 @@ describe("Build Anchoring Channel", () => {
         expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[1]);
     });
 
-    test("should instantiate an existing anchoring channel from an ID - encrypted", async () => {
+    test("should instantiate an existing anchoring channel from an ID - encrypted and private", async () => {
         const seed = SeedHelper.generateSeed();
-        const channelDetails = await IotaAnchoringChannel.create(seed, { encrypted: true });
+        const channelDetails = await IotaAnchoringChannel.create(seed, { isPrivate: true, encrypted: true });
 
         const channel = await IotaAnchoringChannel.fromID(
-            channelDetails.channelID, { encrypted: true }
+            channelDetails.channelID, { encrypted: true, isPrivate: true }
         ).bind(seed);
 
         expect(channel.seed).toBe(seed);
@@ -83,13 +117,29 @@ describe("Build Anchoring Channel", () => {
         expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
     });
 
-    test("should fail instantiation if passing an ID of a non-encrypted channel", async () => {
+    test("should fail instantiation of an existing private channel from an ID - incorrect seed", async () => {
+        const seed = SeedHelper.generateSeed();
+        const channelDetails = await IotaAnchoringChannel.create(seed, { isPrivate: true, encrypted: true });
+
+        try {
+            await IotaAnchoringChannel.fromID(
+                channelDetails.channelID, { encrypted: true, isPrivate: true }
+            ).bind(SeedHelper.generateSeed());
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_PERMISSION_ERROR);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should fail instantiation if passing an ID of a public channel", async () => {
         const seed = SeedHelper.generateSeed();
         const channelDetails = await IotaAnchoringChannel.create(seed);
 
         try {
             await IotaAnchoringChannel.fromID(
-                channelDetails.channelID, { encrypted: true }
+                channelDetails.channelID, { isPrivate: true }
             ).bind(seed);
         } catch (error) {
             expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR);
@@ -99,9 +149,9 @@ describe("Build Anchoring Channel", () => {
         fail("No exception thrown");
     });
 
-    test("should fail instantiation if passing an ID of an encrypted channel", async () => {
+    test("should fail instantiation if passing an ID of a private channel", async () => {
         const seed = SeedHelper.generateSeed();
-        const channelDetails = await IotaAnchoringChannel.create(seed, { encrypted: true });
+        const channelDetails = await IotaAnchoringChannel.create(seed, { isPrivate: true });
 
         try {
             await IotaAnchoringChannel.fromID(channelDetails.channelID).bind(seed);

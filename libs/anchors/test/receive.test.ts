@@ -12,7 +12,7 @@ import { network, newChannel, newEncryptedChannel } from "./testCommon";
     /* Streams Team - Ask for: Generate an exception when anchoring to messages to the same anchorage */
     /* Streams Team - fetch_next_msgs starting from a particular one, like rewinding the channel to that point */
 
-describe("Receive Messages", () => {
+describe.skip("Receive Messages", () => {
     const MSG_1 = "Hello 1";
     const MSG_2 = "Hello 2";
     const MSG_3 = "Hello 3";

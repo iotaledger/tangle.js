@@ -38,7 +38,7 @@ export default class AnchorMsgService {
       let found = true;
 
       if (targetMsgID === anchorageID) {
-        anchorageLink = ChannelHelper.parseAddress(request.channelID);
+        anchorageLink = ChannelHelper.parseAddress(`${components[0]}:${targetMsgID}`);
       } else {
         // If we are not anchoring to the announce Msg ID we find the proper anchorage
         // Iteratively retrieve messages until We find the one to anchor to

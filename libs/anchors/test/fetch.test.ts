@@ -3,7 +3,7 @@ import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { network, newChannel, newEncryptedChannel } from "./testCommon";
 
-describe("Fetch Messages", () => {
+describe.skip("Fetch Messages", () => {
     const MSG_1 = "Hello 1";
     const MSG_2 = "Hello 2";
 
