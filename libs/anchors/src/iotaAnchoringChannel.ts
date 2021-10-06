@@ -54,7 +54,7 @@ export class IotaAnchoringChannel {
         this._channelAddress = components[0];
         this._announceMsgID = components[1];
 
-        if (encrypted) {
+        if (isPrivate) {
             this._keyLoadMsgID = components[2];
         }
 
@@ -96,7 +96,7 @@ export class IotaAnchoringChannel {
         }
 
         const { channelAddress, announceMsgID, keyLoadMsgID, authorPk } =
-            await ChannelService.createChannel(node, seed, isPrivate, encrypted);
+            await ChannelService.createChannel(node, seed, isPrivate);
 
         let firstAnchorageID = announceMsgID;
         if (keyLoadMsgID) {
@@ -165,7 +165,7 @@ export class IotaAnchoringChannel {
      */
     public static async bindNew(options?: IChannelOptions): Promise<IotaAnchoringChannel> {
         const details = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), options);
-        // Temporarily until Streams exposed it on the Subscriber
+
         let opts = options;
         if (!opts) {
             opts = {};
@@ -348,6 +348,7 @@ export class IotaAnchoringChannel {
         const request: IFetchRequest = {
             channelID: this._channelID,
             encrypted: this._encrypted,
+            isPrivate: this._isPrivate,
             subscriber: this._subscriber,
             msgID: messageID,
             anchorageID
@@ -388,6 +389,7 @@ export class IotaAnchoringChannel {
         const request: IFetchRequest = {
             channelID: this._channelID,
             encrypted: this._encrypted,
+            isPrivate: this._isPrivate,
             subscriber: this._subscriber,
             msgID: messageID,
             anchorageID

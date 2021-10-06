@@ -4,7 +4,7 @@ import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { assertChannel, network } from "./testCommon";
 
 
-describe.skip("Build Anchoring Channel", () => {
+describe("Build Anchoring Channel", () => {
     test("should create and bind an Anchoring Channel on the mainnet", async () => {
         const anchoringChannel = await IotaAnchoringChannel.bindNew();
 

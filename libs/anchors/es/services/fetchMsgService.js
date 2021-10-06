@@ -19,7 +19,7 @@ class FetchMsgService {
             const components = request.channelID.split(":");
             let targetMsgID = components[1];
             // If it is encrypted the first anchorage is the keyLoad
-            if (request.encrypted) {
+            if (request.isPrivate) {
                 targetMsgID = components[2];
             }
             const anchorageID = request.anchorageID;

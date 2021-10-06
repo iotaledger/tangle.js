@@ -15,12 +15,11 @@ export default class ChannelService {
      * @param node The node on which the channel is created
      * @param seed The channel's seed
      * @param isPrivate Whether the channel is private or not
-     * @param encrypted Whether the channel is encrypted or not
      *
      * @returns The address of the channel created and the announce message ID
      *
      */
-    public static async createChannel(node: string, seed: string, isPrivate: boolean, encrypted: boolean):
+    public static async createChannel(node: string, seed: string, isPrivate: boolean):
         Promise<{ channelAddress: string; announceMsgID: string; keyLoadMsgID?: string; authorPk: string }> {
         const options = new SendOptions(node, true);
         try {

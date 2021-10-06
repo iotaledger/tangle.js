@@ -5,6 +5,8 @@ export interface IFetchRequest {
     channelID: string;
     /** Whether the channel is encrypted */
     encrypted: boolean;
+    /** Whether the channel is private */
+    isPrivate: boolean;
     /** The specific message */
     msgID?: string;
     /** The anchorage */
