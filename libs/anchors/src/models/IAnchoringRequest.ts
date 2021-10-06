@@ -5,6 +5,8 @@ export interface IAnchoringRequest {
     channelID: string;
     /** Whether the channel is encrypted */
     encrypted: boolean;
+    /** Whether the channel is private */
+    isPrivate: boolean;
     /** The IOTA Streams Subscriber */
     subscriber: Subscriber;
     /** The message */

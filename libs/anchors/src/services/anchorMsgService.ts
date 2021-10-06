@@ -24,13 +24,14 @@ export default class AnchorMsgService {
       const anchorageID = request.anchorageID;
 
       const encrypted = request.encrypted;
+      const isPrivate = request.isPrivate;
 
       // The subscriber
       const subs = request.subscriber;
 
       const components = request.channelID.split(":");
       let targetMsgID = components[1];
-      if (encrypted) {
+      if (isPrivate) {
         targetMsgID = components[2];
       }
 

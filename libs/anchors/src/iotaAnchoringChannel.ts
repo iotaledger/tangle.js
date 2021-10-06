@@ -293,6 +293,16 @@ export class IotaAnchoringChannel {
     }
 
     /**
+     *  Returns whether the channel is private or not
+     *
+     *  @returns boolean
+     *
+     */
+      public get isPrivate(): boolean {
+        return this._isPrivate;
+    }
+
+    /**
      * Anchors a message to the anchoring channel
      *
      * @param message Message to be anchored
@@ -310,6 +320,7 @@ export class IotaAnchoringChannel {
         const request: IAnchoringRequest = {
             channelID: this._channelID,
             encrypted: this._encrypted,
+            isPrivate: this._isPrivate,
             subscriber: this._subscriber,
             message,
             anchorageID

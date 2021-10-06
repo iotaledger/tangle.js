@@ -1,10 +1,10 @@
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { network, newChannel, newEncryptedChannel } from "./testCommon";
+import { network, newChannel, newEncryptedChannel, newPrivateChannel } from "./testCommon";
 
 
-describe.skip("Anchor Messages", () => {
+describe("Anchor Messages", () => {
     const message = Buffer.from("Hello");
 
     test("should anchor a message to the initial anchorage", async () => {
@@ -41,8 +41,8 @@ describe.skip("Anchor Messages", () => {
         expect(result2.msgID).toBeDefined();
     });
 
-    test("should anchor a message to an anchorage different than the first one - encrypted", async () => {
-        const channel = await newEncryptedChannel(network);
+    test("should anchor a message to an anchorage different than the first one - private", async () => {
+        const channel = await newPrivateChannel(network);
 
         const firstAnchorageID = channel.firstAnchorageID;
         const result = await channel.anchor(message, firstAnchorageID);
@@ -86,9 +86,9 @@ describe.skip("Anchor Messages", () => {
         expect(result3.msgID).toBeDefined();
     });
 
-    test("should bind to an already existing channel and anchor to a previous message ID - encrypted", async () => {
+    test("should bind to an already existing channel and anchor to a previous message ID - private", async () => {
         // Channel created
-        const channel = await newEncryptedChannel(network);
+        const channel = await newPrivateChannel(network);
 
         const firstAnchorageID = channel.firstAnchorageID;
         const result = await channel.anchor(message, firstAnchorageID);
@@ -97,7 +97,7 @@ describe.skip("Anchor Messages", () => {
         // Now a new channel is created bound to the initial one
         const secondChannel = await
             IotaAnchoringChannel.fromID(
-                channel.channelID, { node: channel.node, encrypted: channel.encrypted }
+                channel.channelID, { node: channel.node, encrypted: channel.encrypted, isPrivate: channel.isPrivate }
             ).bind(channel.seed);
         // We anchor a message directly to one of the previous message IDs
         const result3 = await secondChannel.anchor(message, result2.msgID);
@@ -115,7 +115,7 @@ describe.skip("Anchor Messages", () => {
         fail("No exception thrown");
     });
 
-    /* Skipped for the moment until there is better error control */
+    // Skipped for the moment until there is better error control
     test.skip("should throw error if node service is not available", async () => {
         try {
             await IotaAnchoringChannel.create("seed1", { node: "http://example.org" });
