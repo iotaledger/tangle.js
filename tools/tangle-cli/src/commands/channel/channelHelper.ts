@@ -8,4 +8,12 @@ export class ChannelHelper {
 
         return false;
     }
+
+    public static getPrivate(args: Arguments): boolean {
+        if (args.private) {
+            return true;
+        }
+
+        return false;
+    }
 }

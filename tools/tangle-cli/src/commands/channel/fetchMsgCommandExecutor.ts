@@ -8,13 +8,14 @@ export default class FetchMsgCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
     const node = getNetworkParams(args).network;
     const encrypted = ChannelHelper.getEncrypted(args);
+    const isPrivate = ChannelHelper.getPrivate(args);
 
     const seed = args.seed as string;
 
     try {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
-      const channel = await IotaAnchoringChannel.fromID(channelID, { node, encrypted }).bind(seed);
+      const channel = await IotaAnchoringChannel.fromID(channelID, { node, encrypted, isPrivate }).bind(seed);
 
       const anchorageID = args.anchorageID as string;
       const msgID = args.msgID as string;

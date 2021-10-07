@@ -2,7 +2,7 @@ import { Arguments, Argv } from "yargs";
 import { isDefined } from "../../globalParams";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
-import { channelParam, encryptedParam } from "./channelParams";
+import { channelParam, encryptedParam, privateParam } from "./channelParams";
 import FetchMsgCommandExecutor from "./fetchMsgCommandExecutor";
 
 const params: ICommandParam[] = [
@@ -31,7 +31,8 @@ const params: ICommandParam[] = [
       required: true
     }
   },
-  encryptedParam
+  encryptedParam,
+  privateParam
 ];
 
 export default class FetchMsgCommand implements ICommand {
