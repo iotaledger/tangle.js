@@ -210,6 +210,7 @@ Options:
       --help     Show help                                             [boolean]
       --seed     IOTA Streams Author's seed for creating the channel    [string]
       --encrypted  Whether the channel must be encrypted or not        [boolean]
+      --private    Whether the channel is private or not               [boolean]
 ```
 
 ### Anchor message
@@ -233,6 +234,7 @@ Options:
       --anchorageID  The anchorage point (message) ID to anchor the message to
                                                              [string] [required]
       --encrypted  Whether the channel must be encrypted or not        [boolean]
+      --private    Whether the channel is private or not               [boolean]
 ```
 
 ### Fetch message
@@ -256,6 +258,7 @@ Options:
       --anchorageID  ID of the anchorage where the message to be fetched is
                      anchored to                             [string] [required]
       --encrypted  Whether the channel must be encrypted or not        [boolean]
+      --private    Whether the channel is private or not               [boolean]
 ```
 
 ### Inspect channel
@@ -276,6 +279,7 @@ Options:
       --channelID  ID of the Channel ('address:announceMsgID') from which to
                    fetch the message                         [string] [required]
       --encrypted  Whether the channel must be encrypted or not        [boolean]
+      --private    Whether the channel is private or not               [boolean]
 ```
 
 ## Seed generation

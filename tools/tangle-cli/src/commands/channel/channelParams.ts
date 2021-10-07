@@ -17,3 +17,11 @@ export const encryptedParam: ICommandParam = {
         description: "Whether the channel must be encrypted or not"
     }
 };
+
+export const privateParam: ICommandParam = {
+    name: "private",
+    options: {
+        type: "boolean",
+        description: "Whether the channel is private or not"
+    }
+};
