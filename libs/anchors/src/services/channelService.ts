@@ -32,7 +32,7 @@ export default class ChannelService {
 
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
             if (isPrivate === true) {
-                keyLoadMsgID = await this.prepareChannelEncryption(announceLink, auth);
+                keyLoadMsgID = await this.preparePrivateChannel(announceLink, auth);
             }
 
             return {
@@ -73,20 +73,16 @@ export default class ChannelService {
             await subscriber.clone().receive_announcement(announceLink);
 
             if (request.isPrivate) {
-                console.log("Receiving a KeyLoad");
-
                 const keyLoadLinkStr = `${request.channelID.split(":")[0]}:${keyLoadMsgID}`;
                 const keyLoadLink = ChannelHelper.parseAddress(keyLoadLinkStr);
                 keyLoadReceived = await subscriber.clone().receive_keyload(keyLoadLink);
-
-                console.log("KeyLoad Received!!!");
             }
         } catch {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
                 `Cannot bind to channel ${request.channelID}`);
         }
 
-        // If the keyload has not been received we cannot continue it is a not allowed subscriber
+        // If the "keyload" has not been received we cannot continue it is a not allowed subscriber
         if (!keyLoadReceived) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_PERMISSION_ERROR,
                 `Not allowed to bind to ${request.channelID}.`);
@@ -95,7 +91,7 @@ export default class ChannelService {
         return { subscriber, authorPk: subscriber.author_public_key() };
     }
 
-    private static async prepareChannelEncryption(announceLink: Address, auth: Author): Promise<string> {
+    private static async preparePrivateChannel(announceLink: Address, auth: Author): Promise<string> {
         const keyLoadResponse = await auth.clone().send_keyload_for_everyone(announceLink.copy());
         const keyLoadLinkCopy = keyLoadResponse.link.copy();
 
