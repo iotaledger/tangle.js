@@ -1,6 +1,7 @@
-import { Subscriber } from "@tangle.js/streams-wasm/node";
+import { StreamsClient, Subscriber } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
+import { ClientHelper } from "./helpers/clientHelper";
 import initialize from "./helpers/initializationHelper";
 import { SeedHelper } from "./helpers/seedHelper";
 import ValidationHelper from "./helpers/validationHelper";
@@ -11,6 +12,7 @@ import { IChannelDetails } from "./models/IChannelDetails";
 import { IChannelOptions } from "./models/IChannelOptions";
 import { IFetchRequest } from "./models/IFetchRequest";
 import { IFetchResult } from "./models/IFetchResult";
+import { INodeInfo } from "./models/INodeInfo";
 import AnchorMsgService from "./services/anchorMsgService";
 import ChannelService from "./services/channelService";
 import FetchMsgService from "./services/fetchMsgService";
@@ -20,11 +22,11 @@ import FetchMsgService from "./services/fetchMsgService";
 initialize();
 
 export class IotaAnchoringChannel {
-    public static readonly DEFAULT_NODE = "https://chrysalis-nodes.iota.org";
+    public static readonly DEFAULT_NODE = ClientHelper.DEFAULT_NODE;
 
     private readonly _channelID: string;
 
-    private readonly _node: string;
+    private readonly _node: INodeInfo;
 
     private _seed: string;
 
@@ -44,8 +46,8 @@ export class IotaAnchoringChannel {
 
     private _subscriberPubKey: string;
 
-    private constructor(channelID: string, node: string, isPrivate: boolean, encrypted: boolean) {
-        this._node = node;
+    private constructor(channelID: string, nodeInfo: INodeInfo, isPrivate: boolean, encrypted: boolean) {
+        this._node = nodeInfo;
 
         this._channelID = channelID;
 
@@ -77,11 +79,8 @@ export class IotaAnchoringChannel {
                 "The node has to be a URL");
         }
 
-        let node = options?.node;
-
-        if (!node) {
-            node = this.DEFAULT_NODE;
-        }
+        const node = options?.node;
+        const permanode = options?.permanode;
 
         let encrypted = false;
         let isPrivate = false;
@@ -95,8 +94,10 @@ export class IotaAnchoringChannel {
             isPrivate = true;
         }
 
+        const client = await this.getClient(node, permanode);
+
         const { channelAddress, announceMsgID, keyLoadMsgID, authorPk } =
-            await ChannelService.createChannel(node, seed, isPrivate);
+            await ChannelService.createChannel(client, seed, isPrivate);
 
         let firstAnchorageID = announceMsgID;
         if (keyLoadMsgID) {
@@ -109,7 +110,7 @@ export class IotaAnchoringChannel {
             firstAnchorageID,
             authorPubKey: authorPk,
             authorSeed: seed,
-            node,
+            node: node || this.DEFAULT_NODE,
             encrypted,
             isPrivate
         };
@@ -144,11 +145,12 @@ export class IotaAnchoringChannel {
         if (Array.isArray(components) &&
             ((components.length === 2 && !isPrivate) || (components.length === 3 && isPrivate))) {
             let node = options?.node;
+            const permanode = options?.permanode;
 
             if (!node) {
-                node = this.DEFAULT_NODE;
+                node = ClientHelper.DEFAULT_NODE;
             }
-            return new IotaAnchoringChannel(channelID, node, isPrivate, encrypted);
+            return new IotaAnchoringChannel(channelID, { node, permanode }, isPrivate, encrypted);
         }
         throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
             `Invalid channel identifier: ${channelID}`);
@@ -173,6 +175,20 @@ export class IotaAnchoringChannel {
         return IotaAnchoringChannel.fromID(details.channelID, opts).bind(details.authorSeed);
     }
 
+    private static async getClient(node: string, permanode: string): Promise<StreamsClient> {
+        let client: StreamsClient;
+
+        if (!node && !permanode) {
+            client = await ClientHelper.getMainnetClient();
+        } else if (!node) {
+            client = await ClientHelper.getClient(ClientHelper.DEFAULT_NODE, permanode);
+        } else {
+            client = await ClientHelper.getClient(node, permanode);
+        }
+
+        return client;
+    }
+
     /**
      * Binds the channel so that the subscriber is instantiated using the seed passed as parameter
      *
@@ -187,8 +203,10 @@ export class IotaAnchoringChannel {
         }
         this._seed = seed;
 
+        const client = await IotaAnchoringChannel.getClient(this._node.node, this._node.permanode);
+
         const bindRequest: IBindChannelRequest = {
-            node: this._node,
+            client,
             seed: this._seed,
             isPrivate: this._isPrivate,
             encrypted: this._encrypted,
@@ -249,7 +267,7 @@ export class IotaAnchoringChannel {
      *
      */
     public get node(): string {
-        return this._node;
+        return this._node.node;
     }
 
     /**

@@ -1,6 +1,6 @@
 import { Author, ChannelType, SendOptions } from "@tangle.js/streams-wasm/node";
 import * as crypto from "crypto";
-import { IotaAnchoringChannel } from "../iotaAnchoringChannel";
+import { ClientHelper } from "./clientHelper";
 
 export class SeedHelper {
     /**
@@ -33,7 +33,7 @@ export class SeedHelper {
      public static async publicKeyFromSeed(seed: string): Promise<string> {
         // The node is just a formality to fill all the params
         const author = new Author(seed,
-            new SendOptions(IotaAnchoringChannel.DEFAULT_NODE, true), ChannelType.SingleBranch);
+            new SendOptions(ClientHelper.DEFAULT_NODE, true), ChannelType.SingleBranch);
 
         return author.clone().get_public_key();
     }
