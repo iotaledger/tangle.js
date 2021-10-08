@@ -6,7 +6,7 @@ import { ChannelHelper } from "./channelHelper";
 
 export default class AnchorMsgCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
-    const node = getNetworkParams(args).network;
+    const { network: node, permanode } = getNetworkParams(args);
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
@@ -17,7 +17,8 @@ export default class AnchorMsgCommandExecutor {
       // The address of the anchorage message
       const anchorageID = args.anchorageID as string;
 
-      const channel = await IotaAnchoringChannel.fromID(channelID, { node, encrypted, isPrivate }).bind(seed);
+      const channel = await IotaAnchoringChannel.fromID(channelID,
+        { node, permanode, encrypted, isPrivate }).bind(seed);
 
       const result = await channel.anchor(Buffer.from(args.msg as string), anchorageID);
 

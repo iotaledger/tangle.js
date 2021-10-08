@@ -148,7 +148,7 @@ export class IotaAnchoringChannel {
             const permanode = options?.permanode;
 
             if (!node) {
-                node = ClientHelper.DEFAULT_NODE;
+                node = this.DEFAULT_NODE;
             }
             return new IotaAnchoringChannel(channelID, { node, permanode }, isPrivate, encrypted);
         }

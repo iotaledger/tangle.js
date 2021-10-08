@@ -6,7 +6,7 @@ import { ChannelHelper } from "./channelHelper";
 
 export default class InspectChannelCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
-    const node = getNetworkParams(args).network;
+    const { network: node, permanode } = getNetworkParams(args);
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
@@ -16,7 +16,8 @@ export default class InspectChannelCommandExecutor {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
 
-      const channel = await IotaAnchoringChannel.fromID(channelID, { node, encrypted, isPrivate }).bind(seed);
+      const channel = await IotaAnchoringChannel.fromID(channelID,
+        { node, permanode, encrypted, isPrivate }).bind(seed);
 
       let messageDetails = await channel.fetchNext();
       while (messageDetails !== undefined) {

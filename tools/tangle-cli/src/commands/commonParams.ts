@@ -28,8 +28,9 @@ export function providerName(network: string): string {
  *
  * @returns the params
  */
-export function getNetworkParams(args: Arguments): { network: string } {
+export function getNetworkParams(args: Arguments): { network: string; permanode: string } {
   let network: string;
+  let permanode: string;
 
   if (args.net) {
     network = args.net as string;
@@ -41,7 +42,8 @@ export function getNetworkParams(args: Arguments): { network: string } {
 
   if (args.mainnet) {
     network = MAINNET_URL;
+    permanode = PERMANODE_URL;
   }
 
-  return { network };
+  return { network, permanode };
 }
