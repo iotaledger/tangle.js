@@ -37,7 +37,7 @@
     "@iota/identity-wasm": "0.3.4",
     "@iota/iota.js": "^1.6.3",
     "yargs": "^15.4.1",
-    "@tangle-js/anchors": "0.9.2-beta4"
+    "@tangle-js/anchors": "0.9.2-beta5"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.10",

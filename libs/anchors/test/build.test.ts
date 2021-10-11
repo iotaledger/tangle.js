@@ -5,6 +5,8 @@ import { assertChannel, network } from "./testCommon";
 
 
 describe("Build Anchoring Channel", () => {
+    const presharedKey = "11aa11aa11aa11aa11aa11aa11aa11aa";
+
     test("should create and bind an Anchoring Channel on the mainnet", async () => {
         const anchoringChannel = await IotaAnchoringChannel.bindNew();
 
@@ -76,7 +78,6 @@ describe("Build Anchoring Channel", () => {
 
     test("should create an anchoring channel - private and encrypted. preshared keys", async () => {
         const seed = SeedHelper.generateSeed();
-        const presharedKey = "11aa11aa11aa11aa11aa11aa11aa11aa";
 
         const channelDetails = await IotaAnchoringChannel.create(seed,
             { isPrivate: true, encrypted: true, presharedKeys: [presharedKey] });
@@ -151,6 +152,24 @@ describe("Build Anchoring Channel", () => {
         fail("No exception thrown");
     });
 
+    test("should fail instantiation of an existing private channel from an ID - incorrect PSK", async () => {
+        const seed = SeedHelper.generateSeed();
+        const channelDetails = await IotaAnchoringChannel.create(seed,
+            { isPrivate: true, encrypted: true, presharedKeys: [presharedKey] });
+
+        try {
+            const presharedKey2 = "21aa11aa11aa11aa11aa11aa11aa11aa";
+            await IotaAnchoringChannel.fromID(
+                channelDetails.channelID, { encrypted: true, isPrivate: true }
+            ).bind(SeedHelper.generateSeed(), presharedKey2);
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_PERMISSION_ERROR);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
     test("should fail instantiation if passing an ID of a public channel", async () => {
         const seed = SeedHelper.generateSeed();
         const channelDetails = await IotaAnchoringChannel.create(seed);
@@ -173,6 +192,18 @@ describe("Build Anchoring Channel", () => {
 
         try {
             await IotaAnchoringChannel.fromID(channelDetails.channelID).bind(seed);
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should fail instantiation if passing a PSK on a public channel", async () => {
+        const seed = SeedHelper.generateSeed();
+        try {
+            await IotaAnchoringChannel.create(seed, { isPrivate: false, presharedKeys: [presharedKey] });
         } catch (error) {
             expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR);
             return;

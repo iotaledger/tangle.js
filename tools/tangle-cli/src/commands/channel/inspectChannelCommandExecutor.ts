@@ -11,13 +11,16 @@ export default class InspectChannelCommandExecutor {
     const isPrivate = ChannelHelper.getPrivate(args);
 
     const seed = args.seed as string;
+    const presharedKey = args.psk as string;
+
+    console.log(presharedKey);
 
     try {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
 
       const channel = await IotaAnchoringChannel.fromID(channelID,
-        { node, permanode, encrypted, isPrivate }).bind(seed);
+        { node, permanode, encrypted, isPrivate }).bind(seed, presharedKey);
 
       let messageDetails = await channel.fetchNext();
       while (messageDetails !== undefined) {

@@ -13,6 +13,14 @@ const params: ICommandParam[] = [
       required: false
     }
   },
+  {
+    name: "psk",
+    options: {
+      type: "array",
+      description: "Pre-shared keys",
+      required: false
+    }
+  },
   encryptedParam,
   privateParam
 ];

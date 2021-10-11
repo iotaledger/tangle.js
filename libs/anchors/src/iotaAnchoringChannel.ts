@@ -95,6 +95,11 @@ export class IotaAnchoringChannel {
             isPrivate = true;
         }
 
+        if (!isPrivate && options?.presharedKeys) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
+                "Pre-shared keys are only for Private Channels");
+        }
+
         const client = await this.getClient(node, permanode);
 
         const { channelAddress, announceMsgID, keyLoadMsgID, authorPk } =

@@ -11,12 +11,13 @@ export default class FetchMsgCommandExecutor {
     const isPrivate = ChannelHelper.getPrivate(args);
 
     const seed = args.seed as string;
+    const presharedKey = args.psk as string;
 
     try {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
       const channel = await IotaAnchoringChannel.fromID(channelID,
-        { node, permanode, encrypted, isPrivate }).bind(seed);
+        { node, permanode, encrypted, isPrivate }).bind(seed, presharedKey);
 
       const anchorageID = args.anchorageID as string;
       const msgID = args.msgID as string;
