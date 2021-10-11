@@ -11,4 +11,6 @@ export interface IBindChannelRequest {
      isPrivate: boolean;
     /** The seed */
     seed: string;
+    /** Preshared key */
+    presharedKey?: string;
 }

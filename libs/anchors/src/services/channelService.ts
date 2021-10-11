@@ -15,11 +15,12 @@ export default class ChannelService {
      * @param client The client to use
      * @param seed The channel's seed
      * @param isPrivate Whether the channel is private or not
+     * @param psks Preshared keys for the channel
      *
      * @returns The address of the channel created and the announce message ID
      *
      */
-    public static async createChannel(client: StreamsClient, seed: string, isPrivate: boolean):
+    public static async createChannel(client: StreamsClient, seed: string, isPrivate: boolean, psks?: string[]):
         Promise<{ channelAddress: string; announceMsgID: string; keyLoadMsgID?: string; authorPk: string }> {
         try {
             const auth = Author.fromClient(client, seed, ChannelType.SingleBranch);
@@ -31,7 +32,8 @@ export default class ChannelService {
 
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
             if (isPrivate === true) {
-                keyLoadMsgID = await this.preparePrivateChannel(announceLink, auth);
+                const presharedKeys = psks || [];
+                keyLoadMsgID = await this.preparePrivateChannel(announceLink, auth, presharedKeys);
             }
 
             return {
@@ -71,6 +73,9 @@ export default class ChannelService {
             await subscriber.clone().receive_announcement(announceLink);
 
             if (request.isPrivate) {
+                if (request.presharedKey) {
+                    subscriber.clone().store_psk(request.presharedKey);
+                }
                 const keyLoadLinkStr = `${request.channelID.split(":")[0]}:${keyLoadMsgID}`;
                 const keyLoadLink = ChannelHelper.parseAddress(keyLoadLinkStr);
                 keyLoadReceived = await subscriber.clone().receive_keyload(keyLoadLink);
@@ -89,7 +94,10 @@ export default class ChannelService {
         return { subscriber, authorPk: subscriber.author_public_key() };
     }
 
-    private static async preparePrivateChannel(announceLink: Address, auth: Author): Promise<string> {
+    private static async preparePrivateChannel(announceLink: Address, auth: Author, psks: string[]): Promise<string> {
+        for (const psk of psks) {
+            auth.store_psk(psk);
+        }
         const keyLoadResponse = await auth.clone().send_keyload_for_everyone(announceLink.copy());
         const keyLoadLinkCopy = keyLoadResponse.link.copy();
 

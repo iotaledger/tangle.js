@@ -250,6 +250,29 @@ describe("Fetch Messages", () => {
         expect(response3).toBeUndefined();
     });
 
+    test("should fetch - private preshared keys", async () => {
+        // Preshared key used
+        const presharedKey = "11aa11aa11aa11aa11aa11aa11aa11aa";
+
+        const channel = await IotaAnchoringChannel.bindNew(
+            { node: network, isPrivate: true, encrypted: true, presharedKeys: [presharedKey] });
+
+        const anchorResp = await channel.anchor(Buffer.from(MSG_1), channel.firstAnchorageID);
+        const msgID = anchorResp.msgID;
+
+        const boundChannel = await IotaAnchoringChannel.fromID(channel.channelID,
+            { node: network, isPrivate: true, encrypted: true }).bind(SeedHelper.generateSeed(20), presharedKey);
+
+        const response = await boundChannel.fetchNext();
+
+        expect(response.pk).toBe(channel.authorPubKey);
+        expect(response.msgID).toBe(msgID);
+        expect(response.message.toString()).toBe(MSG_1);
+
+        const response2 = await boundChannel.fetchNext();
+        expect(response2).toBeUndefined();
+    });
+
     test("should return undefined if fetchNext on an empty channel", async () => {
         const channel = await newChannel(network);
 
