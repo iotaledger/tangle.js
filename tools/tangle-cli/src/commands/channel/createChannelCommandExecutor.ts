@@ -12,8 +12,6 @@ export default class CreateChannelCommandExecutor {
 
     const presharedKeys = args.psk as string[];
 
-    console.log(presharedKeys);
-
     try {
       let seed = "";
 
