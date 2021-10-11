@@ -6,7 +6,7 @@ import { ChannelHelper } from "./channelHelper";
 
 export default class CreateChannelCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
-    const node = getNetworkParams(args).network;
+    const { network: node, permanode } = getNetworkParams(args);
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
@@ -19,7 +19,7 @@ export default class CreateChannelCommandExecutor {
         seed = args.seed as string;
       }
 
-      const channelDetails = await IotaAnchoringChannel.create(seed, { node, encrypted, isPrivate });
+      const channelDetails = await IotaAnchoringChannel.create(seed, { node, permanode, encrypted, isPrivate });
       console.log(channelDetails);
     } catch (error) {
       console.error("Error:", error);

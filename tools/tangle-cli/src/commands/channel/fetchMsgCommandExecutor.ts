@@ -6,7 +6,7 @@ import { ChannelHelper } from "./channelHelper";
 
 export default class FetchMsgCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
-    const node = getNetworkParams(args).network;
+    const { network: node, permanode } = getNetworkParams(args);
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
@@ -15,7 +15,8 @@ export default class FetchMsgCommandExecutor {
     try {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
-      const channel = await IotaAnchoringChannel.fromID(channelID, { node, encrypted, isPrivate }).bind(seed);
+      const channel = await IotaAnchoringChannel.fromID(channelID,
+        { node, permanode, encrypted, isPrivate }).bind(seed);
 
       const anchorageID = args.anchorageID as string;
       const msgID = args.msgID as string;

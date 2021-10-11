@@ -1,4 +1,4 @@
-import { Author, Subscriber, Address, ChannelType, SendOptions } from "@tangle.js/streams-wasm/node";
+import { Author, Subscriber, Address, ChannelType, StreamsClient } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
@@ -12,18 +12,17 @@ import { IBindChannelRequest } from "../models/IBindChannelRequest";
 export default class ChannelService {
     /**
      * Creates a new Channel
-     * @param node The node on which the channel is created
+     * @param client The client to use
      * @param seed The channel's seed
      * @param isPrivate Whether the channel is private or not
      *
      * @returns The address of the channel created and the announce message ID
      *
      */
-    public static async createChannel(node: string, seed: string, isPrivate: boolean):
+    public static async createChannel(client: StreamsClient, seed: string, isPrivate: boolean):
         Promise<{ channelAddress: string; announceMsgID: string; keyLoadMsgID?: string; authorPk: string }> {
-        const options = new SendOptions(node, true);
         try {
-            const auth = new Author(seed, options.clone(), ChannelType.SingleBranch);
+            const auth = Author.fromClient(client, seed, ChannelType.SingleBranch);
 
             const response = await auth.clone().send_announce();
             const announceLink = response.link.copy();
@@ -62,8 +61,7 @@ export default class ChannelService {
         let keyLoadReceived = true;
 
         try {
-            const options = new SendOptions(request.node, true);
-            subscriber = new Subscriber(request.seed, options.clone());
+            subscriber = Subscriber.fromClient(request.client, request.seed);
             const channel = request.channelID;
 
             const [channelAddr, announceMsgID, keyLoadMsgID] = channel.split(":");
