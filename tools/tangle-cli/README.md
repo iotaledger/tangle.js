@@ -183,9 +183,7 @@ Commands:
   tcli channel anchor   Anchors a message to an IOTA Streams Channel
   tcli channel fetch    Fetches one message previously anchored
   tcli channel inspect  Inspects an Streams Channel, visiting all messages
-                            anchored with the same seed
-  tcli channel seed     Creates a new seed to be used to interact with
-                            anchoring channels
+  tcli channel seed     Creates a new seed to be used to interact with channels
 
 Options:
   --version  Show version number                                       [boolean]
