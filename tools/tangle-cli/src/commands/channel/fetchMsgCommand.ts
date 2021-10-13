@@ -11,7 +11,15 @@ const params: ICommandParam[] = [
     options: {
       type: "string",
       description: "IOTA Streams Subscriber's seed to fetch on the channel",
-      required: true
+      required: false
+    }
+  },
+  {
+    name: "psk",
+    options: {
+      type: "string",
+      description: "IOTA Streams pre-shared key to fetch on the channel",
+      required: false
     }
   },
   channelParam,
@@ -68,7 +76,13 @@ export default class FetchMsgCommand implements ICommand {
     throw new Error(
       "When specifying a msgID you need to also specify its anchorageID point"
     );
-  } else {
-    return true;
   }
+
+  if (!isDefined(argv, "seed") && !isDefined(argv, "psk")) {
+    throw new Error(
+      "Please provide a seed or a pre-shared key"
+    );
+  }
+
+  return true;
 }

@@ -1,6 +1,6 @@
 {
     "name": "@tangle-js/anchors",
-    "version": "0.9.2-beta4",
+    "version": "0.9.2-beta5",
     "description": "Anchoring messages to the Tangle. Powered by IOTA Streams",
     "scripts": {
         "build-clean": "rimraf ./es/* ./typings/*",

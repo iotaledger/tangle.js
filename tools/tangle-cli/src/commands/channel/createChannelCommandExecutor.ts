@@ -10,6 +10,8 @@ export default class CreateChannelCommandExecutor {
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
+    const presharedKeys = args.psk as string[];
+
     try {
       let seed = "";
 
@@ -19,7 +21,8 @@ export default class CreateChannelCommandExecutor {
         seed = args.seed as string;
       }
 
-      const channelDetails = await IotaAnchoringChannel.create(seed, { node, permanode, encrypted, isPrivate });
+      const channelDetails = await IotaAnchoringChannel.create(seed,
+        { node, permanode, encrypted, isPrivate, presharedKeys });
       console.log(channelDetails);
     } catch (error) {
       console.error("Error:", error);

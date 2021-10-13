@@ -8,6 +8,7 @@ import ValidationHelper from "./helpers/validationHelper";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
 import { IAnchoringResult } from "./models/IAnchoringResult";
 import { IBindChannelRequest } from "./models/IBindChannelRequest";
+import { IChannelCreateOptions } from "./models/IChannelCreateOptions";
 import { IChannelDetails } from "./models/IChannelDetails";
 import { IChannelOptions } from "./models/IChannelOptions";
 import { IFetchRequest } from "./models/IFetchRequest";
@@ -73,7 +74,7 @@ export class IotaAnchoringChannel {
      *
      * @returns The anchoring channel details
      */
-    public static async create(seed: string, options?: IChannelOptions): Promise<IChannelDetails> {
+    public static async create(seed: string, options?: IChannelCreateOptions): Promise<IChannelDetails> {
         if (options?.node && !ValidationHelper.url(options?.node)) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.INVALID_NODE,
                 "The node has to be a URL");
@@ -94,10 +95,15 @@ export class IotaAnchoringChannel {
             isPrivate = true;
         }
 
+        if (!isPrivate && options?.presharedKeys) {
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR,
+                "Pre-shared keys are only for Private Channels");
+        }
+
         const client = await this.getClient(node, permanode);
 
         const { channelAddress, announceMsgID, keyLoadMsgID, authorPk } =
-            await ChannelService.createChannel(client, seed, isPrivate);
+            await ChannelService.createChannel(client, seed, isPrivate, options?.presharedKeys);
 
         let firstAnchorageID = announceMsgID;
         if (keyLoadMsgID) {
@@ -165,7 +171,7 @@ export class IotaAnchoringChannel {
      * @param options The channel creation options
      * @returns The Anchoring Channel
      */
-    public static async bindNew(options?: IChannelOptions): Promise<IotaAnchoringChannel> {
+    public static async bindNew(options?: IChannelCreateOptions): Promise<IotaAnchoringChannel> {
         const details = await IotaAnchoringChannel.create(SeedHelper.generateSeed(), options);
 
         let opts = options;
@@ -193,10 +199,11 @@ export class IotaAnchoringChannel {
      * Binds the channel so that the subscriber is instantiated using the seed passed as parameter
      *
      * @param seed The Subscriber (publisher) seed
+     * @param psk The Subscriber preshared key
      * @returns a Reference to the channel
      *
      */
-    public async bind(seed: string): Promise<IotaAnchoringChannel> {
+    public async bind(seed: string, psk?: string): Promise<IotaAnchoringChannel> {
         if (this._subscriber) {
             throw new AnchoringChannelError(AnchoringChannelErrorNames.CHANNEL_ALREADY_BOUND,
                 `Channel already bound to ${this._channelID}`);
@@ -209,6 +216,7 @@ export class IotaAnchoringChannel {
             client,
             seed: this._seed,
             isPrivate: this._isPrivate,
+            presharedKey: psk,
             encrypted: this._encrypted,
             channelID: this._channelID
         };

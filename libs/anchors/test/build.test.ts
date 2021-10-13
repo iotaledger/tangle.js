@@ -1,10 +1,12 @@
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { assertChannel, network } from "./testCommon";
+import { assertChannel, CHANNEL_PERMANODE, network } from "./testCommon";
 
 
 describe("Build Anchoring Channel", () => {
+    const presharedKey = "11aa11aa11aa11aa11aa11aa11aa11aa";
+
     test("should create and bind an Anchoring Channel on the mainnet", async () => {
         const anchoringChannel = await IotaAnchoringChannel.bindNew();
 
@@ -74,6 +76,23 @@ describe("Build Anchoring Channel", () => {
         expect(channelDetails.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
     });
 
+    test("should create an anchoring channel - private and encrypted. preshared keys", async () => {
+        const seed = SeedHelper.generateSeed();
+
+        const channelDetails = await IotaAnchoringChannel.create(seed,
+            { isPrivate: true, encrypted: true, presharedKeys: [presharedKey] });
+
+        expect(channelDetails.authorPubKey).toBeDefined();
+        expect(channelDetails.authorSeed).toBe(seed);
+        expect(channelDetails.encrypted).toBe(true);
+        expect(channelDetails.isPrivate).toBe(true);
+
+        expect(channelDetails.node).toBe(IotaAnchoringChannel.DEFAULT_NODE);
+        expect(channelDetails.channelID).toBeDefined();
+        expect(channelDetails.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
+        expect(channelDetails.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
+    });
+
     test("should fail creation if the same seed is used", async () => {
         const seed = SeedHelper.generateSeed();
         const channelDetails = await IotaAnchoringChannel.create(seed);
@@ -117,6 +136,12 @@ describe("Build Anchoring Channel", () => {
         expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
     });
 
+    test("should instantiate a channel through Permanode", async () => {
+        const channel = await IotaAnchoringChannel.fromID(CHANNEL_PERMANODE).bind(SeedHelper.generateSeed(5));
+        const response = await channel.fetch(channel.firstAnchorageID);
+        expect(response.message.toString()).toBe("Hello");
+    });
+
     test("should fail instantiation of an existing private channel from an ID - incorrect seed", async () => {
         const seed = SeedHelper.generateSeed();
         const channelDetails = await IotaAnchoringChannel.create(seed, { isPrivate: true, encrypted: true });
@@ -125,6 +150,24 @@ describe("Build Anchoring Channel", () => {
             await IotaAnchoringChannel.fromID(
                 channelDetails.channelID, { encrypted: true, isPrivate: true }
             ).bind(SeedHelper.generateSeed());
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_PERMISSION_ERROR);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should fail instantiation of an existing private channel from an ID - incorrect PSK", async () => {
+        const seed = SeedHelper.generateSeed();
+        const channelDetails = await IotaAnchoringChannel.create(seed,
+            { isPrivate: true, encrypted: true, presharedKeys: [presharedKey] });
+
+        try {
+            const presharedKey2 = "21aa11aa11aa11aa11aa11aa11aa11aa";
+            await IotaAnchoringChannel.fromID(
+                channelDetails.channelID, { encrypted: true, isPrivate: true }
+            ).bind(SeedHelper.generateSeed(), presharedKey2);
         } catch (error) {
             expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_PERMISSION_ERROR);
             return;
@@ -155,6 +198,18 @@ describe("Build Anchoring Channel", () => {
 
         try {
             await IotaAnchoringChannel.fromID(channelDetails.channelID).bind(seed);
+        } catch (error) {
+            expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR);
+            return;
+        }
+
+        fail("No exception thrown");
+    });
+
+    test("should fail instantiation if passing a PSK on a public channel", async () => {
+        const seed = SeedHelper.generateSeed();
+        try {
+            await IotaAnchoringChannel.create(seed, { isPrivate: false, presharedKeys: [presharedKey] });
         } catch (error) {
             expect(error.name).toBe(AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR);
             return;

@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { IotaAnchoringChannel } from "@tangle-js/anchors";
+import { IotaAnchoringChannel, SeedHelper } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../commonParams";
 import { ChannelHelper } from "./channelHelper";
@@ -10,14 +10,19 @@ export default class InspectChannelCommandExecutor {
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
-    const seed = args.seed as string;
+    let seed = args.seed as string;
+    const presharedKey = args.psk as string;
+
+    if (!seed) {
+      seed = SeedHelper.generateSeed(25);
+    }
 
     try {
       // Channel contains the channel address + the announce messageID
       const channelID = args.channelID as string;
 
       const channel = await IotaAnchoringChannel.fromID(channelID,
-        { node, permanode, encrypted, isPrivate }).bind(seed);
+        { node, permanode, encrypted, isPrivate }).bind(seed, presharedKey);
 
       let messageDetails = await channel.fetchNext();
       while (messageDetails !== undefined) {
