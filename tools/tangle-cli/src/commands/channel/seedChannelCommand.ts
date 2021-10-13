@@ -19,7 +19,7 @@ const params: ICommandParam[] = [
 
     public name: string = "seed";
 
-    public description: string = "Creates a new seed to be used to interact with anchoring channels";
+    public description: string = "Creates a new seed to be used to interact with channels";
 
     public async execute(args: Arguments): Promise<boolean> {
       return SeedChannelCommandExecutor.execute(args);

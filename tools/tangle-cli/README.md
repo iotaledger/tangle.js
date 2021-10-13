@@ -28,7 +28,7 @@ tcli [command]
 Commands:
   tcli did      DID operations
   tcli vc       VC  Operations
-  tcli channel  Anchoring Channels operations
+  tcli channel  Streams Channels operations
   tcli msg      Tangle message (indexation payloads) operations
 
 Options:

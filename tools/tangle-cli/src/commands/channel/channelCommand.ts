@@ -21,7 +21,7 @@ const subCommands: Record<string, ICommand> = {
 export class ChannelCommand implements ICommand {
   public name: string = "channel";
 
-  public description: string = "Anchoring Channels operations (Powered by IOTA Streams)";
+  public description: string = "Streams Channels operations (Powered by IOTA Streams)";
 
   public subCommands: Record<string, ICommand> = subCommands;
 

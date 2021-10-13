@@ -30,7 +30,7 @@ export default class CreateChannelCommand implements ICommand {
 
   public name: string = "create";
 
-  public description: string = "Creates a new anchoring channel";
+  public description: string = "Creates a new Streams Channel";
 
   public async execute(args: Arguments): Promise<boolean> {
     return CreateChannelCommandExecutor.execute(args);
