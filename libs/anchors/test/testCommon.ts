@@ -4,6 +4,9 @@ import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 export const network = "https://api.lb-0.h.chrysalis-devnet.iota.cafe";
 // export const network = "https://chrysalis-nodes.evrythng.iota.org";
 
+export const CHANNEL_PERMANODE =
+"7617ca90bc8ba6b6d4619a60ed82a9ca665a0d3fe83542b27d3518cfc4b669770000000000000000:cbcbb5b44b1437ab453cd4a2";
+
 /**
  * Creates a new anchoring channel
  *

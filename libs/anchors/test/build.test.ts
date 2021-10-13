@@ -1,7 +1,7 @@
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
-import { assertChannel, network } from "./testCommon";
+import { assertChannel, CHANNEL_PERMANODE, network } from "./testCommon";
 
 
 describe("Build Anchoring Channel", () => {
@@ -134,6 +134,12 @@ describe("Build Anchoring Channel", () => {
         expect(channel.channelID).toBe(channelDetails.channelID);
         expect(channel.channelAddr).toBe(channelDetails.channelID.split(":")[0]);
         expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
+    });
+
+    test("should instantiate a channel through Permanode", async () => {
+        const channel = await IotaAnchoringChannel.fromID(CHANNEL_PERMANODE).bind(SeedHelper.generateSeed(5));
+        const response = await channel.fetch(channel.firstAnchorageID);
+        expect(response.message.toString()).toBe("Hello");
     });
 
     test("should fail instantiation of an existing private channel from an ID - incorrect seed", async () => {
