@@ -19,7 +19,7 @@ On the command line just run ```tcli```
 
 * [Decentralized Identities](#did)
 * [Verifiable Credentials](#verifiable-credentials-vc)
-* [Anchoring Channels](#anchoring-channels) (Powered by IOTA Streams)
+* [Streams Channels](#channels) (Powered by IOTA Streams)
 * [Tangle Indexed Messages](#tangle-messages)
 
 ```
@@ -173,16 +173,16 @@ Options:
                                                                        [boolean]
 ```
 
-## Anchoring Channels
+## Channels
 
-Anchoring Channels operations (Powered by IOTA Streams)
+Streams Channels operations (Powered by IOTA Streams)
 
 ```
 Commands:
-  tcli channel create   Creates a new anchoring channel
+  tcli channel create   Creates a new Streams channel
   tcli channel anchor   Anchors a message to an IOTA Streams Channel
   tcli channel fetch    Fetches one message previously anchored
-  tcli channel inspect  Inspects an anchoring channel, visiting all messages
+  tcli channel inspect  Inspects an Streams Channel, visiting all messages
                             anchored with the same seed
   tcli channel seed     Creates a new seed to be used to interact with
                             anchoring channels
@@ -195,12 +195,12 @@ Options:
   --help     Show help                                                 [boolean]
 ````
 
-### Anchoring Channel Creation
+### Channel Creation
 
 ```
 tcli channel create
 
-Creates a new anchoring channel
+Creates a new Streams Channel
 
 Options:
       --version  Show version number                                   [boolean]
@@ -208,6 +208,7 @@ Options:
       --mainnet  IOTA Chrysalis Mainnet                                [boolean]
   -n, --net      Node's endpoint or other IOTA network                  [string]
       --help     Show help                                             [boolean]
+      --psk      Pre-shared keys                                        [array]
       --seed     IOTA Streams Author's seed for creating the channel    [string]
       --encrypted  Whether the channel must be encrypted or not        [boolean]
       --private    Whether the channel is private or not               [boolean]
@@ -218,7 +219,7 @@ Options:
 ```
 tcli channel anchor
 
-Anchors a message to an IOTA Streams Channel
+Anchors a message to a Streams Channel
 
 Options:
       --version      Show version number                               [boolean]
@@ -251,7 +252,8 @@ Options:
   -n, --net          Node's endpoint or other IOTA network              [string]
       --help         Show help                                         [boolean]
       --seed         IOTA Streams Subscriber's seed to fetch on the channel
-                                                             [string] [required]
+                                                                         [string] 
+      --psk          IOTA Streams pre-shared key to fetch on the channel [string]
       --channelID    ID of the Channel ('address:announceMsgID') from which to
                      fetch the message                       [string] [required]
       --msgID        ID of the message to be fetched                    [string]
@@ -266,7 +268,7 @@ Options:
 ```
 tcli channel inspect
 
-Inspects an anchoring channel, visiting all messages anchored. 
+Inspects a Streams Channel, visiting all messages anchored. 
 
 Options:
       --version    Show version number                                 [boolean]
@@ -274,8 +276,8 @@ Options:
       --mainnet    IOTA Chrysalis Mainnet                              [boolean]
   -n, --net        Node's endpoint or other IOTA network                [string]
       --help       Show help                                           [boolean]
-      --seed       IOTA Streams Subscriber's seed to inspect the channel
-                                                             [string] [required]
+      --seed       IOTA Streams Subscriber's seed to inspect the channel [string]
+      --psk        Pre-shared key used to inspect the channel            [string]
       --channelID  ID of the Channel ('address:announceMsgID') from which to
                    fetch the message                         [string] [required]
       --encrypted  Whether the channel must be encrypted or not        [boolean]
@@ -287,7 +289,7 @@ Options:
 ```
 tcli channel seed
 
-Creates a new seed to be used to interact with anchoring channels
+Creates a new seed to be used to interact with channels
 
 Options:
       --version  Show version number                                   [boolean]
