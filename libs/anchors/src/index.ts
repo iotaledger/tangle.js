@@ -4,5 +4,6 @@ export * from "./helpers/protocolHelper";
 export * from "./models/IAnchoringResult";
 export * from "./models/IFetchResult";
 export * from "./models/IChannelOptions";
+export * from "./models/IChannelCreateOptions";
 export * from "./errors/anchoringChannelError";
 export * from "./errors/anchoringChannelErrorNames";

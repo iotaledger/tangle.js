@@ -16,6 +16,7 @@ __exportStar(require("./helpers/protocolHelper"), exports);
 __exportStar(require("./models/IAnchoringResult"), exports);
 __exportStar(require("./models/IFetchResult"), exports);
 __exportStar(require("./models/IChannelOptions"), exports);
+__exportStar(require("./models/IChannelCreateOptions"), exports);
 __exportStar(require("./errors/anchoringChannelError"), exports);
 __exportStar(require("./errors/anchoringChannelErrorNames"), exports);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEseURBQXVDO0FBQ3ZDLHVEQUFxQztBQUNyQywyREFBeUM7QUFDekMsNERBQTBDO0FBQzFDLHdEQUFzQztBQUN0QywyREFBeUM7QUFDekMsaUVBQStDO0FBQy9DLHNFQUFvRCJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEseURBQXVDO0FBQ3ZDLHVEQUFxQztBQUNyQywyREFBeUM7QUFDekMsNERBQTBDO0FBQzFDLHdEQUFzQztBQUN0QywyREFBeUM7QUFDekMsaUVBQStDO0FBQy9DLGlFQUErQztBQUMvQyxzRUFBb0QifQ==
