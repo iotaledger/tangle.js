@@ -1,6 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { Document, KeyType } from "@iota/identity-wasm/node";
-import type { NewDocument } from "@iota/identity-wasm/node";
+import { Document, KeyType, KeyPair } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../commonParams";
 import { IdentityHelper } from "../identityHelper";
@@ -8,13 +7,20 @@ import { IService } from "./IService";
 
 export default class CreateDidCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
-    const { valid, serviceList } = this.validateService(args.didService as string);
+    const { valid, serviceList } = this.validateService(
+      args.didService as string
+    );
 
     if (!valid) {
       return false;
     }
 
-    const { doc, key } = (new Document(KeyType.Ed25519) as unknown) as NewDocument;
+    const netParams = getNetworkParams(args);
+    const identityClient = IdentityHelper.getClient(netParams);
+
+    // Generate a new keypair and DID document
+    const key = new KeyPair(KeyType.Ed25519);
+    const doc = new Document(key, identityClient.network.toString());
 
     let finalDocument = doc;
     if (serviceList) {
@@ -23,17 +29,15 @@ export default class CreateDidCommandExecutor {
 
     finalDocument.sign(key);
 
-    const identityClient = IdentityHelper.getClient(getNetworkParams(args).network);
-
-    const transactionId = await identityClient.publishDocument(finalDocument);
+    const receipt = await identityClient.publishDocument(finalDocument);
 
     console.log({
       did: finalDocument.toJSON().id,
       keys: {
         public: key.public,
-        private: key.secret
+        private: key.private
       },
-      transactionUrl: `https://explorer.iota.org/mainnet/message/${transactionId}`
+      transactionUrl: `${netParams.explorer}/message/${receipt.messageId}`
     });
 
     return true;
@@ -56,7 +60,10 @@ export default class CreateDidCommandExecutor {
     return Document.fromJSON(extDoc);
   }
 
-  private static validateService(service: string): { valid: boolean; serviceList: IService[] | undefined } {
+  private static validateService(service: string): {
+    valid: boolean;
+    serviceList: IService[] | undefined;
+  } {
     let serviceList: IService[];
     let valid: boolean = false;
 
@@ -77,7 +84,9 @@ export default class CreateDidCommandExecutor {
 
     for (const aService of serviceList) {
       if (!aService.serviceEndpoint || !aService.type) {
-        console.error("DID service type and service endpoint have to be defined");
+        console.error(
+          "DID service type and service endpoint have to be defined"
+        );
         return { valid, serviceList };
       }
 

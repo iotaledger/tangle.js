@@ -7,11 +7,11 @@ export default class ResolveDidCommandExecutor {
     const did = args.did as string;
 
     try {
-      const identityClient = IdentityHelper.getClient(getNetworkParams(args).network);
+      const identityClient = IdentityHelper.getClient(getNetworkParams(args));
 
       const resolution = await identityClient.resolve(did);
 
-      console.log(resolution.document);
+      console.log(resolution);
     } catch (error) {
       console.error("Error:", error);
       return false;

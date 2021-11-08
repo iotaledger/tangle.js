@@ -5,7 +5,17 @@ import IssueVcCommand from "./issueVcCommand";
 import PresentVcCommand from "./presentVcCommand";
 import VerifyVcCommand from "./verifyVcCommand";
 
-const params: ICommandParam[] = [];
+const params: ICommandParam[] = [
+  {
+    name: "net-id",
+    options: {
+      type: "string",
+      description: "Identifier of the IOTA Tangle network. This option is ignored when using --mainnet or --devnet.",
+      global: true,
+      default: "main"
+    }
+  }
+];
 
 const subCommands: Record<string, ICommand> = {
   issue: new IssueVcCommand(),
@@ -14,8 +24,8 @@ const subCommands: Record<string, ICommand> = {
 };
 
 const checkFunction = argv => {
-  if (argv.devnet || argv.net) {
-    throw new Error("Only the mainnet is supported for VCs");
+  if (argv.devnet) {
+    console.warn("Warning: devnet identities will get pruned (no permanode).");
   }
 
   return true;

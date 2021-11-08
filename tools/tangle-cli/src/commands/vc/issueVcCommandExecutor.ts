@@ -1,6 +1,7 @@
 /* eslint-disable no-duplicate-imports */
 import { VerifiableCredential, Document } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
+import { getNetworkParams } from "../commonParams";
 import { IdentityHelper } from "../identityHelper";
 
 export default class IssueVcCommandExecutor {
@@ -17,11 +18,13 @@ export default class IssueVcCommandExecutor {
     try {
       claims.id = subjectId;
 
-      const resolution = await IdentityHelper.getClient(args.network as string).resolve(issuerDid);
+      const resolution = await IdentityHelper.getClient(
+        getNetworkParams(args)
+      ).resolve(issuerDid);
 
-      const issDocument = Document.fromJSON(resolution.document);
+      const issDocument = Document.fromJSON(resolution);
 
-      const credentialMetadata: {[key: string]: unknown} = {
+      const credentialMetadata: { [key: string]: unknown } = {
         id: args.id as string,
         type: args.type as string,
         issuer: issuerDid,
@@ -40,7 +43,7 @@ export default class IssueVcCommandExecutor {
       const vc = VerifiableCredential.extend(credentialMetadata);
 
       const signedVc = issDocument.signCredential(vc, {
-        secret: args.secret,
+        private: args.secret,
         method: issDocument.resolveKey(args.method as string).toJSON().id
       });
 
@@ -58,17 +61,20 @@ export default class IssueVcCommandExecutor {
     return true;
   }
 
-  private static getClaims(claimsStr: string): { [key: string]: unknown } | undefined {
+  private static getClaims(
+    claimsStr: string
+  ): { [key: string]: unknown } | undefined {
     let claims;
 
+    console.log(claimsStr);
     try {
       claims = JSON.parse(claimsStr);
       if (typeof claims !== "object" || Array.isArray(claims)) {
         console.error("The claims data has to be provided as a JSON object");
         claims = undefined;
       }
-    } catch {
-      console.error("Invalid claims object supplied");
+    } catch (e) {
+      console.error("Invalid claims object supplied:", e.message);
     }
 
     // eslint-disable-next-line  @typescript-eslint/no-unsafe-return

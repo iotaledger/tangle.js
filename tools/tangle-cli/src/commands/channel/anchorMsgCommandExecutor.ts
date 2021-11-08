@@ -1,12 +1,12 @@
 /* eslint-disable no-duplicate-imports */
 import { IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
-import { getNetworkParams, providerName } from "../commonParams";
+import { getNetworkParams } from "../commonParams";
 import { ChannelHelper } from "./channelHelper";
 
 export default class AnchorMsgCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
-    const { network: node, permanode } = getNetworkParams(args);
+    const { node, permanode, explorer } = getNetworkParams(args);
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
@@ -29,7 +29,7 @@ export default class AnchorMsgCommandExecutor {
         ...result,
         seed,
         publicKey: channel.authorPubKey,
-        explorerURL: `https://explorer.iota.org/${providerName(node)}/message/${msgIDLayer1}`
+        explorerURL: `${explorer}/message/${msgIDLayer1}`
       });
     } catch (error) {
       console.error("Error:", error);

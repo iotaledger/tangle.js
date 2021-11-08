@@ -26,6 +26,24 @@ export const globalParams: ICommandParam[] = [
       description: "Node's endpoint or other IOTA network",
       global: true
     }
+  },
+  {
+    name: "explorer",
+    options: {
+      alias: "e",
+      type: "string",
+      description: "URL base of a tangle explorer. This option is ignored when using --mainnet or --devnet.",
+      global: true
+    }
+  },
+  {
+    name: "permanode",
+    options: {
+      alias: "p",
+      type: "string",
+      description: "URL of a permanode to use. This option is ignored when using --mainnet or --devnet.",
+      global: true
+    }
   }
 ];
 

@@ -4,7 +4,18 @@ import ICommandParam from "../../ICommandParam";
 import CreateDidCommand from "./createDidCommand";
 import ResolveDidCommand from "./resolveDidCommand";
 
-const params: ICommandParam[] = [];
+const params: ICommandParam[] = [
+  {
+    name: "net-id",
+    options: {
+      type: "string",
+      description:
+        "Identifier of the IOTA Tangle network. This option is ignored when using --mainnet or --devnet.",
+      global: true,
+      default: "main"
+    }
+  }
+];
 
 const subCommands: Record<string, ICommand> = {
   create: new CreateDidCommand(),
@@ -12,10 +23,9 @@ const subCommands: Record<string, ICommand> = {
 };
 
 const checkFunction = argv => {
-  if (argv.devnet || argv.net) {
-    throw new Error("Only the mainnet is supported for DIDs");
+  if (argv.devnet) {
+    console.warn("Warning: devnet identities will get pruned (no permanode).");
   }
-
   return true;
 };
 
@@ -40,7 +50,8 @@ export class DidCommand implements ICommand {
     Object.keys(subCommands).forEach(name => {
       const command: ICommand = subCommands[name];
 
-      yargs.command(command.name,
+      yargs.command(
+        command.name,
         command.description,
         commandYargs => {
           command.register(commandYargs);

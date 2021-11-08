@@ -1,9 +1,13 @@
 /* eslint-disable no-duplicate-imports */
-import { Document, VerifiableCredential, VerifiablePresentation } from "@iota/identity-wasm/node";
+import {
+  Document,
+  VerifiableCredential,
+  VerifiablePresentation
+} from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
+import { getNetworkParams } from "../commonParams";
 import { IdentityHelper } from "../identityHelper";
 import { VcHelper } from "./vcHelper";
-
 
 export default class PresentVcCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
@@ -25,16 +29,20 @@ export default class PresentVcCommandExecutor {
         holderDid = (credentialObj.credentialSubject as Credential).id;
       }
 
-      const identityClient = IdentityHelper.getClient(args.network as string);
-      const holderDoc: Document = (await identityClient.resolve(holderDid)).document;
+      const identityClient = IdentityHelper.getClient(getNetworkParams(args));
+      const holderDoc: Document = await identityClient.resolve(holderDid);
 
       const holderDocument = Document.fromJSON(holderDoc);
 
-      const vp = new VerifiablePresentation(holderDocument,
-        VerifiableCredential.fromJSON(credentialObj), presentationType, presentationId);
+      const vp = new VerifiablePresentation(
+        holderDocument,
+        VerifiableCredential.fromJSON(credentialObj),
+        presentationType,
+        presentationId
+      );
 
       const signedPresentation = holderDocument.signPresentation(vp, {
-        secret: args.secret,
+        private: args.secret,
         method: holderDocument.resolveKey(args.method as string).toJSON().id
       });
 

@@ -1,5 +1,6 @@
 import { Arguments } from "yargs";
 import { isDefined } from "../../globalParams";
+import { getNetworkParams } from "../commonParams";
 import { IdentityHelper } from "../identityHelper";
 import { VcHelper } from "./vcHelper";
 
@@ -21,7 +22,7 @@ export default class VerifyVcCommandExecutor {
     }
 
     try {
-      const identityClient = IdentityHelper.getClient(args.network as string);
+      const identityClient = IdentityHelper.getClient(getNetworkParams(args));
 
       const verification = await identityClient.checkPresentation(vp);
 
@@ -43,7 +44,7 @@ export default class VerifyVcCommandExecutor {
         return false;
       }
 
-      const identityClient = IdentityHelper.getClient(args.network as string);
+      const identityClient = IdentityHelper.getClient(getNetworkParams(args));
 
       const verification = await identityClient.checkCredential(vc);
 

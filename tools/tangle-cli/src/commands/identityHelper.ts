@@ -1,20 +1,30 @@
-import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node";
-import { PERMANODE_URL } from "./commonParams";
+import {
+  Client as IdentityClient,
+  Config as IdentityConfig,
+  Network
+} from "@iota/identity-wasm/node";
+import { NetParams } from "./commonParams";
 
 export class IdentityHelper {
-    /**
-     * Returns a new Identity Client for the network specified as parameter
-     *
-     * @param network Concerned network
-     * @returns the identity client
-     */
-    public static getClient(network: string): IdentityClient {
-        const identityConfig = new IdentityConfig();
-      identityConfig.setNetwork(Network.mainnet());
-      identityConfig.setNode(Network.mainnet().defaultNodeURL);
-      identityConfig.setPermanode(PERMANODE_URL);
-      const identityClient = IdentityClient.fromConfig(identityConfig);
+  /**
+   * Returns a new Identity Client for the network specified as parameter
+   *
+   * @param network IOTA network connection parameters
+   * @returns the identity client
+   */
+  public static getClient(network: NetParams): IdentityClient {
+    const identityConfig = new IdentityConfig();
 
-      return identityClient;
+    identityConfig.setNode(network.node);
+
+    if (network.id) {
+      identityConfig.setNetwork(Network.try_from_name(network.id));
     }
+
+    if (network.permanode) {
+      identityConfig.setPermanode(network.permanode);
+    }
+
+    return IdentityClient.fromConfig(identityConfig);
+  }
 }

@@ -36,10 +36,14 @@ Options:
   --mainnet  IOTA Mainnet                                              [boolean]
   --devnet   IOTA devnet                                                [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
 ```
 
-## DID 
+## DID
 
 ```
 tcli did
@@ -55,7 +59,13 @@ Options:
   --mainnet   IOTA Mainnet                                             [boolean]
   --devnet    IOTA devnet                                               [boolean]
   --net, -n   Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help      Show help                                                [boolean]
+  --net-id         Identifier of the IOTA Tangle network. This option is ignored
+                   when using --mainnet or --devnet.  [string] [default: "main"]
 ```
 
 ### DID Creation
@@ -70,7 +80,13 @@ Options:
   --mainnet     IOTA Mainnet                                             [boolean]
   --devnet      IOTA devnet                                               [boolean]
   --net, -n     Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help        Show help                                                [boolean]
+  --net-id         Identifier of the IOTA Tangle network. This option is ignored
+                   when using --mainnet or --devnet.  [string] [default: "main"]
   --didService  List of DID services (JSON Array)                        [string]
 ```
 
@@ -86,7 +102,13 @@ Options:
   --mainnet   IOTA Mainnet                                             [boolean]
   --devnet    IOTA devnet                                               [boolean]
   --net, -n   Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help      Show help                                                [boolean]
+  --net-id         Identifier of the IOTA Tangle network. This option is ignored
+                   when using --mainnet or --devnet.  [string] [default: "main"]
   --did      DID to be resolved                              [string] [required]
 ```
 
@@ -106,7 +128,13 @@ Options:
   --mainnet  IOTA Mainnet                                              [boolean]
   --devnet   IOTA devnet                                                [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
+  --net-id         Identifier of the IOTA Tangle network. This option is ignored
+                   when using --mainnet or --devnet.  [string] [default: "main"]
   --method   Verification Method                             [string] [required]
 ```
 
@@ -122,7 +150,13 @@ Options:
   --mainnet  IOTA Mainnet                                              [boolean]
   --devnet   IOTA devnet                                                [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
+  --net-id         Identifier of the IOTA Tangle network. This option is ignored
+                   when using --mainnet or --devnet.  [string] [default: "main"]
   --method   Verification Method                             [string] [required]
   --issuer   DID of the issuer of the VC                     [string] [required]
   --expDate  Expiration Date                                 [string] [optional]
@@ -145,8 +179,14 @@ Options:
   --version  Show version number                                       [boolean]
   --mainnet  IOTA Mainnet                                              [boolean]
   --devnet   IOTA devnet                                                [boolean]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --net, -n  Node's endpoint or other IOTA network                     [string]
   --help     Show help                                                 [boolean]
+  --net-id         Identifier of the IOTA Tangle network. This option is ignored
+                   when using --mainnet or --devnet.  [string] [default: "main"]
   --vc       Verifiable Credential to be verified (As JSON)  [string] [required]
   --vp       Verifiable Presentation to be verified (As JSON)  [string] [required]
 ```
@@ -161,7 +201,13 @@ Options:
   --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
+  --net-id         Identifier of the IOTA Tangle network. This option is ignored
+                   when using --mainnet or --devnet.  [string] [default: "main"]
   --vc       VC to be presented                              [string] [required]
   --holder   Holder who presents the credential. By default is the credential
              subject                                                    [string]
@@ -190,6 +236,10 @@ Options:
   --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                     [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
 ````
 
@@ -205,6 +255,10 @@ Options:
       --devnet   IOTA Chrysalis devnet                                 [boolean]
       --mainnet  IOTA Chrysalis Mainnet                                [boolean]
   -n, --net      Node's endpoint or other IOTA network                  [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
       --help     Show help                                             [boolean]
       --psk      Pre-shared keys                                        [array]
       --seed     IOTA Streams Author's seed for creating the channel    [string]
@@ -224,6 +278,10 @@ Options:
       --devnet       IOTA Chrysalis devnet                             [boolean]
       --mainnet      IOTA Chrysalis Mainnet                            [boolean]
   -n, --net          Node's endpoint or other IOTA network              [string]
+  -e, --explorer     URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  -p, --permanode    URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
       --help         Show help                                         [boolean]
       --seed         IOTA Streams Subscriber's seed to use to anchor the message
                                                              [string] [required]
@@ -248,6 +306,10 @@ Options:
       --devnet       IOTA Chrysalis devnet                             [boolean]
       --mainnet      IOTA Chrysalis Mainnet                            [boolean]
   -n, --net          Node's endpoint or other IOTA network              [string]
+  -e, --explorer     URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  -p, --permanode    URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
       --help         Show help                                         [boolean]
       --seed         IOTA Streams Subscriber's seed to fetch on the channel
                                                                          [string] 
@@ -273,6 +335,10 @@ Options:
       --devnet     IOTA Chrysalis devnet                               [boolean]
       --mainnet    IOTA Chrysalis Mainnet                              [boolean]
   -n, --net        Node's endpoint or other IOTA network                [string]
+  -e, --explorer     URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  -p, --permanode    URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
       --help       Show help                                           [boolean]
       --seed       IOTA Streams Subscriber's seed to inspect the channel [string]
       --psk        Pre-shared key used to inspect the channel            [string]
@@ -294,6 +360,10 @@ Options:
       --devnet   IOTA Chrysalis devnet                                 [boolean]
       --mainnet  IOTA Chrysalis Mainnet                                [boolean]
   -n, --net      Node's endpoint or other IOTA network                  [string]
+  -e, --explorer     URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  -p, --permanode    URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
       --help     Show help                                             [boolean]
       --size     Size of the seed                                       [number]
 ```
@@ -312,6 +382,10 @@ Commands:
   --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
 ```
 
@@ -327,6 +401,10 @@ Options:
   --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
   --msg      Message content to be submitted                 [string] [required]
   --index    Index for the message                           [string] [required]
@@ -344,6 +422,10 @@ Options:
   --devnet   IOTA Chrysalis devnet                                     [boolean]
   --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
   --net, -n  Node's endpoint or other IOTA network                      [string]
+  --explorer, -e   URL base of a tangle explorer. This option is ignored when
+                   using --mainnet or --devnet.                         [string]
+  --permanode, -p  URL of a permanode to use. This option is ignored when using
+                   --mainnet or --devnet.                               [string]
   --help     Show help                                                 [boolean]
   --msgID    ID of the message to be retrieved               [string] [required]
 ```

@@ -6,7 +6,7 @@ import { ChannelHelper } from "./channelHelper";
 
 export default class InspectChannelCommandExecutor {
   public static async execute(args: Arguments): Promise<boolean> {
-    const { network: node, permanode } = getNetworkParams(args);
+    const { node, permanode } = getNetworkParams(args);
     const encrypted = ChannelHelper.getEncrypted(args);
     const isPrivate = ChannelHelper.getPrivate(args);
 
