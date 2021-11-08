@@ -22,13 +22,6 @@ const subCommands: Record<string, ICommand> = {
   resolve: new ResolveDidCommand()
 };
 
-const checkFunction = argv => {
-  if (argv.devnet) {
-    console.warn("Warning: devnet identities will get pruned (no permanode).");
-  }
-  return true;
-};
-
 export class DidCommand implements ICommand {
   public name: string = "did";
 
@@ -44,8 +37,6 @@ export class DidCommand implements ICommand {
     params.forEach(aParam => {
       yargs.option(aParam.name, aParam.options);
     });
-
-    yargs.check(checkFunction);
 
     Object.keys(subCommands).forEach(name => {
       const command: ICommand = subCommands[name];

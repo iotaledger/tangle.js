@@ -66,7 +66,6 @@ export default class IssueVcCommandExecutor {
   ): { [key: string]: unknown } | undefined {
     let claims;
 
-    console.log(claimsStr);
     try {
       claims = JSON.parse(claimsStr);
       if (typeof claims !== "object" || Array.isArray(claims)) {

@@ -46,5 +46,13 @@ export function getNetworkParams(args: Arguments): NetParams {
     explorer = MAINNET_EXPLORER_URL;
   }
 
+  if (!permanode) {
+    console.warn("Warning: no permanode specified. Identities will get pruned.");
+  }
+
+  if (!explorer) {
+    console.warn("Warning: no explorer specified. Explorer links cannot be logged.");
+  }
+
   return { node, permanode, id, explorer };
 }

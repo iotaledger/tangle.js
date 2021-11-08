@@ -23,14 +23,6 @@ const subCommands: Record<string, ICommand> = {
   present: new PresentVcCommand()
 };
 
-const checkFunction = argv => {
-  if (argv.devnet) {
-    console.warn("Warning: devnet identities will get pruned (no permanode).");
-  }
-
-  return true;
-};
-
 export class VcCommand implements ICommand {
   public name: string = "vc";
 
@@ -46,8 +38,6 @@ export class VcCommand implements ICommand {
     params.forEach(aParam => {
       yargs.option(aParam.name, aParam.options);
     });
-
-    yargs.check(checkFunction);
 
     Object.keys(subCommands).forEach(name => {
       const command: ICommand = subCommands[name];
