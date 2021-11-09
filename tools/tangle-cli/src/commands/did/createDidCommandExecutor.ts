@@ -20,7 +20,7 @@ export default class CreateDidCommandExecutor {
 
     // Generate a new keypair and DID document
     const key = new KeyPair(KeyType.Ed25519);
-    const doc = new Document(key, identityClient.network.toString());
+    const doc = new Document(key, identityClient.network().toString());
 
     let finalDocument = doc;
     if (serviceList) {
