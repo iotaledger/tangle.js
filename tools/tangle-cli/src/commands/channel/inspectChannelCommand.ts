@@ -6,45 +6,45 @@ import { channelParam, encryptedParam, privateParam } from "./channelParams";
 import InspectChannelCommandExecutor from "./inspectChannelCommandExecutor";
 
 const params: ICommandParam[] = [
-  {
-    name: "seed",
-    options: {
-      type: "string",
-      description: "IOTA Streams Subscriber's seed to inspect the channel",
-      required: false
-    }
-  },
-  {
-    name: "psk",
-    options: {
-      type: "string",
-      description: "Pre-shared key used to inspect the channel",
-      required: false
-    }
-  },
-  channelParam,
-  encryptedParam,
-  privateParam
+    {
+        name: "seed",
+        options: {
+            type: "string",
+            description: "IOTA Streams Subscriber's seed to inspect the channel",
+            required: false
+        }
+    },
+    {
+        name: "psk",
+        options: {
+            type: "string",
+            description: "Pre-shared key used to inspect the channel",
+            required: false
+        }
+    },
+    channelParam,
+    encryptedParam,
+    privateParam
 ];
 
 export default class InspectChannelCommand implements ICommand {
-  public subCommands: null;
+    public subCommands: null;
 
-  public name: string = "inspect";
+    public name: string = "inspect";
 
-  public description: string = "Inspects a channel, visiting all messages";
+    public description: string = "Inspects a channel, visiting all messages";
 
-  public async execute(args: Arguments): Promise<boolean> {
-    return InspectChannelCommandExecutor.execute(args);
-  }
+    public async execute(args: Arguments): Promise<boolean> {
+        return InspectChannelCommandExecutor.execute(args);
+    }
 
-  public register(yargs: Argv): void {
-    params.forEach(aParam => {
-      yargs.option(aParam.name, aParam.options);
-    });
+    public register(yargs: Argv): void {
+        params.forEach(aParam => {
+            yargs.option(aParam.name, aParam.options);
+        });
 
-    yargs.check(inspectChannelChecks, false);
-  }
+        yargs.check(inspectChannelChecks, false);
+    }
 }
 
 /**
@@ -55,11 +55,9 @@ export default class InspectChannelCommand implements ICommand {
  * @returns true if one of them is provided
  */
 function inspectChannelChecks(argv) {
-  if (!isDefined(argv, "seed") && !isDefined(argv, "psk")) {
-    throw new Error(
-      "Please provide a seed or a pre-shared key"
-    );
-  }
+    if (!isDefined(argv, "seed") && !isDefined(argv, "psk")) {
+        throw new Error("Please provide a seed or a pre-shared key");
+    }
 
-  return true;
+    return true;
 }

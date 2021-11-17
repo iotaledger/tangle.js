@@ -1,7 +1,6 @@
 import ICommandParam from "../../ICommandParam";
 
-export const channelParam: ICommandParam =
-{
+export const channelParam: ICommandParam = {
     name: "channelID",
     options: {
         type: "string",

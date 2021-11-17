@@ -7,8 +7,8 @@ import SubmitMsgCommand from "./submitMsgCommand";
 const params: ICommandParam[] = [];
 
 const subCommands: Record<string, ICommand> = {
-  submit: new SubmitMsgCommand(),
-  get: new GetMsgCommand()
+    submit: new SubmitMsgCommand(),
+    get: new GetMsgCommand()
 };
 
 export class MessageCommand implements ICommand {
@@ -19,24 +19,25 @@ export class MessageCommand implements ICommand {
     public subCommands: Record<string, ICommand> = subCommands;
 
     public async execute(args: Arguments): Promise<boolean> {
-      return true;
+        return true;
     }
 
     public register(yargs: Argv): void {
-      params.forEach(aParam => {
-        yargs.option(aParam.name, aParam.options);
-      });
+        params.forEach(aParam => {
+            yargs.option(aParam.name, aParam.options);
+        });
 
-      Object.keys(subCommands).forEach(name => {
-        const command: ICommand = subCommands[name];
+        Object.keys(subCommands).forEach(name => {
+            const command: ICommand = subCommands[name];
 
-        yargs.command(command.name,
-          command.description,
-          commandYargs => {
-            command.register(commandYargs);
-          },
-          async commandYargs => command.execute(commandYargs)
-        );
-      });
+            yargs.command(
+                command.name,
+                command.description,
+                commandYargs => {
+                    command.register(commandYargs);
+                },
+                async commandYargs => command.execute(commandYargs)
+            );
+        });
     }
-  }
+}

@@ -71,8 +71,10 @@ export class VcHelper {
      *
      * @returns boolean indicating whether it validated or not
      */
-    private static validateCredential(cred: Credential | string,
-        credType: string): { result: boolean; credentialObj?: Credential } {
+    private static validateCredential(
+        cred: Credential | string,
+        credType: string
+    ): { result: boolean; credentialObj?: Credential } {
         let vc = cred;
 
         if (!cred) {
@@ -99,7 +101,7 @@ export class VcHelper {
                 return { result: false };
             }
         } else if (typeof vc.type === "string") {
-            if ((vc.type) !== credType) {
+            if (vc.type !== credType) {
                 return { result: false };
             }
         }

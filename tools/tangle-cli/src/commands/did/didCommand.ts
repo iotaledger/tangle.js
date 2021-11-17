@@ -4,51 +4,40 @@ import ICommandParam from "../../ICommandParam";
 import CreateDidCommand from "./createDidCommand";
 import ResolveDidCommand from "./resolveDidCommand";
 
-const params: ICommandParam[] = [
-  {
-    name: "net-id",
-    options: {
-      type: "string",
-      description:
-        "Identifier of the IOTA Tangle network. This option is ignored when using --mainnet or --devnet.",
-      global: true,
-      default: "main"
-    }
-  }
-];
+const params: ICommandParam[] = [];
 
 const subCommands: Record<string, ICommand> = {
-  create: new CreateDidCommand(),
-  resolve: new ResolveDidCommand()
+    create: new CreateDidCommand(),
+    resolve: new ResolveDidCommand()
 };
 
 export class DidCommand implements ICommand {
-  public name: string = "did";
+    public name: string = "did";
 
-  public description: string = "DID operations";
+    public description: string = "DID operations";
 
-  public subCommands: Record<string, ICommand> = subCommands;
+    public subCommands: Record<string, ICommand> = subCommands;
 
-  public async execute(args: Arguments): Promise<boolean> {
-    return true;
-  }
+    public async execute(args: Arguments): Promise<boolean> {
+        return true;
+    }
 
-  public register(yargs: Argv): void {
-    params.forEach(aParam => {
-      yargs.option(aParam.name, aParam.options);
-    });
+    public register(yargs: Argv): void {
+        params.forEach(aParam => {
+            yargs.option(aParam.name, aParam.options);
+        });
 
-    Object.keys(subCommands).forEach(name => {
-      const command: ICommand = subCommands[name];
+        Object.keys(subCommands).forEach(name => {
+            const command: ICommand = subCommands[name];
 
-      yargs.command(
-        command.name,
-        command.description,
-        commandYargs => {
-          command.register(commandYargs);
-        },
-        async commandYargs => command.execute(commandYargs)
-      );
-    });
-  }
+            yargs.command(
+                command.name,
+                command.description,
+                commandYargs => {
+                    command.register(commandYargs);
+                },
+                async commandYargs => command.execute(commandYargs)
+            );
+        });
+    }
 }
