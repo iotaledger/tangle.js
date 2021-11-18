@@ -87,19 +87,3 @@ $(code_block "npx tcli msg submit --help")
 
 $(code_block "npx tcli msg get --help")
 EOF
-
-
-
-# echo "\n\n"
-
-# npx tcli did --help
-# echo "\n"
-# npx tcli did create --help
-# echo "\n"
-# npx tcli did resolve --help
-# echo "\n\n"
-
-# npx tcli vc --help
-# npx tcli channel --help
-# npx tcli msg --help
-
