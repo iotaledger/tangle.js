@@ -1,3 +1,5 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { IotaAnchoringChannel, SeedHelper } from "@tangle-js/anchors";
 import { Arguments } from "yargs";
 import { isDefined, getNetworkParams } from "../../globalParams";

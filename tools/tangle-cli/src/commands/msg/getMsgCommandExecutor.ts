@@ -1,3 +1,5 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { IIndexationPayload, SingleNodeClient } from "@iota/iota.js";
 import { Converter } from "@iota/util.js";
 import { Arguments } from "yargs";

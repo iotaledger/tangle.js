@@ -1,3 +1,5 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Arguments, Argv } from "yargs";
 import { isDefined } from "../../globalParams";
 import ICommand from "../../ICommand";
@@ -39,20 +41,20 @@ export default class InspectChannelCommand implements ICommand {
     }
 
     public register(yargs: Argv): void {
-        params.forEach(aParam => {
+        for (const aParam of params) {
             yargs.option(aParam.name, aParam.options);
-        });
+        }
 
         yargs.check(inspectChannelChecks, false);
     }
 }
 
 /**
- * Checks that either seed or psk are provided
+ * Checks that either seed or psk are provided.
  *
- * @param argv Arguments
- *
- * @returns true if one of them is provided
+ * @param argv Arguments.
+ * @returns True if one of them is provided.
+ * @throws {Error}
  */
 function inspectChannelChecks(argv) {
     if (!isDefined(argv, "seed") && !isDefined(argv, "psk")) {

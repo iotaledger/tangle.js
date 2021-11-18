@@ -1,3 +1,5 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Arguments, Argv } from "yargs";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
@@ -34,8 +36,8 @@ export default class SubmitMsgCommand implements ICommand {
     }
 
     public register(yargs: Argv): void {
-        params.forEach(aParam => {
+        for (const aParam of params) {
             yargs.option(aParam.name, aParam.options);
-        });
+        }
     }
 }

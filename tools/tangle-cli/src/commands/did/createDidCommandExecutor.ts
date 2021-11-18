@@ -1,4 +1,5 @@
-/* eslint-disable no-duplicate-imports */
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Document, KeyType, KeyPair } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";

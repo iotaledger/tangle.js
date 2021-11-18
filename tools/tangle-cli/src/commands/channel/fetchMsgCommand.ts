@@ -1,3 +1,5 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Arguments, Argv } from "yargs";
 import { isDefined } from "../../globalParams";
 import ICommand from "../../ICommand";
@@ -55,21 +57,20 @@ export default class FetchMsgCommand implements ICommand {
     }
 
     public register(yargs: Argv): void {
-        params.forEach(aParam => {
+        for (const aParam of params) {
             yargs.option(aParam.name, aParam.options);
-        });
+        }
 
         yargs.check(fetchMsgChecks, false);
     }
 }
 
 /**
- * Check that the proper parameters are passed
+ * Check that the proper parameters are passed.
  *
- * @param argv The command line arguments
- *
- * @returns boolean or throws an exception
- *
+ * @param argv The command line arguments.
+ * @returns Boolean or throws an exception.
+ * @throws {Error}
  */
 function fetchMsgChecks(argv) {
     if (!isDefined(argv, "anchorageID") && isDefined(argv, "msgID")) {

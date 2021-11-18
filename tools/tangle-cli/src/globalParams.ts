@@ -1,3 +1,5 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Arguments } from "yargs";
 import ICommandParam from "./ICommandParam";
 import { INetworkParams } from "./INetworkParams";
@@ -38,12 +40,12 @@ export const globalParams: ICommandParam[] = [
         options: {
             type: "boolean",
             description: [
-              "Default settings for IOTA Chrysalis Mainnet",
-              `Network:   ${defaultNetParams.mainnet.networkId}`,
-              `Node:      ${defaultNetParams.mainnet.node}`,
-              `Explorer:  ${defaultNetParams.mainnet.explorer ?? "-"}`,
-              `Permanode: ${defaultNetParams.mainnet.permanode ?? "-"}`
-          ].join("\n"),
+                "Default settings for IOTA Chrysalis Mainnet",
+                `Network:   ${defaultNetParams.mainnet.networkId}`,
+                `Node:      ${defaultNetParams.mainnet.node}`,
+                `Explorer:  ${defaultNetParams.mainnet.explorer ?? "-"}`,
+                `Permanode: ${defaultNetParams.mainnet.permanode ?? "-"}`
+            ].join("\n"),
             global: true
         }
     },
@@ -87,18 +89,15 @@ export const globalParams: ICommandParam[] = [
 
 export const globalConflicts = {
     mainnet: "devnet",
-    devnet: "mainnet",
     net: ["devnet", "mainnet"]
 };
 
 /**
- * Checks whether and argument is defined
+ * Checks whether and argument is defined.
  *
- * @param argv The Arguments
- * @param field The fields
- *
- * @returns whether the argument is defined or not
- *
+ * @param argv The Arguments.
+ * @param field The fields.
+ * @returns Whether the argument is defined or not.
  */
 export function isDefined(argv: Arguments, field: string): boolean {
     const value = argv[field];
@@ -133,11 +132,10 @@ export const globalCheckFunction = (argv: Arguments) => {
 };
 
 /**
- * Obtains the network params from command arguments
+ * Obtains the network params from command arguments.
  *
- * @param args the arguments passed
- *
- * @returns the network params used for the command
+ * @param args The arguments passed.
+ * @returns The network params used for the command.
  */
 export function getNetworkParams(args: Arguments): INetworkParams {
     let params: INetworkParams | undefined;
