@@ -12,7 +12,7 @@
     "build-lint": "eslint src --ext .ts",
     "build-compile": "tsc",
     "build-watch": "tsc --watch",
-    "build": "npm-run-all build-format build-clean build-compile build-lint",
+    "build": "npm-run-all build-clean build-format build-compile build-lint",
     "start": "node ./dist/tcli"
   },
   "repository": {
