@@ -1,13 +1,14 @@
-import { Converter, SingleNodeClient, IIndexationPayload } from "@iota/iota.js";
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
+import { IIndexationPayload, SingleNodeClient } from "@iota/iota.js";
+import { Converter } from "@iota/util.js";
 import { Arguments } from "yargs";
-import { getNetworkParams } from "../commonParams";
+import { getNetworkParams } from "../../globalParams";
 
 export default class GetMsgCommandExecutor {
     public static async execute(args: Arguments): Promise<boolean> {
-        const node = getNetworkParams(args).network;
-
         try {
-            const client = new SingleNodeClient(node);
+            const client = new SingleNodeClient(getNetworkParams(args).node);
 
             const msgID = args.msgID as string;
 

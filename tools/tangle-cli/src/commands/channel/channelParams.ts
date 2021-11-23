@@ -1,7 +1,8 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import ICommandParam from "../../ICommandParam";
 
-export const channelParam: ICommandParam =
-{
+export const channelParam: ICommandParam = {
     name: "channelID",
     options: {
         type: "string",

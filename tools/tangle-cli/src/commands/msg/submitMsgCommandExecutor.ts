@@ -1,11 +1,13 @@
-import { Converter, SingleNodeClient, IMessage, IIndexationPayload, INDEXATION_PAYLOAD_TYPE } from "@iota/iota.js";
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
+import { SingleNodeClient, IMessage, IIndexationPayload, INDEXATION_PAYLOAD_TYPE } from "@iota/iota.js";
+import { Converter } from "@iota/util.js";
 import { Arguments } from "yargs";
-import { getNetworkParams, providerName } from "../commonParams";
+import { getNetworkParams } from "../../globalParams";
 
 export default class SubmitMsgCommandExecutor {
     public static async execute(args: Arguments): Promise<boolean> {
-        const node = getNetworkParams(args).network;
-
+        const { node, explorer } = getNetworkParams(args);
         try {
             const client = new SingleNodeClient(node);
             const msgContent = args.msg as string;
@@ -32,7 +34,7 @@ export default class SubmitMsgCommandExecutor {
             console.log({
                 msgID,
                 parentMessageIDs,
-                explorerUrl: `https://explorer.iota.org/${providerName(node)}/message/${msgID}`
+                ...(Boolean(explorer) && { explorerUrl: `${explorer}/message/${msgID}` })
             });
         } catch (error) {
             console.error("Error:", error);

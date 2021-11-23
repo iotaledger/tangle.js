@@ -11,86 +11,82 @@ CLI for developing applications on the Tangle
 npm install -g @tangle-js/tangle-cli
 ```
 
-## Run 
+## Usage
 
-On the command line just run ```tcli```
-
-## Commands
-
-* [Decentralized Identities](#did)
-* [Verifiable Credentials](#verifiable-credentials-vc)
-* [Streams Channels](#channels) (Powered by IOTA Streams)
-* [Tangle Indexed Messages](#tangle-messages)
+On the command line just run `tcli`.
 
 ```
 tcli [command]
 
 Commands:
   tcli did      DID operations
-  tcli vc       VC  Operations
-  tcli channel  Streams Channels operations
+  tcli vc       Verifiable Credential operations
+  tcli channel  Streams Channels operations (Powered by IOTA Streams)
   tcli msg      Tangle message (indexation payloads) operations
 
-Options:
-  --version  Show version number                                       [boolean]
-  --mainnet  IOTA Mainnet                                              [boolean]
-  --devnet   IOTA devnet                                                [boolean]
-  --net, -n  Node's endpoint or other IOTA network                     [string]
-  --help     Show help                                                 [boolean]
+Global Options:
+  --version        Show version number                                 [boolean]
+  --devnet         Default settings for IOTA Chrysalis Devnet
+                   Network:   dev
+                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
+                   Explorer:  https://explorer.iota.org/devnet
+                   Permanode: -                                        [boolean]
+  --mainnet        Default settings for IOTA Chrysalis Mainnet
+                   Network:   main
+                   Node:      https://chrysalis-nodes.iota.org
+                   Explorer:  https://explorer.iota.org/mainnet
+                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
+                                                                       [boolean]
+  --net, -i        Tangle network identifier                            [string]
+  --node, -n       Node endpoint                                        [string]
+  --explorer, -x   Tangle explorer endpoint                             [string]
+  --permanode, -p Permanode endpoint                                   [string]
+  --help           Show help                                           [boolean]
 ```
 
-## DID 
+> For all commands you must specify at minimum `--devnet`, `--mainnet` or `--net <netId> --node <nodeUrl>`
+
+**See commands for:**
+* [Decentralized Identities](#did)
+* [Verifiable Credentials](#verifiable-credentials-vc)
+* [Streams Channels](#channels) (Powered by IOTA Streams)
+* [Tangle Indexed Messages](#tangle-messages)
+
+### DID
 
 ```
 tcli did
 
-DID Operations
+DID operations
 
 Commands:
-  tcli did create   DID Creation
-  tcli did resolve  DID Resolution
-
-Options:
-  --version   Show version number                                      [boolean]
-  --mainnet   IOTA Mainnet                                             [boolean]
-  --devnet    IOTA devnet                                               [boolean]
-  --net, -n   Node's endpoint or other IOTA network                     [string]
-  --help      Show help                                                [boolean]
+  tcli did create   DID creation
+  tcli did resolve  DID resolution
 ```
 
-### DID Creation
+#### DID Creation
 
 ```
 tcli did create
 
-DID Creation
+DID creation
 
 Options:
-  --version     Show version number                                      [boolean]
-  --mainnet     IOTA Mainnet                                             [boolean]
-  --devnet      IOTA devnet                                               [boolean]
-  --net, -n     Node's endpoint or other IOTA network                     [string]
-  --help        Show help                                                [boolean]
-  --didService  List of DID services (JSON Array)                        [string]
+  --didService     List of DID services (JSON Array)                    [string]
 ```
 
-### DID Resolution
+#### DID Resolution
 
 ```
 tcli did resolve
 
-DID Resolution
+DID resolution
 
 Options:
-  --version   Show version number                                      [boolean]
-  --mainnet   IOTA Mainnet                                             [boolean]
-  --devnet    IOTA devnet                                               [boolean]
-  --net, -n   Node's endpoint or other IOTA network                     [string]
-  --help      Show help                                                [boolean]
-  --did      DID to be resolved                              [string] [required]
+  --did            DID to be resolved                        [string] [required]
 ```
 
-## Verifiable Credentials (VC)
+### Verifiable Credentials (VC)
 
 ```
 tcli vc
@@ -98,19 +94,12 @@ tcli vc
 Verifiable Credential operations
 
 Commands:
-  tcli vc issue   VC issuance
-  tcli vc verify  VC verification
-
-Options:
-  --version  Show version number                                       [boolean]
-  --mainnet  IOTA Mainnet                                              [boolean]
-  --devnet   IOTA devnet                                                [boolean]
-  --net, -n  Node's endpoint or other IOTA network                     [string]
-  --help     Show help                                                 [boolean]
-  --method   Verification Method                             [string] [required]
+  tcli vc issue    VC issuance
+  tcli vc verify   VC / VP verification
+  tcli vc present  VC presentation
 ```
 
-### Issuing a VC
+#### Issuing a VC
 
 ```
 tcli vc issue
@@ -118,82 +107,64 @@ tcli vc issue
 VC issuance
 
 Options:
-  --version  Show version number                                       [boolean]
-  --mainnet  IOTA Mainnet                                              [boolean]
-  --devnet   IOTA devnet                                                [boolean]
-  --net, -n  Node's endpoint or other IOTA network                     [string]
-  --help     Show help                                                 [boolean]
-  --method   Verification Method                             [string] [required]
-  --issuer   DID of the issuer of the VC                     [string] [required]
-  --expDate  Expiration Date                                 [string] [optional]
-  --secret   Secret key of the issuer                        [string] [required]
-  --subject  (D)ID of the subject of the VC                  [string] [required]
-  --claims   Credential claim data (As a JSON Object)        [string] [required]
-  --type     Credential type                                 [string] [required]
-  --id       Credential id                                              [string]
-  --json     Output the credential in JSON format ready for cyp        [boolean]
+  --issuer         DID of the issuer of the VC               [string] [required]
+  --method         Verification Method                       [string] [required]
+  --expDate        Expiration Date                                      [string]
+  --secret         Secret key of the issuer                  [string] [required]
+  --subject        (D)ID of the subject of the VC            [string] [required]
+  --claims         Credential claim data (As a JSON Object)  [string] [required]
+  --type           Credential type                                      [string]
+  --id             Credential id                                        [string]
+  --json           Output the credential in JSON format ready for cyp  [boolean]
 ```
 
-### Verifying a VC or a VP
+#### Verifying a VC or a VP
 
 ```
 tcli vc verify
 
-VC verification
+VC / VP verification
 
 Options:
-  --version  Show version number                                       [boolean]
-  --mainnet  IOTA Mainnet                                              [boolean]
-  --devnet   IOTA devnet                                                [boolean]
-  --net, -n  Node's endpoint or other IOTA network                     [string]
-  --help     Show help                                                 [boolean]
-  --vc       Verifiable Credential to be verified (As JSON)  [string] [required]
-  --vp       Verifiable Presentation to be verified (As JSON)  [string] [required]
+  --vc             Verifiable Credential to be verified (As JSON)       [string]
+  --vp             Verifiable Presentation to be verified (As JSON)     [string]
 ```
 
-### Presenting a VC
+#### Presenting a VC
 
 ```
 tcli vc present
 
+VC presentation
+
 Options:
-  --version  Show version number                                       [boolean]
-  --devnet   IOTA Chrysalis devnet                                     [boolean]
-  --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --net, -n  Node's endpoint or other IOTA network                     [string]
-  --help     Show help                                                 [boolean]
-  --vc       VC to be presented                              [string] [required]
-  --holder   Holder who presents the credential. By default is the credential
-             subject                                                    [string]
-  --method   Verification Method                             [string] [required]
-  --secret   Secret key of the holder                        [string] [required]
-  --id       Presentation id                                            [string]
-  --type     Presentation type                                          [string]
-  --json     Output the credential presentation in JSON format ready for cyp
-                                                                       [boolean]
+  --vc             VC to be presented                        [string] [required]
+  --holder         Holder who presents the credential. By default is the
+                   credential subject                                   [string]
+  --method         Verification Method                       [string] [required]
+  --secret         Secret key of the holder                  [string] [required]
+  --id             Presentation id                                      [string]
+  --type           Presentation type                                    [string]
+  --json           Output the credential presentation in JSON format ready for
+                   cyp                                                 [boolean]
 ```
 
-## Channels
+### Channels
+
+```
+tcli channel
 
 Streams Channels operations (Powered by IOTA Streams)
 
-```
 Commands:
-  tcli channel create   Creates a new Streams channel
+  tcli channel create   Creates a new Streams Channel
   tcli channel anchor   Anchors a message to an IOTA Streams Channel
   tcli channel fetch    Fetches one message previously anchored
-  tcli channel inspect  Inspects an Streams Channel, visiting all messages
+  tcli channel inspect  Inspects a channel, visiting all messages
   tcli channel seed     Creates a new seed to be used to interact with channels
+```
 
-Options:
-  --version  Show version number                                       [boolean]
-  --devnet   IOTA Chrysalis devnet                                     [boolean]
-  --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --net, -n  Node's endpoint or other IOTA network                     [string]
-  --help     Show help                                                 [boolean]
-````
-
-### Channel Creation
+#### Channel Creation
 
 ```
 tcli channel create
@@ -201,42 +172,32 @@ tcli channel create
 Creates a new Streams Channel
 
 Options:
-      --version  Show version number                                   [boolean]
-      --devnet   IOTA Chrysalis devnet                                 [boolean]
-      --mainnet  IOTA Chrysalis Mainnet                                [boolean]
-  -n, --net      Node's endpoint or other IOTA network                  [string]
-      --help     Show help                                             [boolean]
-      --psk      Pre-shared keys                                        [array]
-      --seed     IOTA Streams Author's seed for creating the channel    [string]
-      --encrypted  Whether the channel must be encrypted or not        [boolean]
-      --private    Whether the channel is private or not               [boolean]
+  --seed           IOTA Streams Author's seed for creating the channel  [string]
+  --psk            Pre-shared keys                                       [array]
+  --encrypted      Whether the channel must be encrypted or not        [boolean]
+  --private        Whether the channel is private or not               [boolean]
 ```
 
-### Anchor message
+#### Anchor message
 
 ```
 tcli channel anchor
 
-Anchors a message to a Streams Channel
+Anchors a message to an IOTA Streams Channel
 
 Options:
-      --version      Show version number                               [boolean]
-      --devnet       IOTA Chrysalis devnet                             [boolean]
-      --mainnet      IOTA Chrysalis Mainnet                            [boolean]
-  -n, --net          Node's endpoint or other IOTA network              [string]
-      --help         Show help                                         [boolean]
-      --seed         IOTA Streams Subscriber's seed to use to anchor the message
+  --seed           IOTA Streams Subscriber's seed to use to anchor the message
                                                              [string] [required]
-      --msg          (JSON) Message content to be anchored   [string] [required]
-      --channelID    ID of the Channel ('address:announceMsgID') to anchor the
-                     message to                              [string] [required]
-      --anchorageID  The anchorage point (message) ID to anchor the message to
+  --msg            (JSON) Message content to be anchored     [string] [required]
+  --channelID      ID of the Channel ('address:announceMsgID') to anchor the
+                   message to                                [string] [required]
+  --anchorageID    The anchorage point (message) ID to anchor the message to
                                                              [string] [required]
-      --encrypted  Whether the channel must be encrypted or not        [boolean]
-      --private    Whether the channel is private or not               [boolean]
+  --encrypted      Whether the channel must be encrypted or not        [boolean]
+  --private        Whether the channel is private or not               [boolean]
 ```
 
-### Fetch message
+#### Fetch message
 
 ```
 tcli channel fetch
@@ -244,45 +205,35 @@ tcli channel fetch
 Fetches one message previously anchored
 
 Options:
-      --version      Show version number                               [boolean]
-      --devnet       IOTA Chrysalis devnet                             [boolean]
-      --mainnet      IOTA Chrysalis Mainnet                            [boolean]
-  -n, --net          Node's endpoint or other IOTA network              [string]
-      --help         Show help                                         [boolean]
-      --seed         IOTA Streams Subscriber's seed to fetch on the channel
-                                                                         [string] 
-      --psk          IOTA Streams pre-shared key to fetch on the channel [string]
-      --channelID    ID of the Channel ('address:announceMsgID') from which to
-                     fetch the message                       [string] [required]
-      --msgID        ID of the message to be fetched                    [string]
-      --anchorageID  ID of the anchorage where the message to be fetched is
-                     anchored to                             [string] [required]
-      --encrypted  Whether the channel must be encrypted or not        [boolean]
-      --private    Whether the channel is private or not               [boolean]
+  --seed           IOTA Streams Subscriber's seed to fetch on the channel
+                                                                        [string]
+  --psk            IOTA Streams pre-shared key to fetch on the channel  [string]
+  --channelID      ID of the Channel ('address:announceMsgID') from which to
+                   fetch the message                         [string] [required]
+  --msgID          ID of the message to be fetched                      [string]
+  --anchorageID    ID of the anchorage where the message to be fetched is
+                   anchored to                               [string] [required]
+  --encrypted      Whether the channel must be encrypted or not        [boolean]
+  --private        Whether the channel is private or not               [boolean]
 ```
 
-### Inspect channel
+#### Inspect channel
 
 ```
 tcli channel inspect
 
-Inspects a Streams Channel, visiting all messages anchored. 
+Inspects a channel, visiting all messages
 
 Options:
-      --version    Show version number                                 [boolean]
-      --devnet     IOTA Chrysalis devnet                               [boolean]
-      --mainnet    IOTA Chrysalis Mainnet                              [boolean]
-  -n, --net        Node's endpoint or other IOTA network                [string]
-      --help       Show help                                           [boolean]
-      --seed       IOTA Streams Subscriber's seed to inspect the channel [string]
-      --psk        Pre-shared key used to inspect the channel            [string]
-      --channelID  ID of the Channel ('address:announceMsgID') from which to
+  --seed           IOTA Streams Subscriber's seed to inspect the channel[string]
+  --psk            Pre-shared key used to inspect the channel           [string]
+  --channelID      ID of the Channel ('address:announceMsgID') from which to
                    fetch the message                         [string] [required]
-      --encrypted  Whether the channel must be encrypted or not        [boolean]
-      --private    Whether the channel is private or not               [boolean]
+  --encrypted      Whether the channel must be encrypted or not        [boolean]
+  --private        Whether the channel is private or not               [boolean]
 ```
 
-## Seed generation
+### Seed generation
 
 ```
 tcli channel seed
@@ -290,32 +241,22 @@ tcli channel seed
 Creates a new seed to be used to interact with channels
 
 Options:
-      --version  Show version number                                   [boolean]
-      --devnet   IOTA Chrysalis devnet                                 [boolean]
-      --mainnet  IOTA Chrysalis Mainnet                                [boolean]
-  -n, --net      Node's endpoint or other IOTA network                  [string]
-      --help     Show help                                             [boolean]
-      --size     Size of the seed                                       [number]
+  --size           Size of the seed                                     [number]
 ```
 
-## Tangle Messages
+### Tangle Messages
 
 ```
+tcli msg
+
 Tangle message (indexation payloads) operations
 
 Commands:
   tcli msg submit  Message (indexation payload) submission
   tcli msg get     Message retrieval
-
-  Options:
-  --version  Show version number                                       [boolean]
-  --devnet   IOTA Chrysalis devnet                                     [boolean]
-  --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --net, -n  Node's endpoint or other IOTA network                      [string]
-  --help     Show help                                                 [boolean]
 ```
 
-### Submit a message (indexation payload)
+#### Submit a message (indexation payload)
 
 ```
 tcli msg submit
@@ -323,16 +264,11 @@ tcli msg submit
 Message (indexation payload) submission
 
 Options:
-  --version  Show version number                                       [boolean]
-  --devnet   IOTA Chrysalis devnet                                     [boolean]
-  --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --net, -n  Node's endpoint or other IOTA network                      [string]
-  --help     Show help                                                 [boolean]
-  --msg      Message content to be submitted                 [string] [required]
-  --index    Index for the message                           [string] [required]
+  --msg            Message content to be submitted           [string] [required]
+  --index          Index for the message                     [string] [required]
 ```
 
-### Retrieve a message
+#### Retrieve a message
 
 ```
 tcli msg get
@@ -340,10 +276,5 @@ tcli msg get
 Message retrieval
 
 Options:
-  --version  Show version number                                       [boolean]
-  --devnet   IOTA Chrysalis devnet                                     [boolean]
-  --mainnet  IOTA Chrysalis Mainnet                                    [boolean]
-  --net, -n  Node's endpoint or other IOTA network                      [string]
-  --help     Show help                                                 [boolean]
-  --msgID    ID of the message to be retrieved               [string] [required]
+  --msgID          ID of the message to be retrieved         [string] [required]
 ```

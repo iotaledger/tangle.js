@@ -1,27 +1,29 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Arguments, Argv } from "yargs";
 import commandRegistry from "./commandRegistry";
 import { globalCheckFunction, globalConflicts, globalParams } from "./globalParams";
 import ICommand from "./ICommand";
 
 export default class TcliConfigurator {
-  public static parseCommandLine(yargs: Argv): Arguments {
-    globalParams.forEach(aParam => {
-      yargs.option(aParam.name, aParam.options);
-    });
+    public static parseCommandLine(yargs: Argv): Arguments {
+        for (const aParam of globalParams) {
+            yargs.option(aParam.name, aParam.options);
+        }
 
-    yargs.conflicts(globalConflicts);
-    yargs.check(globalCheckFunction, true);
+        yargs.conflicts(globalConflicts);
+        yargs.check(globalCheckFunction, true);
 
-    Object.keys(commandRegistry).forEach(name => {
-      const command: ICommand = commandRegistry[name];
+        for (const name of Object.keys(commandRegistry)) {
+            const command: ICommand = commandRegistry[name];
 
-      yargs.command(command.name, command.description, commandYargs => {
-        command.register(commandYargs);
-      });
-    });
+            yargs.command(command.name, command.description, commandYargs => {
+                command.register(commandYargs);
+            });
+        }
 
-    yargs.help();
+        yargs.help();
 
-    return yargs.argv;
-  }
+        return yargs.argv;
+    }
 }

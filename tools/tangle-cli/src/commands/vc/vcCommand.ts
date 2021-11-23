@@ -1,3 +1,5 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Arguments, Argv } from "yargs";
 import ICommand from "../../ICommand";
 import ICommandParam from "../../ICommandParam";
@@ -8,47 +10,38 @@ import VerifyVcCommand from "./verifyVcCommand";
 const params: ICommandParam[] = [];
 
 const subCommands: Record<string, ICommand> = {
-  issue: new IssueVcCommand(),
-  verify: new VerifyVcCommand(),
-  present: new PresentVcCommand()
-};
-
-const checkFunction = argv => {
-  if (argv.devnet || argv.net) {
-    throw new Error("Only the mainnet is supported for VCs");
-  }
-
-  return true;
+    issue: new IssueVcCommand(),
+    verify: new VerifyVcCommand(),
+    present: new PresentVcCommand()
 };
 
 export class VcCommand implements ICommand {
-  public name: string = "vc";
+    public name: string = "vc";
 
-  public description: string = "Verifiable Credential operations";
+    public description: string = "Verifiable Credential operations";
 
-  public subCommands: Record<string, ICommand> = subCommands;
+    public subCommands: Record<string, ICommand> = subCommands;
 
-  public async execute(args: Arguments): Promise<boolean> {
-    return true;
-  }
+    public async execute(args: Arguments): Promise<boolean> {
+        return true;
+    }
 
-  public register(yargs: Argv): void {
-    params.forEach(aParam => {
-      yargs.option(aParam.name, aParam.options);
-    });
+    public register(yargs: Argv): void {
+        for (const aParam of params) {
+            yargs.option(aParam.name, aParam.options);
+        }
 
-    yargs.check(checkFunction);
+        for (const name of Object.keys(subCommands)) {
+            const command: ICommand = subCommands[name];
 
-    Object.keys(subCommands).forEach(name => {
-      const command: ICommand = subCommands[name];
-
-      yargs.command(command.name,
-        command.description,
-        commandYargs => {
-          command.register(commandYargs);
-        },
-        async commandYargs => command.execute(commandYargs)
-      );
-    });
-  }
+            yargs.command(
+                command.name,
+                command.description,
+                commandYargs => {
+                    command.register(commandYargs);
+                },
+                async commandYargs => command.execute(commandYargs)
+            );
+        }
+    }
 }

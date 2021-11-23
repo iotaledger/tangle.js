@@ -1,20 +1,28 @@
+// Copyright 2021 IOTA Stiftung.
+// SPDX-License-Identifier: Apache-2.0.
 import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node";
-import { PERMANODE_URL } from "./commonParams";
+import { INetworkParams } from "../INetworkParams";
 
 export class IdentityHelper {
     /**
-     * Returns a new Identity Client for the network specified as parameter
+     * Returns a new Identity Client for the network specified as parameter.
      *
-     * @param network Concerned network
-     * @returns the identity client
+     * @param network IOTA network connection parameters.
+     * @returns The identity client.
      */
-    public static getClient(network: string): IdentityClient {
+    public static getClient(network: INetworkParams): IdentityClient {
         const identityConfig = new IdentityConfig();
-      identityConfig.setNetwork(Network.mainnet());
-      identityConfig.setNode(Network.mainnet().defaultNodeURL);
-      identityConfig.setPermanode(PERMANODE_URL);
-      const identityClient = IdentityClient.fromConfig(identityConfig);
 
-      return identityClient;
+        identityConfig.setNode(network.node);
+
+        if (network.networkId) {
+            identityConfig.setNetwork(Network.try_from_name(network.networkId));
+        }
+
+        if (network.permanode) {
+            identityConfig.setPermanode(network.permanode);
+        }
+
+        return IdentityClient.fromConfig(identityConfig);
     }
 }
