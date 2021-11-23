@@ -33,7 +33,7 @@ export default class AnchorMsgCommandExecutor {
                 ...result,
                 seed,
                 publicKey: channel.authorPubKey,
-                explorerURL: `${explorer}/message/${msgIDLayer1}`
+                ...Boolean(explorer) && { explorerURL: `${explorer}/message/${msgIDLayer1}` }
             });
         } catch (error) {
             console.error("Error:", error);

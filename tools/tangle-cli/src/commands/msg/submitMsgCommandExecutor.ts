@@ -34,7 +34,7 @@ export default class SubmitMsgCommandExecutor {
             console.log({
                 msgID,
                 parentMessageIDs,
-                explorerUrl: `${explorer}/message/${msgID}`
+                ...Boolean(explorer) && { explorerUrl: `${explorer}/message/${msgID}` }
             });
         } catch (error) {
             console.error("Error:", error);

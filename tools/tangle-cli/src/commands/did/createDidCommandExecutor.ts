@@ -36,7 +36,7 @@ export default class CreateDidCommandExecutor {
                 public: key.public,
                 private: key.private
             },
-            transactionUrl: `${netParams.explorer}/message/${receipt.messageId}`
+            ...Boolean(netParams.explorer) && { transactionUrl: `${netParams.explorer}/message/${receipt.messageId}` }
         });
 
         return true;
