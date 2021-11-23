@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New options to specify custom explorer URL (`--explorer, -x`), permanode URL (`--permanode, -pn`) and network ID (`--net, -ni`). See changes below regarding `--net`.
+- New options to specify custom explorer URL (`--explorer, -x`), permanode URL (`--permanode, -p`) and network ID (`--net, -i`). See changes below regarding `--net`.
 - Support for `--devnet` in identity commands.
 - Support for Private Tangle is now possible using the new options above.
 - This change log.

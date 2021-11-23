@@ -52,7 +52,7 @@ export const globalParams: ICommandParam[] = [
     {
         name: "net",
         options: {
-            alias: "ni",
+            alias: "i",
             type: "string",
             description: "Tangle network identifier",
             global: true
@@ -79,7 +79,7 @@ export const globalParams: ICommandParam[] = [
     {
         name: "permanode",
         options: {
-            alias: "pn",
+            alias: "p",
             type: "string",
             description: "Permanode endpoint",
             global: true

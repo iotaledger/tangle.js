@@ -37,10 +37,10 @@ Global Options:
                    Explorer:  https://explorer.iota.org/mainnet
                    Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
                                                                        [boolean]
-  --net, -ni        Tangle network identifier                            [string]
+  --net, -i        Tangle network identifier                            [string]
   --node, -n       Node endpoint                                        [string]
   --explorer, -x   Tangle explorer endpoint                             [string]
-  --permanode, -pn Permanode endpoint                                   [string]
+  --permanode, -p Permanode endpoint                                   [string]
   --help           Show help                                           [boolean]
 ```
 
