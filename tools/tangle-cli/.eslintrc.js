@@ -556,7 +556,7 @@ module.exports = {
         "jsdoc/require-file-overview": 0,
         "jsdoc/require-hyphen-before-param-description": 0,
         "jsdoc/require-jsdoc": [
-            "warn",
+            "off",
             {
                 publicOnly: true,
                 require: {
