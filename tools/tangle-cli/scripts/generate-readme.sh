@@ -1,4 +1,8 @@
 #!/usr/bin/env sh
+# QoL script to generate the usage sections of the
+# README based on the current build of the tcli.
+# The global options get printed for every command, 
+# these should be removed before updating the README. 
 
 code_block()
 {
@@ -7,21 +11,8 @@ code_block()
     echo "\`\`\`"
 }
 
-# npm run build > /dev/null
-
+# Print the command help output for each command
 cat << EOF
-## Usage
-
-On the command line just run \`tcli\`.
-
-* [Decentralized Identities](#did)
-* [Verifiable Credentials](#verifiable-credentials-vc)
-* [Streams Channels](#channels) (Powered by IOTA Streams)
-* [Tangle Indexed Messages](#tangle-messages)
-
-> For all commands you must specify at minumum `--devnet`, `--mainnet` or `--net <netId> --node <nodeUrl>`
-
-$(code_block "npx tcli --help")
 
 ### DID
 
