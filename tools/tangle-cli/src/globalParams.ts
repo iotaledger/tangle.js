@@ -27,7 +27,7 @@ export const globalParams: ICommandParam[] = [
             type: "boolean",
             description: [
                 "Default settings for IOTA Chrysalis Devnet",
-                `Network:   ${defaultNetParams.devnet.networkId}`,
+                `Network ID:   ${defaultNetParams.devnet.networkId}`,
                 `Node:      ${defaultNetParams.devnet.node}`,
                 `Explorer:  ${defaultNetParams.devnet.explorer ?? "-"}`,
                 `Permanode: ${defaultNetParams.devnet.permanode ?? "-"}`
