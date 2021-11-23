@@ -15,13 +15,6 @@ npm install -g @tangle-js/tangle-cli
 
 On the command line just run `tcli`.
 
-* [Decentralized Identities](#did)
-* [Verifiable Credentials](#verifiable-credentials-vc)
-* [Streams Channels](#channels) (Powered by IOTA Streams)
-* [Tangle Indexed Messages](#tangle-messages)
-
-> For all commands you must specify at minumum `--devnet`, `--mainnet` or `--net <netId> --node <nodeUrl>`
-
 ```
 tcli [command]
 
@@ -31,7 +24,7 @@ Commands:
   tcli channel  Streams Channels operations (Powered by IOTA Streams)
   tcli msg      Tangle message (indexation payloads) operations
 
-Options:
+Global Options:
   --version        Show version number                                 [boolean]
   --devnet         Default settings for IOTA Chrysalis Devnet
                    Network:   dev
@@ -50,6 +43,14 @@ Options:
   --permanode, -p  Permanode endpoint                                   [string]
   --help           Show help                                           [boolean]
 ```
+
+> For all commands you must specify at minimum `--devnet`, `--mainnet` or `--net <netId> --node <nodeUrl>`
+
+**See commands for:**
+* [Decentralized Identities](#did)
+* [Verifiable Credentials](#verifiable-credentials-vc)
+* [Streams Channels](#channels) (Powered by IOTA Streams)
+* [Tangle Indexed Messages](#tangle-messages)
 
 ### DID
 
@@ -61,25 +62,6 @@ DID operations
 Commands:
   tcli did create   DID creation
   tcli did resolve  DID resolution
-
-Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
 ```
 
 #### DID Creation
@@ -90,23 +72,6 @@ tcli did create
 DID creation
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --didService     List of DID services (JSON Array)                    [string]
 ```
 
@@ -118,23 +83,6 @@ tcli did resolve
 DID resolution
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --did            DID to be resolved                        [string] [required]
 ```
 
@@ -149,25 +97,6 @@ Commands:
   tcli vc issue    VC issuance
   tcli vc verify   VC / VP verification
   tcli vc present  VC presentation
-
-Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
 ```
 
 #### Issuing a VC
@@ -178,23 +107,6 @@ tcli vc issue
 VC issuance
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --issuer         DID of the issuer of the VC               [string] [required]
   --method         Verification Method                       [string] [required]
   --expDate        Expiration Date                                      [string]
@@ -214,23 +126,6 @@ tcli vc verify
 VC / VP verification
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --vc             Verifiable Credential to be verified (As JSON)       [string]
   --vp             Verifiable Presentation to be verified (As JSON)     [string]
 ```
@@ -243,23 +138,6 @@ tcli vc present
 VC presentation
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --vc             VC to be presented                        [string] [required]
   --holder         Holder who presents the credential. By default is the
                    credential subject                                   [string]
@@ -284,25 +162,6 @@ Commands:
   tcli channel fetch    Fetches one message previously anchored
   tcli channel inspect  Inspects a channel, visiting all messages
   tcli channel seed     Creates a new seed to be used to interact with channels
-
-Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
 ```
 
 #### Channel Creation
@@ -313,23 +172,6 @@ tcli channel create
 Creates a new Streams Channel
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --seed           IOTA Streams Author's seed for creating the channel  [string]
   --psk            Pre-shared keys                                       [array]
   --encrypted      Whether the channel must be encrypted or not        [boolean]
@@ -344,23 +186,6 @@ tcli channel anchor
 Anchors a message to an IOTA Streams Channel
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --seed           IOTA Streams Subscriber's seed to use to anchor the message
                                                              [string] [required]
   --msg            (JSON) Message content to be anchored     [string] [required]
@@ -380,23 +205,6 @@ tcli channel fetch
 Fetches one message previously anchored
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --seed           IOTA Streams Subscriber's seed to fetch on the channel
                                                                         [string]
   --psk            IOTA Streams pre-shared key to fetch on the channel  [string]
@@ -417,23 +225,6 @@ tcli channel inspect
 Inspects a channel, visiting all messages
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --seed           IOTA Streams Subscriber's seed to inspect the channel[string]
   --psk            Pre-shared key used to inspect the channel           [string]
   --channelID      ID of the Channel ('address:announceMsgID') from which to
@@ -450,23 +241,6 @@ tcli channel seed
 Creates a new seed to be used to interact with channels
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --size           Size of the seed                                     [number]
 ```
 
@@ -480,25 +254,6 @@ Tangle message (indexation payloads) operations
 Commands:
   tcli msg submit  Message (indexation payload) submission
   tcli msg get     Message retrieval
-
-Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
 ```
 
 #### Submit a message (indexation payload)
@@ -509,23 +264,6 @@ tcli msg submit
 Message (indexation payload) submission
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --msg            Message content to be submitted           [string] [required]
   --index          Index for the message                     [string] [required]
 ```
@@ -538,22 +276,5 @@ tcli msg get
 Message retrieval
 
 Options:
-  --version        Show version number                                 [boolean]
-  --devnet         Default settings for IOTA Chrysalis Devnet
-                   Network:   dev
-                   Node:      https://api.lb-0.h.chrysalis-devnet.iota.cafe
-                   Explorer:  https://explorer.iota.org/devnet
-                   Permanode: -                                        [boolean]
-  --mainnet        Default settings for IOTA Chrysalis Mainnet
-                   Network:   main
-                   Node:      https://chrysalis-nodes.iota.org
-                   Explorer:  https://explorer.iota.org/mainnet
-                   Permanode: https://chrysalis-chronicle.iota.org/api/mainnet/
-                                                                       [boolean]
-  --net, -i        Tangle network identifier                            [string]
-  --node, -n       Node endpoint                                        [string]
-  --explorer, -e   Tangle explorer endpoint                             [string]
-  --permanode, -p  Permanode endpoint                                   [string]
-  --help           Show help                                           [boolean]
   --msgID          ID of the message to be retrieved         [string] [required]
 ```
