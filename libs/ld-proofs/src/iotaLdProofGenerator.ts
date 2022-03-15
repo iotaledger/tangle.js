@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel, IAnchoringResult } from "@tangle-js/anchors";
+import { IotaAnchoringChannel, IAnchoringResult, ProtocolHelper } from "@tangle-js/anchors";
 
 import { IotaSigner } from "./iotaSigner";
 import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
@@ -74,7 +74,9 @@ export class IotaLdProofGenerator {
         return result;
     }
 
-    private buildLdProof(anchoringResult: IAnchoringResult): IIotaLinkedDataProof {
+    private async buildLdProof(anchoringResult: IAnchoringResult): Promise<IIotaLinkedDataProof> {
+        const msgIDL1 = await ProtocolHelper.getMsgIdL1(this.anchoringChannel, anchoringResult.msgID);
+
         const linkedDataProof: IIotaLinkedDataProof = {
             type: LinkedDataProofTypes.IOTA_LD_PROOF_2021,
             // This has to be made more accurate pointing to the public key used to send data to the channel
@@ -83,7 +85,8 @@ export class IotaLdProofGenerator {
             proofValue: {
                 channelID: this.anchoringChannel.channelID,
                 anchorageID: anchoringResult.anchorageID,
-                msgID: anchoringResult.msgID
+                msgID: anchoringResult.msgID,
+                msgIDL1
             },
             created: new Date().toISOString()
         };

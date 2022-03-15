@@ -33,6 +33,8 @@ function assertProofValue(proof: IIotaLinkedDataProof, channelID: string, anchor
     expect(proof.proofValue).toBeDefined();
     expect(proof.proofValue.channelID).toBe(channelID);
     expect(proof.proofValue.anchorageID).toBe(anchorageID);
+    expect(proof.proofValue.msgID).toBeDefined();
+    expect(proof.proofValue.msgIDL1).toBeDefined();
 }
 
 describe("Generate IOTA Linked Data Proofs", () => {

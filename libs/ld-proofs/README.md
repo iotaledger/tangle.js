@@ -99,7 +99,8 @@ const anchoredDoc = {
         "proofValue": {
             "channelID": "1761e16e50dd6c95f7155979b5691b0a4390559f6ff0287a297cc2ae818312c40000000000000000:7bc48fb8fe5dccdb81dd5dcd",
             "anchorageID": "e7b123ed4c6a803538a52233",
-            "msgID": "1fa6dde995dd6320bc0f7958"
+            "msgID": "1fa6dde995dd6320bc0f7958",
+            "msgIDL1": "e5b1edf2935329e6dd04692e9ec37581b9fcc5954e5f8450e7f9306933a6e2d5"
         },
         "created": "2021-07-01T10:21:50.338Z"
     }

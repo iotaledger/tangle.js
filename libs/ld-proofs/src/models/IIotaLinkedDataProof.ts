@@ -7,5 +7,7 @@ export interface IIotaLinkedDataProof extends ILinkedDataProof {
         /** Message ID is optional and in that case */
         /* the message shall be the only one anchored to the anchorage */
         msgID?: string;
+        /** The message ID on Layer 1 */
+        msgIDL1?: string;
     };
 }
