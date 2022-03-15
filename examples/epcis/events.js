@@ -2,8 +2,7 @@ const { ObjectEvent, EPCISDocument, bizSteps, dispositions, actionTypes } = requ
 
 const epcisDocument = new EPCISDocument();
 epcisDocument
-    .setCreationDate(new Date().toISOString())
-    .setFormat('application/ld+json');
+    .setCreationDate(new Date().toISOString());
 
 /*
 "@context": "https://gs1.github.io/EPCIS/epcis-context.jsonld",
