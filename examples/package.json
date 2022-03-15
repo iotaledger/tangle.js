@@ -22,7 +22,7 @@
   "homepage": "https://github.com/iotaledger/tangle.js#readme",
   "dependencies": {
     "@tangle-js/anchors": "^0.9.1",
-    "@tangle-js/ld-proofs": "^0.9.2",
+    "@tangle-js/ld-proofs": "^0.9.3",
     "epcis2.js": "^0.0.2-beta.1"
   }
 }
