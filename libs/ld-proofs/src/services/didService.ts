@@ -2,10 +2,9 @@ import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
 import { IdentityHelper } from "../helpers/identityHelper";
-import { Document, VerificationMethod as Vm } from "../iotaIdentity";
+import { Document, VerificationMethod } from "../iotaIdentity";
 
 type DidDocument = InstanceType<typeof Document>;
-type VerificationMethod = InstanceType<typeof Vm>;
 
 export default class DidService {
     /**

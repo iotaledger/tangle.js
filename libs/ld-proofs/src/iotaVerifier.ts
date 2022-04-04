@@ -8,15 +8,13 @@ import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { VerificationMethod as Vm } from "./iotaIdentity";
+import { VerificationMethod } from "./iotaIdentity";
 import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 import { IJsonVerificationOptions } from "./models/IJsonVerificationOptions";
 import { IVerificationOptions } from "./models/IVerificationOptions";
 import { LdContextURL } from "./models/ldContextURL";
 import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
-
-type VerificationMethod = InstanceType<typeof Vm>;
 
 export class IotaVerifier {
     /**
@@ -173,7 +171,7 @@ export class IotaVerifier {
             throw new LdProofError(LdProofErrorNames.INVALID_DID, "Invalid DID");
         }
 
-        const resolution = await DidService.resolveMethod(node, verificationMethod);
+        const resolution: VerificationMethod = await DidService.resolveMethod(node, verificationMethod);
 
         if (resolution.type !== "Ed25519VerificationKey2018") {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
