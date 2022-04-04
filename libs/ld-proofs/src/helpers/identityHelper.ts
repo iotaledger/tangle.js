@@ -1,4 +1,6 @@
-import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node";
+import { Client, Config as IdentityConfig, Network } from "../iotaIdentity";
+
+type IdentityClient = InstanceType<typeof Client>;
 
 export class IdentityHelper {
     private static readonly PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
@@ -21,7 +23,7 @@ export class IdentityHelper {
         }
 
         identityConfig.setPermanode(this.PERMANODE_URL);
-        const identityClient = IdentityClient.fromConfig(identityConfig);
+        const identityClient = Client.fromConfig(identityConfig);
 
         return identityClient;
     }

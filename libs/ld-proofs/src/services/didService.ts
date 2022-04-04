@@ -1,8 +1,11 @@
-import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
 import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
 import { IdentityHelper } from "../helpers/identityHelper";
+import { Document, VerificationMethod as Vm } from "../iotaIdentity";
+
+type DidDocument = InstanceType<typeof Document>;
+type VerificationMethod = InstanceType<typeof Vm>;
 
 export default class DidService {
     /**
@@ -17,7 +20,7 @@ export default class DidService {
 
             const jsonDoc = (await identityClient.resolve(did)).document;
 
-            const doc = DidDocument.fromJSON(jsonDoc);
+            const doc = Document.fromJSON(jsonDoc);
             if (!doc.verify()) {
                 throw new LdProofError(LdProofErrorNames.DID_NOT_VERIFIED,
                     "DID cannot be verified");

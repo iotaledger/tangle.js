@@ -1,4 +1,3 @@
-import { Document as DidDocument } from "@iota/identity-wasm/node";
 import * as crypto from "crypto";
 import * as jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
@@ -7,6 +6,7 @@ import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
+import { Document } from "./iotaIdentity";
 import { IJsonDocument } from "./models/IJsonDocument";
 import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
 import { ISigningOptions } from "./models/ISigningOptions";
@@ -16,6 +16,8 @@ import { LdContextURL } from "./models/ldContextURL";
 import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
 import SigningService from "./services/signingService";
+
+type DidDocument = InstanceType<typeof Document>;
 
 /**
  *  It allows to sign and verify messages using a Verification Method provided by a DID
