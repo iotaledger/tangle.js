@@ -1,4 +1,6 @@
-import { Address, ChannelAddress, MsgId, Subscriber } from "@tangle.js/streams-wasm/node";
+import { Address as AddressConstructor, ChannelAddress, MsgId, Subscriber } from "../iotaStreams";
+
+type Address = InstanceType<typeof AddressConstructor>;
 
 export class ChannelHelper {
     /**
@@ -10,7 +12,7 @@ export class ChannelHelper {
      */
     public static parseAddress(addressStr: string): Address {
         const [channelAddr, msgId] = addressStr.split(":");
-        return new Address(ChannelAddress.parse(channelAddr).copy(), MsgId.parse(msgId));
+        return new AddressConstructor(ChannelAddress.parse(channelAddr).copy(), MsgId.parse(msgId));
     }
 
     /**
@@ -21,7 +23,7 @@ export class ChannelHelper {
      *
      * @returns whether it has been found and the link to the anchorage on the Channel
      */
-    public static async findAnchorage(subs: Subscriber, anchorageID: string):
+    public static async findAnchorage(subs: InstanceType<typeof Subscriber>, anchorageID: string):
         Promise<{ found: boolean; anchorageLink?: Address }> {
         let found = false;
         let anchorageLink: Address;
@@ -30,7 +32,7 @@ export class ChannelHelper {
 
         try {
             // First we try to read such message
-            const candidateLink = new Address(
+            const candidateLink = new AddressConstructor(
                 ChannelAddress.parse(subs.clone().channel_address()),
                 MsgId.parse(anchorageID)
             );

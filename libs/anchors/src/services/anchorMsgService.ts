@@ -1,10 +1,12 @@
 /* eslint-disable no-duplicate-imports */
-import { Address } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
+import { Address } from "../iotaStreams";
 import { IAnchoringRequest } from "../models/IAnchoringRequest";
 import { IAnchoringResult } from "../models/IAnchoringResult";
+
+type Address = InstanceType<typeof Address>;
 
 /**
  * Service to deal with message anchors

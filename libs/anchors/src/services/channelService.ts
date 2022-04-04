@@ -1,9 +1,10 @@
-import { Author, Subscriber, Address, ChannelType, StreamsClient } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
+import { Author, Subscriber, Address, ChannelType, StreamsClient } from "../iotaStreams";
 import { IBindChannelRequest } from "../models/IBindChannelRequest";
 
+type Address = InstanceType<typeof Address>;
 
 /**
  *  Service to interact with IOTA Streams Channels
@@ -20,7 +21,8 @@ export default class ChannelService {
      * @returns The address of the channel created and the announce message ID
      *
      */
-    public static async createChannel(client: StreamsClient, seed: string, isPrivate: boolean, psks?: string[]):
+    public static async createChannel(client: InstanceType<typeof StreamsClient>,
+        seed: string, isPrivate: boolean, psks?: string[]):
         Promise<{ channelAddress: string; announceMsgID: string; keyLoadMsgID?: string; authorPk: string }> {
         try {
             const auth = Author.fromClient(client, seed, ChannelType.SingleBranch);
@@ -56,10 +58,10 @@ export default class ChannelService {
      * @returns IOTA Streams Subscriber object
      */
     public static async bindToChannel(request: IBindChannelRequest): Promise<{
-        subscriber: Subscriber;
+        subscriber: InstanceType<typeof Subscriber>;
         authorPk: string;
     }> {
-        let subscriber: Subscriber;
+        let subscriber: InstanceType<typeof Subscriber>;
         let keyLoadReceived = true;
 
         try {
@@ -94,7 +96,8 @@ export default class ChannelService {
         return { subscriber, authorPk: subscriber.author_public_key() };
     }
 
-    private static async preparePrivateChannel(announceLink: Address, auth: Author, psks: string[]): Promise<string> {
+    private static async preparePrivateChannel(announceLink: Address,
+        auth: InstanceType<typeof Author>, psks: string[]): Promise<string> {
         for (const psk of psks) {
             auth.store_psk(psk);
         }

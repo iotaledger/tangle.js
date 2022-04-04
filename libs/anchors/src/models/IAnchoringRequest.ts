@@ -1,4 +1,4 @@
-import { Subscriber } from "@tangle.js/streams-wasm/node";
+import { Subscriber } from "../iotaStreams";
 
 export interface IAnchoringRequest {
     /** The channel ID */
@@ -8,7 +8,7 @@ export interface IAnchoringRequest {
     /** Whether the channel is private */
     isPrivate: boolean;
     /** The IOTA Streams Subscriber */
-    subscriber: Subscriber;
+    subscriber: InstanceType<typeof Subscriber>;
     /** The message */
     message: Buffer;
     /** The anchorage point */

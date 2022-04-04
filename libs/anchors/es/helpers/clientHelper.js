@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientHelper = void 0;
-const node_1 = require("@tangle.js/streams-wasm/node");
+const iotaStreams_1 = require("../iotaStreams");
 class ClientHelper {
     /**
      * Returns a client for Streams using the node and permanode
@@ -23,12 +23,12 @@ class ClientHelper {
     static getClient(node, permanode) {
         return __awaiter(this, void 0, void 0, function* () {
             // iota.rs client
-            let builder = new node_1.ClientBuilder().node(node);
+            let builder = new iotaStreams_1.ClientBuilder().node(node);
             if (permanode) {
                 builder = builder.permanode(permanode);
             }
             const client = yield builder.build();
-            return node_1.StreamsClient.fromClient(client);
+            return iotaStreams_1.StreamsClient.fromClient(client);
         });
     }
     /**
@@ -45,4 +45,4 @@ class ClientHelper {
 exports.ClientHelper = ClientHelper;
 ClientHelper.DEFAULT_NODE = "https://chrysalis-nodes.iota.org";
 ClientHelper.DEFAULT_PERMANODE = "https://chrysalis-chronicle.iota.org/api/mainnet/";
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2xpZW50SGVscGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2hlbHBlcnMvY2xpZW50SGVscGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7OztBQUFBLHVEQUE0RTtBQUU1RSxNQUFhLFlBQVk7SUFLckI7Ozs7Ozs7T0FPRztJQUNJLE1BQU0sQ0FBTyxTQUFTLENBQUMsSUFBWSxFQUFFLFNBQWtCOztZQUMxRCxpQkFBaUI7WUFDakIsSUFBSSxPQUFPLEdBQUcsSUFBSSxvQkFBYSxFQUFFLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDO1lBQzdDLElBQUksU0FBUyxFQUFFO2dCQUNYLE9BQU8sR0FBRyxPQUFPLENBQUMsU0FBUyxDQUFDLFNBQVMsQ0FBQyxDQUFDO2FBQzFDO1lBQ0QsTUFBTSxNQUFNLEdBQUcsTUFBTSxPQUFPLENBQUMsS0FBSyxFQUFFLENBQUM7WUFDckMsT0FBTyxvQkFBYSxDQUFDLFVBQVUsQ0FBQyxNQUFNLENBQUMsQ0FBQztRQUM1QyxDQUFDO0tBQUE7SUFFRDs7OztPQUlHO0lBQ0ksTUFBTSxDQUFPLGdCQUFnQjs7WUFDaEMsT0FBTyxJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxZQUFZLEVBQUUsSUFBSSxDQUFDLGlCQUFpQixDQUFDLENBQUM7UUFDckUsQ0FBQztLQUFBOztBQTlCTCxvQ0ErQkM7QUE5QjBCLHlCQUFZLEdBQUcsa0NBQWtDLENBQUM7QUFFbEQsOEJBQWlCLEdBQUcsbURBQW1ELENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2xpZW50SGVscGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2hlbHBlcnMvY2xpZW50SGVscGVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7OztBQUFBLGdEQUE4RDtBQUU5RCxNQUFhLFlBQVk7SUFLckI7Ozs7Ozs7T0FPRztJQUNJLE1BQU0sQ0FBTyxTQUFTLENBQUMsSUFBWSxFQUFFLFNBQWtCOztZQUMxRCxpQkFBaUI7WUFDakIsSUFBSSxPQUFPLEdBQUcsSUFBSSwyQkFBYSxFQUFFLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxDQUFDO1lBQzdDLElBQUksU0FBUyxFQUFFO2dCQUNYLE9BQU8sR0FBRyxPQUFPLENBQUMsU0FBUyxDQUFDLFNBQVMsQ0FBQyxDQUFDO2FBQzFDO1lBQ0QsTUFBTSxNQUFNLEdBQUcsTUFBTSxPQUFPLENBQUMsS0FBSyxFQUFFLENBQUM7WUFDckMsT0FBTywyQkFBYSxDQUFDLFVBQVUsQ0FBQyxNQUFNLENBQUMsQ0FBQztRQUM1QyxDQUFDO0tBQUE7SUFFRDs7OztPQUlHO0lBQ0ksTUFBTSxDQUFPLGdCQUFnQjs7WUFDaEMsT0FBTyxJQUFJLENBQUMsU0FBUyxDQUFDLElBQUksQ0FBQyxZQUFZLEVBQUUsSUFBSSxDQUFDLGlCQUFpQixDQUFDLENBQUM7UUFDckUsQ0FBQztLQUFBOztBQTlCTCxvQ0ErQkM7QUE5QjBCLHlCQUFZLEdBQUcsa0NBQWtDLENBQUM7QUFFbEQsOEJBQWlCLEdBQUcsbURBQW1ELENBQUMifQ==

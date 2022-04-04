@@ -1,10 +1,10 @@
-import { StreamsClient, Subscriber } from "@tangle.js/streams-wasm/node";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import { ClientHelper } from "./helpers/clientHelper";
 import initialize from "./helpers/initializationHelper";
 import { SeedHelper } from "./helpers/seedHelper";
 import ValidationHelper from "./helpers/validationHelper";
+import { StreamsClient, Subscriber } from "./iotaStreams";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
 import { IAnchoringResult } from "./models/IAnchoringResult";
 import { IBindChannelRequest } from "./models/IBindChannelRequest";
@@ -41,7 +41,7 @@ export class IotaAnchoringChannel {
 
     private readonly _keyLoadMsgID: string;
 
-    private _subscriber: Subscriber;
+    private _subscriber: InstanceType<typeof Subscriber>;
 
     private _authorPubKey: string;
 
@@ -181,8 +181,8 @@ export class IotaAnchoringChannel {
         return IotaAnchoringChannel.fromID(details.channelID, opts).bind(details.authorSeed);
     }
 
-    private static async getClient(node: string, permanode: string): Promise<StreamsClient> {
-        let client: StreamsClient;
+    private static async getClient(node: string, permanode: string): Promise<InstanceType<typeof StreamsClient>> {
+        let client: InstanceType<typeof StreamsClient>;
 
         if (!node && !permanode) {
             client = await ClientHelper.getMainnetClient();

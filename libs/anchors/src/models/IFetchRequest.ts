@@ -1,4 +1,4 @@
-import { Subscriber } from "@tangle.js/streams-wasm/node";
+import { Subscriber } from "../iotaStreams";
 
 export interface IFetchRequest {
     /** The channel ID */
@@ -12,5 +12,5 @@ export interface IFetchRequest {
     /** The anchorage */
     anchorageID: string;
     /** The IOTA Streams Subscriber */
-    subscriber: Subscriber;
+    subscriber: InstanceType<typeof Subscriber>;
 }

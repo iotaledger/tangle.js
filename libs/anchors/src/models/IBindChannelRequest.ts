@@ -1,8 +1,8 @@
-import { StreamsClient } from "@tangle.js/streams-wasm/node";
+import { StreamsClient } from "../iotaStreams";
 
 export interface IBindChannelRequest {
     /** The client */
-    client: StreamsClient;
+    client: InstanceType<typeof StreamsClient>;
     /** The channel ID 'channel_address:announce_msg_id:key_load_msg_id' */
     channelID: string;
     /** Whether the channel is encrypted */
