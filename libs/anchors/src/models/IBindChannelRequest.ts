@@ -1,8 +1,10 @@
-import { StreamsClient } from "../iotaStreams";
+import { StreamsClient as StreamsClientClass } from "../iotaStreams";
+
+type StreamsClient = InstanceType<typeof StreamsClientClass>;
 
 export interface IBindChannelRequest {
     /** The client */
-    client: InstanceType<typeof StreamsClient>;
+    client: StreamsClient;
     /** The channel ID 'channel_address:announce_msg_id:key_load_msg_id' */
     channelID: string;
     /** Whether the channel is encrypted */

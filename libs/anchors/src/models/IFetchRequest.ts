@@ -1,4 +1,6 @@
-import { Subscriber } from "../iotaStreams";
+import { Subscriber as SubscriberClass } from "../iotaStreams";
+
+type Subscriber = InstanceType<typeof SubscriberClass>;
 
 export interface IFetchRequest {
     /** The channel ID */
@@ -12,5 +14,5 @@ export interface IFetchRequest {
     /** The anchorage */
     anchorageID: string;
     /** The IOTA Streams Subscriber */
-    subscriber: InstanceType<typeof Subscriber>;
+    subscriber: Subscriber;
 }

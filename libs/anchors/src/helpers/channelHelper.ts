@@ -1,6 +1,8 @@
-import { Address as AddressConstructor, ChannelAddress, MsgId, Subscriber } from "../iotaStreams";
+import { Address as AddressClass, ChannelAddress, MsgId, Subscriber as SubscriberClass } from "../iotaStreams";
 
-type Address = InstanceType<typeof AddressConstructor>;
+type Address = InstanceType<typeof AddressClass>;
+type Subscriber = InstanceType<typeof SubscriberClass>;
+
 
 export class ChannelHelper {
     /**
@@ -12,7 +14,7 @@ export class ChannelHelper {
      */
     public static parseAddress(addressStr: string): Address {
         const [channelAddr, msgId] = addressStr.split(":");
-        return new AddressConstructor(ChannelAddress.parse(channelAddr).copy(), MsgId.parse(msgId));
+        return new AddressClass(ChannelAddress.parse(channelAddr).copy(), MsgId.parse(msgId));
     }
 
     /**
@@ -23,7 +25,7 @@ export class ChannelHelper {
      *
      * @returns whether it has been found and the link to the anchorage on the Channel
      */
-    public static async findAnchorage(subs: InstanceType<typeof Subscriber>, anchorageID: string):
+    public static async findAnchorage(subs: Subscriber, anchorageID: string):
         Promise<{ found: boolean; anchorageLink?: Address }> {
         let found = false;
         let anchorageLink: Address;
@@ -32,7 +34,7 @@ export class ChannelHelper {
 
         try {
             // First we try to read such message
-            const candidateLink = new AddressConstructor(
+            const candidateLink = new AddressClass(
                 ChannelAddress.parse(subs.clone().channel_address()),
                 MsgId.parse(anchorageID)
             );

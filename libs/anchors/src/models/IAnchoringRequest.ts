@@ -1,4 +1,6 @@
-import { Subscriber } from "../iotaStreams";
+import { Subscriber as SubscriberClass } from "../iotaStreams";
+
+type Subscriber = InstanceType<typeof SubscriberClass>;
 
 export interface IAnchoringRequest {
     /** The channel ID */
@@ -8,7 +10,7 @@ export interface IAnchoringRequest {
     /** Whether the channel is private */
     isPrivate: boolean;
     /** The IOTA Streams Subscriber */
-    subscriber: InstanceType<typeof Subscriber>;
+    subscriber: Subscriber;
     /** The message */
     message: Buffer;
     /** The anchorage point */

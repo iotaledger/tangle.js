@@ -1,10 +1,17 @@
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
-import { Author, Subscriber, Address, ChannelType, StreamsClient } from "../iotaStreams";
+import {
+    Author as AuthorClass, Subscriber as SubscriberClass, Address, ChannelType,
+    StreamsClient as StreamsClientClass
+} from "../iotaStreams";
 import { IBindChannelRequest } from "../models/IBindChannelRequest";
 
 type Address = InstanceType<typeof Address>;
+type StreamsClient = InstanceType<typeof StreamsClientClass>;
+type Subscriber = InstanceType<typeof SubscriberClass>;
+type Author = InstanceType<typeof AuthorClass>;
+
 
 /**
  *  Service to interact with IOTA Streams Channels
@@ -21,11 +28,11 @@ export default class ChannelService {
      * @returns The address of the channel created and the announce message ID
      *
      */
-    public static async createChannel(client: InstanceType<typeof StreamsClient>,
+    public static async createChannel(client: StreamsClient,
         seed: string, isPrivate: boolean, psks?: string[]):
         Promise<{ channelAddress: string; announceMsgID: string; keyLoadMsgID?: string; authorPk: string }> {
         try {
-            const auth = Author.fromClient(client, seed, ChannelType.SingleBranch);
+            const auth = AuthorClass.fromClient(client, seed, ChannelType.SingleBranch);
 
             const response = await auth.clone().send_announce();
             const announceLink = response.link.copy();
@@ -58,14 +65,14 @@ export default class ChannelService {
      * @returns IOTA Streams Subscriber object
      */
     public static async bindToChannel(request: IBindChannelRequest): Promise<{
-        subscriber: InstanceType<typeof Subscriber>;
+        subscriber: Subscriber;
         authorPk: string;
     }> {
-        let subscriber: InstanceType<typeof Subscriber>;
+        let subscriber: Subscriber;
         let keyLoadReceived = true;
 
         try {
-            subscriber = Subscriber.fromClient(request.client, request.seed);
+            subscriber = SubscriberClass.fromClient(request.client, request.seed);
             const channel = request.channelID;
 
             const [channelAddr, announceMsgID, keyLoadMsgID] = channel.split(":");
@@ -97,7 +104,7 @@ export default class ChannelService {
     }
 
     private static async preparePrivateChannel(announceLink: Address,
-        auth: InstanceType<typeof Author>, psks: string[]): Promise<string> {
+        auth: Author, psks: string[]): Promise<string> {
         for (const psk of psks) {
             auth.store_psk(psk);
         }

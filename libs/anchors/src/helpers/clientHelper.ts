@@ -1,4 +1,6 @@
-import { StreamsClient, ClientBuilder } from "../iotaStreams";
+import { StreamsClient as StreamsClientClass, ClientBuilder } from "../iotaStreams";
+
+type StreamsClient = InstanceType<typeof StreamsClientClass>;
 
 export class ClientHelper {
     public static readonly DEFAULT_NODE = "https://chrysalis-nodes.iota.org";
@@ -13,14 +15,14 @@ export class ClientHelper {
      *
      * @returns StreamsClient
      */
-    public static async getClient(node: string, permanode?: string): Promise<InstanceType<typeof StreamsClient>> {
+    public static async getClient(node: string, permanode?: string): Promise<StreamsClient> {
         // iota.rs client
         let builder = new ClientBuilder().node(node);
         if (permanode) {
             builder = builder.permanode(permanode);
         }
         const client = await builder.build();
-        return StreamsClient.fromClient(client);
+        return StreamsClientClass.fromClient(client);
     }
 
     /**
@@ -28,7 +30,7 @@ export class ClientHelper {
      *
      * @returns StreamsClient
      */
-    public static async getMainnetClient(): Promise<InstanceType<typeof StreamsClient>> {
+    public static async getMainnetClient(): Promise<StreamsClient> {
         return this.getClient(this.DEFAULT_NODE, this.DEFAULT_PERMANODE);
     }
 }

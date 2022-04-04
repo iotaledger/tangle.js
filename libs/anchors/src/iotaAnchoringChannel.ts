@@ -4,7 +4,7 @@ import { ClientHelper } from "./helpers/clientHelper";
 import initialize from "./helpers/initializationHelper";
 import { SeedHelper } from "./helpers/seedHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { StreamsClient, Subscriber } from "./iotaStreams";
+import { StreamsClient as StreamsClientClass, Subscriber as SubscriberClass } from "./iotaStreams";
 import { IAnchoringRequest } from "./models/IAnchoringRequest";
 import { IAnchoringResult } from "./models/IAnchoringResult";
 import { IBindChannelRequest } from "./models/IBindChannelRequest";
@@ -18,6 +18,8 @@ import AnchorMsgService from "./services/anchorMsgService";
 import ChannelService from "./services/channelService";
 import FetchMsgService from "./services/fetchMsgService";
 
+type Subscriber = InstanceType<typeof SubscriberClass>;
+type StreamsClient = InstanceType<typeof StreamsClientClass>;
 
 // Needed for the Streams WASM bindings
 initialize();
@@ -41,7 +43,7 @@ export class IotaAnchoringChannel {
 
     private readonly _keyLoadMsgID: string;
 
-    private _subscriber: InstanceType<typeof Subscriber>;
+    private _subscriber: Subscriber;
 
     private _authorPubKey: string;
 
@@ -181,8 +183,8 @@ export class IotaAnchoringChannel {
         return IotaAnchoringChannel.fromID(details.channelID, opts).bind(details.authorSeed);
     }
 
-    private static async getClient(node: string, permanode: string): Promise<InstanceType<typeof StreamsClient>> {
-        let client: InstanceType<typeof StreamsClient>;
+    private static async getClient(node: string, permanode: string): Promise<StreamsClient> {
+        let client: StreamsClient;
 
         if (!node && !permanode) {
             client = await ClientHelper.getMainnetClient();
