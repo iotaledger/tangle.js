@@ -1,4 +1,4 @@
-import { Author, ChannelType, SendOptions } from "@tangle.js/streams-wasm/node";
+import { Author, ChannelType, SendOptions } from "@iota/streams/node";
 import * as crypto from "crypto";
 import { ClientHelper } from "./clientHelper";
 

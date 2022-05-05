@@ -3,23 +3,29 @@ const glob = require("glob");
 
 const clientConfig = {
   target: "web",
-  entry: "./src/index.ts",
+  devtool: "source-map",
+  entry: [
+    "./src/index.ts"
+  ],
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        options: {
+            configFile: 'tsconfig.json',
+        }
       },
-    ],
+      {
+        test: /\.wasm$/,
+        type: "asset/inline",
+      }
+    ]
   },
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      "@tangle.js/streams-wasm/node": path.resolve(
-        __dirname,
-        "../../node_modules/@tangle.js/streams-wasm/web/streams_wasm.js"
-      ),
+      "@iota/streams/node": path.resolve(__dirname, "../../node_modules/@iota/streams/web/streams.js")
     },
     fallback: {
       crypto: require.resolve("crypto-browserify"),
@@ -30,15 +36,12 @@ const clientConfig = {
   output: {
     filename: "anchors-web.js",
     path: path.resolve(__dirname, "dist"),
-    library: {
-      name: "anchors",
-      type: "module",
-      exports: "default"
-    }
+    libraryTarget: "module"
   },
   experiments: {
     topLevelAwait: true,
-    outputModule: true
+    outputModule: true,
+    asyncWebAssembly: true
   },
 };
 

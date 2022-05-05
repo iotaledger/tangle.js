@@ -1,4 +1,4 @@
-import { StreamsClient } from "@tangle.js/streams-wasm/node";
+import { StreamsClient } from "@iota/streams/node";
 
 export interface IBindChannelRequest {
     /** The client */

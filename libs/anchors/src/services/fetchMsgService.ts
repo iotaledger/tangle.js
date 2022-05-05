@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import { Subscriber } from "@tangle.js/streams-wasm/node";
+import { Subscriber } from "@iota/streams/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";

@@ -1,4 +1,4 @@
-import { StreamsClient, Subscriber } from "@tangle.js/streams-wasm/node";
+import { StreamsClient, Subscriber } from "@iota/streams/node";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import { ClientHelper } from "./helpers/clientHelper";

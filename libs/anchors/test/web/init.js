@@ -1,6 +1,4 @@
-import * as anchors from "anchors-web.js";
-
-console.log("here");
+import { SeedHelper, IotaAnchoringChannel } from "anchors-web.js";
 
 window.onload = async () => {
     console.log("On load");
@@ -12,10 +10,8 @@ window.onload = async () => {
 };
 
 async function createChannel() {
-    console.log("Create channel2", anchors);
-
     const seed = SeedHelper.generateSeed();
-    console.log("Seed!!!", seed);
+    console.log("Seed400!!!", seed);
 
     const channelDetails = await IotaAnchoringChannel.create(seed);
 

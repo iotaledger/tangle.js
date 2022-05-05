@@ -1,5 +1,5 @@
 import { SingleNodeClient } from "@iota/iota.js";
-import { Address, ChannelAddress, MsgId } from "@tangle.js/streams-wasm/node";
+import { Address, ChannelAddress, MsgId } from "@iota/streams/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { IotaAnchoringChannel } from "../iotaAnchoringChannel";

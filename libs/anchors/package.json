@@ -5,6 +5,7 @@
     "type": "module",
     "scripts": {
         "build-clean": "rimraf ./es/* ./typings/*",
+        "dist-clean": "rimraf ./dist/*",
         "build-compile": "tsc",
         "build-watch": "tsc --watch",
         "build-lint": "eslint src --ext .ts",
@@ -14,8 +15,9 @@
         "test": "run-s test-lint test-run",
         "package-umd": "rollup --config rollup.config.js",
         "package-umd-min": "rollup --config rollup.config.js --environment MINIFY:true",
-        "package": "run-s package-umd package-umd-min",
-        "package-web": "webpack --mode=production",
+        "package": "run-s package-umd package-umd-min package-web",
+        "webpack": "webpack --mode=production",
+        "package-web": "run-s dist-clean webpack",
         "test-web": "cd test/web && webpack && http-server ./dist/ -c-1 -o  ",
         "dist": "run-s dist-clean build test package"
     },
@@ -41,7 +43,7 @@
     "homepage": "https://github.com/iotaledger/tangle.js.git/anchors/README.md",
     "dependencies": {
         "@iota/iota.js": "^1.6.3",
-        "@tangle.js/streams-wasm": "1.2.0-next",
+        "@iota/streams": "^0.1.2",
         "buffer": "^6.0.3",
         "crypto-browserify": "^3.12.0",
         "node-fetch": "^2.6.1",

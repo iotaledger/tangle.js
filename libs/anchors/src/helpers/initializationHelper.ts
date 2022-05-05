@@ -1,11 +1,12 @@
-import { set_panic_hook as streamsPanicHook } from "@tangle.js/streams-wasm/node";
+import { set_panic_hook as streamsPanicHook } from "@iota/streams/node";
+import { init } from "@iota/streams/web/streams_wasm.js";
+
 import * as fetch from "node-fetch";
 
 /**
  *   Initialization function for the Streams WASM bindings
  */
  export default function initialize() {
-    return;
     // @ts-expect-error Streams WASM bindings need it
     global.fetch = fetch;
     // @ts-expect-error  Streams WASM bindings need it
@@ -15,5 +16,6 @@ import * as fetch from "node-fetch";
     // @ts-expect-error  Streams WASM bindings need it
     global.Response = fetch.Response;
 
+    init();
     streamsPanicHook();
 }
