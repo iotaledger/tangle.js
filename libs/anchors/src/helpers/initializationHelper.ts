@@ -5,6 +5,7 @@ import * as fetch from "node-fetch";
  *   Initialization function for the Streams WASM bindings
  */
  export default function initialize() {
+    return;
     // @ts-expect-error Streams WASM bindings need it
     global.fetch = fetch;
     // @ts-expect-error  Streams WASM bindings need it

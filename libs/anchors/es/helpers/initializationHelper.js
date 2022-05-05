@@ -25,6 +25,7 @@ const fetch = __importStar(require("node-fetch"));
  *   Initialization function for the Streams WASM bindings
  */
 function initialize() {
+    return;
     // @ts-expect-error Streams WASM bindings need it
     global.fetch = fetch;
     // @ts-expect-error  Streams WASM bindings need it
@@ -33,7 +34,7 @@ function initialize() {
     global.Request = fetch.Request;
     // @ts-expect-error  Streams WASM bindings need it
     global.Response = fetch.Response;
-    node_1.set_panic_hook();
+    (0, node_1.set_panic_hook)();
 }
 exports.default = initialize;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5pdGlhbGl6YXRpb25IZWxwZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvaGVscGVycy9pbml0aWFsaXphdGlvbkhlbHBlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSx1REFBa0Y7QUFDbEYsa0RBQW9DO0FBRXBDOztHQUVHO0FBQ0YsU0FBd0IsVUFBVTtJQUMvQixpREFBaUQ7SUFDakQsTUFBTSxDQUFDLEtBQUssR0FBRyxLQUFLLENBQUM7SUFDckIsa0RBQWtEO0lBQ2xELE1BQU0sQ0FBQyxPQUFPLEdBQUcsS0FBSyxDQUFDLE9BQU8sQ0FBQztJQUMvQixrREFBa0Q7SUFDbEQsTUFBTSxDQUFDLE9BQU8sR0FBRyxLQUFLLENBQUMsT0FBTyxDQUFDO0lBQy9CLGtEQUFrRDtJQUNsRCxNQUFNLENBQUMsUUFBUSxHQUFHLEtBQUssQ0FBQyxRQUFRLENBQUM7SUFFakMscUJBQWdCLEVBQUUsQ0FBQztBQUN2QixDQUFDO0FBWEEsNkJBV0EifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5pdGlhbGl6YXRpb25IZWxwZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvaGVscGVycy9pbml0aWFsaXphdGlvbkhlbHBlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSx1REFBa0Y7QUFDbEYsa0RBQW9DO0FBRXBDOztHQUVHO0FBQ0YsU0FBd0IsVUFBVTtJQUMvQixPQUFPO0lBQ1AsaURBQWlEO0lBQ2pELE1BQU0sQ0FBQyxLQUFLLEdBQUcsS0FBSyxDQUFDO0lBQ3JCLGtEQUFrRDtJQUNsRCxNQUFNLENBQUMsT0FBTyxHQUFHLEtBQUssQ0FBQyxPQUFPLENBQUM7SUFDL0Isa0RBQWtEO0lBQ2xELE1BQU0sQ0FBQyxPQUFPLEdBQUcsS0FBSyxDQUFDLE9BQU8sQ0FBQztJQUMvQixrREFBa0Q7SUFDbEQsTUFBTSxDQUFDLFFBQVEsR0FBRyxLQUFLLENBQUMsUUFBUSxDQUFDO0lBRWpDLElBQUEscUJBQWdCLEdBQUUsQ0FBQztBQUN2QixDQUFDO0FBWkEsNkJBWUEifQ==
