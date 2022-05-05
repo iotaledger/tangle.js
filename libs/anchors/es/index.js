@@ -1,22 +1,10 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./iotaAnchoringChannel"), exports);
-__exportStar(require("./helpers/seedHelper"), exports);
-__exportStar(require("./helpers/protocolHelper"), exports);
-__exportStar(require("./models/IAnchoringResult"), exports);
-__exportStar(require("./models/IFetchResult"), exports);
-__exportStar(require("./models/IChannelOptions"), exports);
-__exportStar(require("./models/IChannelCreateOptions"), exports);
-__exportStar(require("./errors/anchoringChannelError"), exports);
-__exportStar(require("./errors/anchoringChannelErrorNames"), exports);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEseURBQXVDO0FBQ3ZDLHVEQUFxQztBQUNyQywyREFBeUM7QUFDekMsNERBQTBDO0FBQzFDLHdEQUFzQztBQUN0QywyREFBeUM7QUFDekMsaUVBQStDO0FBQy9DLGlFQUErQztBQUMvQyxzRUFBb0QifQ==
+export * from "./iotaAnchoringChannel";
+export * from "./helpers/seedHelper";
+export * from "./helpers/protocolHelper";
+export * from "./models/IAnchoringResult";
+export * from "./models/IFetchResult";
+export * from "./models/IChannelOptions";
+export * from "./models/IChannelCreateOptions";
+export * from "./errors/anchoringChannelError";
+export * from "./errors/anchoringChannelErrorNames";
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsY0FBYyx3QkFBd0IsQ0FBQztBQUN2QyxjQUFjLHNCQUFzQixDQUFDO0FBQ3JDLGNBQWMsMEJBQTBCLENBQUM7QUFDekMsY0FBYywyQkFBMkIsQ0FBQztBQUMxQyxjQUFjLHVCQUF1QixDQUFDO0FBQ3RDLGNBQWMsMEJBQTBCLENBQUM7QUFDekMsY0FBYyxnQ0FBZ0MsQ0FBQztBQUMvQyxjQUFjLGdDQUFnQyxDQUFDO0FBQy9DLGNBQWMscUNBQXFDLENBQUMifQ==

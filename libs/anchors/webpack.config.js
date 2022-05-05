@@ -14,7 +14,7 @@ const clientConfig = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".ts", ".js"],
     alias: {
       "@tangle.js/streams-wasm/node": path.resolve(
         __dirname,

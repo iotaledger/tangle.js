@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2020",
+    "module": "es2020",
+    "moduleResolution": "node",
     "lib": [
       "dom",
       "es2015",
       "es2015.iterable"
     ],
     "esModuleInterop": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
     "noUnusedLocals": true,
     "outDir": "./es",
     "resolveJsonModule": true,
@@ -20,3 +20,4 @@
     "src"
   ]
 }
+
