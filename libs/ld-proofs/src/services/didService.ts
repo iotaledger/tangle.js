@@ -1,4 +1,6 @@
-import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
+/* eslint-disable jsdoc/require-jsdoc */
+
+import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
 import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
@@ -6,16 +8,17 @@ import { IdentityHelper } from "../helpers/identityHelper";
 
 export default class DidService {
     /**
-     * Resolves the DID
-     * @param node Node against the DID is resolved
-     * @param did  DID to be resolved
-     * @returns The DID Document resolved from Tangle
+     * Resolves the DID.
+     * @param node Node against the DID is resolved.
+     * @param did DID to be resolved.
+     * @returns The DID Document resolved from Tangle.
      */
     public static async resolve(node: string, did: string): Promise<DidDocument> {
         try {
-            const identityClient = IdentityHelper.getClient(node);
+            const identityClient = await IdentityHelper.getClient(node);
 
-            const jsonDoc = (await identityClient.resolve(did)).document;
+            const resolution = await identityClient.resolve(did);
+            const jsonDoc = resolution.document;
 
             const doc = DidDocument.fromJSON(jsonDoc);
             if (!doc.verify()) {
@@ -31,12 +34,12 @@ export default class DidService {
     }
 
     /**
-     * Resolves the DID verification method
-     * @param node Node against the DID is resolved
-     * @param didMethod  DID method to be resolved
-     * @returns The DID Document resolved from Tangle
+     * Resolves the DID verification method.
+     * @param node Node against the DID is resolved.
+     * @param didMethod DID method to be resolved.
+     * @returns The DID Document resolved from Tangle.
      */
-     public static async resolveMethod(node: string, didMethod: string): Promise<VerificationMethod> {
+    public static async resolveMethod(node: string, didMethod: string): Promise<VerificationMethod> {
         try {
             const didDocument = await this.resolve(node, didMethod.split("#")[0]);
 
@@ -49,13 +52,12 @@ export default class DidService {
 
 
     /**
-     * Verifies that the secret really corresponds to the verification method
+     * Verifies that the secret really corresponds to the verification method.
      *
-     * @param didDocument DID document
-     * @param method The method (expressed as a fragment identifier)
-     * @param secret The private key (in base 58)
-     *
-     * @returns true if verified false if not
+     * @param didDocument DID document.
+     * @param method The method (expressed as a fragment identifier).
+     * @param secret The private key (in base 58).
+     * @returns True if verified false if not.
      */
     public static async verifyOwnership(didDocument: DidDocument, method: string, secret: string): Promise<boolean> {
         // First we verify if the method really exists on the DID

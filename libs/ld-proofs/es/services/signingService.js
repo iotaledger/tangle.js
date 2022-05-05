@@ -1,75 +1,59 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const bs58_1 = __importDefault(require("bs58"));
-const elliptic_1 = require("elliptic");
-const ldProofError_1 = __importDefault(require("../errors/ldProofError"));
-const ldProofErrorNames_1 = __importDefault(require("../errors/ldProofErrorNames"));
-const didService_1 = __importDefault(require("./didService"));
-class SigningService {
+/* eslint-disable jsdoc/require-jsdoc */
+import bs58 from "bs58";
+import pkg from "elliptic";
+import LdProofError from "../errors/ldProofError";
+import LdProofErrorNames from "../errors/ldProofErrorNames";
+import DidService from "./didService";
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const { eddsa: EdDSA } = pkg;
+export default class SigningService {
     /**
-     * Signs the message using the identity and method specified
+     * Signs the message using the identity and method specified.
      *
-     * It uses the Ed25519 as the signature algorithm and the hash algorithm passed as parameter
+     * It uses the Ed25519 as the signature algorithm and the hash algorithm passed as parameter.
      *
-     * @param request Signing Request
-     *
-     * @returns The signature details
-     *
+     * @param request Signing Request.
+     * @returns The signature details.
      */
-    static sign(request) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const didDocument = request.didDocument;
-            let methodDocument;
-            try {
-                methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
-            }
-            catch (_a) {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_DID_METHOD, "The method has not been found on the DID Document");
-            }
-            if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_DID_METHOD, "Only 'Ed25519VerificationKey2018' verification methods are allowed");
-            }
-            const proofedOwnership = yield didService_1.default.verifyOwnership(request.didDocument, request.method, request.secret);
-            if (!proofedOwnership) {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_SIGNING_KEY, "The secret key supplied does not correspond to the verification method");
-            }
-            const signatureValue = this.calculateSignature(request.secret, request.message);
-            const response = {
-                created: new Date().toISOString(),
-                verificationMethod: `${didDocument.id}#${request.method}`,
-                signatureValue
-            };
-            return response;
-        });
+    static async sign(request) {
+        const didDocument = request.didDocument;
+        let methodDocument;
+        try {
+            methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
+        }
+        catch {
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD, "The method has not been found on the DID Document");
+        }
+        if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD, "Only 'Ed25519VerificationKey2018' verification methods are allowed");
+        }
+        const proofedOwnership = await DidService.verifyOwnership(request.didDocument, request.method, request.secret);
+        if (!proofedOwnership) {
+            throw new LdProofError(LdProofErrorNames.INVALID_SIGNING_KEY, "The secret key supplied does not correspond to the verification method");
+        }
+        const signatureValue = this.calculateSignature(request.secret, request.message);
+        const response = {
+            created: new Date().toISOString(),
+            verificationMethod: `${didDocument.id}#${request.method}`,
+            signatureValue
+        };
+        return response;
     }
     /**
-     * Calculates the signature
-     * @param privateKey private key
-     * @param message message to be signed
-     *
-     * @returns the signature value
+     * Calculates the signature.
+     * @param privateKey Private key.
+     * @param message Message to be signed.
+     * @returns The signature value.
      */
     static calculateSignature(privateKey, message) {
-        const bytesKey = bs58_1.default.decode(privateKey);
-        const ed25519 = new elliptic_1.eddsa("ed25519");
+        const bytesKey = bs58.decode(privateKey);
+        const ed25519 = new EdDSA("ed25519");
         const ecKey = ed25519.keyFromSecret(bytesKey.toString("hex"), "hex");
         const signatureHex = ecKey.sign(message).toHex();
         // Final conversion to B58
-        const signature = bs58_1.default.encode(Buffer.from(signatureHex, "hex"));
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const signature = bs58.encode(Buffer.from(signatureHex, "hex"));
         return signature;
     }
 }
-exports.default = SigningService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2lnbmluZ1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvc2VydmljZXMvc2lnbmluZ1NlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFDQSxnREFBd0I7QUFDeEIsdUNBQTBDO0FBQzFDLDBFQUFrRDtBQUNsRCxvRkFBNEQ7QUFHNUQsOERBQXNDO0FBRXRDLE1BQXFCLGNBQWM7SUFDL0I7Ozs7Ozs7OztPQVNHO0lBQ0ksTUFBTSxDQUFPLElBQUksQ0FBQyxPQUF3Qjs7WUFDN0MsTUFBTSxXQUFXLEdBQUcsT0FBTyxDQUFDLFdBQVcsQ0FBQztZQUV4QyxJQUFJLGNBQWtDLENBQUM7WUFDdkMsSUFBSTtnQkFDQSxjQUFjLEdBQUcsV0FBVyxDQUFDLFVBQVUsQ0FBQyxHQUFHLFdBQVcsQ0FBQyxFQUFFLElBQUksT0FBTyxDQUFDLE1BQU0sRUFBRSxDQUFDLENBQUM7YUFDbEY7WUFBQyxXQUFNO2dCQUNKLE1BQU0sSUFBSSxzQkFBWSxDQUFDLDJCQUFpQixDQUFDLGtCQUFrQixFQUN2RCxtREFBbUQsQ0FBQyxDQUFDO2FBQzVEO1lBQ0QsSUFBSSxjQUFjLElBQUksY0FBYyxDQUFDLElBQUksS0FBSyw0QkFBNEIsRUFBRTtnQkFDeEUsTUFBTSxJQUFJLHNCQUFZLENBQUMsMkJBQWlCLENBQUMsa0JBQWtCLEVBQ3ZELG9FQUFvRSxDQUFDLENBQUM7YUFDN0U7WUFFRCxNQUFNLGdCQUFnQixHQUFHLE1BQU0sb0JBQVUsQ0FBQyxlQUFlLENBQUMsT0FBTyxDQUFDLFdBQVcsRUFDekUsT0FBTyxDQUFDLE1BQU0sRUFBRSxPQUFPLENBQUMsTUFBTSxDQUFDLENBQUM7WUFFcEMsSUFBSSxDQUFDLGdCQUFnQixFQUFFO2dCQUNuQixNQUFNLElBQUksc0JBQVksQ0FBQywyQkFBaUIsQ0FBQyxtQkFBbUIsRUFDeEQsd0VBQXdFLENBQUMsQ0FBQzthQUNqRjtZQUVELE1BQU0sY0FBYyxHQUFHLElBQUksQ0FBQyxrQkFBa0IsQ0FBQyxPQUFPLENBQUMsTUFBTSxFQUFFLE9BQU8sQ0FBQyxPQUFPLENBQUMsQ0FBQztZQUVoRixNQUFNLFFBQVEsR0FBbUI7Z0JBQzdCLE9BQU8sRUFBRSxJQUFJLElBQUksRUFBRSxDQUFDLFdBQVcsRUFBRTtnQkFDakMsa0JBQWtCLEVBQUUsR0FBRyxXQUFXLENBQUMsRUFBRSxJQUFJLE9BQU8sQ0FBQyxNQUFNLEVBQUU7Z0JBQ3pELGNBQWM7YUFDakIsQ0FBQztZQUVGLE9BQU8sUUFBUSxDQUFDO1FBQ3BCLENBQUM7S0FBQTtJQUVEOzs7Ozs7T0FNRztJQUNLLE1BQU0sQ0FBQyxrQkFBa0IsQ0FBQyxVQUFrQixFQUFFLE9BQWU7UUFDakUsTUFBTSxRQUFRLEdBQUcsY0FBSSxDQUFDLE1BQU0sQ0FBQyxVQUFVLENBQUMsQ0FBQztRQUV6QyxNQUFNLE9BQU8sR0FBRyxJQUFJLGdCQUFLLENBQUMsU0FBUyxDQUFDLENBQUM7UUFDckMsTUFBTSxLQUFLLEdBQUcsT0FBTyxDQUFDLGFBQWEsQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLEtBQUssQ0FBQyxFQUFFLEtBQUssQ0FBQyxDQUFDO1FBRXJFLE1BQU0sWUFBWSxHQUFHLEtBQUssQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUMsS0FBSyxFQUFFLENBQUM7UUFFakQsMEJBQTBCO1FBQzFCLE1BQU0sU0FBUyxHQUFHLGNBQUksQ0FBQyxNQUFNLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxZQUFZLEVBQUUsS0FBSyxDQUFDLENBQUMsQ0FBQztRQUNoRSxPQUFPLFNBQW1CLENBQUM7SUFDL0IsQ0FBQztDQUNKO0FBaEVELGlDQWdFQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2lnbmluZ1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvc2VydmljZXMvc2lnbmluZ1NlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsd0NBQXdDO0FBR3hDLE9BQU8sSUFBSSxNQUFNLE1BQU0sQ0FBQztBQUN4QixPQUFPLEdBQUcsTUFBTSxVQUFVLENBQUM7QUFDM0IsT0FBTyxZQUFZLE1BQU0sd0JBQXdCLENBQUM7QUFDbEQsT0FBTyxpQkFBaUIsTUFBTSw2QkFBNkIsQ0FBQztBQUc1RCxPQUFPLFVBQVUsTUFBTSxjQUFjLENBQUM7QUFFdEMsZ0VBQWdFO0FBQ2hFLE1BQU0sRUFBRSxLQUFLLEVBQUUsS0FBSyxFQUFFLEdBQUcsR0FBRyxDQUFDO0FBRTdCLE1BQU0sQ0FBQyxPQUFPLE9BQU8sY0FBYztJQUMvQjs7Ozs7OztPQU9HO0lBQ0ksTUFBTSxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsT0FBd0I7UUFDN0MsTUFBTSxXQUFXLEdBQUcsT0FBTyxDQUFDLFdBQVcsQ0FBQztRQUV4QyxJQUFJLGNBQWtDLENBQUM7UUFDdkMsSUFBSTtZQUNBLGNBQWMsR0FBRyxXQUFXLENBQUMsVUFBVSxDQUFDLEdBQUcsV0FBVyxDQUFDLEVBQUUsSUFBSSxPQUFPLENBQUMsTUFBTSxFQUFFLENBQUMsQ0FBQztTQUNsRjtRQUFDLE1BQU07WUFDSixNQUFNLElBQUksWUFBWSxDQUFDLGlCQUFpQixDQUFDLGtCQUFrQixFQUN2RCxtREFBbUQsQ0FBQyxDQUFDO1NBQzVEO1FBQ0QsSUFBSSxjQUFjLElBQUksY0FBYyxDQUFDLElBQUksS0FBSyw0QkFBNEIsRUFBRTtZQUN4RSxNQUFNLElBQUksWUFBWSxDQUFDLGlCQUFpQixDQUFDLGtCQUFrQixFQUN2RCxvRUFBb0UsQ0FBQyxDQUFDO1NBQzdFO1FBRUQsTUFBTSxnQkFBZ0IsR0FBRyxNQUFNLFVBQVUsQ0FBQyxlQUFlLENBQUMsT0FBTyxDQUFDLFdBQVcsRUFDekUsT0FBTyxDQUFDLE1BQU0sRUFBRSxPQUFPLENBQUMsTUFBTSxDQUFDLENBQUM7UUFFcEMsSUFBSSxDQUFDLGdCQUFnQixFQUFFO1lBQ25CLE1BQU0sSUFBSSxZQUFZLENBQUMsaUJBQWlCLENBQUMsbUJBQW1CLEVBQ3hELHdFQUF3RSxDQUFDLENBQUM7U0FDakY7UUFFRCxNQUFNLGNBQWMsR0FBRyxJQUFJLENBQUMsa0JBQWtCLENBQUMsT0FBTyxDQUFDLE1BQU0sRUFBRSxPQUFPLENBQUMsT0FBTyxDQUFDLENBQUM7UUFFaEYsTUFBTSxRQUFRLEdBQW1CO1lBQzdCLE9BQU8sRUFBRSxJQUFJLElBQUksRUFBRSxDQUFDLFdBQVcsRUFBRTtZQUNqQyxrQkFBa0IsRUFBRSxHQUFHLFdBQVcsQ0FBQyxFQUFFLElBQUksT0FBTyxDQUFDLE1BQU0sRUFBRTtZQUN6RCxjQUFjO1NBQ2pCLENBQUM7UUFFRixPQUFPLFFBQVEsQ0FBQztJQUNwQixDQUFDO0lBRUQ7Ozs7O09BS0c7SUFDSyxNQUFNLENBQUMsa0JBQWtCLENBQUMsVUFBa0IsRUFBRSxPQUFlO1FBQ2pFLE1BQU0sUUFBUSxHQUFHLElBQUksQ0FBQyxNQUFNLENBQUMsVUFBVSxDQUFDLENBQUM7UUFFekMsTUFBTSxPQUFPLEdBQUcsSUFBSSxLQUFLLENBQUMsU0FBUyxDQUFDLENBQUM7UUFDckMsTUFBTSxLQUFLLEdBQUcsT0FBTyxDQUFDLGFBQWEsQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLEtBQUssQ0FBQyxFQUFFLEtBQUssQ0FBQyxDQUFDO1FBRXJFLE1BQU0sWUFBWSxHQUFHLEtBQUssQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUMsS0FBSyxFQUFFLENBQUM7UUFFakQsMEJBQTBCO1FBQzFCLGlFQUFpRTtRQUNqRSxNQUFNLFNBQVMsR0FBRyxJQUFJLENBQUMsTUFBTSxDQUFDLE1BQU0sQ0FBQyxJQUFJLENBQUMsWUFBWSxFQUFFLEtBQUssQ0FBQyxDQUFDLENBQUM7UUFDaEUsT0FBTyxTQUFtQixDQUFDO0lBQy9CLENBQUM7Q0FDSiJ9

@@ -1,4 +1,4 @@
-import { IChannelOptions } from "./IChannelOptions";
+import type { IChannelOptions } from "./IChannelOptions";
 
 export interface IChannelCreateOptions extends IChannelOptions {
     /**

@@ -1,5 +1,7 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 /**
- *  Verification options for JSON documents
+ * Verification options for JSON documents.
  */
 export interface IJsonVerificationOptions {
     node?: string;

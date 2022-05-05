@@ -1,16 +1,17 @@
+/* eslint-disable jsdoc/require-jsdoc */
+import fetch from "node-fetch";
+
 const JSON = "application/json";
 const JSON_LD = "application/ld+json";
 
 /**
- * JSON-LD @context loader
+ * JSON-LD @context loader.
  *
- * @param url The URL of the LD @context
- * @param options Options
- *
- * @returns the LD document and the final URL after following redirects
- *
+ * @param url The URL of the LD @context.
+ * @param options Options.
+ * @returns The LD document and the final URL after following redirects.
  */
-export async function customLdContextLoader(url, options): Promise<{
+export async function customLdContextLoader(url: string, options): Promise<{
     document: Record<string, unknown>;
     documentUrl: string;
 }> {
@@ -33,6 +34,7 @@ export async function customLdContextLoader(url, options): Promise<{
             const components = link.split(";");
 
             if (components[1]?.includes("alternate")) {
+                // eslint-disable-next-line unicorn/no-lonely-if
                 if (components[2]?.includes(JSON_LD)) {
                     const bracketsLinkPath = components[0];
                     // Remove link's brackets
@@ -52,6 +54,7 @@ export async function customLdContextLoader(url, options): Promise<{
             }
         }
     } else {
+        // eslint-disable-next-line no-console
         console.error(`The JSON-LD @context ${url} cannot be retrieved`);
     }
 

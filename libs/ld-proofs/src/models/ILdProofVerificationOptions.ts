@@ -1,6 +1,8 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 export interface ILdProofVerificationOptions {
-    /** Node to be used */
+    /** Node to be used. */
     node?: string;
-    /** Strict mode */
+    /** Strict mode. */
     strict?: boolean;
 }

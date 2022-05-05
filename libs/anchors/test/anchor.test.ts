@@ -7,6 +7,8 @@ import { network, newChannel, newEncryptedChannel, newPrivateChannel } from "./t
 describe("Anchor Messages", () => {
     const message = Buffer.from("Hello");
 
+    beforeAll(async () => {});
+
     test("should anchor a message to the initial anchorage", async () => {
         const anchoringChannel = await newChannel(network);
 

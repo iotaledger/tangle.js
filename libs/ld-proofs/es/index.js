@@ -1,27 +1,15 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./iotaSigner"), exports);
-__exportStar(require("./iotaVerifier"), exports);
-__exportStar(require("./iotaLdProofGenerator"), exports);
-__exportStar(require("./iotaLdProofVerifier"), exports);
-__exportStar(require("./models/ISigningResult"), exports);
-__exportStar(require("./models/ISigningOptions"), exports);
-__exportStar(require("./models/IVerificationOptions"), exports);
-__exportStar(require("./models/IJsonVerificationOptions"), exports);
-__exportStar(require("./models/IIotaLinkedDataProof"), exports);
-__exportStar(require("./models/ILinkedDataSignature"), exports);
-__exportStar(require("./models/ILdProofOptions"), exports);
-__exportStar(require("./models/ILdProofVerificationOptions"), exports);
-__exportStar(require("./models/signatureTypes"), exports);
-__exportStar(require("./models/linkedDataProofTypes"), exports);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsK0NBQTZCO0FBQzdCLGlEQUErQjtBQUMvQix5REFBdUM7QUFDdkMsd0RBQXNDO0FBQ3RDLDBEQUF3QztBQUN4QywyREFBeUM7QUFDekMsZ0VBQThDO0FBQzlDLG9FQUFrRDtBQUNsRCxnRUFBOEM7QUFDOUMsZ0VBQThDO0FBQzlDLDJEQUF5QztBQUN6Qyx1RUFBcUQ7QUFDckQsMERBQXdDO0FBQ3hDLGdFQUE4QyJ9
+export * from "./iotaSigner";
+export * from "./iotaVerifier";
+export * from "./iotaLdProofGenerator";
+export * from "./iotaLdProofVerifier";
+export * from "./models/ISigningResult";
+export * from "./models/ISigningOptions";
+export * from "./models/IVerificationOptions";
+export * from "./models/IJsonVerificationOptions";
+export * from "./models/IIotaLinkedDataProof";
+export * from "./models/ILinkedDataSignature";
+export * from "./models/ILdProofOptions";
+export * from "./models/ILdProofVerificationOptions";
+export * from "./models/signatureTypes";
+export * from "./models/linkedDataProofTypes";
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsY0FBYyxjQUFjLENBQUM7QUFDN0IsY0FBYyxnQkFBZ0IsQ0FBQztBQUMvQixjQUFjLHdCQUF3QixDQUFDO0FBQ3ZDLGNBQWMsdUJBQXVCLENBQUM7QUFDdEMsY0FBYyx5QkFBeUIsQ0FBQztBQUN4QyxjQUFjLDBCQUEwQixDQUFDO0FBQ3pDLGNBQWMsK0JBQStCLENBQUM7QUFDOUMsY0FBYyxtQ0FBbUMsQ0FBQztBQUNsRCxjQUFjLCtCQUErQixDQUFDO0FBQzlDLGNBQWMsK0JBQStCLENBQUM7QUFDOUMsY0FBYywwQkFBMEIsQ0FBQztBQUN6QyxjQUFjLHNDQUFzQyxDQUFDO0FBQ3JELGNBQWMseUJBQXlCLENBQUM7QUFDeEMsY0FBYywrQkFBK0IsQ0FBQyJ9

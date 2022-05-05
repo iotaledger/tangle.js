@@ -1,4 +1,4 @@
-import { Subscriber } from "@tangle.js/streams-wasm/node";
+import type { Subscriber } from "@tangle.js/streams-wasm/node/streams.js";
 
 export interface IAnchoringRequest {
     /** The channel ID */

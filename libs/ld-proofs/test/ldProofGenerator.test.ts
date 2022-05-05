@@ -2,7 +2,7 @@ import { IotaAnchoringChannel } from "@tangle-js/anchors";
 import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaSigner } from "../src/iotaSigner";
-import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
+import type { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { LinkedDataProofTypes } from "../src/models/linkedDataProofTypes";
 import { SignatureTypes } from "../src/models/signatureTypes";
 import { did, privateKey } from "./testCommon";
@@ -41,6 +41,8 @@ describe("Generate IOTA Linked Data Proofs", () => {
     const node = "https://chrysalis-nodes.iota.org";
 
     const method = "key";
+
+    beforeAll(async () => { });
 
     test("should generate a Linked Data Proof for a JSON-LD document", async () => {
         const document = {

@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 export default class LdProofError extends Error {
     public static ERR_TYPE = "LdProofError";
 

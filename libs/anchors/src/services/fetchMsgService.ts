@@ -1,10 +1,10 @@
-/* eslint-disable no-duplicate-imports */
-import { Subscriber } from "@tangle.js/streams-wasm/node";
+/* eslint-disable no-duplicate-imports, @typescript-eslint/no-unsafe-argument */
+import type { Subscriber } from "@tangle.js/streams-wasm/node/streams.js";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
-import { IFetchRequest } from "../models/IFetchRequest";
-import { IFetchResult } from "../models/IFetchResult";
+import type { IFetchRequest } from "../models/IFetchRequest";
+import type { IFetchResult } from "../models/IFetchResult";
 
 export default class FetchMsgService {
   public static async fetch(request: IFetchRequest): Promise<IFetchResult> {
@@ -44,14 +44,12 @@ export default class FetchMsgService {
       }
     } else {
       // Otherwise we just fetch the next message
-      const messages = await subs.clone().fetch_next_msgs();
+      response = await subs.clone().fetchNextMsg();
 
-      if (!messages || messages.length === 0) {
+      if (!response) {
         throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
-          `There is not message anchored to ${anchorageID}`);
+          `There is no message anchored to ${anchorageID}`);
       }
-
-      response = messages[0];
     }
 
     let messageContent = Buffer.from(response.message.get_public_payload());
@@ -106,13 +104,11 @@ export default class FetchMsgService {
   }
 
   public static async fetchNext(subscriber: Subscriber, encrypted: boolean): Promise<IFetchResult | undefined> {
-    const messages = await subscriber.clone().fetch_next_msgs();
+    const msg = await subscriber.clone().fetchNextMsg();
 
-    if (!messages || messages.length === 0) {
+    if (!msg) {
       return;
     }
-
-    const msg = messages[0];
 
     const result: IFetchResult = {
       msgID: msg.link.copy().msgId.toString(),

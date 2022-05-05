@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "description": "Tangle.js examples",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-web": "cd web && webpack --mode=production",
+    "test-web":  "http-server ./web/dist/ -c-1 -o"
   },
   "repository": {
     "type": "git",
@@ -21,8 +23,17 @@
   },
   "homepage": "https://github.com/iotaledger/tangle.js#readme",
   "dependencies": {
-    "@tangle-js/anchors": "^0.9.2-beta5",
-    "@tangle-js/ld-proofs": "^0.9.3",
-    "epcis2.js": "^2.0.0-beta.0"
+    "@tangle-js/anchors": "0.9.2-beta18",
+    "@tangle-js/ld-proofs": "0.9.5-beta10",
+    "epcis2.js": "^2.1.0",
+    "buffer": "^6.0.3",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "http-server": "^14.1.0",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2"
   }
 }

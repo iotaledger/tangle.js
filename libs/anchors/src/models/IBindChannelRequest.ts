@@ -1,4 +1,4 @@
-import { StreamsClient } from "@tangle.js/streams-wasm/node";
+import type { StreamsClient } from "@tangle.js/streams-wasm/node/streams.js";
 
 export interface IBindChannelRequest {
     /** The client */
@@ -7,8 +7,8 @@ export interface IBindChannelRequest {
     channelID: string;
     /** Whether the channel is encrypted */
     encrypted: boolean;
-     /** Whether the channel is private */
-     isPrivate: boolean;
+    /** Whether the channel is private */
+    isPrivate: boolean;
     /** The seed */
     seed: string;
     /** Preshared key */

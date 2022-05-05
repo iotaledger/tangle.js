@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 export default abstract class LdProofErrorNames {
     public static OTHER_ERROR = "Runtime_Error";
 
