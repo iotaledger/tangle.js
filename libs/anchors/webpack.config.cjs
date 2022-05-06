@@ -1,5 +1,6 @@
 const path = require("path");
 const glob = require("glob");
+const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 
 const clientConfig = {
   target: "web",
@@ -15,10 +16,6 @@ const clientConfig = {
         options: {
             configFile: 'tsconfig.json',
         }
-      },
-      {
-        test: /\.wasm$/,
-        type: "asset/inline",
       }
     ]
   },
@@ -41,7 +38,7 @@ const clientConfig = {
   experiments: {
     topLevelAwait: true,
     outputModule: true,
-    asyncWebAssembly: true
+    syncWebAssembly: true
   },
 };
 

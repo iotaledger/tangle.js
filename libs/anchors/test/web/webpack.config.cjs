@@ -30,7 +30,19 @@ const clientConfig = {
         },
       ],
     }),
+    new CopyWebPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
+          to: path.resolve(__dirname, "dist"),
+        },
+      ],
+    }),
   ],
+  experiments: {
+    outputModule: true,
+    syncWebAssembly: true
+  },
 };
 
 module.exports = [clientConfig];

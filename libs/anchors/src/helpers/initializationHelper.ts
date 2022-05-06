@@ -1,5 +1,5 @@
 import { set_panic_hook as streamsPanicHook } from "@iota/streams/node";
-import { init } from "@iota/streams/web/streams_wasm.js";
+// import { init } from "@iota/streams/web/streams_wasm.js";
 
 import * as fetch from "node-fetch";
 
@@ -16,6 +16,6 @@ import * as fetch from "node-fetch";
     // @ts-expect-error  Streams WASM bindings need it
     global.Response = fetch.Response;
 
-    init();
+    // init();
     streamsPanicHook();
 }
