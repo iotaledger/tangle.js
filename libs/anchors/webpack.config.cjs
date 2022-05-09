@@ -1,28 +1,28 @@
 const path = require("path");
-const glob = require("glob");
-const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
+const webpack = require('webpack');
 
 const clientConfig = {
   target: "web",
   devtool: "source-map",
-  entry: [
-    "./src/index.ts"
-  ],
+  entry: ["./src/index.ts"],
   module: {
     rules: [
       {
         test: /\.ts$/,
-        loader: 'ts-loader',
+        loader: "ts-loader",
         options: {
-            configFile: 'tsconfig.json',
-        }
-      }
-    ]
+          configFile: "tsconfig.json",
+        },
+      },
+    ],
   },
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      "@iota/streams/node": path.resolve(__dirname, "../../node_modules/@iota/streams/web/streams.js")
+      "@iota/streams/node": path.resolve(
+        __dirname,
+        "../../node_modules/@iota/streams/web"
+      ),
     },
     fallback: {
       crypto: require.resolve("crypto-browserify"),
@@ -33,12 +33,17 @@ const clientConfig = {
   output: {
     filename: "anchors-web.js",
     path: path.resolve(__dirname, "dist"),
-    libraryTarget: "module"
+    libraryTarget: "module",
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ],
   experiments: {
     topLevelAwait: true,
     outputModule: true,
-    syncWebAssembly: true
+    syncWebAssembly: true,
   },
 };
 

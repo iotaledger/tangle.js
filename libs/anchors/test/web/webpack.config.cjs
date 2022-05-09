@@ -8,11 +8,15 @@ const clientConfig = {
     extensions: [".js"],
     alias: {
       "anchors-web.js": path.resolve(__dirname, "../../dist/anchors-web.js"),
+      "@iota/streams/node": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
+      "@iota/streams/web": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
+      "@iota/streams/web/streams.js": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web/streams.js")
     },
   },
   experiments: {
     topLevelAwait: true,
-    outputModule: true
+    outputModule: true,
+    syncWebAssembly: true
   },
   output: {
     filename: "bundle.js",
@@ -33,16 +37,12 @@ const clientConfig = {
     new CopyWebPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
-          to: path.resolve(__dirname, "dist"),
+          from: path.resolve(__dirname, "../../../../node_modules/@iota/streams/web/streams_bg.wasm"),
+          to: path.resolve(__dirname, "dist/wasm"),
         },
       ],
     }),
-  ],
-  experiments: {
-    outputModule: true,
-    syncWebAssembly: true
-  },
+  ]
 };
 
 module.exports = [clientConfig];

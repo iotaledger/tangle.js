@@ -14,7 +14,8 @@ export class ClientHelper {
      * @returns StreamsClient
      */
     public static async getClient(node: string, permanode?: string): Promise<StreamsClient> {
-        console.log("Get Client before!!!!");
+        console.log("Get Client before!!!!", node, ClientBuilder);
+        console.log("New ClientBuilder", new ClientBuilder());
         // iota.rs client
         let builder = new ClientBuilder().node(node);
         if (permanode) {

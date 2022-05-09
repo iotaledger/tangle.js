@@ -1,12 +1,14 @@
 import { set_panic_hook as streamsPanicHook } from "@iota/streams/node";
-// import { init } from "@iota/streams/web/streams_wasm.js";
-
+import init from "@iota/streams/web/streams.js";
 import * as fetch from "node-fetch";
+
+const isBrowser = new Function("try { return this===window; } catch(e) { return false; }");
+const WASM_PATH = "/wasm/streams_bg.wasm";
 
 /**
  *   Initialization function for the Streams WASM bindings
  */
- export default function initialize() {
+ export default async function initialize() {
     // @ts-expect-error Streams WASM bindings need it
     global.fetch = fetch;
     // @ts-expect-error  Streams WASM bindings need it
@@ -16,6 +18,8 @@ import * as fetch from "node-fetch";
     // @ts-expect-error  Streams WASM bindings need it
     global.Response = fetch.Response;
 
-    // init();
+    if (isBrowser()) {
+        await init(WASM_PATH);
+    }
     streamsPanicHook();
 }
