@@ -2,7 +2,7 @@ import { Author, Subscriber, Address, ChannelType, StreamsClient } from "@iota/s
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
-import { IBindChannelRequest } from "../models/IBindChannelRequest";
+import type { IBindChannelRequest } from "../models/IBindChannelRequest";
 
 
 /**

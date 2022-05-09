@@ -15,9 +15,14 @@
     "inlineSourceMap": true,
     "declaration": true,
     "declarationDir": "typings",
+    "stripInternal": true,
+    "importHelpers": true,
+    "forceConsistentCasingInFileNames": true,
+    "importsNotUsedAsValues": "error",
+    "preserveValueImports": true,
+    "isolatedModules": true
   },
   "include": [
     "src"
   ]
 }
-

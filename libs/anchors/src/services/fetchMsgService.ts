@@ -1,10 +1,10 @@
 /* eslint-disable no-duplicate-imports */
-import { Subscriber } from "@iota/streams/node";
+import type { Subscriber } from "@iota/streams/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
-import { IFetchRequest } from "../models/IFetchRequest";
-import { IFetchResult } from "../models/IFetchResult";
+import type { IFetchRequest } from "../models/IFetchRequest";
+import type { IFetchResult } from "../models/IFetchResult";
 
 export default class FetchMsgService {
   public static async fetch(request: IFetchRequest): Promise<IFetchResult> {

@@ -1,10 +1,10 @@
 /* eslint-disable no-duplicate-imports */
-import { Address } from "@iota/streams/node";
+import type { Address } from "@iota/streams/node";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";
-import { IAnchoringRequest } from "../models/IAnchoringRequest";
-import { IAnchoringResult } from "../models/IAnchoringResult";
+import type { IAnchoringRequest } from "../models/IAnchoringRequest";
+import type { IAnchoringResult } from "../models/IAnchoringResult";
 
 /**
  * Service to deal with message anchors

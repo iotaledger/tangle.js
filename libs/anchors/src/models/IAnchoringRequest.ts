@@ -1,4 +1,4 @@
-import { Subscriber } from "@iota/streams/node";
+import type { Subscriber } from "@iota/streams/node";
 
 export interface IAnchoringRequest {
     /** The channel ID */

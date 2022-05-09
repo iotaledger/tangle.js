@@ -32,7 +32,7 @@ const clientConfig = {
   },
   output: {
     filename: "anchors-web.js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist/web"),
     libraryTarget: "module",
   },
   plugins: [
