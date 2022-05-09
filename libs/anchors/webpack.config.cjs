@@ -21,7 +21,7 @@ const clientConfig = {
     alias: {
       "@iota/streams/node": path.resolve(
         __dirname,
-        "../../node_modules/@iota/streams/web"
+        "./streams/web"
       ),
     },
     fallback: {

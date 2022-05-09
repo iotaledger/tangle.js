@@ -1,0 +1,66 @@
+{
+    "name": "@gtsc/esm-modules",
+    "version": "0.0.1",
+    "description": "GTSC ESM Modules Converter",
+    "keywords": [
+        "gtsc",
+        "tools"
+    ],
+    "authors": [
+        "Martyn Janes <martyn.janes@iota.org>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/iotaledger/gtsc.git",
+        "directory": "packages/tools/esm-modules"
+    },
+    "license": "Apache-2.0",
+    "engines": {
+        "node": ">=14",
+        "npm": ">=7"
+    },
+    "scripts": {
+        "build-clean": "rimraf ./es/* ./typings/*",
+        "build-format": "prettier --config .prettierrc src/**/* --write",
+        "build-lint": "eslint src --ext .ts",
+        "build-compile": "ttsc",
+        "build-p": "run-p build-lint build-compile",
+        "build": "run-s build-clean build-format build-p",
+        "test-format": "prettier --config .prettierrc test/**/*.ts --write",
+        "test-lint": "eslint test --ext .ts",
+        "test-run": "jest",
+        "test-p": "run-p test-lint test-run",
+        "test": "run-s test-format test-p",
+        "package-clean": "rimraf ./dist/*",
+        "package-umd": "rollup --config rollup.config.js",
+        "package": "run-s package-clean package-umd",
+        "docs": "",
+        "dist": "run-s build test package",
+        "deploy-build": "run-s build-compile package-umd"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^21.0.2",
+        "@rollup/plugin-node-resolve": "^13.1.3",
+        "@types/jest": "^27.4.1",
+        "@typescript-eslint/eslint-plugin": "^5.13.0",
+        "@typescript-eslint/parser": "^5.13.0",
+        "eslint": "^8.10.0",
+        "eslint-plugin-header": "^3.1.1",
+        "eslint-plugin-import": "^2.25.4",
+        "eslint-plugin-jsdoc": "^37.9.7",
+        "eslint-plugin-unicorn": "^41.0.0",
+        "jest": "^27.5.1",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.5.1",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.70.0",
+        "ts-jest": "^27.1.3",
+        "ts-node": "^10.7.0",
+        "ttypescript": "^1.5.13",
+        "typescript": "^4.6.2"
+    },
+    "dependencies": {},
+    "bin": {
+        "esm-modules": "bin/index.js"
+    }
+}

@@ -36,6 +36,7 @@
     "workspaces": [
         "libs/anchors",
         "libs/ld-proofs",
-        "tools/tangle-cli"
+        "tools/tangle-cli",
+        "tools/esm-modules"
     ]
 }
