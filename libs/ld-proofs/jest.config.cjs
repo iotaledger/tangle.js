@@ -1,13 +1,17 @@
 module.exports = {
-    "testMatch": [
-        "<rootDir>/test/**/*.(test|spec).ts"
-    ],
-    "transform": {
-        "^.+\\.ts$": "ts-jest"
+    globals: {
+      "ts-jest": {
+        useESM: true,
+      },
     },
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-        '<rootDir>/src/**/*.ts'
-    ],
-    "testEnvironment": "node"
-}
+    preset: "ts-jest/presets/js-with-ts-esm-legacy",
+    testMatch: ["<rootDir>/test/**/*.(test|spec).ts"],
+    extensionsToTreatAsEsm: [".ts"],
+    collectCoverage: true,
+    collectCoverageFrom: ["<rootDir>/src/**/*.ts"],
+    testEnvironment: "node",
+    moduleNameMapper: {
+      "^(\\.{1,2}/.*)\\.js$": "$1",
+    },
+  };
+  

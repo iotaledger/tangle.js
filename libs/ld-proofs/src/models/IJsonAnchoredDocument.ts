@@ -1,5 +1,5 @@
-import { IIotaLinkedDataProof } from "./IIotaLinkedDataProof";
-import { IJsonDocument } from "./IJsonDocument";
+import type { IIotaLinkedDataProof } from "./IIotaLinkedDataProof";
+import type { IJsonDocument } from "./IJsonDocument";
 
 /**
  * A JSON anchored document must include a proof

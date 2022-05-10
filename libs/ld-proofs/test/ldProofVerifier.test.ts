@@ -2,9 +2,9 @@ import { IotaAnchoringChannel } from "@tangle-js/anchors";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaLdProofVerifier } from "../src/iotaLdProofVerifier";
 import { IotaSigner } from "../src/iotaSigner";
-import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
-import { IJsonAnchoredDocument } from "../src/models/IJsonAnchoredDocument";
-import { IJsonDocument } from "../src/models/IJsonDocument";
+import type { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
+import type { IJsonAnchoredDocument } from "../src/models/IJsonAnchoredDocument";
+import type { IJsonDocument } from "../src/models/IJsonDocument";
 import { SignatureTypes } from "../src/models/signatureTypes";
 import { did, privateKey } from "./testCommon";
 

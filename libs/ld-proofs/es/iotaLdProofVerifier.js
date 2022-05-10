@@ -1,31 +1,16 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.IotaLdProofVerifier = void 0;
-const anchors_1 = require("@tangle-js/anchors");
-const ldProofError_1 = __importDefault(require("./errors/ldProofError"));
-const ldProofErrorNames_1 = __importDefault(require("./errors/ldProofErrorNames"));
-const jsonHelper_1 = __importDefault(require("./helpers/jsonHelper"));
-const validationHelper_1 = __importDefault(require("./helpers/validationHelper"));
-const iotaVerifier_1 = require("./iotaVerifier");
+import { IotaAnchoringChannel, AnchoringChannelErrorNames, SeedHelper } from "@tangle-js/anchors";
+import LdProofError from "./errors/ldProofError";
+import LdProofErrorNames from "./errors/ldProofErrorNames";
+import JsonHelper from "./helpers/jsonHelper";
+import ValidationHelper from "./helpers/validationHelper";
+import { IotaVerifier } from "./iotaVerifier";
 /**
  *  Linked Data Proof Verifier
  *
  *  In the future it will also need to verify
  *
  */
-class IotaLdProofVerifier {
+export class IotaLdProofVerifier {
     /**
      * Verifies a JSON(-LD) document
      *
@@ -35,20 +20,18 @@ class IotaLdProofVerifier {
      * @returns true or false with the verification result
      *
      */
-    static verifyJson(doc, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let document;
-            try {
-                document = jsonHelper_1.default.getAnchoredDocument(doc);
+    static async verifyJson(doc, options) {
+        let document;
+        try {
+            document = JsonHelper.getAnchoredDocument(doc);
+        }
+        catch (error) {
+            if (error.name === LdProofErrorNames.JSON_DOC_NOT_SIGNED) {
+                return false;
             }
-            catch (error) {
-                if (error.name === ldProofErrorNames_1.default.JSON_DOC_NOT_SIGNED) {
-                    return false;
-                }
-                throw error;
-            }
-            return this.doVerifyDoc(document, undefined, options);
-        });
+            throw error;
+        }
+        return this.doVerifyDoc(document, undefined, options);
     }
     /**
      * Verifies a chain of JSON(-LD) documents ensuring that are anchored to the same channel
@@ -58,10 +41,8 @@ class IotaLdProofVerifier {
      *
      * @returns The global verification result
      */
-    static verifyJsonChain(docs, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.doVerifyChain(docs, options);
-        });
+    static async verifyJsonChain(docs, options) {
+        return this.doVerifyChain(docs, options);
     }
     /**
      * Verifies a list of JSON(-LD) documents using the proof passed as parameter
@@ -74,10 +55,8 @@ class IotaLdProofVerifier {
      *
      * @returns The global result of the verification
      */
-    static verifyJsonChainSingleProof(docs, proof, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.doVerifyChainSingleProof(docs, proof, options);
-        });
+    static async verifyJsonChainSingleProof(docs, proof, options) {
+        return this.doVerifyChainSingleProof(docs, proof, options);
     }
     /**
      * Verifies a chain of JSON(LD) documents ensuring that are anchored to the same channel
@@ -87,202 +66,195 @@ class IotaLdProofVerifier {
      *
      * @returns The global verification result
      */
-    static doVerifyChain(docs, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const documents = [];
-            // The anchored documents are obtained
-            for (const document of docs) {
-                let doc;
-                try {
-                    doc = jsonHelper_1.default.getAnchoredDocument(document);
-                }
-                catch (error) {
-                    if (error.name === ldProofErrorNames_1.default.JSON_DOC_NOT_SIGNED) {
-                        return false;
-                    }
-                    throw error;
-                }
-                documents.push(doc);
-            }
-            const node = options === null || options === void 0 ? void 0 : options.node;
-            // The Channel will be used to verify the proofs
-            const channelID = documents[0].proof.proofValue.channelID;
-            let channel;
-            // If channel cannot be bound the proof will fail
+    static async doVerifyChain(docs, options) {
+        const documents = [];
+        // The anchored documents are obtained
+        for (const document of docs) {
+            let doc;
             try {
-                channel = yield anchors_1.IotaAnchoringChannel.fromID(channelID, { node }).bind(anchors_1.SeedHelper.generateSeed());
+                doc = JsonHelper.getAnchoredDocument(document);
             }
             catch (error) {
-                if (error.name === anchors_1.AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
+                if (error.name === LdProofErrorNames.JSON_DOC_NOT_SIGNED) {
                     return false;
                 }
                 throw error;
             }
-            let index = 0;
-            const verificationOptions = Object.assign({}, options);
-            for (const document of documents) {
-                const proofValue = document.proof.proofValue;
-                // If the channel is not the expected the verification fails
-                if (proofValue.channelID !== channelID) {
-                    return false;
-                }
-                // The first needs to properly position on the channel
-                if (index === 0) {
-                    verificationOptions.strict = false;
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-                }
-                else if (options && options.strict === false) {
-                    verificationOptions.strict = false;
-                }
-                else {
-                    verificationOptions.strict = true;
-                }
-                const verificationResult = yield this.doVerifyChainedDoc(document, channel, verificationOptions);
-                if (!verificationResult.result) {
-                    return false;
-                }
-                index++;
-            }
-            return true;
-        });
-    }
-    static doVerifyChainSingleProof(docs, proof, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const proofDetails = proof.proofValue;
-            const documents = [];
-            for (const document of docs) {
-                const doc = jsonHelper_1.default.getDocument(document);
-                documents.push(doc);
-            }
-            let isStrict = true;
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-            if ((options === null || options === void 0 ? void 0 : options.strict) === false) {
-                isStrict = false;
-            }
-            const channelID = proofDetails.channelID;
-            let channel;
-            try {
-                channel = yield anchors_1.IotaAnchoringChannel.fromID(channelID, options).bind(anchors_1.SeedHelper.generateSeed());
-            }
-            catch (error) {
-                if (error.name === anchors_1.AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
-                    return false;
-                }
-                throw error;
-            }
-            // Clone it to use it locally
-            const docProof = JSON.parse(JSON.stringify(proof));
-            const doc = documents[0];
-            doc.proof = docProof;
-            // First document is verified as single document
-            const verificationResult = yield this.doVerifyDoc(doc, channel, options);
-            // Restore the original document
-            delete doc.proof;
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-            if (verificationResult === false) {
+            documents.push(doc);
+        }
+        const node = options?.node;
+        // The Channel will be used to verify the proofs
+        const channelID = documents[0].proof.proofValue.channelID;
+        let channel;
+        // If channel cannot be bound the proof will fail
+        try {
+            channel = await IotaAnchoringChannel.fromID(channelID, { node }).bind(SeedHelper.generateSeed());
+        }
+        catch (error) {
+            if (error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
                 return false;
             }
-            // In strict mode we should test the anchorageID but unfortunately that is a IOTA Streams limitation
-            // let currentAnchorageID = verificationResult.fetchResult.msgID;
-            // Verification of the rest of documents
-            for (let index = 1; index < documents.length; index++) {
-                const aDoc = documents[index];
-                let fetchResult = yield channel.fetchNext();
-                let verified = false;
-                while (!verified && fetchResult) {
-                    const linkedDataSignature = JSON.parse(fetchResult.message.toString());
-                    // now assign the Linked Data Signature as proof
-                    aDoc.proof = linkedDataSignature;
-                    verified = yield iotaVerifier_1.IotaVerifier.verifyJson(aDoc, { node: options === null || options === void 0 ? void 0 : options.node });
-                    if (!verified) {
-                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-                        if (isStrict === false) {
-                            fetchResult = yield channel.fetchNext();
-                        }
-                        else {
-                            return false;
-                        }
-                    }
-                }
-                if (!verified || !fetchResult) {
-                    return false;
-                }
-                delete aDoc.proof;
+            throw error;
+        }
+        let index = 0;
+        const verificationOptions = {
+            ...options
+        };
+        for (const document of documents) {
+            const proofValue = document.proof.proofValue;
+            // If the channel is not the expected the verification fails
+            if (proofValue.channelID !== channelID) {
+                return false;
             }
-            return true;
-        });
-    }
-    static doVerifyDoc(document, channel, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if ((options === null || options === void 0 ? void 0 : options.node) && !validationHelper_1.default.url(options.node)) {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_NODE, "The node has to be a URL");
-            }
-            const proofDetails = document.proof.proofValue;
-            let fetchResult;
-            let targetChannel = channel;
-            try {
-                if (!channel) {
-                    targetChannel = yield anchors_1.IotaAnchoringChannel.fromID(proofDetails.channelID, options).bind(anchors_1.SeedHelper.generateSeed());
-                }
-                fetchResult = yield targetChannel.fetch(proofDetails.anchorageID, proofDetails.msgID);
-            }
-            catch (error) {
-                if (error.name === anchors_1.AnchoringChannelErrorNames.MSG_NOT_FOUND ||
-                    error.name === anchors_1.AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND ||
-                    error.name === anchors_1.AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
-                    return false;
-                }
-                // If it is not the controlled error the error is thrown
-                throw error;
-            }
-            const linkedDataSignature = JSON.parse(fetchResult.message.toString());
-            // now assign the Linked Data Signature as proof
-            document.proof = linkedDataSignature;
-            const result = yield iotaVerifier_1.IotaVerifier.verifyJson(document, { node: options === null || options === void 0 ? void 0 : options.node });
-            return result;
-        });
-    }
-    static doVerifyChainedDoc(document, channel, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if ((options === null || options === void 0 ? void 0 : options.node) && !validationHelper_1.default.url(options.node)) {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_NODE, "The node has to be a URL");
-            }
-            const linkedDataProof = document.proof;
-            const proofDetails = document.proof.proofValue;
-            let fetchResult;
-            const targetMsgID = proofDetails.msgID;
-            try {
-                // In strict mode we just fetch the next message
+            // The first needs to properly position on the channel
+            if (index === 0) {
+                verificationOptions.strict = false;
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-                if (!options || options.strict === undefined || options.strict === true) {
-                    fetchResult = yield channel.fetchNext();
-                }
-                else {
-                    fetchResult = yield channel.fetchNext();
-                    while (fetchResult && fetchResult.msgID !== targetMsgID) {
-                        fetchResult = yield channel.fetchNext();
+            }
+            else if (options && options.strict === false) {
+                verificationOptions.strict = false;
+            }
+            else {
+                verificationOptions.strict = true;
+            }
+            const verificationResult = await this.doVerifyChainedDoc(document, channel, verificationOptions);
+            if (!verificationResult.result) {
+                return false;
+            }
+            index++;
+        }
+        return true;
+    }
+    static async doVerifyChainSingleProof(docs, proof, options) {
+        const proofDetails = proof.proofValue;
+        const documents = [];
+        for (const document of docs) {
+            const doc = JsonHelper.getDocument(document);
+            documents.push(doc);
+        }
+        let isStrict = true;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+        if (options?.strict === false) {
+            isStrict = false;
+        }
+        const channelID = proofDetails.channelID;
+        let channel;
+        try {
+            channel = await IotaAnchoringChannel.fromID(channelID, options).bind(SeedHelper.generateSeed());
+        }
+        catch (error) {
+            if (error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
+                return false;
+            }
+            throw error;
+        }
+        // Clone it to use it locally
+        const docProof = JSON.parse(JSON.stringify(proof));
+        const doc = documents[0];
+        doc.proof = docProof;
+        // First document is verified as single document
+        const verificationResult = await this.doVerifyDoc(doc, channel, options);
+        // Restore the original document
+        delete doc.proof;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+        if (verificationResult === false) {
+            return false;
+        }
+        // In strict mode we should test the anchorageID but unfortunately that is a IOTA Streams limitation
+        // let currentAnchorageID = verificationResult.fetchResult.msgID;
+        // Verification of the rest of documents
+        for (let index = 1; index < documents.length; index++) {
+            const aDoc = documents[index];
+            let fetchResult = await channel.fetchNext();
+            let verified = false;
+            while (!verified && fetchResult) {
+                const linkedDataSignature = JSON.parse(fetchResult.message.toString());
+                // now assign the Linked Data Signature as proof
+                aDoc.proof = linkedDataSignature;
+                verified = await IotaVerifier.verifyJson(aDoc, { node: options?.node });
+                if (!verified) {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+                    if (isStrict === false) {
+                        fetchResult = await channel.fetchNext();
+                    }
+                    else {
+                        return false;
                     }
                 }
             }
-            catch (error) {
-                if (error.name === anchors_1.AnchoringChannelErrorNames.MSG_NOT_FOUND) {
-                    return { result: false };
-                }
-                throw error;
+            if (!verified || !fetchResult) {
+                return false;
             }
-            // If this is not the message expected the verification has failed
-            if (!fetchResult || fetchResult.msgID !== targetMsgID) {
+            delete aDoc.proof;
+        }
+        return true;
+    }
+    static async doVerifyDoc(document, channel, options) {
+        if (options?.node && !ValidationHelper.url(options.node)) {
+            throw new LdProofError(LdProofErrorNames.INVALID_NODE, "The node has to be a URL");
+        }
+        const proofDetails = document.proof.proofValue;
+        let fetchResult;
+        let targetChannel = channel;
+        try {
+            if (!channel) {
+                targetChannel = await IotaAnchoringChannel.fromID(proofDetails.channelID, options).bind(SeedHelper.generateSeed());
+            }
+            fetchResult = await targetChannel.fetch(proofDetails.anchorageID, proofDetails.msgID);
+        }
+        catch (error) {
+            if (error.name === AnchoringChannelErrorNames.MSG_NOT_FOUND ||
+                error.name === AnchoringChannelErrorNames.ANCHORAGE_NOT_FOUND ||
+                error.name === AnchoringChannelErrorNames.CHANNEL_BINDING_ERROR) {
+                return false;
+            }
+            // If it is not the controlled error the error is thrown
+            throw error;
+        }
+        const linkedDataSignature = JSON.parse(fetchResult.message.toString());
+        // now assign the Linked Data Signature as proof
+        document.proof = linkedDataSignature;
+        const result = await IotaVerifier.verifyJson(document, { node: options?.node });
+        return result;
+    }
+    static async doVerifyChainedDoc(document, channel, options) {
+        if (options?.node && !ValidationHelper.url(options.node)) {
+            throw new LdProofError(LdProofErrorNames.INVALID_NODE, "The node has to be a URL");
+        }
+        const linkedDataProof = document.proof;
+        const proofDetails = document.proof.proofValue;
+        let fetchResult;
+        const targetMsgID = proofDetails.msgID;
+        try {
+            // In strict mode we just fetch the next message
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+            if (!options || options.strict === undefined || options.strict === true) {
+                fetchResult = await channel.fetchNext();
+            }
+            else {
+                fetchResult = await channel.fetchNext();
+                while (fetchResult && fetchResult.msgID !== targetMsgID) {
+                    fetchResult = await channel.fetchNext();
+                }
+            }
+        }
+        catch (error) {
+            if (error.name === AnchoringChannelErrorNames.MSG_NOT_FOUND) {
                 return { result: false };
             }
-            const linkedDataSignature = JSON.parse(fetchResult.message.toString());
-            // now assign the Linked Data Signature as proof
-            document.proof = linkedDataSignature;
-            const result = yield iotaVerifier_1.IotaVerifier.verifyJson(document, { node: options === null || options === void 0 ? void 0 : options.node });
-            // Restore the original document
-            document.proof = linkedDataProof;
-            return { result, fetchResult };
-        });
+            throw error;
+        }
+        // If this is not the message expected the verification has failed
+        if (!fetchResult || fetchResult.msgID !== targetMsgID) {
+            return { result: false };
+        }
+        const linkedDataSignature = JSON.parse(fetchResult.message.toString());
+        // now assign the Linked Data Signature as proof
+        document.proof = linkedDataSignature;
+        const result = await IotaVerifier.verifyJson(document, { node: options?.node });
+        // Restore the original document
+        document.proof = linkedDataProof;
+        return { result, fetchResult };
     }
 }
-exports.IotaLdProofVerifier = IotaLdProofVerifier;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW90YUxkUHJvb2ZWZXJpZmllci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9pb3RhTGRQcm9vZlZlcmlmaWVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7OztBQUFBLGdEQUM4QjtBQUM5Qix5RUFBaUQ7QUFDakQsbUZBQTJEO0FBQzNELHNFQUE4QztBQUM5QyxrRkFBMEQ7QUFDMUQsaURBQThDO0FBTzlDOzs7OztHQUtHO0FBQ0gsTUFBYSxtQkFBbUI7SUFDNUI7Ozs7Ozs7O09BUUc7SUFDSSxNQUFNLENBQU8sVUFBVSxDQUFDLEdBQW1DLEVBQzlELE9BQXFDOztZQUNyQyxJQUFJLFFBQStCLENBQUM7WUFFcEMsSUFBSTtnQkFDQSxRQUFRLEdBQUcsb0JBQVUsQ0FBQyxtQkFBbUIsQ0FBQyxHQUFHLENBQUMsQ0FBQzthQUNsRDtZQUFDLE9BQU8sS0FBSyxFQUFFO2dCQUNaLElBQUksS0FBSyxDQUFDLElBQUksS0FBSywyQkFBaUIsQ0FBQyxtQkFBbUIsRUFBRTtvQkFDdEQsT0FBTyxLQUFLLENBQUM7aUJBQ2hCO2dCQUVELE1BQU0sS0FBSyxDQUFDO2FBQ2Y7WUFFRCxPQUFPLElBQUksQ0FBQyxXQUFXLENBQUMsUUFBUSxFQUFFLFNBQVMsRUFBRSxPQUFPLENBQUMsQ0FBQztRQUMxRCxDQUFDO0tBQUE7SUFFRDs7Ozs7OztPQU9HO0lBQ0ksTUFBTSxDQUFPLGVBQWUsQ0FBQyxJQUF3QyxFQUN4RSxPQUFxQzs7WUFDckMsT0FBTyxJQUFJLENBQUMsYUFBYSxDQUFDLElBQUksRUFBRSxPQUFPLENBQUMsQ0FBQztRQUM3QyxDQUFDO0tBQUE7SUFFRDs7Ozs7Ozs7OztPQVVHO0lBQ0ksTUFBTSxDQUFPLDBCQUEwQixDQUFDLElBQWdDLEVBQzNFLEtBQTJCLEVBQzNCLE9BQXFDOztZQUNyQyxPQUFPLElBQUksQ0FBQyx3QkFBd0IsQ0FBQyxJQUFJLEVBQUUsS0FBSyxFQUFFLE9BQU8sQ0FBQyxDQUFDO1FBQy9E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
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW90YUxkUHJvb2ZWZXJpZmllci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uL3NyYy9pb3RhTGRQcm9vZlZlcmlmaWVyLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sRUFBRSxvQkFBb0IsRUFBRSwwQkFBMEIsRUFBRSxVQUFVLEVBQUUsTUFDOUQsb0JBQW9CLENBQUM7QUFFOUIsT0FBTyxZQUFZLE1BQU0sdUJBQXVCLENBQUM7QUFDakQsT0FBTyxpQkFBaUIsTUFBTSw0QkFBNEIsQ0FBQztBQUMzRCxPQUFPLFVBQVUsTUFBTSxzQkFBc0IsQ0FBQztBQUM5QyxPQUFPLGdCQUFnQixNQUFNLDRCQUE0QixDQUFDO0FBQzFELE9BQU8sRUFBRSxZQUFZLEVBQUUsTUFBTSxnQkFBZ0IsQ0FBQztBQU85Qzs7Ozs7R0FLRztBQUNILE1BQU0sT0FBTyxtQkFBbUI7SUFDNUI7Ozs7Ozs7O09BUUc7SUFDSSxNQUFNLENBQUMsS0FBSyxDQUFDLFVBQVUsQ0FBQyxHQUFtQyxFQUM5RCxPQUFxQztRQUNyQyxJQUFJLFFBQStCLENBQUM7UUFFcEMsSUFBSTtZQUNBLFFBQVEsR0FBRyxVQUFVLENBQUMsbUJBQW1CLENBQUMsR0FBRyxDQUFDLENBQUM7U0FDbEQ7UUFBQyxPQUFPLEtBQUssRUFBRTtZQUNaLElBQUksS0FBSyxDQUFDLElBQUksS0FBSyxpQkFBaUIsQ0FBQyxtQkFBbUIsRUFBRTtnQkFDdEQsT0FBTyxLQUFLLENBQUM7YUFDaEI7WUFFRCxNQUFNLEtBQUssQ0FBQztTQUNmO1FBRUQsT0FBTyxJQUFJLENBQUMsV0FBVyxDQUFDLFFBQVEsRUFBRSxTQUFTLEVBQUUsT0FBTyxDQUFDLENBQUM7SUFDMUQsQ0FBQztJQUVEOzs7Ozs7O09BT0c7SUFDSSxNQUFNLENBQUMsS0FBSyxDQUFDLGVBQWUsQ0FBQyxJQUF3QyxFQUN4RSxPQUFxQztRQUNyQyxPQUFPLElBQUksQ0FBQyxhQUFhLENBQUMsSUFBSSxFQUFFLE9BQU8sQ0FBQyxDQUFDO0lBQzdDLENBQUM7SUFFRDs7Ozs7Ozs7OztPQVVHO0lBQ0ksTUFBTSxDQUFDLEtBQUssQ0FBQywwQkFBMEIsQ0FBQyxJQUFnQyxFQUMzRSxLQUEyQixFQUMzQixPQUFxQztRQUNyQyxPQUFPLElBQUksQ0FBQyx3QkFBd0IsQ0FBQyxJQUFJLEVBQUUsS0FBSyxFQUFFLE9BQU8sQ0FBQyxDQUFDO0lBQy9ELENBQUM7SUFFRDs7Ozs7OztPQU9HO0lBQ0ssTUFBTSxDQUFDLEtBQUssQ0FBQyxhQUFhLENBQUMsSUFBd0MsRUFDdkUsT0FBcUM7UUFFckMsTUFBTSxTQUFTLEdBQTRCLEVBQUUsQ0FBQztRQUU5QyxzQ0FBc0M7UUFDdEMsS0FBSyxNQUFNLFFBQVEsSUFBSSxJQUFJLEVBQUU7WUFDekIsSUFBSSxHQUFHLENBQUM7WUFDUixJQUFJO2dCQUNBLEdBQUcsR0FBRyxVQUFVLENBQUMsbUJBQW1CLENBQUMsUUFBUSxDQUFDLENBQUM7YUFDbEQ7WUFBQyxPQUFPLEtBQUssRUFBRTtnQkFDWixJQUFJLEtBQUssQ0FBQyxJQUFJLEtBQUssaUJBQWlCLENBQUMsbUJBQW1CLEVBQUU7b0JBQ3RELE9BQU8sS0FBSyxDQUFDO2lCQUNoQjtnQkFDRCxNQUFNLEtBQUssQ0FBQzthQUNmO1lBRUQsU0FBUyxDQUFDLElBQUksQ0FBQyxHQUFHLENBQUMsQ0FBQztTQUN2QjtRQUVELE1BQU0sSUFBSSxHQUFHLE9BQU8sRUFBRSxJQUFJLENBQUM7UUFFM0IsZ0RBQWdEO1FBQ2hELE1BQU0sU0FBUyxHQUFHLFNBQVMsQ0FBQyxDQUFDLENBQUMsQ0FBQyxLQUFLLENBQUMsVUFBVSxDQUFDLFNBQVMsQ0FBQztRQUMxRCxJQUFJLE9BQTZCLENBQUM7UUFFbEMsaURBQWlEO1FBQ2pELElBQUk7WUFDQSxPQUFPLEdBQUcsTUFBTSxvQkFBb0IsQ0FBQyxNQUFNLENBQUMsU0FBUyxFQUFFLEVBQUUsSUFBSSxFQUFFLENBQUMsQ0FBQyxJQUFJLENBQUMsVUFBVSxDQUFDLFlBQVksRUFBRSxDQUFDLENBQUM7U0FDcEc7UUFBQyxPQUFPLEtBQUssRUFBRTtZQUNaLElBQUksS0FBSyxDQUFDLElBQUksS0FBSywwQkFBMEIsQ0FBQyxxQkFBcUIsRUFBRTtnQkFDakUsT0FBTyxLQUFLLENBQUM7YUFDaEI7WUFDRCxNQUFNLEtBQUssQ0FBQztTQUNmO1FBRUQsSUFBSSxLQUFLLEdBQUcsQ0FBQyxDQUFDO1FBQ2QsTUFBTSxtQkFBbUIsR0FBZ0M7WUFDckQsR0FBRyxPQUFPO1NBQ2IsQ0FBQztRQUVGLEtBQUssTUFBTSxRQUFRLElBQUksU0FBUyxFQUFFO1lBQzlCLE1BQU0sVUFBVSxHQUFHLFFBQVEsQ0FBQyxLQUFLLENBQUMsVUFBVSxDQUFDO1lBRTdDLDREQUE0RDtZQUM1RCxJQUFJLFVBQVUsQ0FBQyxTQUFTLEtBQUssU0FBUyxFQUFFO2dCQUNwQyxPQUFPLEtBQUssQ0FBQzthQUNoQjtZQUVELHNEQUFzRDtZQUN0RCxJQUFJLEtBQUssS0FBSyxDQUFDLEVBQUU7Z0JBQ2IsbUJBQW1CLENBQUMsTUFBTSxHQUFHLEtBQUssQ0FBQztnQkFDbkMscUZBQXFGO2FBQ3hGO2lCQUFNLElBQUksT0FBTyxJQUFJLE9BQU8sQ0FBQyxNQUFNLEtBQUssS0FBSyxFQUFFO2dCQUM1QyxtQkFBbUIsQ0FBQyxNQUFNLEdBQUcsS0FBSyxDQUFDO2FBQ3RDO2lCQUFNO2dCQUNILG1CQUFtQixDQUFDLE1BQU0sR0FBRyxJQUFJLENBQUM7YUFDckM7WUFFRCxNQUFNLGtCQUFrQixHQUFHLE1BQU0sSUFBSSxDQUFDLGtCQUFrQixDQUFDLFFBQVEsRUFBRSxPQUFPLEVBQUUsbUJBQW1CLENBQUMsQ0FBQztZQUVqRyxJQUFJLENBQUMsa0JBQWtCLENBQUMsTUFBTSxFQUFFO2dCQUM1QixPQUFPLEtBQUssQ0FBQzthQUNoQjtZQUVELEtBQUssRUFBRSxDQUFDO1NBQ1g7UUFFRCxPQUFPLElBQUksQ0FBQztJQUNoQixDQUFDO0lBRU8sTUFBTSxDQUFDLEtBQUssQ0FBQyx3QkFBd0IsQ0FBQyxJQUFnQyxFQUMxRSxLQUEyQixFQUMzQixPQUFxQztRQUNyQyxNQUFNLFlBQVksR0FBRyxLQUFLLENBQUMsVUFBVSxDQUFDO1FBRXRDLE1BQU0sU0FBUyxHQUFvQixFQUFFLENBQUM7UUFFdEMsS0FBSyxNQUFNLFFBQVEsSUFBSSxJQUFJLEVBQUU7WUFDekIsTUFBTSxHQUFHLEdBQUcsVUFBVSxDQUFDLFdBQVcsQ0FBQyxRQUFRLENBQUMsQ0FBQztZQUU3QyxTQUFTLENBQUMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxDQUFDO1NBQ3ZCO1FBRUQsSUFBSSxRQUFRLEdBQUcsSUFBSSxDQUFDO1FBQ3BCLHFGQUFxRjtRQUNyRixJQUFJLE9BQU8sRUFBRSxNQUFNLEtBQUssS0FBSyxFQUFFO1lBQzNCLFFBQVEsR0FBRyxLQUFLLENBQUM7U0FDcEI7UUFFRCxNQUFNLFNBQVMsR0FBRyxZQUFZLENBQUMsU0FBUyxDQUFDO1FBQ3pDLElBQUksT0FBNkIsQ0FBQztRQUNsQyxJQUFJO1lBQ0EsT0FBTyxHQUFHLE1BQU0sb0JBQW9CLENBQUMsTUFBTSxDQUFDLFNBQVMsRUFBRSxPQUFPLENBQUMsQ0FBQyxJQUFJLENBQUMsVUFBVSxDQUFDLFlBQVksRUFBRSxDQUFDLENBQUM7U0FDbkc7UUFBQyxPQUFPLEtBQUssRUFBRTtZQUNaLElBQUksS0FBSyxDQUFDLElBQUksS0FBSywwQkFBMEIsQ0FBQyxxQkFBcUIsRUFBRTtnQkFDakUsT0FBTyxLQUFLLENBQUM7YUFDaEI7WUFFRCxNQUFNLEtBQUssQ0FBQztTQUNmO1FBRUQsNkJBQTZCO1FBQzdCLE1BQU0sUUFBUSxHQUFHLElBQUksQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLFNBQVMsQ0FBQyxLQUFLLENBQUMsQ0FBQyxDQUFDO1FBQ25ELE1BQU0sR0FBRyxHQUFHLFNBQVMsQ0FBQyxDQUFDLENBQXFDLENBQUM7UUFDN0QsR0FBRyxDQUFDLEtBQUssR0FBRyxRQUFRLENBQUM7UUFDckIsZ0RBQWdEO1FBQ2hELE1BQU0sa0JBQWtCLEdBQUcsTUFBTSxJQUFJLENBQUMsV0FBVyxDQUM3QyxHQUFHLEVBQ0gsT0FBTyxFQUNQLE9BQU8sQ0FDVixDQUFDO1FBRUYsZ0NBQWdDO1FBQ2hDLE9BQU8sR0FBRyxDQUFDLEtBQUssQ0FBQztRQUVqQixxRkFBcUY7UUFDckYsSUFBSSxrQkFBa0IsS0FBSyxLQUFLLEVBQUU7WUFDOUIsT0FBTyxLQUFLLENBQUM7U0FDaEI7UUFFRCxvR0FBb0c7UUFDcEcsaUVBQWlFO1FBRWpFLHdDQUF3QztRQUN4QyxLQUFLLElBQUksS0FBSyxHQUFHLENBQUMsRUFBRSxLQUFLLEdBQUcsU0FBUyxDQUFDLE1BQU0sRUFBRSxLQUFLLEVBQUUsRUFBRTtZQUNuRCxNQUFNLElBQUksR0FBRyxTQUFTLENBQUMsS0FBSyxDQUF3QixDQUFDO1lBRXJELElBQUksV0FBVyxHQUFHLE1BQU0sT0FBTyxDQUFDLFNBQVMsRUFBRSxDQUFDO1lBRTVDLElBQUksUUFBUSxHQUFHLEtBQUssQ0FBQztZQUNyQixPQUFPLENBQUMsUUFBUSxJQUFJLFdBQVcsRUFBRTtnQkFDN0IsTUFBTSxtQkFBbUIsR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDLFdBQVcsQ0FBQyxPQUFPLENBQUMsUUFBUSxFQUFFLENBQUMsQ0FBQztnQkFFdkUsZ0RBQWdEO2dCQUNoRCxJQUFJLENBQUMsS0FBSyxHQUFHLG1CQUFtQixDQUFDO2dCQUVqQyxRQUFRLEdBQUcsTUFBTSxZQUFZLENBQUMsVUFBVSxDQUNwQyxJQUFJLEVBQ0osRUFBRSxJQUFJLEVBQUUsT0FBTyxFQUFFLElBQUksRUFBRSxDQUMxQixDQUFDO2dCQUVGLElBQUksQ0FBQyxRQUFRLEVBQUU7b0JBQ1gscUZBQXFGO29CQUNyRixJQUFJLFFBQVEsS0FBSyxLQUFLLEVBQUU7d0JBQ3BCLFdBQVcsR0FBRyxNQUFNLE9BQU8sQ0FBQyxTQUFTLEVBQUUsQ0FBQztxQkFDM0M7eUJBQU07d0JBQ0gsT0FBTyxLQUFLLENBQUM7cUJBQ2hCO2lCQUNKO2FBQ0o7WUFFRCxJQUFJLENBQUMsUUFBUSxJQUFJLENBQUMsV0FBVyxFQUFFO2dCQUMzQixPQUFPLEtBQUssQ0FBQzthQUNoQjtZQUVELE9BQU8sSUFBSSxDQUFDLEtBQUssQ0FBQztTQUNyQjtRQUVELE9BQU8sSUFBSSxDQUFDO0lBQ2hCLENBQUM7SUFFTyxNQUFNLENBQUMsS0FBSyxDQUFDLFdBQVcsQ0FBQyxRQUErQixFQUM1RCxPQUE4QixFQUM5QixPQUFxQztRQUNyQyxJQUFJLE9BQU8sRUFBRSxJQUFJLElBQUksQ0FBQyxnQkFBZ0IsQ0FBQyxHQUFHLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxFQUFFO1lBQ3RELE1BQU0sSUFBSSxZQUFZLENBQUMsaUJBQWlCLENBQUMsWUFBWSxFQUNqRCwwQkFBMEIsQ0FBQyxDQUFDO1NBQ25DO1FBRUQsTUFBTSxZQUFZLEdBQUcsUUFBUSxDQUFDLEtBQUssQ0FBQyxVQUFVLENBQUM7UUFFL0MsSUFBSSxXQUFXLENBQUM7UUFFaEIsSUFBSSxhQUFhLEdBQXlCLE9BQU8sQ0FBQztRQUVsRCxJQUFJO1lBQ0EsSUFBSSxDQUFDLE9BQU8sRUFBRTtnQkFDVixhQUFhLEdBQUcsTUFBTSxvQkFBb0IsQ0FBQyxNQUFNLENBQzdDLFlBQVksQ0FBQyxTQUFTLEVBQUUsT0FBTyxDQUFDLENBQUMsSUFBSSxDQUFDLFVBQVUsQ0FBQyxZQUFZLEVBQUUsQ0FBQyxDQUFDO2FBQ3hFO1lBQ0QsV0FBVyxHQUFHLE1BQU0sYUFBYSxDQUFDLEtBQUssQ0FBQyxZQUFZLENBQUMsV0FBVyxFQUFFLFlBQVksQ0FBQyxLQUFLLENBQUMsQ0FBQztTQUN6RjtRQUFDLE9BQU8sS0FBSyxFQUFFO1lBQ1osSUFBSSxLQUFLLENBQUMsSUFBSSxLQUFLLDBCQUEwQixDQUFDLGFBQWE7Z0JBQ3ZELEtBQUssQ0FBQyxJQUFJLEtBQUssMEJBQTBCLENBQUMsbUJBQW1CO2dCQUM3RCxLQUFLLENBQUMsSUFBSSxLQUFLLDBCQUEwQixDQUFDLHFCQUFxQixFQUFFO2dCQUNqRSxPQUFPLEtBQUssQ0FBQzthQUNoQjtZQUVELHdEQUF3RDtZQUN4RCxNQUFNLEtBQUssQ0FBQztTQUNmO1FBRUQsTUFBTSxtQkFBbUIsR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDLFdBQVcsQ0FBQyxPQUFPLENBQUMsUUFBUSxFQUFFLENBQUMsQ0FBQztRQUV2RSxnREFBZ0Q7UUFDaEQsUUFBUSxDQUFDLEtBQUssR0FBRyxtQkFBbUIsQ0FBQztRQUVyQyxNQUFNLE1BQU0sR0FBRyxNQUFNLFlBQVksQ0FBQyxVQUFVLENBQ3hDLFFBQTBDLEVBQzFDLEVBQUUsSUFBSSxFQUFFLE9BQU8sRUFBRSxJQUFJLEVBQUUsQ0FDMUIsQ0FBQztRQUdGLE9BQU8sTUFBTSxDQUFDO0lBQ2xCLENBQUM7SUFFTyxNQUFNLENBQUMsS0FBSyxDQUFDLGtCQUFrQixDQUFDLFFBQStCLEVBQ25FLE9BQTZCLEVBQzdCLE9BQXFDO1FBSXJDLElBQUksT0FBTyxFQUFFLElBQUksSUFBSSxDQUFDLGdCQUFnQixDQUFDLEdBQUcsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLEVBQUU7WUFDdEQsTUFBTSxJQUFJLFlBQVksQ0FBQyxpQkFBaUIsQ0FBQyxZQUFZLEVBQ2pELDBCQUEwQixDQUFDLENBQUM7U0FDbkM7UUFFRCxNQUFNLGVBQWUsR0FBRyxRQUFRLENBQUMsS0FBSyxDQUFDO1FBQ3ZDLE1BQU0sWUFBWSxHQUFHLFFBQVEsQ0FBQyxLQUFLLENBQUMsVUFBVSxDQUFDO1FBRS9DLElBQUksV0FBeUIsQ0FBQztRQUU5QixNQUFNLFdBQVcsR0FBRyxZQUFZLENBQUMsS0FBSyxDQUFDO1FBRXZDLElBQUk7WUFDQSxnREFBZ0Q7WUFDaEQscUZBQXFGO1lBQ3JGLElBQUksQ0FBQyxPQUFPLElBQUksT0FBTyxDQUFDLE1BQU0sS0FBSyxTQUFTLElBQUksT0FBTyxDQUFDLE1BQU0sS0FBSyxJQUFJLEVBQUU7Z0JBQ3JFLFdBQVcsR0FBRyxNQUFNLE9BQU8sQ0FBQyxTQUFTLEVBQUUsQ0FBQzthQUMzQztpQkFBTTtnQkFDSCxXQUFXLEdBQUcsTUFBTSxPQUFPLENBQUMsU0FBUyxFQUFFLENBQUM7Z0JBQ3hDLE9BQU8sV0FBVyxJQUFJLFdBQVcsQ0FBQyxLQUFLLEtBQUssV0FBVyxFQUFFO29CQUNyRCxXQUFXLEdBQUcsTUFBTSxPQUFPLENBQUMsU0FBUyxFQUFFLENBQUM7aUJBQzNDO2FBQ0o7U0FDSjtRQUFDLE9BQU8sS0FBSyxFQUFFO1lBQ1osSUFBSSxLQUFLLENBQUMsSUFBSSxLQUFLLDBCQUEwQixDQUFDLGFBQWEsRUFBRTtnQkFDekQsT0FBTyxFQUFFLE1BQU0sRUFBRSxLQUFLLEVBQUUsQ0FBQzthQUM1QjtZQUVELE1BQU0sS0FBSyxDQUFDO1NBQ2Y7UUFFRCxrRUFBa0U7UUFDbEUsSUFBSSxDQUFDLFdBQVcsSUFBSSxXQUFXLENBQUMsS0FBSyxLQUFLLFdBQVcsRUFBRTtZQUNuRCxPQUFPLEVBQUUsTUFBTSxFQUFFLEtBQUssRUFBRSxDQUFDO1NBQzVCO1FBRUQsTUFBTSxtQkFBbUIsR0FBRyxJQUFJLENBQUMsS0FBSyxDQUFDLFdBQVcsQ0FBQyxPQUFPLENBQUMsUUFBUSxFQUFFLENBQUMsQ0FBQztRQUV2RSxnREFBZ0Q7UUFDaEQsUUFBUSxDQUFDLEtBQUssR0FBRyxtQkFBbUIsQ0FBQztRQUVyQyxNQUFNLE1BQU0sR0FBRyxNQUFNLFlBQVksQ0FBQyxVQUFVLENBQ3hDLFFBQTBDLEVBQzFDLEVBQUUsSUFBSSxFQUFFLE9BQU8sRUFBRSxJQUFJLEVBQUUsQ0FDMUIsQ0FBQztRQUVGLGdDQUFnQztRQUNoQyxRQUFRLENBQUMsS0FBSyxHQUFHLGVBQWUsQ0FBQztRQUVqQyxPQUFPLEVBQUUsTUFBTSxFQUFFLFdBQVcsRUFBRSxDQUFDO0lBQ25DLENBQUM7Q0FDSiJ9

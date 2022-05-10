@@ -1,6 +1,6 @@
 import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaSigner } from "../src/iotaSigner";
-import { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
+import type { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { SignatureTypes } from "../src/models/signatureTypes";
 import { did, privateKey } from "./testCommon";
 

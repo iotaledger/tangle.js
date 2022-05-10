@@ -1,9 +1,10 @@
-import { IotaAnchoringChannel, IAnchoringResult, ProtocolHelper } from "@tangle-js/anchors";
+import { IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
+import type { IAnchoringResult } from "@tangle-js/anchors";
 
-import { IotaSigner } from "./iotaSigner";
-import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
-import { IJsonDocument } from "./models/IJsonDocument";
-import { ILdProofOptions } from "./models/ILdProofOptions";
+import type { IotaSigner } from "./iotaSigner";
+import type { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
+import type { IJsonDocument } from "./models/IJsonDocument";
+import type { ILdProofOptions } from "./models/ILdProofOptions";
 import { LinkedDataProofTypes } from "./models/linkedDataProofTypes";
 
 export class IotaLdProofGenerator {

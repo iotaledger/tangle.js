@@ -1,15 +1,16 @@
-import { IotaAnchoringChannel, IFetchResult, AnchoringChannelErrorNames, SeedHelper }
+import { IotaAnchoringChannel, AnchoringChannelErrorNames, SeedHelper }
     from "@tangle-js/anchors";
+import type { IFetchResult } from "@tangle-js/anchors";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import JsonHelper from "./helpers/jsonHelper";
 import ValidationHelper from "./helpers/validationHelper";
 import { IotaVerifier } from "./iotaVerifier";
-import { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
-import { IJsonAnchoredDocument } from "./models/IJsonAnchoredDocument";
-import { IJsonDocument } from "./models/IJsonDocument";
-import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
-import { ILdProofVerificationOptions } from "./models/ILdProofVerificationOptions";
+import type { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";
+import type { IJsonAnchoredDocument } from "./models/IJsonAnchoredDocument";
+import type { IJsonDocument } from "./models/IJsonDocument";
+import type { IJsonSignedDocument } from "./models/IJsonSignedDocument";
+import type { ILdProofVerificationOptions } from "./models/ILdProofVerificationOptions";
 
 /**
  *  Linked Data Proof Verifier

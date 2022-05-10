@@ -1,9 +1,9 @@
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
-import { IJsonAnchoredDocument } from "../models/IJsonAnchoredDocument";
-import { IJsonDocument } from "../models/IJsonDocument";
-import { IJsonSignedDocument } from "../models/IJsonSignedDocument";
-import { ILinkedDataProof } from "../models/ILinkedDataProof";
+import type { IJsonAnchoredDocument } from "../models/IJsonAnchoredDocument";
+import type { IJsonDocument } from "../models/IJsonDocument";
+import type { IJsonSignedDocument } from "../models/IJsonSignedDocument";
+import type { ILinkedDataProof } from "../models/ILinkedDataProof";
 import { LinkedDataProofTypes } from "../models/linkedDataProofTypes";
 
 export default class JsonHelper {

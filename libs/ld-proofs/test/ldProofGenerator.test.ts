@@ -2,7 +2,7 @@ import { IotaAnchoringChannel } from "@tangle-js/anchors";
 import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaSigner } from "../src/iotaSigner";
-import { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
+import type { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import { LinkedDataProofTypes } from "../src/models/linkedDataProofTypes";
 import { SignatureTypes } from "../src/models/signatureTypes";
 import { did, privateKey } from "./testCommon";

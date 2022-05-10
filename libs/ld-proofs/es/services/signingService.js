@@ -1,23 +1,9 @@
-"use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const bs58_1 = __importDefault(require("bs58"));
-const elliptic_1 = require("elliptic");
-const ldProofError_1 = __importDefault(require("../errors/ldProofError"));
-const ldProofErrorNames_1 = __importDefault(require("../errors/ldProofErrorNames"));
-const didService_1 = __importDefault(require("./didService"));
-class SigningService {
+import bs58 from "bs58";
+import { eddsa as EdDSA } from "elliptic";
+import LdProofError from "../errors/ldProofError";
+import LdProofErrorNames from "../errors/ldProofErrorNames";
+import DidService from "./didService";
+export default class SigningService {
     /**
      * Signs the message using the identity and method specified
      *
@@ -28,31 +14,29 @@ class SigningService {
      * @returns The signature details
      *
      */
-    static sign(request) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const didDocument = request.didDocument;
-            let methodDocument;
-            try {
-                methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
-            }
-            catch (_a) {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_DID_METHOD, "The method has not been found on the DID Document");
-            }
-            if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_DID_METHOD, "Only 'Ed25519VerificationKey2018' verification methods are allowed");
-            }
-            const proofedOwnership = yield didService_1.default.verifyOwnership(request.didDocument, request.method, request.secret);
-            if (!proofedOwnership) {
-                throw new ldProofError_1.default(ldProofErrorNames_1.default.INVALID_SIGNING_KEY, "The secret key supplied does not correspond to the verification method");
-            }
-            const signatureValue = this.calculateSignature(request.secret, request.message);
-            const response = {
-                created: new Date().toISOString(),
-                verificationMethod: `${didDocument.id}#${request.method}`,
-                signatureValue
-            };
-            return response;
-        });
+    static async sign(request) {
+        const didDocument = request.didDocument;
+        let methodDocument;
+        try {
+            methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
+        }
+        catch {
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD, "The method has not been found on the DID Document");
+        }
+        if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
+            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD, "Only 'Ed25519VerificationKey2018' verification methods are allowed");
+        }
+        const proofedOwnership = await DidService.verifyOwnership(request.didDocument, request.method, request.secret);
+        if (!proofedOwnership) {
+            throw new LdProofError(LdProofErrorNames.INVALID_SIGNING_KEY, "The secret key supplied does not correspond to the verification method");
+        }
+        const signatureValue = this.calculateSignature(request.secret, request.message);
+        const response = {
+            created: new Date().toISOString(),
+            verificationMethod: `${didDocument.id}#${request.method}`,
+            signatureValue
+        };
+        return response;
     }
     /**
      * Calculates the signature
@@ -62,14 +46,13 @@ class SigningService {
      * @returns the signature value
      */
     static calculateSignature(privateKey, message) {
-        const bytesKey = bs58_1.default.decode(privateKey);
-        const ed25519 = new elliptic_1.eddsa("ed25519");
+        const bytesKey = bs58.decode(privateKey);
+        const ed25519 = new EdDSA("ed25519");
         const ecKey = ed25519.keyFromSecret(bytesKey.toString("hex"), "hex");
         const signatureHex = ecKey.sign(message).toHex();
         // Final conversion to B58
-        const signature = bs58_1.default.encode(Buffer.from(signatureHex, "hex"));
+        const signature = bs58.encode(Buffer.from(signatureHex, "hex"));
         return signature;
     }
 }
-exports.default = SigningService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2lnbmluZ1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvc2VydmljZXMvc2lnbmluZ1NlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFDQSxnREFBd0I7QUFDeEIsdUNBQTBDO0FBQzFDLDBFQUFrRDtBQUNsRCxvRkFBNEQ7QUFHNUQsOERBQXNDO0FBRXRDLE1BQXFCLGNBQWM7SUFDL0I7Ozs7Ozs7OztPQVNHO0lBQ0ksTUFBTSxDQUFPLElBQUksQ0FBQyxPQUF3Qjs7WUFDN0MsTUFBTSxXQUFXLEdBQUcsT0FBTyxDQUFDLFdBQVcsQ0FBQztZQUV4QyxJQUFJLGNBQWtDLENBQUM7WUFDdkMsSUFBSTtnQkFDQSxjQUFjLEdBQUcsV0FBVyxDQUFDLFVBQVUsQ0FBQyxHQUFHLFdBQVcsQ0FBQyxFQUFFLElBQUksT0FBTyxDQUFDLE1BQU0sRUFBRSxDQUFDLENBQUM7YUFDbEY7WUFBQyxXQUFNO2dCQUNKLE1BQU0sSUFBSSxzQkFBWSxDQUFDLDJCQUFpQixDQUFDLGtCQUFrQixFQUN2RCxtREFBbUQsQ0FBQyxDQUFDO2FBQzVEO1lBQ0QsSUFBSSxjQUFjLElBQUksY0FBYyxDQUFDLElBQUksS0FBSyw0QkFBNEIsRUFBRTtnQkFDeEUsTUFBTSxJQUFJLHNCQUFZLENBQUMsMkJBQWlCLENBQUMsa0JBQWtCLEVBQ3ZELG9FQUFvRSxDQUFDLENBQUM7YUFDN0U7WUFFRCxNQUFNLGdCQUFnQixHQUFHLE1BQU0sb0JBQVUsQ0FBQyxlQUFlLENBQUMsT0FBTyxDQUFDLFdBQVcsRUFDekUsT0FBTyxDQUFDLE1BQU0sRUFBRSxPQUFPLENBQUMsTUFBTSxDQUFDLENBQUM7WUFFcEMsSUFBSSxDQUFDLGdCQUFnQixFQUFFO2dCQUNuQixNQUFNLElBQUksc0JBQVksQ0FBQywyQkFBaUIsQ0FBQyxtQkFBbUIsRUFDeEQsd0VBQXdFLENBQUMsQ0FBQzthQUNqRjtZQUVELE1BQU0sY0FBYyxHQUFHLElBQUksQ0FBQyxrQkFBa0IsQ0FBQyxPQUFPLENBQUMsTUFBTSxFQUFFLE9BQU8sQ0FBQyxPQUFPLENBQUMsQ0FBQztZQUVoRixNQUFNLFFBQVEsR0FBbUI7Z0JBQzdCLE9BQU8sRUFBRSxJQUFJLElBQUksRUFBRSxDQUFDLFdBQVcsRUFBRTtnQkFDakMsa0JBQWtCLEVBQUUsR0FBRyxXQUFXLENBQUMsRUFBRSxJQUFJLE9BQU8sQ0FBQyxNQUFNLEVBQUU7Z0JBQ3pELGNBQWM7YUFDakIsQ0FBQztZQUVGLE9BQU8sUUFBUSxDQUFDO1FBQ3BCLENBQUM7S0FBQTtJQUVEOzs7Ozs7T0FNRztJQUNLLE1BQU0sQ0FBQyxrQkFBa0IsQ0FBQyxVQUFrQixFQUFFLE9BQWU7UUFDakUsTUFBTSxRQUFRLEdBQUcsY0FBSSxDQUFDLE1BQU0sQ0FBQyxVQUFVLENBQUMsQ0FBQztRQUV6QyxNQUFNLE9BQU8sR0FBRyxJQUFJLGdCQUFLLENBQUMsU0FBUyxDQUFDLENBQUM7UUFDckMsTUFBTSxLQUFLLEdBQUcsT0FBTyxDQUFDLGFBQWEsQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLEtBQUssQ0FBQyxFQUFFLEtBQUssQ0FBQyxDQUFDO1FBRXJFLE1BQU0sWUFBWSxHQUFHLEtBQUssQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUMsS0FBSyxFQUFFLENBQUM7UUFFakQsMEJBQTBCO1FBQzFCLE1BQU0sU0FBUyxHQUFHLGNBQUksQ0FBQyxNQUFNLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxZQUFZLEVBQUUsS0FBSyxDQUFDLENBQUMsQ0FBQztRQUNoRSxPQUFPLFNBQW1CLENBQUM7SUFDL0IsQ0FBQztDQUNKO0FBaEVELGlDQWdFQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2lnbmluZ1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvc2VydmljZXMvc2lnbmluZ1NlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQ0EsT0FBTyxJQUFJLE1BQU0sTUFBTSxDQUFDO0FBQ3hCLE9BQU8sRUFBRSxLQUFLLElBQUksS0FBSyxFQUFFLE1BQU0sVUFBVSxDQUFDO0FBQzFDLE9BQU8sWUFBWSxNQUFNLHdCQUF3QixDQUFDO0FBQ2xELE9BQU8saUJBQWlCLE1BQU0sNkJBQTZCLENBQUM7QUFHNUQsT0FBTyxVQUFVLE1BQU0sY0FBYyxDQUFDO0FBRXRDLE1BQU0sQ0FBQyxPQUFPLE9BQU8sY0FBYztJQUMvQjs7Ozs7Ozs7O09BU0c7SUFDSSxNQUFNLENBQUMsS0FBSyxDQUFDLElBQUksQ0FBQyxPQUF3QjtRQUM3QyxNQUFNLFdBQVcsR0FBRyxPQUFPLENBQUMsV0FBVyxDQUFDO1FBRXhDLElBQUksY0FBa0MsQ0FBQztRQUN2QyxJQUFJO1lBQ0EsY0FBYyxHQUFHLFdBQVcsQ0FBQyxVQUFVLENBQUMsR0FBRyxXQUFXLENBQUMsRUFBRSxJQUFJLE9BQU8sQ0FBQyxNQUFNLEVBQUUsQ0FBQyxDQUFDO1NBQ2xGO1FBQUMsTUFBTTtZQUNKLE1BQU0sSUFBSSxZQUFZLENBQUMsaUJBQWlCLENBQUMsa0JBQWtCLEVBQ3ZELG1EQUFtRCxDQUFDLENBQUM7U0FDNUQ7UUFDRCxJQUFJLGNBQWMsSUFBSSxjQUFjLENBQUMsSUFBSSxLQUFLLDRCQUE0QixFQUFFO1lBQ3hFLE1BQU0sSUFBSSxZQUFZLENBQUMsaUJBQWlCLENBQUMsa0JBQWtCLEVBQ3ZELG9FQUFvRSxDQUFDLENBQUM7U0FDN0U7UUFFRCxNQUFNLGdCQUFnQixHQUFHLE1BQU0sVUFBVSxDQUFDLGVBQWUsQ0FBQyxPQUFPLENBQUMsV0FBVyxFQUN6RSxPQUFPLENBQUMsTUFBTSxFQUFFLE9BQU8sQ0FBQyxNQUFNLENBQUMsQ0FBQztRQUVwQyxJQUFJLENBQUMsZ0JBQWdCLEVBQUU7WUFDbkIsTUFBTSxJQUFJLFlBQVksQ0FBQyxpQkFBaUIsQ0FBQyxtQkFBbUIsRUFDeEQsd0VBQXdFLENBQUMsQ0FBQztTQUNqRjtRQUVELE1BQU0sY0FBYyxHQUFHLElBQUksQ0FBQyxrQkFBa0IsQ0FBQyxPQUFPLENBQUMsTUFBTSxFQUFFLE9BQU8sQ0FBQyxPQUFPLENBQUMsQ0FBQztRQUVoRixNQUFNLFFBQVEsR0FBbUI7WUFDN0IsT0FBTyxFQUFFLElBQUksSUFBSSxFQUFFLENBQUMsV0FBVyxFQUFFO1lBQ2pDLGtCQUFrQixFQUFFLEdBQUcsV0FBVyxDQUFDLEVBQUUsSUFBSSxPQUFPLENBQUMsTUFBTSxFQUFFO1lBQ3pELGNBQWM7U0FDakIsQ0FBQztRQUVGLE9BQU8sUUFBUSxDQUFDO0lBQ3BCLENBQUM7SUFFRDs7Ozs7O09BTUc7SUFDSyxNQUFNLENBQUMsa0JBQWtCLENBQUMsVUFBa0IsRUFBRSxPQUFlO1FBQ2pFLE1BQU0sUUFBUSxHQUFHLElBQUksQ0FBQyxNQUFNLENBQUMsVUFBVSxDQUFDLENBQUM7UUFFekMsTUFBTSxPQUFPLEdBQUcsSUFBSSxLQUFLLENBQUMsU0FBUyxDQUFDLENBQUM7UUFDckMsTUFBTSxLQUFLLEdBQUcsT0FBTyxDQUFDLGFBQWEsQ0FBQyxRQUFRLENBQUMsUUFBUSxDQUFDLEtBQUssQ0FBQyxFQUFFLEtBQUssQ0FBQyxDQUFDO1FBRXJFLE1BQU0sWUFBWSxHQUFHLEtBQUssQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUMsS0FBSyxFQUFFLENBQUM7UUFFakQsMEJBQTBCO1FBQzFCLE1BQU0sU0FBUyxHQUFHLElBQUksQ0FBQyxNQUFNLENBQUMsTUFBTSxDQUFDLElBQUksQ0FBQyxZQUFZLEVBQUUsS0FBSyxDQUFDLENBQUMsQ0FBQztRQUNoRSxPQUFPLFNBQW1CLENBQUM7SUFDL0IsQ0FBQztDQUNKIn0=

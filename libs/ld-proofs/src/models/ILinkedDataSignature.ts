@@ -1,4 +1,4 @@
-import { ILinkedDataProof } from "./ILinkedDataProof";
+import type { ILinkedDataProof } from "./ILinkedDataProof";
 
 export interface ILinkedDataSignature extends ILinkedDataProof {
     proofValue: string;

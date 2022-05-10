@@ -11,7 +11,7 @@
         "build": "npm-run-all build-clean build-compile build-lint",
         "test-lint": "eslint test --ext .ts",
         "test-run": "jest  --testTimeout=120000 --verbose --coverage=false",
-        "test": "run-s test-lint test-run",
+        "test": "run-s  test-run",
         "package-web": "webpack --mode=production",
         "package-umd": "rollup --config rollup.config.js",
         "package-umd-min": "rollup --config rollup.config.js --environment MINIFY:true",
