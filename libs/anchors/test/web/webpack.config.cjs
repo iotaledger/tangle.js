@@ -7,10 +7,7 @@ const clientConfig = {
   resolve: {
     extensions: [".js"],
     alias: {
-      "@tangle-js/anchors": path.resolve(__dirname, "../../dist/web/anchors-web.js"),
-      "@iota/streams/node": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
-      "@iota/streams/web": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
-      "@iota/streams/web/streams.js": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web/streams.js")
+      "@tangle-js/anchors": path.resolve(__dirname, "../../dist/web/anchors-web.js")
     },
   },
   experiments: {
