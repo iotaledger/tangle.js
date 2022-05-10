@@ -1,9 +1,9 @@
 import { set_panic_hook as streamsPanicHook } from "@iota/streams/node";
 import * as fetch from "node-fetch";
-import init from "../../streams/web/streams.js";
+import init from "@iota/streams/web/streams.js";
 
 const isBrowser = new Function("try { return this===window; } catch(e) { return false; }");
-const WASM_PATH = "/wasm/streams_bg.wasm";
+const WASM_PATH = "/public/wasm/streams_bg.wasm";
 
 /**
  *   Initialization function for the Streams WASM bindings
