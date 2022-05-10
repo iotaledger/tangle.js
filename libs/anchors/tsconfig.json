@@ -20,7 +20,8 @@
     "forceConsistentCasingInFileNames": true,
     "importsNotUsedAsValues": "error",
     "preserveValueImports": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "allowJs": true
   },
   "include": [
     "src"

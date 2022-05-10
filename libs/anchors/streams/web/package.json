@@ -18,8 +18,8 @@
     "streams.js",
     "streams.d.ts"
   ],
-  "module": "streams.js",
   "homepage": "https://wiki.iota.org/streams/libraries/wasm/overview",
   "types": "streams.d.ts",
-  "sideEffects": false
+  "sideEffects": false,
+  "type": "module"
 }

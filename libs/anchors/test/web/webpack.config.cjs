@@ -7,7 +7,7 @@ const clientConfig = {
   resolve: {
     extensions: [".js"],
     alias: {
-      "anchors-web.js": path.resolve(__dirname, "../../dist/anchors-web.js"),
+      "@tangle-js/anchors": path.resolve(__dirname, "../../dist/web/anchors-web.js"),
       "@iota/streams/node": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
       "@iota/streams/web": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web"),
       "@iota/streams/web/streams.js": path.resolve(__dirname, "../../../../node_modules/@iota/streams/web/streams.js")
@@ -38,7 +38,7 @@ const clientConfig = {
       patterns: [
         {
           from: path.resolve(__dirname, "../../../../node_modules/@iota/streams/web/streams_bg.wasm"),
-          to: path.resolve(__dirname, "dist/wasm"),
+          to: path.resolve(__dirname, "dist/public/wasm"),
         },
       ],
     }),

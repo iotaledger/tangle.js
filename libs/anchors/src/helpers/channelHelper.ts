@@ -46,7 +46,7 @@ export class ChannelHelper {
 
         // Iteratively retrieve messages until We find the one to anchor to
         while (!found) {
-            const messages = await subs.clone().fetch_next_msgs();
+            const messages = await subs.clone().fetchNextMsgs();
             if (!messages || messages.length === 0) {
                 break;
             }

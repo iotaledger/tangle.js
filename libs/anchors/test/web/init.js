@@ -1,6 +1,4 @@
-import { SeedHelper, IotaAnchoringChannel } from "anchors-web.js";
-import { set_panic_hook } from "@iota/streams/web";
-// import init from "@iota/streams/web/streams.js";
+import { SeedHelper, IotaAnchoringChannel } from "@tangle-js/anchors";
 
 window.onload = async () => {
     console.log("On load");
@@ -10,14 +8,10 @@ window.onload = async () => {
         .querySelector("#create-channel")
         .addEventListener("click", () => createChannel());
 
-    // await init("wasm/streams_bg.wasm");
-
     console.log("Panic Hook called");
 };
 
 async function createChannel() {
-    // set_panic_hook();
-
     const seed = SeedHelper.generateSeed();
     console.log("Seed40011!!!", seed);
 
@@ -30,7 +24,9 @@ async function createChannel() {
     const result = await channel.anchor(enc.encode("Hello from browser!!!"),channel.firstAnchorageID);
     console.log(result);
 
-    const response = await channel.fetch(channel.firstAnchorageID);
+    const channel2 = await IotaAnchoringChannel.fromID(channel.channelID).bind(channel.seed);
+
+    const response = await channel2.fetch(channel.firstAnchorageID);
 
     console.log(response.message.toString());
 }

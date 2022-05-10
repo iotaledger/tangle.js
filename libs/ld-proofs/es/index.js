@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -24,4 +28,4 @@ __exportStar(require("./models/ILdProofOptions"), exports);
 __exportStar(require("./models/ILdProofVerificationOptions"), exports);
 __exportStar(require("./models/signatureTypes"), exports);
 __exportStar(require("./models/linkedDataProofTypes"), exports);
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7O0FBQUEsK0NBQTZCO0FBQzdCLGlEQUErQjtBQUMvQix5REFBdUM7QUFDdkMsd0RBQXNDO0FBQ3RDLDBEQUF3QztBQUN4QywyREFBeUM7QUFDekMsZ0VBQThDO0FBQzlDLG9FQUFrRDtBQUNsRCxnRUFBOEM7QUFDOUMsZ0VBQThDO0FBQzlDLDJEQUF5QztBQUN6Qyx1RUFBcUQ7QUFDckQsMERBQXdDO0FBQ3hDLGdFQUE4QyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLCtDQUE2QjtBQUM3QixpREFBK0I7QUFDL0IseURBQXVDO0FBQ3ZDLHdEQUFzQztBQUN0QywwREFBd0M7QUFDeEMsMkRBQXlDO0FBQ3pDLGdFQUE4QztBQUM5QyxvRUFBa0Q7QUFDbEQsZ0VBQThDO0FBQzlDLGdFQUE4QztBQUM5QywyREFBeUM7QUFDekMsdUVBQXFEO0FBQ3JELDBEQUF3QztBQUN4QyxnRUFBOEMifQ==

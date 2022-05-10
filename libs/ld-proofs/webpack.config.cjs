@@ -1,5 +1,5 @@
 const path = require("path");
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 const clientConfig = {
   target: "web",
@@ -19,9 +19,13 @@ const clientConfig = {
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      "@iota/streams/node": path.resolve(
+      "@tangle-js/anchors": path.resolve(
         __dirname,
-        "../../node_modules/@iota/streams/web"
+        "../anchors/dist/web/anchors-web.js"
+      ),
+      "@iota/identity-wasm/node": path.resolve(
+        __dirname,
+        "../../node_modules/@iota/identity-wasm/web"
       ),
     },
     fallback: {
@@ -31,7 +35,7 @@ const clientConfig = {
     },
   },
   output: {
-    filename: "anchors-web.js",
+    filename: "ld-proofs-web.js",
     path: path.resolve(__dirname, "dist/web"),
     libraryTarget: "module",
   },

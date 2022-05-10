@@ -44,7 +44,7 @@ export default class FetchMsgService {
       }
     } else {
       // Otherwise we just fetch the next message
-      const messages = await subs.clone().fetch_next_msgs();
+      const messages = await subs.clone().fetchNextMsgs();
 
       if (!messages || messages.length === 0) {
         throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
@@ -106,7 +106,7 @@ export default class FetchMsgService {
   }
 
   public static async fetchNext(subscriber: Subscriber, encrypted: boolean): Promise<IFetchResult | undefined> {
-    const messages = await subscriber.clone().fetch_next_msgs();
+    const messages = await subscriber.clone().fetchNextMsgs();
 
     if (!messages || messages.length === 0) {
       return;
