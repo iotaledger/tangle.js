@@ -1,5 +1,5 @@
 const path = require("path");
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 const clientConfig = {
   target: "web",
@@ -19,9 +19,9 @@ const clientConfig = {
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      "@iota/streams/node": path.resolve(
+      "@iota/streams/node/streams.cjs": path.resolve(
         __dirname,
-        "../../node_modules/@iota/streams/web"
+        "../../node_modules/@iota/streams/web/streams.mjs"
       ),
     },
     fallback: {

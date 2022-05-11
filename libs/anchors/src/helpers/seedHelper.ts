@@ -1,4 +1,4 @@
-import { Author, ChannelType, SendOptions } from "@iota/streams/node";
+import { Author, ChannelType, SendOptions } from "@iota/streams/node/streams.cjs";
 import * as crypto from "crypto";
 import { ClientHelper } from "./clientHelper";
 
@@ -30,7 +30,7 @@ export class SeedHelper {
      * @returns the public key
      *
      */
-     public static async publicKeyFromSeed(seed: string): Promise<string> {
+    public static async publicKeyFromSeed(seed: string): Promise<string> {
         // The node is just a formality to fill all the params
         const author = new Author(seed,
             new SendOptions(ClientHelper.DEFAULT_NODE, true), ChannelType.SingleBranch);

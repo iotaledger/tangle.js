@@ -1,10 +1,10 @@
-import { set_panic_hook as streamsPanicHook } from "@iota/streams/node";
+import { set_panic_hook as streamsPanicHook } from "@iota/streams/node/streams.cjs";
 import * as fetch from "node-fetch";
 
 /**
  *   Initialization function for the Streams WASM bindings
  */
- export default async function initialize() {
+export default async function initialize() {
     // @ts-expect-error Streams WASM bindings need it
     global.fetch = fetch;
     // @ts-expect-error  Streams WASM bindings need it

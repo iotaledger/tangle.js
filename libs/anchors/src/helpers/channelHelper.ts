@@ -1,4 +1,4 @@
-import { Address, ChannelAddress, MsgId, Subscriber } from "@iota/streams/node";
+import { Address, ChannelAddress, MsgId, Subscriber } from "@iota/streams/node/streams.cjs";
 
 export class ChannelHelper {
     /**

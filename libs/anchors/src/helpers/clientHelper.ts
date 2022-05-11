@@ -1,4 +1,4 @@
-import { StreamsClient, ClientBuilder } from "@iota/streams/node";
+import { StreamsClient, ClientBuilder } from "@iota/streams/node/streams.cjs";
 
 export class ClientHelper {
     public static readonly DEFAULT_NODE = "https://chrysalis-nodes.iota.org";

@@ -1,6 +1,6 @@
 {
     "name": "@tangle-js/anchors",
-    "version": "0.9.2-beta6",
+    "version": "0.9.2-beta12",
     "description": "Anchoring messages to the Tangle. Powered by IOTA Streams",
     "type": "module",
     "scripts": {
@@ -17,7 +17,7 @@
         "test": "run-s test-lint prepare-test test-run after-test",
         "package-esm": "esm-modules ./es ./dist/esm",
         "package-umd": "rollup --config rollup.config.js",
-        "package": "run-s package-umd package-esm package-web",
+        "package": "run-s dist-clean package-umd package-esm package-web",
         "package-web": "webpack --mode=production",
         "dist": "run-s dist-clean build test package"
     },

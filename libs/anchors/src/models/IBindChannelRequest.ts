@@ -1,4 +1,4 @@
-import type { StreamsClient } from "@iota/streams/node";
+import type { StreamsClient } from "@iota/streams/node/streams.cjs";
 
 export interface IBindChannelRequest {
     /** The client */
@@ -7,8 +7,8 @@ export interface IBindChannelRequest {
     channelID: string;
     /** Whether the channel is encrypted */
     encrypted: boolean;
-     /** Whether the channel is private */
-     isPrivate: boolean;
+    /** Whether the channel is private */
+    isPrivate: boolean;
     /** The seed */
     seed: string;
     /** Preshared key */

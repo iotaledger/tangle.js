@@ -1,4 +1,4 @@
-import type { StreamsClient, Subscriber } from "@iota/streams/node";
+import type { StreamsClient, Subscriber } from "@iota/streams/node/streams.cjs";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import { ClientHelper } from "./helpers/clientHelper";
@@ -324,7 +324,7 @@ export class IotaAnchoringChannel {
      *  @returns boolean
      *
      */
-      public get isPrivate(): boolean {
+    public get isPrivate(): boolean {
         return this._isPrivate;
     }
 
