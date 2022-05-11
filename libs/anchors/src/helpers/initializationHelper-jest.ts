@@ -1,4 +1,4 @@
-import { set_panic_hook as streamsPanicHook } from "@iota/streams/node/streams.cjs";
+import { set_panic_hook as streamsPanicHook } from "@iota/streams/node/streams.js";
 import * as fetch from "node-fetch";
 
 /**

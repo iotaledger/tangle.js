@@ -19,9 +19,9 @@ const clientConfig = {
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      "@iota/streams/node/streams.cjs": path.resolve(
+      "@iota/streams/node/streams.js": path.resolve(
         __dirname,
-        "../../node_modules/@iota/streams/web/streams.mjs"
+        "../../node_modules/@iota/streams/web/streams.js"
       ),
     },
     fallback: {

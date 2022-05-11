@@ -1,4 +1,4 @@
-import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node";
+import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
 
 import initialize from "./initializationHelper";
 

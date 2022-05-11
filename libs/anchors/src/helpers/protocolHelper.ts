@@ -1,5 +1,5 @@
 import { SingleNodeClient } from "@iota/iota.js";
-import { Address, ChannelAddress, MsgId } from "@iota/streams/node/streams.cjs";
+import { Address, ChannelAddress, MsgId } from "@iota/streams/node/streams.js";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import type { IotaAnchoringChannel } from "../iotaAnchoringChannel";

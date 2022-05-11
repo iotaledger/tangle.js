@@ -1,4 +1,4 @@
-import { Author, Subscriber, Address, ChannelType, StreamsClient } from "@iota/streams/node/streams.cjs";
+import { Author, Subscriber, Address, ChannelType, StreamsClient } from "@iota/streams/node/streams.js";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";

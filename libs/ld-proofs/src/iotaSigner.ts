@@ -1,4 +1,4 @@
-import type { Document as DidDocument } from "@iota/identity-wasm/node";
+import type { Document as DidDocument } from "@iota/identity-wasm/node/identity_wasm.js";
 import * as crypto from "crypto";
 import * as jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";

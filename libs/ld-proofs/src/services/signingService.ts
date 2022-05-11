@@ -1,11 +1,13 @@
-import type { VerificationMethod } from "@iota/identity-wasm/node";
+import type { VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
 import bs58 from "bs58";
-import { eddsa as EdDSA } from "elliptic";
+import pkg from 'elliptic';
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
 import type { ISigningRequest } from "../models/ISigningRequest";
 import type { ISigningResult } from "../models/ISigningResult";
 import DidService from "./didService";
+
+const { eddsa: EdDSA } = pkg;
 
 export default class SigningService {
     /**

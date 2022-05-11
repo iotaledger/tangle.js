@@ -1,4 +1,4 @@
-import type { StreamsClient, Subscriber } from "@iota/streams/node/streams.cjs";
+import type { StreamsClient, Subscriber } from "@iota/streams/node/streams.js";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import { ClientHelper } from "./helpers/clientHelper";

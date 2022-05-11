@@ -1,4 +1,4 @@
-import type { Subscriber } from "@iota/streams/node/streams.cjs";
+import type { Subscriber } from "@iota/streams/node/streams.js";
 
 export interface IFetchRequest {
     /** The channel ID */

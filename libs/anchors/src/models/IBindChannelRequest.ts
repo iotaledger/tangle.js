@@ -1,4 +1,4 @@
-import type { StreamsClient } from "@iota/streams/node/streams.cjs";
+import type { StreamsClient } from "@iota/streams/node/streams.js";
 
 export interface IBindChannelRequest {
     /** The client */

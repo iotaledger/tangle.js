@@ -1,4 +1,4 @@
-import type { Document as DidDocument } from "@iota/identity-wasm/node";
+import type { Document as DidDocument } from "@iota/identity-wasm/node/identity_wasm.js";
 
 /**
  *  Signing Response

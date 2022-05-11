@@ -1,4 +1,4 @@
-import { Author, ChannelType, SendOptions } from "@iota/streams/node/streams.cjs";
+import { Author, ChannelType, SendOptions } from "@iota/streams/node/streams.js";
 import * as crypto from "crypto";
 import { ClientHelper } from "./clientHelper";
 

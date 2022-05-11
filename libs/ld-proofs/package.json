@@ -1,10 +1,11 @@
 {
     "name": "@tangle-js/ld-proofs",
-    "version": "0.9.4-beta1",
+    "version": "0.9.5-beta4",
     "description": "Linked Data Proofs on the Tangle. Powered by IOTA Identity & IOTA Streams",
     "type": "module",
     "scripts": {
         "build-clean": "rimraf ./es/* ./typings/*",
+        "dist-clean": "rimraf ./dist/*",
         "build-compile": "tsc",
         "build-watch": "tsc --watch",
         "build-lint": "eslint src --ext .ts",
@@ -12,15 +13,16 @@
         "test-lint": "eslint test --ext .ts",
         "test-run": "jest  --testTimeout=120000 --verbose --coverage=false",
         "test": "run-s  test-run",
-        "package-web": "webpack --mode=production",
+        "package-esm": "esm-modules ./es ./dist/esm",
         "package-umd": "rollup --config rollup.config.js",
-        "package-umd-min": "rollup --config rollup.config.js --environment MINIFY:true",
-        "package": "run-s package-umd package-umd-min",
+        "package": "run-s -c dist-clean package-umd package-esm package-web",
+        "package-web": "webpack --mode=production",
         "dist": "run-s dist-clean build test package"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/iotaledger/tangle.js.git"
+        "url": "https://github.com/iotaledger/tangle.js.git",
+        "directory": "libs/ld-proofs"
     },
     "keywords": [
         "iota",
@@ -73,7 +75,8 @@
         "typescript": "^4.6.2",
         "webpack": "^5.72.0",
         "webpack-cli": "^4.9.2",
-        "buffer": "^6.0.3"
+        "buffer": "^6.0.3",
+        "@tangle-js/esm-modules": "0.0.1"
     },
     "exports": {
         ".": {

@@ -1,7 +1,7 @@
-import type { VerificationMethod } from "@iota/identity-wasm/node";
+import type { VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
 import bs58 from "bs58";
 import * as crypto from "crypto";
-import { eddsa as EdDSA } from "elliptic";
+import pkg from 'elliptic';
 import * as jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
@@ -15,6 +15,8 @@ import type { IVerificationOptions } from "./models/IVerificationOptions";
 import { LdContextURL } from "./models/ldContextURL";
 import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
+
+const { eddsa: EdDSA } = pkg;
 
 export class IotaVerifier {
     /**

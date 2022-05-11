@@ -1,7 +1,7 @@
 {
-    "name": "@gtsc/esm-modules",
+    "name": "@tangle-js/esm-modules",
     "version": "0.0.1",
-    "description": "GTSC ESM Modules Converter",
+    "description": "ESM Modules Converter",
     "keywords": [
         "gtsc",
         "tools"
@@ -11,8 +11,8 @@
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/iotaledger/gtsc.git",
-        "directory": "packages/tools/esm-modules"
+        "url": "https://github.com/iotaledger/tangle.js.git",
+        "directory": "tools/esm-modules"
     },
     "license": "Apache-2.0",
     "engines": {

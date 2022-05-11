@@ -1,4 +1,4 @@
-import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node";
+import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
 import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
@@ -36,7 +36,7 @@ export default class DidService {
      * @param didMethod  DID method to be resolved
      * @returns The DID Document resolved from Tangle
      */
-     public static async resolveMethod(node: string, didMethod: string): Promise<VerificationMethod> {
+    public static async resolveMethod(node: string, didMethod: string): Promise<VerificationMethod> {
         try {
             const didDocument = await this.resolve(node, didMethod.split("#")[0]);
 

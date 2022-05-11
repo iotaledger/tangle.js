@@ -23,7 +23,7 @@ const clientConfig = {
         __dirname,
         "../anchors/dist/web/anchors-web.js"
       ),
-      "@iota/identity-wasm/node": path.resolve(
+      "@iota/identity-wasm/node/identity_wasm.js": path.resolve(
         __dirname,
         "../../node_modules/@iota/identity-wasm/web"
       ),

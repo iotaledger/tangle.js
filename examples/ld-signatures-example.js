@@ -1,4 +1,4 @@
-const { IotaSigner, IotaVerifier, SignatureTypes } = require("@tangle-js/ld-proofs");
+import { IotaSigner, IotaVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
 
 /**
  
