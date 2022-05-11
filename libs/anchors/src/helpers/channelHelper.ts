@@ -44,15 +44,14 @@ export class ChannelHelper {
             found = true;
         }
 
-        // Iteratively retrieve messages until We find the one to anchor to
         while (!found) {
-            const messages = await subs.clone().fetchNextMsgs();
-            if (!messages || messages.length === 0) {
+             // Iteratively retrieve messages until We find the one to anchor to
+            let message = await subs.clone().fetchNextMsg();
+            if (!message) {
                 break;
             }
 
-            // In our case only one message is expected
-            anchorageLink = messages[0].link.copy();
+            anchorageLink = message.link.copy();
 
             if (anchorageLink.msgId.toString() === anchorageID) {
                 found = true;

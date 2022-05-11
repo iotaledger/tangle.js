@@ -136,7 +136,7 @@ describe("Build Anchoring Channel", () => {
         expect(channel.firstAnchorageID).toBe(channelDetails.channelID.split(":")[2]);
     });
 
-    test("should instantiate a channel through Permanode", async () => {
+    test.skip("should instantiate a channel through Permanode", async () => {
         const channel = await IotaAnchoringChannel.fromID(CHANNEL_PERMANODE).bind(SeedHelper.generateSeed(5));
         const response = await channel.fetch(channel.firstAnchorageID);
         expect(response.message.toString()).toBe("Hello");

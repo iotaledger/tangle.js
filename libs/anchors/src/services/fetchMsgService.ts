@@ -44,14 +44,12 @@ export default class FetchMsgService {
       }
     } else {
       // Otherwise we just fetch the next message
-      const messages = await subs.clone().fetchNextMsgs();
+      response = await subs.clone().fetchNextMsg();
 
-      if (!messages || messages.length === 0) {
+      if (!response) {
         throw new AnchoringChannelError(AnchoringChannelErrorNames.MSG_NOT_FOUND,
-          `There is not message anchored to ${anchorageID}`);
+          `There is no message anchored to ${anchorageID}`);
       }
-
-      response = messages[0];
     }
 
     let messageContent = Buffer.from(response.message.get_public_payload());
@@ -106,13 +104,11 @@ export default class FetchMsgService {
   }
 
   public static async fetchNext(subscriber: Subscriber, encrypted: boolean): Promise<IFetchResult | undefined> {
-    const messages = await subscriber.clone().fetchNextMsgs();
+    const msg = await subscriber.clone().fetchNextMsg();
 
-    if (!messages || messages.length === 0) {
+    if (!msg) {
       return;
     }
-
-    const msg = messages[0];
 
     const result: IFetchResult = {
       msgID: msg.link.copy().msgId.toString(),

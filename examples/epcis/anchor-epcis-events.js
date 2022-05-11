@@ -1,7 +1,7 @@
-const { IotaAnchoringChannel } = require("@tangle-js/anchors");
-const { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } = require("@tangle-js/ld-proofs");
+import { IotaAnchoringChannel } from "@tangle-js/anchors";
+import { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
 
-const { document } = require("./events.js");
+import { document } from "./events.js";
 
 /*
 {

@@ -1,4 +1,4 @@
-const { ObjectEvent, EPCISDocument, bizSteps, dispositions, actionTypes } = require("epcis2.js");
+import { ObjectEvent, EPCISDocument, bizSteps, dispositions, actionTypes } from "epcis2.js";
 
 const epcisDocument = new EPCISDocument();
 epcisDocument
