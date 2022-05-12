@@ -1,3 +1,4 @@
+import type { Client } from "@iota/streams-wasm";
 import { StreamsClient, ClientBuilder } from "@iota/streams/node/streams.js";
 
 export class ClientHelper {
@@ -10,7 +11,6 @@ export class ClientHelper {
      *
      * @param node Node endpoint URL
      * @param permanode endpoint URL
-     *
      * @returns StreamsClient
      */
     public static async getClient(node: string, permanode?: string): Promise<StreamsClient> {
@@ -19,7 +19,7 @@ export class ClientHelper {
         if (permanode) {
             builder = builder.permanode(permanode);
         }
-        const client = await builder.build();
+        const client: Client = await builder.build();
         return StreamsClient.fromClient(client);
     }
 

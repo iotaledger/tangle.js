@@ -18,7 +18,6 @@ export class ChannelHelper {
      *
      * @param subs  Subscriber
      * @param anchorageID The anchorage identifier
-     *
      * @returns whether it has been found and the link to the anchorage on the Channel
      */
     public static async findAnchorage(subs: Subscriber, anchorageID: string):
@@ -46,7 +45,7 @@ export class ChannelHelper {
 
         while (!found) {
              // Iteratively retrieve messages until We find the one to anchor to
-            let message = await subs.clone().fetchNextMsg();
+            const message = await subs.clone().fetchNextMsg();
             if (!message) {
                 break;
             }

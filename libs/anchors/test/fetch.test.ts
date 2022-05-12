@@ -1,3 +1,4 @@
+import { Anchors } from "../src/anchors";
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
@@ -24,6 +25,8 @@ describe("Fetch Messages", () => {
     let privateMsgID2: string;
 
     beforeAll(async () => {
+        await Anchors.initialize();
+
         const channel = await newChannel(network);
         channelID = channel.channelID;
         authorSeed = channel.seed;

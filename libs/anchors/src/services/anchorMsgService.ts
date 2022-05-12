@@ -15,7 +15,6 @@ export default class AnchorMsgService {
    * Anchors a message to an anchorage
    *
    * @param request The anchoring details
-   *
    * @returns The result or error
    */
   public static async anchor(request: IAnchoringRequest): Promise<IAnchoringResult> {

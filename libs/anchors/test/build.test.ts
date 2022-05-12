@@ -1,3 +1,4 @@
+import { Anchors } from "../src/anchors";
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
@@ -6,6 +7,10 @@ import { assertChannel, CHANNEL_PERMANODE, network } from "./testCommon";
 
 describe("Build Anchoring Channel", () => {
     const presharedKey = "11aa11aa11aa11aa11aa11aa11aa11aa";
+
+    beforeAll(async () => {
+        await Anchors.initialize();
+     });
 
     test("should create and bind an Anchoring Channel on the mainnet", async () => {
         const anchoringChannel = await IotaAnchoringChannel.bindNew();

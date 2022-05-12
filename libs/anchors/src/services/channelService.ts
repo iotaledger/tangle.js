@@ -16,9 +16,7 @@ export default class ChannelService {
      * @param seed The channel's seed
      * @param isPrivate Whether the channel is private or not
      * @param psks Preshared keys for the channel
-     *
      * @returns The address of the channel created and the announce message ID
-     *
      */
     public static async createChannel(client: StreamsClient, seed: string, isPrivate: boolean, psks?: string[]):
         Promise<{ channelAddress: string; announceMsgID: string; keyLoadMsgID?: string; authorPk: string }> {
@@ -43,7 +41,7 @@ export default class ChannelService {
                 keyLoadMsgID
             };
         } catch (error) {
-            throw new AnchoringChannelError(AnchoringChannelErrorNames.OTHER_ERROR, error.message);
+            throw new AnchoringChannelError(AnchoringChannelErrorNames.OTHER_ERROR, error.message as string);
         }
     }
 
@@ -52,7 +50,6 @@ export default class ChannelService {
      *  the announce message
      *
      * @param request The channel details
-     *
      * @returns IOTA Streams Subscriber object
      */
     public static async bindToChannel(request: IBindChannelRequest): Promise<{

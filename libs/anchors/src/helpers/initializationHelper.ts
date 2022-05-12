@@ -1,6 +1,9 @@
 import { set_panic_hook as streamsPanicHook } from "@iota/streams/node/streams.js";
 import * as fetch from "node-fetch";
+
+// eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
 const isBrowser = new Function("try { return this===window; } catch(e) { return false; }");
+
 const WASM_PATH = "/public/wasm/streams_bg.wasm";
 
 /**
@@ -18,7 +21,7 @@ export default async function initialize() {
 
     if (isBrowser()) {
         const streams = await import("@iota/streams/web/streams.js");
-        streams.default(WASM_PATH);
+        await streams.default(WASM_PATH);
     }
     streamsPanicHook();
 }

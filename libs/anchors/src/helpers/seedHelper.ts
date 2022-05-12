@@ -6,7 +6,6 @@ export class SeedHelper {
     /**
      * Generates a new seed
      * @param length Seed length
-     *
      * @returns The seed
      */
     public static generateSeed(length: number = 80) {
@@ -28,7 +27,6 @@ export class SeedHelper {
      *
      * @param seed The seed
      * @returns the public key
-     *
      */
     public static async publicKeyFromSeed(seed: string): Promise<string> {
         // The node is just a formality to fill all the params

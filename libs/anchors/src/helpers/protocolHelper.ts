@@ -15,7 +15,6 @@ export class ProtocolHelper {
      *
      * @param channelAddress The channel address
      * @param messageId The message identifier
-     *
      * @returns the tangle index encoded in hexadecimal chars
      */
     public static getIndexL1(channelAddress: string, messageId: string): string {
@@ -30,7 +29,6 @@ export class ProtocolHelper {
      *
      * @param channel   The anchoring channel
      * @param messageId The Streams Message Id
-     *
      * @returns the Layer 1 message ID
      */
     public static async getMsgIdL1(channel: IotaAnchoringChannel, messageId: string): Promise<string> {

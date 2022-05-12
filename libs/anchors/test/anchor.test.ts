@@ -1,3 +1,4 @@
+import { Anchors } from "../src/anchors";
 import { AnchoringChannelErrorNames } from "../src/errors/anchoringChannelErrorNames";
 import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
@@ -6,6 +7,10 @@ import { network, newChannel, newEncryptedChannel, newPrivateChannel } from "./t
 
 describe("Anchor Messages", () => {
     const message = Buffer.from("Hello");
+
+    beforeAll(async () => {
+       await Anchors.initialize();
+    });
 
     test("should anchor a message to the initial anchorage", async () => {
         const anchoringChannel = await newChannel(network);
