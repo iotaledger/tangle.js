@@ -2,6 +2,7 @@ import { IotaAnchoringChannel } from "@tangle-js/anchors";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaLdProofVerifier } from "../src/iotaLdProofVerifier";
 import { IotaSigner } from "../src/iotaSigner";
+import { LdProofs } from "../src/ldProofs";
 import type { IIotaLinkedDataProof } from "../src/models/IIotaLinkedDataProof";
 import type { IJsonAnchoredDocument } from "../src/models/IJsonAnchoredDocument";
 import type { IJsonDocument } from "../src/models/IJsonDocument";
@@ -54,6 +55,8 @@ describe("Verify IOTA Linked Data Proofs", () => {
   let chainIotaLdProofJsonLd: IIotaLinkedDataProof[];
 
   beforeAll(async () => {
+    await LdProofs.initialize();
+
     const signer = await IotaSigner.create(did, node);
     const channel = await IotaAnchoringChannel.bindNew({ node });
     const ldProofGenerator = IotaLdProofGenerator.create(channel, signer);
