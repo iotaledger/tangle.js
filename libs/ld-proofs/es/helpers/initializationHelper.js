@@ -3,7 +3,7 @@ import { Anchors } from "@tangle-js/anchors";
 const isBrowser = new Function("try { return this===window; } catch(e) { return false; }");
 const WASM_PATH = "/public/wasm/identity_wasm_bg.wasm";
 /**
- *   Initialization function for the Streams WASM bindings
+ * Initialization function for the Streams WASM bindings.
  */
 export default async function initialize() {
     await Anchors.initialize();

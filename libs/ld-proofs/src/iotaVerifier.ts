@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import type { VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
 import bs58 from "bs58";
 // eslint-disable-next-line unicorn/prefer-node-protocol
@@ -22,12 +24,12 @@ const { eddsa: EdDSA } = pkg;
 
 export class IotaVerifier {
     /**
-     * Verifies a Ed25519 signature corresponding to a string message
+     * Verifies a Ed25519 signature corresponding to a string message.
      *
-     * @param  message the message to be verified
-     * @param  signatureValue the signature value
-     * @param options The verification request
-     * @returns true or false depending on the verification result
+     * @param message The message to be verified.
+     * @param signatureValue The signature value.
+     * @param options The verification request.
+     * @returns True or false depending on the verification result.
      */
     public static async verify(message: Buffer, signatureValue: string,
         options: IVerificationOptions): Promise<boolean> {
@@ -53,11 +55,11 @@ export class IotaVerifier {
     }
 
     /**
-     * Verifies a JSON(-LD) document containing a Linked Data Signature
+     * Verifies a JSON(-LD) document containing a Linked Data Signature.
      *
-     * @param doc The document to verify
-     * @param options The verification options
-     * @returns true or false depending on the verification result
+     * @param doc The document to verify.
+     * @param options The verification options.
+     * @returns True or false depending on the verification result.
      */
     public static async verifyJson(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
@@ -76,11 +78,11 @@ export class IotaVerifier {
     }
 
     /**
-     * Verifies a JSON document containing a Linked Data Signature
+     * Verifies a JSON document containing a Linked Data Signature.
      *
-     * @param doc The document to verify
-     * @param options The verification options
-     * @returns true or false depending on the verification result
+     * @param doc The document to verify.
+     * @param options The verification options.
+     * @returns True or false depending on the verification result.
      */
     private static async doVerifyJson(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
@@ -109,11 +111,11 @@ export class IotaVerifier {
 
 
     /**
-     * Verifies a JSON-LD document containing a Linked Data Signature
+     * Verifies a JSON-LD document containing a Linked Data Signature.
      *
-     * @param doc The document to be verified
-     * @param options The verification options
-     * @returns true or false depending on the verification result
+     * @param doc The document to be verified.
+     * @param options The verification options.
+     * @returns True or false depending on the verifi.cation result.
      */
     private static async doVerifyJsonLd(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
@@ -193,6 +195,7 @@ export class IotaVerifier {
 
             return (ecKey.verify(message, signatureBytes.toString("hex"))) as boolean;
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.log("Error while verifying signature:", error);
             return false;
         }

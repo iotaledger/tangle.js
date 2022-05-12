@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import { IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
 import type { IAnchoringResult } from "@tangle-js/anchors";
 
@@ -8,8 +10,10 @@ import type { ILdProofOptions } from "./models/ILdProofOptions";
 import { LinkedDataProofTypes } from "./models/linkedDataProofTypes";
 
 export class IotaLdProofGenerator {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     private readonly anchoringChannel: IotaAnchoringChannel;
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     private readonly signer: IotaSigner;
 
     private constructor(anchoringChannel: IotaAnchoringChannel, signer: IotaSigner) {
@@ -18,22 +22,22 @@ export class IotaLdProofGenerator {
     }
 
     /**
-     * Creates a new instance of LD Proof Generator
+     * Creates a new instance of LD Proof Generator.
      *
-     * @param anchoringChannel The anchoring channel to be used
-     * @param signer The signer to be used
-     * @returns The LD Proof generator
+     * @param anchoringChannel The anchoring channel to be used.
+     * @param signer The signer to be used.
+     * @returns The LD Proof generator.
      */
     public static create(anchoringChannel: IotaAnchoringChannel, signer: IotaSigner): IotaLdProofGenerator {
         return new IotaLdProofGenerator(anchoringChannel, signer);
     }
 
     /**
-     * Generates a Linked Data Proof for a JSON(-LD) document by anchoring it to the anchorage provided
+     * Generates a Linked Data Proof for a JSON(-LD) document by anchoring it to the anchorage provided.
      *
-     * @param doc Document
-     * @param options containing the parameters to be used to generate the proof
-     * @returns Linked Data Proof
+     * @param doc Document.
+     * @param options Containing the parameters to be used to generate the proof.
+     * @returns Linked Data Proof.
      */
     public async generate(doc: string | IJsonDocument, options: ILdProofOptions): Promise<IIotaLinkedDataProof> {
         const linkedDataSignature = await this.signer.signJson(doc, options);
@@ -48,11 +52,11 @@ export class IotaLdProofGenerator {
     }
 
     /**
-     * Generates a chain of Linked Data Proofs for the JSON(-LD) documents passed as parameter
+     * Generates a chain of Linked Data Proofs for the JSON(-LD) documents passed as parameter.
      *
-     * @param docs The chain of documents
-     * @param options the Parameters to be used when generating the chain of proofs
-     * @returns the list of Linked Data Proof
+     * @param docs The chain of documents.
+     * @param options The Parameters to be used when generating the chain of proofs.
+     * @returns The list of Linked Data Proof.
      */
     public async generateChain(docs: string[] | IJsonDocument[],
         options: ILdProofOptions): Promise<IIotaLinkedDataProof[]> {

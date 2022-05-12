@@ -1,12 +1,14 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 const JSON = "application/json";
 const JSON_LD = "application/ld+json";
 
 /**
- * JSON-LD @context loader
+ * JSON-LD @context loader.
  *
- * @param url The URL of the LD @context
- * @param options Options
- * @returns the LD document and the final URL after following redirects
+ * @param url The URL of the LD @context.
+ * @param options Options.
+ * @returns The LD document and the final URL after following redirects.
  */
 export async function customLdContextLoader(url: string, options): Promise<{
     document: Record<string, unknown>;
@@ -51,6 +53,7 @@ export async function customLdContextLoader(url: string, options): Promise<{
             }
         }
     } else {
+        // eslint-disable-next-line no-console
         console.error(`The JSON-LD @context ${url} cannot be retrieved`);
     }
 

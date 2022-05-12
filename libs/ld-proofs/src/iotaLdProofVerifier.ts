@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import { IotaAnchoringChannel, AnchoringChannelErrorNames, SeedHelper }
     from "@tangle-js/anchors";
 import type { IFetchResult } from "@tangle-js/anchors";
@@ -13,18 +15,18 @@ import type { IJsonSignedDocument } from "./models/IJsonSignedDocument";
 import type { ILdProofVerificationOptions } from "./models/ILdProofVerificationOptions";
 
 /**
- *  Linked Data Proof Verifier
+ * Linked Data Proof Verifier.
  *
- *  In the future it will also need to verify
+ * In the future it will also need to verify.
  *
  */
 export class IotaLdProofVerifier {
     /**
-     * Verifies a JSON(-LD) document
+     * Verifies a JSON(-LD) document.
      *
-     * @param doc The JSON(-LD) document
-     * @param options The verification options
-     * @returns true or false with the verification result
+     * @param doc The JSON(-LD) document.
+     * @param options The verification options.
+     * @returns True or false with the verification result.
      */
     public static async verifyJson(doc: IJsonAnchoredDocument | string,
         options?: ILdProofVerificationOptions): Promise<boolean> {
@@ -44,11 +46,11 @@ export class IotaLdProofVerifier {
     }
 
     /**
-     * Verifies a chain of JSON(-LD) documents ensuring that are anchored to the same channel
-     * and in the order implicit in the list
-     * @param docs The chain of documents to verify
-     * @param options The verification options
-     * @returns The global verification result
+     * Verifies a chain of JSON(-LD) documents ensuring that are anchored to the same channel.
+     * And in the order implicit in the list.
+     * @param docs The chain of documents to verify.
+     * @param options The verification options.
+     * @returns The global verification result.
      */
     public static async verifyJsonChain(docs: IJsonAnchoredDocument[] | string[],
         options?: ILdProofVerificationOptions): Promise<boolean> {
@@ -56,13 +58,13 @@ export class IotaLdProofVerifier {
     }
 
     /**
-     * Verifies a list of JSON(-LD) documents using the proof passed as parameter
-     * The individual proofs of the events shall be found on the Channel specified
+     * Verifies a list of JSON(-LD) documents using the proof passed as parameter.
+     * The individual proofs of the events shall be found on the Channel specified.
      *
-     * @param docs The documents
-     * @param proof The proof that points to the Channel used for verification
-     * @param options The verification options
-     * @returns The global result of the verification
+     * @param docs The documents.
+     * @param proof The proof that points to the Channel used for verification.
+     * @param options The verification options.
+     * @returns The global result of the verification.
      */
     public static async verifyJsonChainSingleProof(docs: IJsonDocument[] | string[],
         proof: IIotaLinkedDataProof,
@@ -71,11 +73,11 @@ export class IotaLdProofVerifier {
     }
 
     /**
-     * Verifies a chain of JSON(LD) documents ensuring that are anchored to the same channel
-     * and in the order implicit in the list
-     * @param docs The chain of documents to verify
-     * @param options the verification options
-     * @returns The global verification result
+     * Verifies a chain of JSON(LD) documents ensuring that are anchored to the same channel.
+     * And in the order implicit in the list.
+     * @param docs The chain of documents to verify.
+     * @param options The verification options.
+     * @returns The global verification result.
      */
     private static async doVerifyChain(docs: IJsonAnchoredDocument[] | string[],
         options?: ILdProofVerificationOptions

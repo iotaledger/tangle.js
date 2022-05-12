@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
 import type { IJsonAnchoredDocument } from "../models/IJsonAnchoredDocument";

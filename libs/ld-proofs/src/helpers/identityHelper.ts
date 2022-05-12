@@ -1,13 +1,16 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
 
 export class IdentityHelper {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     private static readonly PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
 
     /**
-     * Returns a new Identity Client for the network specified as parameter
+     * Returns a new Identity Client for the network specified as parameter.
      *
-     * @param node Concerned node
-     * @returns the identity client
+     * @param node Concerned node.
+     * @returns The identity client.
      */
     public static getClient(node: string): IdentityClient {
         const identityConfig = new IdentityConfig();

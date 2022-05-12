@@ -1,10 +1,12 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 // es-lint-disable unicorn/no-array-for-each
 export class JsonCanonicalization {
     /**
-     * Calculates the canonical serialization of a JSON document
+     * Calculates the canonical serialization of a JSON document.
      *
-     * @param input The input
-     * @returns The serialization as a string
+     * @param input The input.
+     * @returns The serialization as a string.
      */
     public static calculate(input: unknown): string {
         let buffer = "";
@@ -13,9 +15,9 @@ export class JsonCanonicalization {
         return buffer;
 
         /**
-         *  Serializes in canonical format
+         * Serializes in canonical format.
          *
-         * @param object The object to be serialized
+         * @param object The object to be serialized.
          */
         function serialize(object) {
             if (object === null || typeof object !== "object") {
@@ -29,6 +31,7 @@ export class JsonCanonicalization {
                 // ///////////////////////////////////////////////
                 buffer += "[";
                 let next = false;
+                // eslint-disable-next-line unicorn/no-array-for-each
                 object.forEach(element => {
                     if (next) {
                         buffer += ",";
@@ -47,7 +50,8 @@ export class JsonCanonicalization {
                 buffer += "{";
                 let next = false;
                 Object.keys(object as unknown).sort()
-.forEach(property => {
+                // eslint-disable-next-line unicorn/no-array-for-each
+                .forEach(property => {
                     if (next) {
                         buffer += ",";
                     }
