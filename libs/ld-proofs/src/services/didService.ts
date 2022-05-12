@@ -15,7 +15,8 @@ export default class DidService {
         try {
             const identityClient = IdentityHelper.getClient(node);
 
-            const jsonDoc = (await identityClient.resolve(did)).document;
+            const resolution = await identityClient.resolve(did);
+            const jsonDoc = resolution.document;
 
             const doc = DidDocument.fromJSON(jsonDoc);
             if (!doc.verify()) {
@@ -54,7 +55,6 @@ export default class DidService {
      * @param didDocument DID document
      * @param method The method (expressed as a fragment identifier)
      * @param secret The private key (in base 58)
-     *
      * @returns true if verified false if not
      */
     public static async verifyOwnership(didDocument: DidDocument, method: string, secret: string): Promise<boolean> {

@@ -24,9 +24,7 @@ export class IotaLdProofVerifier {
      *
      * @param doc The JSON(-LD) document
      * @param options The verification options
-     *
      * @returns true or false with the verification result
-     *
      */
     public static async verifyJson(doc: IJsonAnchoredDocument | string,
         options?: ILdProofVerificationOptions): Promise<boolean> {
@@ -50,7 +48,6 @@ export class IotaLdProofVerifier {
      * and in the order implicit in the list
      * @param docs The chain of documents to verify
      * @param options The verification options
-     *
      * @returns The global verification result
      */
     public static async verifyJsonChain(docs: IJsonAnchoredDocument[] | string[],
@@ -65,8 +62,6 @@ export class IotaLdProofVerifier {
      * @param docs The documents
      * @param proof The proof that points to the Channel used for verification
      * @param options The verification options
-     *
-     *
      * @returns The global result of the verification
      */
     public static async verifyJsonChainSingleProof(docs: IJsonDocument[] | string[],
@@ -80,7 +75,6 @@ export class IotaLdProofVerifier {
      * and in the order implicit in the list
      * @param docs The chain of documents to verify
      * @param options the verification options
-     *
      * @returns The global verification result
      */
     private static async doVerifyChain(docs: IJsonAnchoredDocument[] | string[],
@@ -90,7 +84,7 @@ export class IotaLdProofVerifier {
 
         // The anchored documents are obtained
         for (const document of docs) {
-            let doc;
+            let doc: IJsonAnchoredDocument;
             try {
                 doc = JsonHelper.getAnchoredDocument(document);
             } catch (error) {
@@ -276,7 +270,7 @@ export class IotaLdProofVerifier {
             throw error;
         }
 
-        const linkedDataSignature = JSON.parse(fetchResult.message.toString());
+        const linkedDataSignature = JSON.parse(fetchResult.message.toString() as string);
 
         // now assign the Linked Data Signature as proof
         document.proof = linkedDataSignature;

@@ -1,4 +1,5 @@
 import type { Document as DidDocument } from "@iota/identity-wasm/node/identity_wasm.js";
+// eslint-disable-next-line unicorn/prefer-node-protocol
 import * as crypto from "crypto";
 import * as jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
@@ -42,7 +43,6 @@ export class IotaSigner {
      *
      * @param did The DID that has the verification methods of the signer
      * @param node The node
-     *
      * @returns The newly created signer
      */
     public static async create(did: string, node?: string): Promise<IotaSigner> {
@@ -65,9 +65,7 @@ export class IotaSigner {
      *
      * @param message The message
      * @param options The signing options
-     *
      * @returns The signature details including its value encoded in Base58
-     *
      */
     public async sign(message: Buffer, options: ISigningOptions): Promise<ISigningResult> {
         const request: ISigningRequest = {
@@ -88,7 +86,6 @@ export class IotaSigner {
      *
      * @param doc The JSON(-LD) document as an object or as a string
      * @param options the parameters to use to generate the signature
-     *
      * @returns The JSON document including its corresponding Linked Data Signature
      */
     public async signJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
@@ -110,7 +107,6 @@ export class IotaSigner {
      *
      * @param doc The JSON document as an object or as a string
      * @param options the parameters to use to generate the signature
-     *
      * @returns The JSON document including its corresponding Linked Data Signature
      */
     private async doSignJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
@@ -154,9 +150,7 @@ export class IotaSigner {
      *
      * @param doc The JSON-LD document as an object or as a string
      * @param options the parameters to use to generate the signature
-     *
      * @returns The Linked Data Signature represented as a Linked Data Proof
-     *
      */
     private async doSignJsonLd(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
@@ -176,6 +170,7 @@ export class IotaSigner {
         const canonized = await jsonld.canonize(docToBeSigned, canonizeOptions);
 
         const docHash = crypto
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .createHash("sha512").update(canonized)
             .digest();
 
@@ -188,6 +183,7 @@ export class IotaSigner {
         const proofOptionsCanonized = await jsonld.canonize(proofOptionsLd, canonizeOptions);
 
         const proofOptionsHash = crypto
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .createHash("sha512").update(proofOptionsCanonized)
             .digest();
 

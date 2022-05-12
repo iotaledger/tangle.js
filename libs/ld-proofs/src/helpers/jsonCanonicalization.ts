@@ -1,11 +1,10 @@
+// es-lint-disable unicorn/no-array-for-each
 export class JsonCanonicalization {
     /**
      * Calculates the canonical serialization of a JSON document
      *
      * @param input The input
-     *
      * @returns The serialization as a string
-     *
      */
     public static calculate(input: unknown): string {
         let buffer = "";
@@ -47,7 +46,7 @@ export class JsonCanonicalization {
                 // ///////////////////////////////////////////////
                 buffer += "{";
                 let next = false;
-                Object.keys(object).sort()
+                Object.keys(object as unknown).sort()
 .forEach(property => {
                     if (next) {
                         buffer += ",";

@@ -1,12 +1,13 @@
 import type { VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
 import bs58 from "bs58";
-import pkg from 'elliptic';
+import pkg from "elliptic";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
 import type { ISigningRequest } from "../models/ISigningRequest";
 import type { ISigningResult } from "../models/ISigningResult";
 import DidService from "./didService";
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const { eddsa: EdDSA } = pkg;
 
 export default class SigningService {
@@ -16,9 +17,7 @@ export default class SigningService {
      * It uses the Ed25519 as the signature algorithm and the hash algorithm passed as parameter
      *
      * @param request Signing Request
-     *
      * @returns The signature details
-     *
      */
     public static async sign(request: ISigningRequest): Promise<ISigningResult> {
         const didDocument = request.didDocument;
@@ -58,7 +57,6 @@ export default class SigningService {
      * Calculates the signature
      * @param privateKey private key
      * @param message message to be signed
-     *
      * @returns the signature value
      */
     private static calculateSignature(privateKey: string, message: Buffer): string {
@@ -70,6 +68,7 @@ export default class SigningService {
         const signatureHex = ecKey.sign(message).toHex();
 
         // Final conversion to B58
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const signature = bs58.encode(Buffer.from(signatureHex, "hex"));
         return signature as string;
     }

@@ -33,9 +33,7 @@ export class IotaLdProofGenerator {
      *
      * @param doc Document
      * @param options containing the parameters to be used to generate the proof
-     *
      * @returns Linked Data Proof
-     *
      */
     public async generate(doc: string | IJsonDocument, options: ILdProofOptions): Promise<IIotaLinkedDataProof> {
         const linkedDataSignature = await this.signer.signJson(doc, options);
@@ -54,7 +52,6 @@ export class IotaLdProofGenerator {
      *
      * @param docs The chain of documents
      * @param options the Parameters to be used when generating the chain of proofs
-     *
      * @returns the list of Linked Data Proof
      */
     public async generateChain(docs: string[] | IJsonDocument[],

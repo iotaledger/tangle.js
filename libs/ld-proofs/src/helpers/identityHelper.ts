@@ -1,9 +1,5 @@
 import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
 
-import initialize from "./initializationHelper";
-
-initialize();
-
 export class IdentityHelper {
     private static readonly PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
 
