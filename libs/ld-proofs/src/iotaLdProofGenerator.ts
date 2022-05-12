@@ -1,7 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
-import type { IAnchoringResult } from "@tangle-js/anchors";
+import { type IAnchoringResult, IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
 
 import type { IotaSigner } from "./iotaSigner";
 import type { IIotaLinkedDataProof } from "./models/IIotaLinkedDataProof";

@@ -1,8 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { IotaAnchoringChannel, AnchoringChannelErrorNames, SeedHelper }
+import { type IFetchResult, IotaAnchoringChannel, AnchoringChannelErrorNames, SeedHelper }
     from "@tangle-js/anchors";
-import type { IFetchResult } from "@tangle-js/anchors";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import JsonHelper from "./helpers/jsonHelper";

@@ -1,5 +1,5 @@
 import { IotaAnchoringChannel } from "@tangle-js/anchors";
-import { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
+import { LdProofs, IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
 
 import { document } from "./events.js";
 
@@ -15,7 +15,9 @@ import { document } from "./events.js";
 */
 
 async function main() {
-  anchorEPCISDocument(document);
+  await LdProofs.initialize();
+
+  await anchorEPCISDocument(document);
 }
 
 // Anchor an EPCIS Document to Tangle
