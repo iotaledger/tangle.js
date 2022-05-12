@@ -1,4 +1,4 @@
-import { set_panic_hook as streamsPanicHook } from "@iota/streams/node/streams.js";
+import { set_panic_hook as streamsPanicHook } from "@tangle.js/streams-wasm/node/streams.js";
 import * as fetch from "node-fetch";
 
 // eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
@@ -20,7 +20,7 @@ export default async function initialize() {
     global.Response = fetch.Response;
 
     if (isBrowser()) {
-        const streams = await import("@iota/streams/web/streams.js");
+        const streams = await import("@tangle.js/streams-wasm/web/streams.js");
         await streams.default(WASM_PATH);
     }
     streamsPanicHook();

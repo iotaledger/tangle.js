@@ -1,4 +1,4 @@
-import { Author, ChannelType, SendOptions } from "@iota/streams/node/streams.js";
+import { Author, ChannelType, SendOptions } from "@tangle.js/streams-wasm/node/streams.js";
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import * as crypto from "crypto";
 import { ClientHelper } from "./clientHelper";

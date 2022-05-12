@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports, @typescript-eslint/no-unsafe-argument */
-import type { Subscriber } from "@iota/streams/node/streams.js";
+import type { Subscriber } from "@tangle.js/streams-wasm/node/streams.js";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";

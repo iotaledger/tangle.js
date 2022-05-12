@@ -5,7 +5,7 @@ async function main() {
   await Anchors.initialize();
 
   console.log("Creating a channel over the Chrysalis mainnet ...");
-  const myChannel = await IotaAnchoringChannel.bindNew();
+  const myChannel = await IotaAnchoringChannel.bindNew({ node: "https://api.lb-0.h.chrysalis-devnet.iota.cafe" });
   console.log("Channel ID: ", myChannel.channelID);
   console.log("Seed: ", myChannel.seed);
 

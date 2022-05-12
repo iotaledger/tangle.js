@@ -1,5 +1,5 @@
 /* eslint-disable no-duplicate-imports */
-import type { Address } from "@iota/streams/node/streams.js";
+import type { Address } from "@tangle.js/streams-wasm/node/streams.js";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
 import { ChannelHelper } from "../helpers/channelHelper";

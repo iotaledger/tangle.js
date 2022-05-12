@@ -7,13 +7,16 @@ const clientConfig = {
   resolve: {
     extensions: [".js"],
     alias: {
-      "@tangle-js/anchors": path.resolve(__dirname, "../../dist/web/anchors-web.js")
+      "@tangle-js/anchors": path.resolve(
+        __dirname,
+        "../../dist/web/anchors-web.js"
+      ),
     },
   },
   experiments: {
     topLevelAwait: true,
     outputModule: true,
-    syncWebAssembly: true
+    syncWebAssembly: true,
   },
   output: {
     filename: "bundle.js",
@@ -34,12 +37,15 @@ const clientConfig = {
     new CopyWebPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "../../../../node_modules/@iota/streams/web/streams_bg.wasm"),
+          from: path.resolve(
+            __dirname,
+            "../../../../node_modules/@tangle.js/streams-wasm/web/streams_bg.wasm"
+          ),
           to: path.resolve(__dirname, "dist/public/wasm"),
         },
       ],
     }),
-  ]
+  ],
 };
 
 module.exports = [clientConfig];

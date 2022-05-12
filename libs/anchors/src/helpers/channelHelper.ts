@@ -1,4 +1,4 @@
-import { Address, ChannelAddress, MsgId, Subscriber } from "@iota/streams/node/streams.js";
+import { Address, ChannelAddress, MsgId, Subscriber } from "@tangle.js/streams-wasm/node/streams.js";
 
 export class ChannelHelper {
     /**
@@ -44,7 +44,7 @@ export class ChannelHelper {
         }
 
         while (!found) {
-             // Iteratively retrieve messages until We find the one to anchor to
+            // Iteratively retrieve messages until We find the one to anchor to
             const message = await subs.clone().fetchNextMsg();
             if (!message) {
                 break;

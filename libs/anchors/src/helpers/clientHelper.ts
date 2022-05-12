@@ -1,5 +1,4 @@
-import type { Client } from "@iota/streams-wasm";
-import { StreamsClient, ClientBuilder } from "@iota/streams/node/streams.js";
+import { type Client, StreamsClient, ClientBuilder } from "@tangle.js/streams-wasm/node/streams.js";
 
 export class ClientHelper {
     public static readonly DEFAULT_NODE = "https://chrysalis-nodes.iota.org";

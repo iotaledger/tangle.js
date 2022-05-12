@@ -1,4 +1,4 @@
-import type { StreamsClient, Subscriber } from "@iota/streams/node/streams.js";
+import type { StreamsClient, Subscriber } from "@tangle.js/streams-wasm/node/streams.js";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import { ClientHelper } from "./helpers/clientHelper";
@@ -66,7 +66,7 @@ export class IotaAnchoringChannel {
      *
      *  @returns channel ID
      */
-     public get channelID(): string {
+    public get channelID(): string {
         return this._channelID;
     }
 

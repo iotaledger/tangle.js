@@ -19,9 +19,9 @@ const clientConfig = {
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      "@iota/streams/node/streams.js": path.resolve(
+      "@tangle.js/streams-wasm/node/streams.js": path.resolve(
         __dirname,
-        "../../node_modules/@iota/streams/web/streams.js"
+        "../../node_modules/@tangle.js/streams-wasm/web/streams.js"
       ),
     },
     fallback: {
