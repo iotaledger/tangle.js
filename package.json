@@ -28,6 +28,7 @@
         "test": "npm run test --workspaces",
         "build": "npm run build --workspaces",
         "build-anchors": "npm run build --workspace='libs/anchors'",
+        "package-anchors": "npm run package --workspace='libs/anchors'",
         "build-tcli": "npm run build --workspace='tools/tangle-cli'",
         "build-proofs": "npm run build --workspace='libs/ld-proofs'",
         "test-anchors": "npm test --workspace='libs/anchors'",
