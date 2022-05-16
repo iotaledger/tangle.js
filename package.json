@@ -30,8 +30,8 @@
         "build-anchors": "npm run build --workspace='libs/anchors'",
         "package-anchors": "npm run package --workspace='libs/anchors'",
         "build-tcli": "npm run build --workspace='tools/tangle-cli'",
-        "build-esm": "npm run build --workspace='tools/esm-package'",
-        "package-esm": "npm run package --workspace='tools/esm-package'",
+        "build-esm": "npm run build --workspace='tools/esm-modules'",
+        "package-esm": "npm run package --workspace='tools/esm-modules'",
         "build-proofs": "npm run build --workspace='libs/ld-proofs'",
         "test-anchors": "npm test --workspace='libs/anchors'",
         "test-proofs": "npm test --workspace='libs/ld-proofs'"
