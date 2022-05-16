@@ -25,7 +25,7 @@ jobs:
       - name: Library Test
         run: |
           npm install
-          npm run build-proofs
           npm run build-anchors
           npm run package-anchors
+          npm run build-proofs
           npm run test-proofs
