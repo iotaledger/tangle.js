@@ -1,6 +1,6 @@
 # Tangle Linked Data Proofs
 
-`ld-proofs` enables Linked Data Proofs on the Tangle. Powered by [IOTA Identity](https://github.com/iotaledger/identity.rs) and [IOTA Streams](https://github.com/iotaledger/streams). 
+`ld-proofs` enables Linked Data Proofs on the Tangle. Powered by [IOTA Identity](https://github.com/iotaledger/identity.rs) and [IOTA Streams](https://github.com/iotaledger/streams). This library also works on the Browser so that you can verify data locally. 
 
 [![Github Test Workflow](https://github.com/iotaledger/tangle.js/workflows/Proofs%20Test/badge.svg)](https://github.com/iotaledger/tangle.js/actions/workflows/proofs-test.yaml)
  [![npm badge](https://img.shields.io/npm/dm/%40tangle-js%2Fld-proofs.svg)](https://www.npmjs.com/package/@tangle-js/ld-proofs)
