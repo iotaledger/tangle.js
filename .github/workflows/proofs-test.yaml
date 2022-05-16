@@ -26,4 +26,6 @@ jobs:
         run: |
           npm install
           npm run build-proofs
+          npm run build-anchors
+          npm run package-anchors
           npm run test-proofs
