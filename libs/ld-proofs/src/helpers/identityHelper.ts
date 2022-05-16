@@ -1,7 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
-import { LdProofs } from "../ldProofs";
+import initialize from "./initializationHelper";
 
  export class IdentityHelper {
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -14,7 +14,7 @@ import { LdProofs } from "../ldProofs";
      * @returns The identity client.
      */
     public static async getClient(node: string): Promise<IdentityClient> {
-        await LdProofs.initialize();
+        await initialize();
         const identityConfig = new IdentityConfig();
 
         identityConfig.setNetwork(Network.mainnet());

@@ -1,4 +1,4 @@
-import { Anchors, SeedHelper, IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
+import { SeedHelper, IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
 
 window.onload = async () => {
   console.log("On load");
@@ -10,8 +10,6 @@ window.onload = async () => {
 };
 
 async function createChannel() {
-  await Anchors.initialize();
-
   console.log("Anchors Library initialized");
 
   const seed = SeedHelper.generateSeed();

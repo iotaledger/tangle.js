@@ -1,4 +1,4 @@
-import { LdProofs, IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
+import { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
 import { IotaAnchoringChannel } from "@tangle-js/anchors";
 
 /**
@@ -17,9 +17,7 @@ import { IotaAnchoringChannel } from "@tangle-js/anchors";
  */
 
 // Example on how to create LD Proofs anchored to the Tangle
-async function main() {
-    await LdProofs.initialize();
-
+export default async function main() {
     const myDID = "did:iota:HeNzaWXCT6jTsshy9gyXCz9242NgZtMrbW1EC66iXZNP";
 
     console.log("Creating a signer with DID", myDID);
@@ -64,7 +62,3 @@ async function main() {
     
     console.log("Verified: ", result); 
 }
-
-main()
-  .then(() => {})
-  .catch((err) => console.log(err));

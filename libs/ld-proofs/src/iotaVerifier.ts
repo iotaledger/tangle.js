@@ -5,7 +5,7 @@ import bs58 from "bs58";
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import * as crypto from "crypto";
 import pkg from "elliptic";
-import * as jsonld from "jsonld";
+import jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";

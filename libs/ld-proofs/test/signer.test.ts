@@ -1,7 +1,5 @@
-import { Anchors } from "@tangle-js/anchors";
 import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaSigner } from "../src/iotaSigner";
-import { LdProofs } from "../src/ldProofs";
 import type { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import { SignatureTypes } from "../src/models/signatureTypes";
 import { did, privateKey } from "./testCommon";
@@ -29,10 +27,7 @@ describe("Sign messages", () => {
 
   const method = "key";
 
-  beforeAll(async () => {
-    await Anchors.initialize();
-    await LdProofs.initialize();
-  });
+  beforeAll(async () => { });
 
   test("should sign a message", async () => {
     const signer = await IotaSigner.create(did, node);

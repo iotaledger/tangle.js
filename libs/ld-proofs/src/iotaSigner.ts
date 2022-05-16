@@ -3,7 +3,7 @@
 import type { Document as DidDocument } from "@iota/identity-wasm/node/identity_wasm.js";
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import * as crypto from "crypto";
-import * as jsonld from "jsonld";
+import jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
@@ -19,6 +19,7 @@ import { LdContextURL } from "./models/ldContextURL";
 import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
 import SigningService from "./services/signingService";
+
 
 /**
  * It allows to sign and verify messages using a Verification Method provided by a DID.

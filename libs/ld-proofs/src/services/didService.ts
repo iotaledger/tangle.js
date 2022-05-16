@@ -15,7 +15,7 @@ export default class DidService {
      */
     public static async resolve(node: string, did: string): Promise<DidDocument> {
         try {
-            const identityClient = IdentityHelper.getClient(node);
+            const identityClient = await IdentityHelper.getClient(node);
 
             const resolution = await identityClient.resolve(did);
             const jsonDoc = resolution.document;

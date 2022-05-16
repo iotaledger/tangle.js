@@ -1,9 +1,7 @@
-import { Anchors, IotaAnchoringChannel } from "@tangle-js/anchors";
+import { IotaAnchoringChannel } from "@tangle-js/anchors";
 
 // Example on how to use the anchors library
-async function main() {
-  await Anchors.initialize();
-
+export default async function main() {
   console.log("Creating a channel over the Chrysalis mainnet ...");
   const myChannel = await IotaAnchoringChannel.bindNew({ node: "https://api.lb-0.h.chrysalis-devnet.iota.cafe" });
   console.log("Channel ID: ", myChannel.channelID);
@@ -38,7 +36,3 @@ async function main() {
   );
   console.log(fetchResult2.message.toString());
 }
-
-main()
-  .then(() => {})
-  .catch((err) => console.log(err));

@@ -47,8 +47,6 @@ export class IotaLdProofGenerator {
             options.anchorageID
         );
 
-        console.log("Anchoring Result", anchoringResult);
-
         return this.buildLdProof(anchoringResult);
     }
 
@@ -78,12 +76,11 @@ export class IotaLdProofGenerator {
     }
 
     private async buildLdProof(anchoringResult: IAnchoringResult): Promise<IIotaLinkedDataProof> {
-        console.log("About to call getMsgIdL1", this.anchoringChannel, anchoringResult.msgID);
-
         let msgIDL1: string = "";
         try {
             msgIDL1 = await ProtocolHelper.getMsgIdL1(this.anchoringChannel, anchoringResult.msgID);
         } catch (e) {
+            // eslint-disable-next-line no-console
             console.log(e.message);
         }
 

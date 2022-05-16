@@ -1,4 +1,3 @@
-export * from "./ldProofs";
 export * from "./iotaSigner";
 export * from "./iotaVerifier";
 export * from "./iotaLdProofGenerator";

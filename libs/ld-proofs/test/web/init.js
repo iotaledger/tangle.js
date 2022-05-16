@@ -1,5 +1,5 @@
-import { LdProofs, IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
-import { IotaAnchoringChannel, Anchors } from "@tangle-js/anchors";
+import { IotaSigner, IotaLdProofGenerator, IotaLdProofVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
+import { IotaAnchoringChannel } from "@tangle-js/anchors";
 
 window.onload = async () => {
   console.log("On load");
@@ -10,14 +10,6 @@ window.onload = async () => {
 };
 
 async function testIt() {
-  /*
-  await Anchors.initialize();
-  console.log("Anchors initialized");
-
-  await LdProofs.initialize();
-  console.log("LD Proofs initialized");
-  */
-
   const myDID = "did:iota:HeNzaWXCT6jTsshy9gyXCz9242NgZtMrbW1EC66iXZNP";
 
   console.log("Creating a signer with DID", myDID);
@@ -55,8 +47,6 @@ async function testIt() {
     secret: "8XghdzhFGWrferW8v1PwpV86gtHKALKzxhGKSi4vGs3R",
     anchorageID: anchoringChannel.firstAnchorageID
   });
-
-  
 
   console.log("Linked Data Proof: ");
   console.log(ldProof);

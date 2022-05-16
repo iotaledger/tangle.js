@@ -1,4 +1,5 @@
 /* eslint-disable jsdoc/require-jsdoc */
+import fetch from "node-fetch";
 
 const JSON = "application/json";
 const JSON_LD = "application/ld+json";

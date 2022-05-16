@@ -1,7 +1,6 @@
 import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaSigner } from "../src/iotaSigner";
 import { IotaVerifier } from "../src/iotaVerifier";
-import { LdProofs } from "../src/ldProofs";
 import type { IJsonSignedDocument } from "../src/models/IJsonSignedDocument";
 import type { ILinkedDataSignature } from "../src/models/ILinkedDataSignature";
 import type { IVerificationOptions } from "../src/models/IVerificationOptions";
@@ -36,8 +35,6 @@ describe("Verify messages", () => {
   let jsonLdProof: ILinkedDataSignature;
 
   beforeAll(async () => {
-    await LdProofs.initialize();
-
     const signer = await IotaSigner.create(did, node);
 
     signatureValue = (await signer.sign(Buffer.from(message), {

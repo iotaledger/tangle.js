@@ -1,5 +1,5 @@
 import { set_panic_hook as streamsPanicHook } from "@tangle.js/streams-wasm/node/streams.js";
-import * as fetch from "node-fetch";
+import fetch from "node-fetch";
 
 // eslint-disable-next-line no-new-func, @typescript-eslint/no-implied-eval
 const isBrowser = new Function("try { return this===window; } catch(e) { return false; }");

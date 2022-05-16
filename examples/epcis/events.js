@@ -1,6 +1,19 @@
-import { ObjectEvent, EPCISDocument, bizSteps, dispositions, actionTypes } from "epcis2.js";
+/*
+const imported = await import("epcis2.js");
 
-const epcisDocument = new EPCISDocument();
+console.log(imported);
+
+const { ObjectEvent, EPCISDocument } = imported.default;
+
+console.log(EPCISDocument);
+*/
+
+import epcis2 from "epcis2.js";
+
+const { EPCISDocument, ObjectEvent } = epcis2;
+
+export const epcisDocument = new EPCISDocument();
+
 epcisDocument
     .setCreationDate(new Date().toISOString());
 
@@ -28,12 +41,12 @@ const supplierWarehouseD2 = "urn:epc:id:sgln:9524678.90000.WarehouseD2";
 const oemFactory = "urn:epc:id:sgln:9524987.20000.0";
 
 event1
-.setAction(actionTypes.observe)
+.setAction("ADD")
 .setEventTime(new Date().toISOString())
 .setEventTimeZoneOffset(2)
 .setReadPoint(supplierWarehouseD2)
-.setBizStep(bizSteps.shipping)
-.setDisposition(dispositions.in_progress)
+.setBizStep("shipping")
+.setDisposition("in_progress")
 .addEPC(partNumber);
 
 epcisDocument.addEvent(event1);
@@ -57,14 +70,12 @@ epcisDocument.addEvent(event1);
 const event2 = new ObjectEvent();
 
 event2
-.setAction(actionTypes.observe)
+.setAction("ADD")
 .setEventTime(new Date().toISOString())
 .setEventTimeZoneOffset(2)
 .setBizLocation(oemFactory)
-.setBizStep(bizSteps.receiving)
-.setDisposition(dispositions.in_progress)
+.setBizStep("receiving")
+.setDisposition("in_progress")
 .addEPC(partNumber);
 
 epcisDocument.addEvent(event2);
-
-exports.document = epcisDocument;
