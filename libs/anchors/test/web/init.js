@@ -1,32 +1,42 @@
-import { SeedHelper, IotaAnchoringChannel } from "@tangle-js/anchors";
+import { Anchors, SeedHelper, IotaAnchoringChannel, ProtocolHelper } from "@tangle-js/anchors";
 
 window.onload = async () => {
-    console.log("On load");
+  console.log("On load");
 
-    //handle create identity on click event
-    document
-        .querySelector("#create-channel")
-        .addEventListener("click", () => createChannel());
-
-    console.log("Panic Hook called");
+  // handle create identity on click event
+  document
+    .querySelector("#create-channel")
+    .addEventListener("click", async () => createChannel());
 };
 
 async function createChannel() {
-    const seed = SeedHelper.generateSeed();
-    console.log("Seed40011!!!", seed);
+  await Anchors.initialize();
 
-    const channelDetails = await IotaAnchoringChannel.create(seed);
+  console.log("Anchors Library initialized");
 
-    console.log(channelDetails);
+  const seed = SeedHelper.generateSeed();
+  console.log("Seed40011!!!", seed);
 
-    const channel = await IotaAnchoringChannel.bindNew();
-    var enc = new TextEncoder(); // always utf-8
-    const result = await channel.anchor(enc.encode("Hello from browser!!!"),channel.firstAnchorageID);
-    console.log(result);
+  const channelDetails = await IotaAnchoringChannel.create(seed);
 
-    const channel2 = await IotaAnchoringChannel.fromID(channel.channelID).bind(channel.seed);
+  console.log(channelDetails);
 
-    const response = await channel2.fetch(channel.firstAnchorageID);
+  const channel = await IotaAnchoringChannel.bindNew();
+  var enc = new TextEncoder(); // always utf-8
+  const result = await channel.anchor(
+    enc.encode("Hello from browser!!!"),
+    channel.firstAnchorageID
+  );
+  console.log(result);
 
-    console.log(response.message.toString());
+  const msgL1 = await ProtocolHelper.getMsgIdL1(channel, result.msgID);
+  console.log("L1 Id", msgL1);
+
+  const channel2 = await IotaAnchoringChannel.fromID(channel.channelID).bind(
+    channel.seed
+  );
+
+  const response = await channel2.fetch(channel.firstAnchorageID);
+
+  console.log(response.message.toString());
 }

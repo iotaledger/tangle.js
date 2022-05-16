@@ -1,3 +1,4 @@
+import { Anchors } from "@tangle-js/anchors";
 import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaSigner } from "../src/iotaSigner";
 import { LdProofs } from "../src/ldProofs";
@@ -29,6 +30,7 @@ describe("Sign messages", () => {
   const method = "key";
 
   beforeAll(async () => {
+    await Anchors.initialize();
     await LdProofs.initialize();
   });
 

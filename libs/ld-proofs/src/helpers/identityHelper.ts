@@ -1,8 +1,9 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
+import { LdProofs } from "../ldProofs";
 
-export class IdentityHelper {
+ export class IdentityHelper {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     private static readonly PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
 
@@ -12,7 +13,8 @@ export class IdentityHelper {
      * @param node Concerned node.
      * @returns The identity client.
      */
-    public static getClient(node: string): IdentityClient {
+    public static async getClient(node: string): Promise<IdentityClient> {
+        await LdProofs.initialize();
         const identityConfig = new IdentityConfig();
 
         identityConfig.setNetwork(Network.mainnet());

@@ -35,7 +35,7 @@ const clientConfig = {
     new CopyWebPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, "../node_modules/@iota/streams/web/streams_bg.wasm"),
+          from: path.resolve(__dirname, "../node_modules/@tangle.js/streams-wasm/web/streams_bg.wasm"),
           to: path.resolve(__dirname, "dist/public/wasm"),
         },
         {

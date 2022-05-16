@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build-web": "cd web && webpack --mode=production",
-    "test-web": ""
+    "test-web":  "http-server ./web/dist/ -c-1 -o"
   },
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/iotaledger/tangle.js#readme",
   "dependencies": {
     "@tangle-js/anchors": "0.9.2-beta15",
-    "@tangle-js/ld-proofs": "0.9.5-beta6",
+    "@tangle-js/ld-proofs": "0.9.5-beta7",
     "epcis2.js": "^2.1.0"
   },
   "devDependencies": {

@@ -10,19 +10,19 @@ const clientConfig = {
       "@tangle-js/anchors": path.resolve(
         __dirname,
         "../../dist/web/anchors-web.js"
-      ),
-    },
+      )
+    }
   },
   experiments: {
     topLevelAwait: true,
     outputModule: true,
-    syncWebAssembly: true,
+    syncWebAssembly: true
   },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
     library: {
-      type: "module",
+      type: "module"
     },
   },
   plugins: [
@@ -30,7 +30,7 @@ const clientConfig = {
       patterns: [
         {
           from: path.resolve(__dirname, "./index.html"),
-          to: path.resolve(__dirname, "dist"),
+          to: path.resolve(__dirname, "dist")
         },
       ],
     }),
@@ -41,11 +41,11 @@ const clientConfig = {
             __dirname,
             "../../../../node_modules/@tangle.js/streams-wasm/web/streams_bg.wasm"
           ),
-          to: path.resolve(__dirname, "dist/public/wasm"),
-        },
-      ],
-    }),
-  ],
+          to: path.resolve(__dirname, "dist/public/wasm")
+        }
+      ]
+    })
+  ]
 };
 
 module.exports = [clientConfig];

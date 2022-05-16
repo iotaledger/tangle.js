@@ -1,4 +1,4 @@
-import { IotaAnchoringChannel } from "@tangle-js/anchors";
+import { Anchors, IotaAnchoringChannel } from "@tangle-js/anchors";
 import LdProofErrorNames from "../src/errors/ldProofErrorNames";
 import { IotaLdProofGenerator } from "../src/iotaLdProofGenerator";
 import { IotaSigner } from "../src/iotaSigner";
@@ -44,6 +44,7 @@ describe("Generate IOTA Linked Data Proofs", () => {
     const method = "key";
 
     beforeAll(async () => {
+        await Anchors.initialize();
         await LdProofs.initialize();
     });
 

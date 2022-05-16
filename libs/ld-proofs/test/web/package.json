@@ -1,5 +1,5 @@
 {
-  "name": "anchors-web-example",
+  "name": "ld-proofs-web-example",
   "version": "1.0.0",
   "description": "",
   "main": "init.js",
@@ -12,7 +12,7 @@
   "author": "Jose Manuel Cantera",
   "license": "Apache 2.0",
   "dependencies": {
-    "@iota/streams": "^0.1.2"
+    "@tangle-js/ld-proofs": "0.9.5-beta8"
   },
   "devDependencies": {
     "webpack": "^5.72.0",

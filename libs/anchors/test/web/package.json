@@ -12,7 +12,7 @@
   "author": "Jose Manuel Cantera",
   "license": "Apache 2.0",
   "dependencies": {
-    "@tangle.js/streams-wasm": "^0.1.2"
+    "@tangle.js/streams-wasm": "1.2.1-beta1"
   },
   "devDependencies": {
     "webpack": "^5.72.0",

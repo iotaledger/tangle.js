@@ -17,7 +17,6 @@ import AnchorMsgService from "./services/anchorMsgService";
 import ChannelService from "./services/channelService";
 import FetchMsgService from "./services/fetchMsgService";
 
-
 export class IotaAnchoringChannel {
     public static readonly DEFAULT_NODE = ClientHelper.DEFAULT_NODE;
 

@@ -13,7 +13,7 @@ const plugins = [
   }),
   copy({
     targets: [
-      { src: '../../node_modules/@iota/streams/node/streams_bg.wasm', dest: 'dist/cjs' }
+      { src: '../../node_modules/@tangle.js/streams-wasm/node/streams_bg.wasm', dest: 'dist/cjs' }
     ]
   })
 ];
