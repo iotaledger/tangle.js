@@ -1,32 +1,35 @@
-import { VerificationMethod } from "@iota/identity-wasm/node";
+/* eslint-disable jsdoc/require-jsdoc */
+
+import type { VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
 import bs58 from "bs58";
+// eslint-disable-next-line unicorn/prefer-node-protocol
 import * as crypto from "crypto";
-import { eddsa as EdDSA } from "elliptic";
-import * as jsonld from "jsonld";
+import pkg from "elliptic";
+import jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { IJsonSignedDocument } from "./models/IJsonSignedDocument";
-import { IJsonVerificationOptions } from "./models/IJsonVerificationOptions";
-import { IVerificationOptions } from "./models/IVerificationOptions";
+import type { IJsonSignedDocument } from "./models/IJsonSignedDocument";
+import type { IJsonVerificationOptions } from "./models/IJsonVerificationOptions";
+import type { IVerificationOptions } from "./models/IVerificationOptions";
 import { LdContextURL } from "./models/ldContextURL";
 import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const { eddsa: EdDSA } = pkg;
+
 export class IotaVerifier {
     /**
-     * Verifies a Ed25519 signature corresponding to a string message
+     * Verifies a Ed25519 signature corresponding to a string message.
      *
-     * @param  message the message to be verified
-     * @param  signatureValue the signature value
-     *
-     * @param options The verification request
-     *
-     * @returns true or false depending on the verification result
-     *
+     * @param message The message to be verified.
+     * @param signatureValue The signature value.
+     * @param options The verification request.
+     * @returns True or false depending on the verification result.
      */
     public static async verify(message: Buffer, signatureValue: string,
         options: IVerificationOptions): Promise<boolean> {
@@ -48,16 +51,15 @@ export class IotaVerifier {
         }
 
         return this.verifySignature(signatureValue, message,
-            resolution.toJSON().publicKeyBase58);
+            resolution.toJSON().publicKeyBase58 as string);
     }
 
     /**
-     * Verifies a JSON(-LD) document containing a Linked Data Signature
+     * Verifies a JSON(-LD) document containing a Linked Data Signature.
      *
-     * @param doc The document to verify
-     * @param options The verification options
-     *
-     * @returns true or false depending on the verification result
+     * @param doc The document to verify.
+     * @param options The verification options.
+     * @returns True or false depending on the verification result.
      */
     public static async verifyJson(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
@@ -76,12 +78,11 @@ export class IotaVerifier {
     }
 
     /**
-     * Verifies a JSON document containing a Linked Data Signature
+     * Verifies a JSON document containing a Linked Data Signature.
      *
-     * @param doc The document to verify
-     * @param options The verification options
-     *
-     * @returns true or false depending on the verification result
+     * @param doc The document to verify.
+     * @param options The verification options.
+     * @returns True or false depending on the verification result.
      */
     private static async doVerifyJson(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
@@ -100,7 +101,7 @@ export class IotaVerifier {
             .createHash("sha256").update(canonical)
             .digest();
 
-        const result = this.verifySignature(proofValue, msgHash, resolution.toJSON().publicKeyBase58);
+        const result = this.verifySignature(proofValue, msgHash, resolution.toJSON().publicKeyBase58 as string);
 
         // Restore the proof value
         proof.proofValue = proofValue;
@@ -110,11 +111,11 @@ export class IotaVerifier {
 
 
     /**
-     * Verifies a JSON-LD document containing a Linked Data Signature
+     * Verifies a JSON-LD document containing a Linked Data Signature.
      *
-     * @param doc The document to be verified
-     * @param options The verification options
-     * @returns true or false depending on the verification result
+     * @param doc The document to be verified.
+     * @param options The verification options.
+     * @returns True or false depending on the verifi.cation result.
      */
     private static async doVerifyJsonLd(doc: IJsonSignedDocument | string,
         options?: IJsonVerificationOptions): Promise<boolean> {
@@ -140,16 +141,19 @@ export class IotaVerifier {
         };
 
         const docCanonical = await jsonld.canonize(document, canonizeOptions);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const docHash = crypto.createHash("sha512").update(docCanonical)
             .digest();
 
         const proofCanonical = await jsonld.canonize(proofOptions, canonizeOptions);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const proofHash = crypto.createHash("sha512").update(proofCanonical)
             .digest();
 
         const hashToVerify = Buffer.concat([docHash, proofHash]);
 
-        const result = this.verifySignature(proof.proofValue, hashToVerify, resolution.toJSON().publicKeyBase58);
+        const result = this.verifySignature(proof.proofValue, hashToVerify,
+            resolution.toJSON().publicKeyBase58 as string);
 
         // Restore the proof value on the original document
         document.proof = proof;
@@ -191,6 +195,7 @@ export class IotaVerifier {
 
             return (ecKey.verify(message, signatureBytes.toString("hex"))) as boolean;
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.log("Error while verifying signature:", error);
             return false;
         }

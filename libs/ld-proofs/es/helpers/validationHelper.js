@@ -1,12 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class ValidationHelper {
+/* eslint-disable jsdoc/require-jsdoc */
+export default class ValidationHelper {
     static url(input) {
         try {
             // eslint-disable-next-line no-new
             new URL(input);
         }
-        catch (_a) {
+        catch {
             return false;
         }
         return true;
@@ -16,5 +15,4 @@ class ValidationHelper {
         return regex.test(input);
     }
 }
-exports.default = ValidationHelper;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidmFsaWRhdGlvbkhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9oZWxwZXJzL3ZhbGlkYXRpb25IZWxwZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxNQUFxQixnQkFBZ0I7SUFDMUIsTUFBTSxDQUFDLEdBQUcsQ0FBQyxLQUFhO1FBQzNCLElBQUk7WUFDQSxrQ0FBa0M7WUFDbEMsSUFBSSxHQUFHLENBQUMsS0FBSyxDQUFDLENBQUM7U0FDbEI7UUFBQyxXQUFNO1lBQ0osT0FBTyxLQUFLLENBQUM7U0FDaEI7UUFFRCxPQUFPLElBQUksQ0FBQztJQUNoQixDQUFDO0lBRU0sTUFBTSxDQUFDLEdBQUcsQ0FBQyxLQUFhO1FBQzNCLE1BQU0sS0FBSyxHQUFHLHVCQUF1QixDQUFDO1FBRXRDLE9BQU8sS0FBSyxDQUFDLElBQUksQ0FBQyxLQUFLLENBQUMsQ0FBQztJQUM3QixDQUFDO0NBQ0o7QUFqQkQsbUNBaUJDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidmFsaWRhdGlvbkhlbHBlci5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9oZWxwZXJzL3ZhbGlkYXRpb25IZWxwZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsd0NBQXdDO0FBRXhDLE1BQU0sQ0FBQyxPQUFPLE9BQU8sZ0JBQWdCO0lBQzFCLE1BQU0sQ0FBQyxHQUFHLENBQUMsS0FBYTtRQUMzQixJQUFJO1lBQ0Esa0NBQWtDO1lBQ2xDLElBQUksR0FBRyxDQUFDLEtBQUssQ0FBQyxDQUFDO1NBQ2xCO1FBQUMsTUFBTTtZQUNKLE9BQU8sS0FBSyxDQUFDO1NBQ2hCO1FBRUQsT0FBTyxJQUFJLENBQUM7SUFDaEIsQ0FBQztJQUVNLE1BQU0sQ0FBQyxHQUFHLENBQUMsS0FBYTtRQUMzQixNQUFNLEtBQUssR0FBRyx1QkFBdUIsQ0FBQztRQUV0QyxPQUFPLEtBQUssQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUM7SUFDN0IsQ0FBQztDQUNKIn0=

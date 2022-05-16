@@ -74,6 +74,16 @@ describe("Fetch Messages", () => {
         expect(response.message.toString()).toBe(MSG_1);
     });
 
+    test.skip("should fetch message anchored to the first anchorage - same channel, no msgID", async () => {
+        const channel = await IotaAnchoringChannel.bindNew();
+        await channel.anchor(Buffer.from(MSG_2), channel.firstAnchorageID);
+
+        const response = await channel.fetch(channel.firstAnchorageID);
+
+        expect(response.pk).toBe(channel.authorPubKey);
+        expect(response.message.toString()).toBe(MSG_2);
+    });
+
     test("should fetch message anchored to the first anchorage - encrypted", async () => {
         const channel = await IotaAnchoringChannel.fromID(
             encryptedChannelID, { node: network, encrypted: true }

@@ -1,26 +1,21 @@
-import { StreamsClient, Subscriber } from "@tangle.js/streams-wasm/node";
+import type { StreamsClient, Subscriber } from "@tangle.js/streams-wasm/node/streams.js";
 import { AnchoringChannelError } from "./errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "./errors/anchoringChannelErrorNames";
 import { ClientHelper } from "./helpers/clientHelper";
-import initialize from "./helpers/initializationHelper";
 import { SeedHelper } from "./helpers/seedHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { IAnchoringRequest } from "./models/IAnchoringRequest";
-import { IAnchoringResult } from "./models/IAnchoringResult";
-import { IBindChannelRequest } from "./models/IBindChannelRequest";
-import { IChannelCreateOptions } from "./models/IChannelCreateOptions";
-import { IChannelDetails } from "./models/IChannelDetails";
-import { IChannelOptions } from "./models/IChannelOptions";
-import { IFetchRequest } from "./models/IFetchRequest";
-import { IFetchResult } from "./models/IFetchResult";
-import { INodeInfo } from "./models/INodeInfo";
+import type { IAnchoringRequest } from "./models/IAnchoringRequest";
+import type { IAnchoringResult } from "./models/IAnchoringResult";
+import type { IBindChannelRequest } from "./models/IBindChannelRequest";
+import type { IChannelCreateOptions } from "./models/IChannelCreateOptions";
+import type { IChannelDetails } from "./models/IChannelDetails";
+import type { IChannelOptions } from "./models/IChannelOptions";
+import type { IFetchRequest } from "./models/IFetchRequest";
+import type { IFetchResult } from "./models/IFetchResult";
+import type { INodeInfo } from "./models/INodeInfo";
 import AnchorMsgService from "./services/anchorMsgService";
 import ChannelService from "./services/channelService";
 import FetchMsgService from "./services/fetchMsgService";
-
-
-// Needed for the Streams WASM bindings
-initialize();
 
 export class IotaAnchoringChannel {
     public static readonly DEFAULT_NODE = ClientHelper.DEFAULT_NODE;
@@ -66,12 +61,98 @@ export class IotaAnchoringChannel {
     }
 
     /**
+     *  Returns the channelID ('channelAddress:announce_msg_id')
+     *
+     *  @returns channel ID
+     */
+    public get channelID(): string {
+        return this._channelID;
+    }
+
+    /**
+     *  Returns the channel's address
+     *
+     *  @returns channel address
+     */
+    public get channelAddr(): string {
+        return this._channelAddress;
+    }
+
+    /**
+     *  Returns the channel's first anchorage ID
+     *
+     *  @returns anchorageID
+     */
+    public get firstAnchorageID(): string {
+        let result = this._keyLoadMsgID;
+
+        if (!result) {
+            result = this._announceMsgID;
+        }
+
+        return result;
+    }
+
+    /**
+     *  Returns the channel's node
+     *
+     *  @returns node
+     */
+    public get node(): string {
+        return this._node.node;
+    }
+
+    /**
+     *  Returns the channel's publisher seed
+     *
+     *  @returns seed
+     */
+    public get seed(): string {
+        return this._seed;
+    }
+
+    /**
+     *  Returns the channel's author Public Key
+     *
+     *  @returns the Author's Public key
+     */
+    public get authorPubKey(): string {
+        return this._authorPubKey;
+    }
+
+    /**
+     *  Returns the channel's subscriber Public Key
+     *
+     *  @returns the subscriber's Public key
+     */
+    public get subscriberPubKey(): string {
+        return this._subscriberPubKey;
+    }
+
+    /**
+     *  Returns whether the channel is encrypted or not
+     *
+     *  @returns boolean
+     */
+    public get encrypted(): boolean {
+        return this._encrypted;
+    }
+
+    /**
+     *  Returns whether the channel is private or not
+     *
+     *  @returns boolean
+     */
+    public get isPrivate(): boolean {
+        return this._isPrivate;
+    }
+
+    /**
      * Creates a new Anchoring Channel
      *
      * @param seed Author's seed
      * @param options  The options
      * @param options.node The node used to create the channel
-     *
      * @returns The anchoring channel details
      */
     public static async create(seed: string, options?: IChannelCreateOptions): Promise<IChannelDetails> {
@@ -129,9 +210,7 @@ export class IotaAnchoringChannel {
      *
      * @param channelID in the form of 'channel_address:announce_msg_id'
      * @param options Channel options
-     *
      * @returns reference to the channel
-     *
      */
     public static fromID(channelID: string, options?: IChannelOptions): IotaAnchoringChannel {
         const components: string[] = channelID.split(":");
@@ -201,7 +280,6 @@ export class IotaAnchoringChannel {
      * @param seed The Subscriber (publisher) seed
      * @param psk The Subscriber preshared key
      * @returns a Reference to the channel
-     *
      */
     public async bind(seed: string, psk?: string): Promise<IotaAnchoringChannel> {
         if (this._subscriber) {
@@ -233,109 +311,11 @@ export class IotaAnchoringChannel {
     }
 
     /**
-     *  Returns the channelID ('channelAddress:announce_msg_id')
-     *
-     *  @returns channel ID
-     *
-     */
-    public get channelID(): string {
-        return this._channelID;
-    }
-
-    /**
-     *  Returns the channel's address
-     *
-     *  @returns channel address
-     *
-     */
-    public get channelAddr(): string {
-        return this._channelAddress;
-    }
-
-    /**
-     *  Returns the channel's first anchorage ID
-     *
-     *  @returns anchorageID
-     *
-     */
-    public get firstAnchorageID(): string {
-        let result = this._keyLoadMsgID;
-
-        if (!result) {
-            result = this._announceMsgID;
-        }
-
-        return result;
-    }
-
-    /**
-     *  Returns the channel's node
-     *
-     *  @returns node
-     *
-     */
-    public get node(): string {
-        return this._node.node;
-    }
-
-    /**
-     *  Returns the channel's publisher seed
-     *
-     *  @returns seed
-     *
-     */
-    public get seed(): string {
-        return this._seed;
-    }
-
-    /**
-     *  Returns the channel's author Public Key
-     *
-     *  @returns the Author's Public key
-     *
-     */
-    public get authorPubKey(): string {
-        return this._authorPubKey;
-    }
-
-    /**
-     *  Returns the channel's subscriber Public Key
-     *
-     *  @returns the subscriber's Public key
-     *
-     */
-    public get subscriberPubKey(): string {
-        return this._subscriberPubKey;
-    }
-
-    /**
-     *  Returns whether the channel is encrypted or not
-     *
-     *  @returns boolean
-     *
-     */
-    public get encrypted(): boolean {
-        return this._encrypted;
-    }
-
-    /**
-     *  Returns whether the channel is private or not
-     *
-     *  @returns boolean
-     *
-     */
-      public get isPrivate(): boolean {
-        return this._isPrivate;
-    }
-
-    /**
      * Anchors a message to the anchoring channel
      *
      * @param message Message to be anchored
      * @param anchorageID The anchorage to be used
-     *
      * @returns The result of the operation
-     *
      */
     public async anchor(message: Buffer, anchorageID: string): Promise<IAnchoringResult> {
         if (!this._subscriber) {
@@ -362,7 +342,6 @@ export class IotaAnchoringChannel {
      *
      * @param anchorageID The anchorage point
      * @param messageID  The expected ID of the anchored message
-     *
      * @returns The fetch result
      */
     public async fetch(anchorageID: string, messageID?: string): Promise<IFetchResult> {
@@ -403,7 +382,6 @@ export class IotaAnchoringChannel {
      *
      * @param messageID  The ID of the message
      * @param anchorageID The expected ID of message's anchorage
-     *
      * @returns The message received and associated metadata
      */
     public async receive(messageID: string, anchorageID?: string): Promise<IFetchResult> {

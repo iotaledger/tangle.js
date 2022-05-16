@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 export class SignatureTypes {
     public static ED25519_2018 = "Ed25519Signature2018";
 

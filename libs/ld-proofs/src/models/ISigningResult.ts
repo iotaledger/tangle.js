@@ -1,11 +1,11 @@
 /**
- *  Result of signing request
+ * Result of signing request.
  */
 export interface ISigningResult {
-    /** Id of the Verification method */
+    /** Id of the Verification method. */
     verificationMethod: string;
-    /** The value of th signature */
+    /** The value of th signature. */
     signatureValue: string;
-    /** When the signature was created */
+    /** When the signature was created. */
     created: string;
 }

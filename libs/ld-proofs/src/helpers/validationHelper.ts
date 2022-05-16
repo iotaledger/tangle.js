@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 export default class ValidationHelper {
     public static url(input: string): boolean {
         try {

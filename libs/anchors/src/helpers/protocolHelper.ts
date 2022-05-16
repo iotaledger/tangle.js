@@ -1,8 +1,9 @@
 import { SingleNodeClient } from "@iota/iota.js";
-import { Address, ChannelAddress, MsgId } from "@tangle.js/streams-wasm/node";
+import { Address, ChannelAddress, MsgId } from "@tangle.js/streams-wasm/node/streams.js";
 import { AnchoringChannelError } from "../errors/anchoringChannelError";
 import { AnchoringChannelErrorNames } from "../errors/anchoringChannelErrorNames";
-import { IotaAnchoringChannel } from "../iotaAnchoringChannel";
+import type { IotaAnchoringChannel } from "../iotaAnchoringChannel";
+import initialize from "./initializationHelper";
 
 /**
  * Helper class to deal with protocol aspects
@@ -15,10 +16,11 @@ export class ProtocolHelper {
      *
      * @param channelAddress The channel address
      * @param messageId The message identifier
-     *
      * @returns the tangle index encoded in hexadecimal chars
      */
-    public static getIndexL1(channelAddress: string, messageId: string): string {
+    public static async getIndexL1(channelAddress: string, messageId: string): Promise<string> {
+        await initialize();
+
         const addr = new Address(ChannelAddress.parse(channelAddress), MsgId.parse(messageId));
 
         return addr.toMsgIndexHex();
@@ -30,10 +32,11 @@ export class ProtocolHelper {
      *
      * @param channel   The anchoring channel
      * @param messageId The Streams Message Id
-     *
      * @returns the Layer 1 message ID
      */
     public static async getMsgIdL1(channel: IotaAnchoringChannel, messageId: string): Promise<string> {
+        await initialize();
+
         const addr = new Address(ChannelAddress.parse(channel.channelAddr), MsgId.parse(messageId));
         const index = addr.toMsgIndex();
 

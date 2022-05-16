@@ -1,26 +1,30 @@
-import { Document as DidDocument } from "@iota/identity-wasm/node";
+/* eslint-disable jsdoc/require-jsdoc */
+
+import type { Document as DidDocument } from "@iota/identity-wasm/node/identity_wasm.js";
+// eslint-disable-next-line unicorn/prefer-node-protocol
 import * as crypto from "crypto";
-import * as jsonld from "jsonld";
+import jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
 import LdProofErrorNames from "./errors/ldProofErrorNames";
 import { JsonCanonicalization } from "./helpers/jsonCanonicalization";
 import JsonHelper from "./helpers/jsonHelper";
 import { customLdContextLoader } from "./helpers/jsonLdHelper";
 import ValidationHelper from "./helpers/validationHelper";
-import { IJsonDocument } from "./models/IJsonDocument";
-import { ILinkedDataSignature } from "./models/ILinkedDataSignature";
-import { ISigningOptions } from "./models/ISigningOptions";
-import { ISigningRequest } from "./models/ISigningRequest";
-import { ISigningResult } from "./models/ISigningResult";
+import type { IJsonDocument } from "./models/IJsonDocument";
+import type { ILinkedDataSignature } from "./models/ILinkedDataSignature";
+import type { ISigningOptions } from "./models/ISigningOptions";
+import type { ISigningRequest } from "./models/ISigningRequest";
+import type { ISigningResult } from "./models/ISigningResult";
 import { LdContextURL } from "./models/ldContextURL";
 import { SignatureTypes } from "./models/signatureTypes";
 import DidService from "./services/didService";
 import SigningService from "./services/signingService";
 
+
 /**
- *  It allows to sign and verify messages using a Verification Method provided by a DID
+ * It allows to sign and verify messages using a Verification Method provided by a DID.
  *
- *  It generates and verifies EdDSA (Ed25519) signatures
+ * It generates and verifies EdDSA (Ed25519) signatures.
  *
  */
 export class IotaSigner {
@@ -38,12 +42,11 @@ export class IotaSigner {
     }
 
     /**
-     * Creates a new signer associating it with a particular decentralized identity
+     * Creates a new signer associating it with a particular decentralized identity.
      *
-     * @param did The DID that has the verification methods of the signer
-     * @param node The node
-     *
-     * @returns The newly created signer
+     * @param did The DID that has the verification methods of the signer.
+     * @param node The node.
+     * @returns The newly created signer.
      */
     public static async create(did: string, node?: string): Promise<IotaSigner> {
         if (node && !ValidationHelper.url(node)) {
@@ -60,14 +63,11 @@ export class IotaSigner {
     }
 
     /**
+     * Signs a string message using the Ed25519 signature algorithm.
      *
-     * Signs a string message using the Ed25519 signature algorithm
-     *
-     * @param message The message
-     * @param options The signing options
-     *
-     * @returns The signature details including its value encoded in Base58
-     *
+     * @param message The message.
+     * @param options The signing options.
+     * @returns The signature details including its value encoded in Base58.
      */
     public async sign(message: Buffer, options: ISigningOptions): Promise<ISigningResult> {
         const request: ISigningRequest = {
@@ -84,12 +84,11 @@ export class IotaSigner {
     }
 
     /**
-     * Signs a JSON(-LD) document
+     * Signs a JSON(-LD) document.
      *
-     * @param doc The JSON(-LD) document as an object or as a string
-     * @param options the parameters to use to generate the signature
-     *
-     * @returns The JSON document including its corresponding Linked Data Signature
+     * @param doc The JSON(-LD) document as an object or as a string.
+     * @param options The parameters to use to generate the signature.
+     * @returns The JSON document including its corresponding Linked Data Signature.
      */
     public async signJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         if (options.signatureType === SignatureTypes.JCS_ED25519_2020) {
@@ -106,12 +105,11 @@ export class IotaSigner {
     }
 
     /**
-     * Signs a JSON document
+     * Signs a JSON document.
      *
-     * @param doc The JSON document as an object or as a string
-     * @param options the parameters to use to generate the signature
-     *
-     * @returns The JSON document including its corresponding Linked Data Signature
+     * @param doc The JSON document as an object or as a string.
+     * @param options The parameters to use to generate the signature.
+     * @returns The JSON document including its corresponding Linked Data Signature.
      */
     private async doSignJson(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getDocument(doc);
@@ -150,13 +148,11 @@ export class IotaSigner {
     }
 
     /**
-     *  Signs a JSON-LD document
+     * Signs a JSON-LD document.
      *
-     * @param doc The JSON-LD document as an object or as a string
-     * @param options the parameters to use to generate the signature
-     *
-     * @returns The Linked Data Signature represented as a Linked Data Proof
-     *
+     * @param doc The JSON-LD document as an object or as a string.
+     * @param options The parameters to use to generate the signature.
+     * @returns The Linked Data Signature represented as a Linked Data Proof.
      */
     private async doSignJsonLd(doc: string | IJsonDocument, options: ISigningOptions): Promise<ILinkedDataSignature> {
         const docToBeSigned = JsonHelper.getJsonLdDocument(doc);
@@ -176,6 +172,7 @@ export class IotaSigner {
         const canonized = await jsonld.canonize(docToBeSigned, canonizeOptions);
 
         const docHash = crypto
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .createHash("sha512").update(canonized)
             .digest();
 
@@ -188,6 +185,7 @@ export class IotaSigner {
         const proofOptionsCanonized = await jsonld.canonize(proofOptionsLd, canonizeOptions);
 
         const proofOptionsHash = crypto
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             .createHash("sha512").update(proofOptionsCanonized)
             .digest();
 

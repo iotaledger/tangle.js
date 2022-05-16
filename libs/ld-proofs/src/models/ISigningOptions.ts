@@ -1,9 +1,9 @@
-/** Signing options */
+/** Signing options. */
 export interface ISigningOptions {
-    /** Signature Type */
+    /** Signature Type. */
     signatureType: string;
-    /** The method used for signing (referred as a DID fragment identifier) */
+    /** The method used for signing (referred as a DID fragment identifier). */
     verificationMethod: string;
-    /** The secret */
+    /** The secret. */
     secret: string;
 }

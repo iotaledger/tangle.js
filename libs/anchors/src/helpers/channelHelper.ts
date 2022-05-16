@@ -1,4 +1,4 @@
-import { Address, ChannelAddress, MsgId, Subscriber } from "@tangle.js/streams-wasm/node";
+import { Address, ChannelAddress, MsgId, Subscriber } from "@tangle.js/streams-wasm/node/streams.js";
 
 export class ChannelHelper {
     /**
@@ -18,7 +18,6 @@ export class ChannelHelper {
      *
      * @param subs  Subscriber
      * @param anchorageID The anchorage identifier
-     *
      * @returns whether it has been found and the link to the anchorage on the Channel
      */
     public static async findAnchorage(subs: Subscriber, anchorageID: string):
@@ -44,15 +43,14 @@ export class ChannelHelper {
             found = true;
         }
 
-        // Iteratively retrieve messages until We find the one to anchor to
         while (!found) {
-            const messages = await subs.clone().fetch_next_msgs();
-            if (!messages || messages.length === 0) {
+            // Iteratively retrieve messages until We find the one to anchor to
+            const message = await subs.clone().fetchNextMsg();
+            if (!message) {
                 break;
             }
 
-            // In our case only one message is expected
-            anchorageLink = messages[0].link.copy();
+            anchorageLink = message.link.copy();
 
             if (anchorageLink.msgId.toString() === anchorageID) {
                 found = true;

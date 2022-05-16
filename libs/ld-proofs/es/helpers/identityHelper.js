@@ -1,28 +1,28 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.IdentityHelper = void 0;
-const node_1 = require("@iota/identity-wasm/node");
-class IdentityHelper {
+/* eslint-disable jsdoc/require-jsdoc */
+import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
+import initialize from "./initializationHelper";
+export class IdentityHelper {
     /**
-     * Returns a new Identity Client for the network specified as parameter
+     * Returns a new Identity Client for the network specified as parameter.
      *
-     * @param node Concerned node
-     * @returns the identity client
+     * @param node Concerned node.
+     * @returns The identity client.
      */
-    static getClient(node) {
-        const identityConfig = new node_1.Config();
-        identityConfig.setNetwork(node_1.Network.mainnet());
+    static async getClient(node) {
+        await initialize();
+        const identityConfig = new IdentityConfig();
+        identityConfig.setNetwork(Network.mainnet());
         if (node) {
             identityConfig.setNode(node);
         }
         else {
-            identityConfig.setNode(node_1.Network.mainnet().defaultNodeURL);
+            identityConfig.setNode(Network.mainnet().defaultNodeURL);
         }
         identityConfig.setPermanode(this.PERMANODE_URL);
-        const identityClient = node_1.Client.fromConfig(identityConfig);
+        const identityClient = IdentityClient.fromConfig(identityConfig);
         return identityClient;
     }
 }
-exports.IdentityHelper = IdentityHelper;
+// eslint-disable-next-line @typescript-eslint/naming-convention
 IdentityHelper.PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaWRlbnRpdHlIZWxwZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvaGVscGVycy9pZGVudGl0eUhlbHBlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7QUFBQSxtREFBdUc7QUFFdkcsTUFBYSxjQUFjO0lBR3ZCOzs7OztPQUtHO0lBQ0ksTUFBTSxDQUFDLFNBQVMsQ0FBQyxJQUFZO1FBQ2hDLE1BQU0sY0FBYyxHQUFHLElBQUksYUFBYyxFQUFFLENBQUM7UUFFNUMsY0FBYyxDQUFDLFVBQVUsQ0FBQyxjQUFPLENBQUMsT0FBTyxFQUFFLENBQUMsQ0FBQztRQUU3QyxJQUFJLElBQUksRUFBRTtZQUNOLGNBQWMsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLENBQUM7U0FDaEM7YUFBTTtZQUNILGNBQWMsQ0FBQyxPQUFPLENBQUMsY0FBTyxDQUFDLE9BQU8sRUFBRSxDQUFDLGNBQWMsQ0FBQyxDQUFDO1NBQzVEO1FBRUQsY0FBYyxDQUFDLFlBQVksQ0FBQyxJQUFJLENBQUMsYUFBYSxDQUFDLENBQUM7UUFDaEQsTUFBTSxjQUFjLEdBQUcsYUFBYyxDQUFDLFVBQVUsQ0FBQyxjQUFjLENBQUMsQ0FBQztRQUVqRSxPQUFPLGNBQWMsQ0FBQztJQUMxQixDQUFDOztBQXhCTCx3Q0F5QkM7QUF4QjJCLDRCQUFhLEdBQUcsbURBQW1ELENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaWRlbnRpdHlIZWxwZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvaGVscGVycy9pZGVudGl0eUhlbHBlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSx3Q0FBd0M7QUFFeEMsT0FBTyxFQUFFLE1BQU0sSUFBSSxjQUFjLEVBQUUsTUFBTSxJQUFJLGNBQWMsRUFBRSxPQUFPLEVBQUUsTUFBTSwyQ0FBMkMsQ0FBQztBQUN4SCxPQUFPLFVBQVUsTUFBTSx3QkFBd0IsQ0FBQztBQUUvQyxNQUFNLE9BQU8sY0FBYztJQUl4Qjs7Ozs7T0FLRztJQUNJLE1BQU0sQ0FBQyxLQUFLLENBQUMsU0FBUyxDQUFDLElBQVk7UUFDdEMsTUFBTSxVQUFVLEVBQUUsQ0FBQztRQUNuQixNQUFNLGNBQWMsR0FBRyxJQUFJLGNBQWMsRUFBRSxDQUFDO1FBRTVDLGNBQWMsQ0FBQyxVQUFVLENBQUMsT0FBTyxDQUFDLE9BQU8sRUFBRSxDQUFDLENBQUM7UUFFN0MsSUFBSSxJQUFJLEVBQUU7WUFDTixjQUFjLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxDQUFDO1NBQ2hDO2FBQU07WUFDSCxjQUFjLENBQUMsT0FBTyxDQUFDLE9BQU8sQ0FBQyxPQUFPLEVBQUUsQ0FBQyxjQUFjLENBQUMsQ0FBQztTQUM1RDtRQUVELGNBQWMsQ0FBQyxZQUFZLENBQUMsSUFBSSxDQUFDLGFBQWEsQ0FBQyxDQUFDO1FBQ2hELE1BQU0sY0FBYyxHQUFHLGNBQWMsQ0FBQyxVQUFVLENBQUMsY0FBYyxDQUFDLENBQUM7UUFFakUsT0FBTyxjQUFjLENBQUM7SUFDMUIsQ0FBQzs7QUF6QkQsZ0VBQWdFO0FBQ3hDLDRCQUFhLEdBQUcsbURBQW1ELENBQUMifQ==

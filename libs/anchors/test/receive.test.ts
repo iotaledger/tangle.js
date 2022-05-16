@@ -3,14 +3,14 @@ import { SeedHelper } from "../src/helpers/seedHelper";
 import { IotaAnchoringChannel } from "../src/iotaAnchoringChannel";
 import { network, newChannel, newEncryptedChannel, newPrivateChannel } from "./testCommon";
 
-    // No search is made over the channel
-    /* channel.receive(msgID, anchorageID) --> Just receives the message i.e the messages has had to be seen */
-    /* It is needed to verify that the anchorageID is the correct one */
+// No search is made over the channel
+/* channel.receive(msgID, anchorageID) --> Just receives the message i.e the messages has had to be seen */
+/* It is needed to verify that the anchorageID is the correct one */
 
-    /* When anchoring we need to avoid anchoring two messages to the same anchorageID */
-    /* Streams Team - Ask for: When receiving a message receive the to what message such message is linked to */
-    /* Streams Team - Ask for: Generate an exception when anchoring to messages to the same anchorage */
-    /* Streams Team - fetch_next_msgs starting from a particular one, like rewinding the channel to that point */
+/* When anchoring we need to avoid anchoring two messages to the same anchorageID */
+/* Streams Team - Ask for: When receiving a message receive the to what message such message is linked to */
+/* Streams Team - Ask for: Generate an exception when anchoring to messages to the same anchorage */
+/* Streams Team - fetch_next_msgs starting from a particular one, like rewinding the channel to that point */
 
 describe("Receive Messages", () => {
     const MSG_1 = "Hello 1";
