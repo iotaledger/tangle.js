@@ -1,13 +1,14 @@
 # Tangle Linked Data Proofs
 
-`ld-proofs` enables Linked Data Proofs on the Tangle. Powered by [IOTA Identity](https://github.com/iotaledger/identity.rs) and [IOTA Streams](https://github.com/iotaledger/streams). This library also works on the Browser so that you can verify data locally. 
+`ld-proofs` enables Linked Data Proofs on the Tangle. Powered by [IOTA Identity](https://github.com/iotaledger/identity.rs) and [IOTA Streams](https://github.com/iotaledger/streams). This library also works on the Browser so that you can verify data locally.
+Please check the [web examples](../../examples/web).
 
 [![Github Test Workflow](https://github.com/iotaledger/tangle.js/workflows/Proofs%20Test/badge.svg)](https://github.com/iotaledger/tangle.js/actions/workflows/proofs-test.yaml)
  [![npm badge](https://img.shields.io/npm/dm/%40tangle-js%2Fld-proofs.svg)](https://www.npmjs.com/package/@tangle-js/ld-proofs)
 
- ## Installation
+## Installation
 
-```
+```sh
 npm install @tangle-js/ld-proofs
 ```
 
@@ -110,7 +111,7 @@ const verified = await IotaLdProofVerifier.verifyJson(anchoredDoc);
 
 ### Signing plain messages
 
-Only EdDSA (Ed25519) is supported. 
+Only EdDSA (Ed25519) is supported.
 
 ```ts
 // The node is optional and by default will be IF mainnet nodes
