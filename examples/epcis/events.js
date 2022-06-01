@@ -1,14 +1,15 @@
-/*
-const imported = await import("epcis2.js");
+let epcis2;
 
-console.log(imported);
+const isBrowser = new Function("try { return this===window; } catch(e) { return false; }");
 
-const { ObjectEvent, EPCISDocument } = imported.default;
-
-console.log(EPCISDocument);
-*/
-
-import epcis2 from "epcis2.js";
+// Workaround to overcome the issue of EPCIS2 library deployment
+if (isBrowser()) {
+    epcis2 = window.epcis2;
+}
+else {
+    const imported = await import("epcis2.js");
+    epcis2 = imported.default;
+}
 
 const { EPCISDocument, ObjectEvent } = epcis2;
 
