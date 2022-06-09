@@ -121,7 +121,7 @@ export class IotaSigner {
 
         const proof = {
             type: SignatureTypes.JCS_ED25519_2020,
-            verificationMethod: `${this._didDocument.id}#${options.verificationMethod}`,
+            verificationMethod: `${this._didDocument.id()}#${options.verificationMethod}`,
             proofPurpose: "dataVerification",
             created: new Date().toISOString()
         };
@@ -178,7 +178,7 @@ export class IotaSigner {
 
         const proofOptionsLd = {
             "@context": LdContextURL.W3C_SECURITY,
-            verificationMethod: `${this._didDocument.id}#${options.verificationMethod}`,
+            verificationMethod: `${this._didDocument.id()}#${options.verificationMethod}`,
             created: new Date().toISOString()
         };
 

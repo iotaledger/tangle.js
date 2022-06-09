@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
+import type { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
+import { ProofOptions, VerifierOptions } from "@iota/identity-wasm/web";
 import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
@@ -14,23 +15,26 @@ export default class DidService {
      * @returns The DID Document resolved from Tangle.
      */
     public static async resolve(node: string, did: string): Promise<DidDocument> {
+        let doc: DidDocument;
         try {
             const identityClient = await IdentityHelper.getClient(node);
 
             const resolution = await identityClient.resolve(did);
-            const jsonDoc = resolution.document;
-
-            const doc = DidDocument.fromJSON(jsonDoc);
-            if (!doc.verify()) {
-                throw new LdProofError(LdProofErrorNames.DID_NOT_VERIFIED,
-                    "DID cannot be verified");
-            }
-
-            return doc;
-        } catch {
+            doc = resolution.document();
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.log(e);
             throw new LdProofError(LdProofErrorNames.DID_NOT_FOUND,
                 "DID cannot be resolved");
         }
+
+        try {
+            doc.verifyDocument(doc);
+        } catch {
+            throw new LdProofError(LdProofErrorNames.DID_NOT_VERIFIED,
+                "DID cannot be verified");
+        }
+        return doc;
     }
 
     /**
@@ -43,7 +47,8 @@ export default class DidService {
         try {
             const didDocument = await this.resolve(node, didMethod.split("#")[0]);
 
-            return didDocument.resolveKey(didMethod);
+            const scope = undefined;
+            return didDocument.resolveMethod(didMethod, scope);
         } catch {
             throw new LdProofError(LdProofErrorNames.DID_NOT_FOUND,
                 "DID cannot be resolved");
@@ -62,7 +67,8 @@ export default class DidService {
     public static async verifyOwnership(didDocument: DidDocument, method: string, secret: string): Promise<boolean> {
         // First we verify if the method really exists on the DID
         try {
-            didDocument.resolveKey(`${didDocument.id}#${method}`);
+            const scope = undefined;
+            didDocument.resolveMethod(`${didDocument.id()}#${method}`, scope);
         } catch {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "The DID method supplied is not valid");
@@ -71,12 +77,11 @@ export default class DidService {
         try {
             const verificationData = { "testData": SeedHelper.generateSeed(10) };
 
-            const signature = await didDocument.signData(verificationData, {
-                secret,
-                method: `${didDocument.id}#${method}`
-            });
+            const signature = await didDocument.signData(verificationData,
+                new TextEncoder().encode(secret),
+                `${didDocument.id()}#${method}`, ProofOptions.default());
 
-            return didDocument.verifyData(signature);
+            return didDocument.verifyData(signature, VerifierOptions.default());
         } catch {
             throw new LdProofError(LdProofErrorNames.INVALID_SIGNING_KEY,
                 "The key supplied is not valid");

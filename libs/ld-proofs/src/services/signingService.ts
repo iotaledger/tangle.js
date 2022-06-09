@@ -26,12 +26,13 @@ export default class SigningService {
 
         let methodDocument: VerificationMethod;
         try {
-            methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
+            const scope = undefined;
+            methodDocument = didDocument.resolveMethod(`${didDocument.id()}#${request.method}`, scope);
         } catch {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "The method has not been found on the DID Document");
         }
-        if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
+        if (methodDocument && methodDocument.type().toString() !== "Ed25519VerificationKey2018") {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
@@ -48,7 +49,7 @@ export default class SigningService {
 
         const response: ISigningResult = {
             created: new Date().toISOString(),
-            verificationMethod: `${didDocument.id}#${request.method}`,
+            verificationMethod: `${didDocument.id()}#${request.method}`,
             signatureValue
         };
 

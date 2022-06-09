@@ -44,7 +44,7 @@
     },
     "homepage": "https://github.com/iotaledger/tangle.js/ld-proofs/README.md",
     "dependencies": {
-        "@iota/identity-wasm": "0.3.4",
+        "@iota/identity-wasm": "0.5.1",
         "bs58": "^4.0.1",
         "elliptic": "^6.5.4",
         "jsonld": "^5.2.0",

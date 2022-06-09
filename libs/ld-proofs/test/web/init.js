@@ -10,7 +10,7 @@ window.onload = async () => {
 };
 
 async function testIt() {
-  const myDID = "did:iota:HeNzaWXCT6jTsshy9gyXCz9242NgZtMrbW1EC66iXZNP";
+  const myDID = "did:iota:7hp3ZrDG5pq3UdnTNLiRjAmH8d77mVjBRg47CXRT5UPB";
 
   console.log("Creating a signer with DID", myDID);
   const signer = await IotaSigner.create(myDID);
@@ -44,7 +44,7 @@ async function testIt() {
   const ldProof = await ldProofGenerator.generate(document, {
     signatureType: SignatureTypes.ED25519_2018,
     verificationMethod: "key",
-    secret: "8XghdzhFGWrferW8v1PwpV86gtHKALKzxhGKSi4vGs3R",
+    secret: "83pKEpsRitAxDcXNDT2eJxCiwQiwo7hQCuijD1QiM1ae",
     anchorageID: anchoringChannel.firstAnchorageID
   });
 

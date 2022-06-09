@@ -45,7 +45,7 @@ export class IotaVerifier {
         const resolution = await DidService.resolveMethod(options?.node,
             options.verificationMethod);
 
-        if (resolution.type !== "Ed25519VerificationKey2018") {
+        if (resolution.type().toString() !== "Ed25519VerificationKey2018") {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
@@ -177,7 +177,7 @@ export class IotaVerifier {
 
         const resolution = await DidService.resolveMethod(node, verificationMethod);
 
-        if (resolution.type !== "Ed25519VerificationKey2018") {
+        if (resolution.type().toString() !== "Ed25519VerificationKey2018") {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }

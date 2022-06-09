@@ -1,6 +1,6 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Document, KeyType, KeyPair } from "@iota/identity-wasm/node";
+import { Document, KeyType, KeyPair, VerificationMethod } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -21,12 +21,15 @@ export default class CreateDidCommandExecutor {
         const key = new KeyPair(KeyType.Ed25519);
         const doc = new Document(key, identityClient.network().toString());
 
+        // Signing
+        doc.signSelf(key, VerificationMethod.);
+
         let finalDocument = doc;
         if (serviceList) {
             finalDocument = this.addService(doc, serviceList);
         }
 
-        finalDocument.sign(key);
+        finalDocument.signSelf(key, "#");
 
         const receipt = await identityClient.publishDocument(finalDocument);
 
