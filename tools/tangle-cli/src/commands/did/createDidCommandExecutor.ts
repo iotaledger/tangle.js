@@ -1,6 +1,6 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Document, KeyType, KeyPair, VerificationMethod } from "@iota/identity-wasm/node";
+import { Document, KeyType, KeyPair } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -15,32 +15,37 @@ export default class CreateDidCommandExecutor {
         }
 
         const netParams = getNetworkParams(args);
-        const identityClient = IdentityHelper.getClient(netParams);
+        const identityClient = await IdentityHelper.getClient(netParams);
 
         // Generate a new keypair and DID document
         const key = new KeyPair(KeyType.Ed25519);
         const doc = new Document(key, identityClient.network().toString());
-
-        // Signing
-        doc.signSelf(key, VerificationMethod.);
 
         let finalDocument = doc;
         if (serviceList) {
             finalDocument = this.addService(doc, serviceList);
         }
 
-        finalDocument.signSelf(key, "#");
+        finalDocument.signSelf(key, finalDocument.defaultSigningMethod().id());
 
-        const receipt = await identityClient.publishDocument(finalDocument);
+        console.log(key.toJSON());
 
-        console.log({
-            did: finalDocument.toJSON().id,
-            keys: {
-                public: key.public,
-                private: key.private
-            },
-            ...(Boolean(netParams.explorer) && { transactionUrl: `${netParams.explorer}/message/${receipt.messageId}` })
-        });
+        try {
+            const receipt = await identityClient.publishDocument(finalDocument);
+
+            console.log({
+                did: finalDocument.id().toString(),
+                keys: {
+                    public: key.public(),
+                    private: key.private()
+                },
+                ...(Boolean(netParams.explorer) && {
+                    transactionUrl: `${netParams.explorer}/message/${receipt.messageId()}`
+                })
+            });
+        } catch (e) {
+            console.error("Error", e);
+        }
 
         return true;
     }

@@ -1,6 +1,6 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { VerifiableCredential, Document } from "@iota/identity-wasm/node";
+import { Credential, Document, ProofOptions } from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -19,7 +19,8 @@ export default class IssueVcCommandExecutor {
         try {
             claims.id = subjectId;
 
-            const resolution = await IdentityHelper.getClient(getNetworkParams(args)).resolve(issuerDid);
+            const client = await IdentityHelper.getClient(getNetworkParams(args));
+            const resolution = await client.resolve(issuerDid);
 
             const issDocument = Document.fromJSON(resolution);
 
@@ -39,12 +40,15 @@ export default class IssueVcCommandExecutor {
                 }
             }
 
-            const vc = VerifiableCredential.extend(credentialMetadata);
+            const vc = Credential.extend(credentialMetadata);
 
-            const signedVc = issDocument.signCredential(vc, {
-                private: args.secret,
-                method: issDocument.resolveKey(args.method as string).toJSON().id
-            });
+            const scope = undefined;
+            const signedVc = issDocument.signCredential(
+                vc,
+                new TextEncoder().encode(args.secret as string),
+                issDocument.resolveMethod(args.method as string, scope).id(),
+                ProofOptions.default()
+            );
 
             let output = signedVc.toJSON();
             if (args.json) {

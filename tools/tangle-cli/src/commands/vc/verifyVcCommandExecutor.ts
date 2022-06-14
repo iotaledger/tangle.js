@@ -1,5 +1,16 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
+import {
+    CredentialValidator,
+    Resolver,
+    Credential,
+    PresentationValidator,
+    CredentialValidationOptions,
+    FailFast,
+    Presentation,
+    ResolvedDocument,
+    PresentationValidationOptions
+} from "@iota/identity-wasm/node";
 import { Arguments } from "yargs";
 import { isDefined, getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -23,11 +34,21 @@ export default class VerifyVcCommandExecutor {
         }
 
         try {
-            const identityClient = IdentityHelper.getClient(getNetworkParams(args));
+            const identityClient = await IdentityHelper.getClient(getNetworkParams(args));
 
-            const verification = await identityClient.checkPresentation(vp);
+            const presentation = Presentation.fromJSON(vp);
 
-            console.log({ verified: verification.verified });
+            const resolver = await Resolver.builder().client(identityClient).build();
+            const issuerDocs: ResolvedDocument[] = await resolver.resolvePresentationIssuers(presentation);
+            const holderDoc: ResolvedDocument = await resolver.resolvePresentationHolder(presentation);
+
+            PresentationValidator.validate(
+                presentation,
+                holderDoc,
+                issuerDocs,
+                PresentationValidationOptions.default(),
+                FailFast.AllErrors
+            );
         } catch (error) {
             console.error("Error:", error);
             return false;
@@ -45,11 +66,15 @@ export default class VerifyVcCommandExecutor {
                 return false;
             }
 
-            const identityClient = IdentityHelper.getClient(getNetworkParams(args));
+            const identityClient = await IdentityHelper.getClient(getNetworkParams(args));
 
-            const verification = await identityClient.checkCredential(vc);
+            const credential = Credential.fromJSON(vc);
 
-            console.log({ verified: verification.verified });
+            const resolver = await Resolver.builder().client(identityClient).build();
+
+            const doc = await resolver.resolveCredentialIssuer(credential);
+
+            CredentialValidator.validate(credential, doc, CredentialValidationOptions.default(), FailFast.AllErrors);
         } catch (error) {
             console.error("Error:", error);
             return false;

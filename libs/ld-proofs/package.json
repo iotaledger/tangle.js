@@ -35,7 +35,7 @@
         "signatures"
     ],
     "engines": {
-        "node": "14.x"
+        "node": ">=16"
     },
     "author": "Jose M. Cantera",
     "license": "Apache 2.0",
