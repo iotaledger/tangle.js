@@ -1,17 +1,16 @@
-
 /*
 
 {
-  did: 'did:iota:BpZYiHMRv5EDEbz5cCBUSFXSw5Qa9H6evQboNuW9XpQi',
+  did: 'did:iota:2w7i9iYh7AV5794tR98emkrZ4GRdBtA1BD3Cty4rbTtc',
   keys: {
-    public: 'FSnqMVitAXK43eDgSw1gmLKzNM5VHNL4yS9GXgZdQyss',
-    private: 'Ao5965TPFPW5PeHemrKCwQvv5ytQx3KS6w6XmJEZjBCg'
+    public: 'AfuYQHM5oxNwjMbNYKfadYay96E4QcALETHycAfnZBD8',
+    private: '94peyxt14bRgWRnqgncNJzTBDmnYmCU9JYif8dndTsyy'
   },
   transactionUrl:
-  'https://explorer.iota.org/mainnet/message/eb4daa711d5e9eadbea63506d858ea06697116f6cefc2e0a2d78caf40b64a455'
+  'https://explorer.iota.org/mainnet/message/080c66c3ab3bf1d591edfaca3140c407ebd005e424daacd1c86298b315e0c414'
 }
 
 */
 
-export const did = "did:iota:BpZYiHMRv5EDEbz5cCBUSFXSw5Qa9H6evQboNuW9XpQi";
-export const privateKey = "Ao5965TPFPW5PeHemrKCwQvv5ytQx3KS6w6XmJEZjBCg";
+export const did = "did:iota:2w7i9iYh7AV5794tR98emkrZ4GRdBtA1BD3Cty4rbTtc";
+export const privateKey = "94peyxt14bRgWRnqgncNJzTBDmnYmCU9JYif8dndTsyy";

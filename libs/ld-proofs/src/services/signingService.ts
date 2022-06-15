@@ -62,11 +62,9 @@ export default class SigningService {
      * @param message Message to be signed.
      * @returns The signature value.
      */
-    private static calculateSignature(privateKey: string, message: Buffer): string {
-        const bytesKey = bs58.decode(privateKey);
-
+    private static calculateSignature(privateKey: Uint8Array, message: Buffer): string {
         const ed25519 = new EdDSA("ed25519");
-        const ecKey = ed25519.keyFromSecret(bytesKey.toString("hex"), "hex");
+        const ecKey = ed25519.keyFromSecret(Buffer.from(privateKey).toString("hex"), "hex");
 
         const signatureHex = ecKey.sign(message).toHex();
 

@@ -152,8 +152,9 @@ export class IotaVerifier {
 
         const hashToVerify = Buffer.concat([docHash, proofHash]);
 
+        // Assumption is that multibase always represent Base58
         const result = this.verifySignature(proof.proofValue, hashToVerify,
-            resolution.toJSON().publicKeyBase58 as string);
+            (resolution.toJSON().publicKeyMultibase as string).slice(1));
 
         // Restore the proof value on the original document
         document.proof = proof;

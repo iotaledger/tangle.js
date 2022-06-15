@@ -61,10 +61,11 @@ export default class DidService {
      *
      * @param didDocument DID document.
      * @param method The method (expressed as a fragment identifier).
-     * @param secret The private key (in base 58).
+     * @param secret The private key.
      * @returns True if verified false if not.
      */
-    public static async verifyOwnership(didDocument: DidDocument, method: string, secret: string): Promise<boolean> {
+    public static async verifyOwnership(didDocument: DidDocument,
+        method: string, secret: Uint8Array): Promise<boolean> {
         // First we verify if the method really exists on the DID
         try {
             const scope = undefined;
@@ -78,7 +79,7 @@ export default class DidService {
             const verificationData = { "testData": SeedHelper.generateSeed(10) };
 
             const signature = await didDocument.signData(verificationData,
-                new TextEncoder().encode(secret),
+                secret,
                 `${didDocument.id()}#${method}`, ProofOptions.default());
 
             return didDocument.verifyData(signature, VerifierOptions.default());

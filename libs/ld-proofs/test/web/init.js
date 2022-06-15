@@ -10,7 +10,7 @@ window.onload = async () => {
 };
 
 async function testIt() {
-  const myDID = "did:iota:7hp3ZrDG5pq3UdnTNLiRjAmH8d77mVjBRg47CXRT5UPB";
+  const myDID = "did:iota:2w7i9iYh7AV5794tR98emkrZ4GRdBtA1BD3Cty4rbTtc";
 
   console.log("Creating a signer with DID", myDID);
   const signer = await IotaSigner.create(myDID);
@@ -26,9 +26,9 @@ async function testIt() {
     speed: {
       type: "QuantitativeValue",
       value: 50.2,
-      unitCode: "KMH",
+      unitCode: "KMH"
     },
-    dateUpdated: new Date().toISOString(),
+    dateUpdated: new Date().toISOString()
   };
 
   console.log("Anchoring to the Tangle ...");
@@ -43,8 +43,8 @@ async function testIt() {
 
   const ldProof = await ldProofGenerator.generate(document, {
     signatureType: SignatureTypes.ED25519_2018,
-    verificationMethod: "key",
-    secret: "83pKEpsRitAxDcXNDT2eJxCiwQiwo7hQCuijD1QiM1ae",
+    verificationMethod: "sign-0",
+    secret: "94peyxt14bRgWRnqgncNJzTBDmnYmCU9JYif8dndTsyy",
     anchorageID: anchoringChannel.firstAnchorageID
   });
 
