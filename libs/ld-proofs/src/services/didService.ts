@@ -1,7 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import type { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
-import { ProofOptions, VerifierOptions } from "@iota/identity-wasm/web";
+import { MethodScope, ProofOptions, VerifierOptions } from "@iota/identity-wasm/web";
 import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
@@ -68,7 +68,8 @@ export default class DidService {
         method: string, secret: Uint8Array): Promise<boolean> {
         // First we verify if the method really exists on the DID
         try {
-            const scope = undefined;
+            // eslint-disable-next-line new-cap
+            const scope = MethodScope.VerificationMethod();
             didDocument.resolveMethod(`${didDocument.id()}#${method}`, scope);
         } catch {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
