@@ -36,7 +36,7 @@ export default class VerifyVcCommandExecutor {
         try {
             const identityClient = await IdentityHelper.getClient(getNetworkParams(args));
 
-            const presentation = Presentation.fromJSON(vp);
+            const presentation = Presentation.fromJSON(JSON.parse(vp));
 
             const resolver = await Resolver.builder().client(identityClient).build();
             const issuerDocs: ResolvedDocument[] = await resolver.resolvePresentationIssuers(presentation);
@@ -49,6 +49,8 @@ export default class VerifyVcCommandExecutor {
                 PresentationValidationOptions.default(),
                 FailFast.AllErrors
             );
+
+            console.log("Verified!");
         } catch (error) {
             console.error("Error:", error);
             return false;
@@ -68,13 +70,15 @@ export default class VerifyVcCommandExecutor {
 
             const identityClient = await IdentityHelper.getClient(getNetworkParams(args));
 
-            const credential = Credential.fromJSON(vc);
+            const credential = Credential.fromJSON(JSON.parse(vc));
 
             const resolver = await Resolver.builder().client(identityClient).build();
 
             const doc = await resolver.resolveCredentialIssuer(credential);
 
             CredentialValidator.validate(credential, doc, CredentialValidationOptions.default(), FailFast.AllErrors);
+
+            console.log("Verified!");
         } catch (error) {
             console.error("Error:", error);
             return false;

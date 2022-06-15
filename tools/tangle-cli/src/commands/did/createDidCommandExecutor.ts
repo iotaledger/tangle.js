@@ -1,6 +1,7 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Document, KeyType, KeyPair } from "@iota/identity-wasm/node";
+import bs58 from "bs58";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -28,16 +29,14 @@ export default class CreateDidCommandExecutor {
 
         finalDocument.signSelf(key, finalDocument.defaultSigningMethod().id());
 
-        console.log(key.toJSON());
-
         try {
             const receipt = await identityClient.publishDocument(finalDocument);
 
             console.log({
                 did: finalDocument.id().toString(),
                 keys: {
-                    public: key.public(),
-                    private: key.private()
+                    public: bs58.encode(key.public()),
+                    private: bs58.encode(key.private())
                 },
                 ...(Boolean(netParams.explorer) && {
                     transactionUrl: `${netParams.explorer}/message/${receipt.messageId()}`

@@ -14,7 +14,7 @@
         "test-run": "jest  --testTimeout=120000 --verbose --coverage=false",
         "test": "run-s  test-run",
         "package-esm": "esm-modules ./es ./dist/esm",
-        "package-umd": "rollup --config rollup.config.js",
+        "package-umd": "rollup --config rollup.config.cjs",
         "package": "run-s -c dist-clean package-umd package-esm package-web",
         "package-web": "webpack --mode=production",
         "dist": "run-s dist-clean build test package"
@@ -82,7 +82,7 @@
     "exports": {
         ".": {
             "import": "./dist/esm/index.mjs",
-            "require": "./dist/cjs/index.js"
+            "require": "./dist/cjs/index.cjs"
         },
         "./package.json": "./package.json"
     },

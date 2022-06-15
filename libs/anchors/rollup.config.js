@@ -27,7 +27,7 @@ export default {
   inlineDynamicImports: true,
   input: `./es/index.js`,
   output: {
-    file: `dist/cjs/index.js`,
+    file: `dist/cjs/index.cjs`,
     format: "cjs",
     name: packageDetails.name
       .split("-")

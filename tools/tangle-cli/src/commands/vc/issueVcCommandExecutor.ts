@@ -1,6 +1,7 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Credential, Document, ProofOptions } from "@iota/identity-wasm/node";
+import bs58 from "bs58";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -45,7 +46,7 @@ export default class IssueVcCommandExecutor {
             const scope = undefined;
             const signedVc = issDocument.signCredential(
                 vc,
-                new TextEncoder().encode(args.secret as string),
+                bs58.decode(args.secret as string),
                 issDocument.resolveMethod(args.method as string, scope).id(),
                 ProofOptions.default()
             );

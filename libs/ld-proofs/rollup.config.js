@@ -20,7 +20,7 @@ for (const dep in packageDetails.dependencies) {
 export default {
     input: `./es/index.js`,
     output: {
-        file: `dist/cjs/index.js`,
+        file: `dist/cjs/index.cjs`,
         format: "cjs",
         name: packageDetails.name
             .split("-")

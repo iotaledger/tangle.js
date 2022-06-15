@@ -1,6 +1,9 @@
+const path = require("path");
+
+const resolved = path.resolve(__dirname, "../../libs/anchors/dist/cjs/index.cjs");
+
 module.exports = {
     env: {
-        browser: true,
         node: true
     },
     extends: [
@@ -16,14 +19,19 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     parserOptions: {
         project: "tsconfig.eslint.json",
-        tsconfigRootDir: __dirname,
-        sourceType: "module"
+        tsconfigRootDir: __dirname
     },
     plugins: ["@typescript-eslint", "import", "jsdoc", "unicorn", "header"],
     settings: {
         jsdoc: {
             ignoreInternal: true,
             mode: "typescript"
+        },
+        "import/resolver": {
+            alias: {
+                map: [["@tangle-js/anchors", resolved]],
+                extensions: [".js"]
+            }
         }
     },
     ignorePatterns: [
