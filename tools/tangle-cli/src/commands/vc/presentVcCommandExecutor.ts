@@ -1,6 +1,7 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
 import { Credential, Presentation, ProofOptions } from "@iota/identity-wasm/node";
+import bs58 from "bs58";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -23,7 +24,7 @@ export default class PresentVcCommandExecutor {
 
             // If no holder is passed then the holder is the subject
             if (!holderDid) {
-                holderDid = (credentialObj.credentialSubject as Credential).toJSON().id;
+                holderDid = (credentialObj.credentialSubject as { [key: string]: string }).id;
             }
 
             const identityClient = await IdentityHelper.getClient(getNetworkParams(args));
@@ -42,7 +43,7 @@ export default class PresentVcCommandExecutor {
 
             const signedPresentation = holderDocument.signPresentation(
                 vp,
-                new TextEncoder().encode(args.secret as string),
+                bs58.decode(args.secret as string),
                 method.id(),
                 ProofOptions.default()
             );
