@@ -39,7 +39,9 @@ const jsonLdDocument = {
 };
 
 const options: ISigningOptions = {
+    // The verification method must exist within the "verificationMethod" scope of the DID
     verificationMethod,
+    // Secret can be Uint8Array or Base58 string
     secret: privateKey,
     signatureType: SignatureTypes.ED25519_2018 
 };
@@ -79,7 +81,9 @@ const proofGenerator = IotaLdProofGenerator.create(anchoringChannel, signer);
 // Generates the Linked Data Signature and anchors it to the Tangle generating 
 // an Iota proof
 const tangleProof = await proofGenerator.generate(jsonLdDocument, {
+    // The verification method must exist within the "verificationMethod" scope of the DID
     verificationMethod,
+    // Secret can be Base58 string o Uint8Array
     secret,
     signatureType: SignatureTypes.ED25519_2018,
     anchorageID: anchoringChannel.firstAnchorageID
@@ -126,11 +130,12 @@ const message = "hello";
 
 // Method declared on the signer's concerned DID document
 const method = "key";
-// Private Key in base58
+// Private Key in base58. Also it is accepted as Uint8Array
 const privateKey = "privateKeybase58";
 
 const options: ISigningOptions = {
     signatureType: SignatureTypes.PLAIN_ED25519,
+    // The verification method must exist within the "verificationMethod" scope of the DID
     verificationMethod: method,
     secret: privateKey
 };
