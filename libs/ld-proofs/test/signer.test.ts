@@ -25,7 +25,7 @@ describe("Sign messages", () => {
 
   const message = "Hello";
 
-  const method = "key";
+  const method = "dv-0";
 
   beforeAll(async () => { });
 

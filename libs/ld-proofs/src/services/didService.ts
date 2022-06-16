@@ -1,7 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import type { Document as DidDocument, VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
-import { MethodScope, ProofOptions, VerifierOptions } from "@iota/identity-wasm/web";
+import { type Document as DidDocument, VerificationMethod, MethodScope, ProofOptions, VerifierOptions } from "@iota/identity-wasm/node/identity_wasm.js";
 import { SeedHelper } from "@tangle-js/anchors";
 import LdProofError from "../errors/ldProofError";
 import LdProofErrorNames from "../errors/ldProofErrorNames";
@@ -21,9 +20,7 @@ export default class DidService {
 
             const resolution = await identityClient.resolve(did);
             doc = resolution.document();
-        } catch (e) {
-            // eslint-disable-next-line no-console
-            console.log(e);
+        } catch {
             throw new LdProofError(LdProofErrorNames.DID_NOT_FOUND,
                 "DID cannot be resolved");
         }
@@ -44,15 +41,23 @@ export default class DidService {
      * @returns The DID Document resolved from Tangle.
      */
     public static async resolveMethod(node: string, didMethod: string): Promise<VerificationMethod> {
-        try {
-            const didDocument = await this.resolve(node, didMethod.split("#")[0]);
+        let didDocument: DidDocument;
 
-            const scope = undefined;
-            return didDocument.resolveMethod(didMethod, scope);
+        try {
+            didDocument = await this.resolve(node, didMethod.split("#")[0]);
         } catch {
             throw new LdProofError(LdProofErrorNames.DID_NOT_FOUND,
                 "DID cannot be resolved");
         }
+        // eslint-disable-next-line new-cap
+        const method = didDocument.resolveMethod(didMethod, MethodScope.VerificationMethod());
+
+        if (!method) {
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
+                "Verification Method cannot be resolved");
+        }
+
+        return method;
     }
 
 
@@ -88,5 +93,29 @@ export default class DidService {
             throw new LdProofError(LdProofErrorNames.INVALID_SIGNING_KEY,
                 "The key supplied is not valid");
         }
+    }
+
+    /**
+     * Extracts the public key from the verification method.
+     * Only tolerates Base58 public keys.
+     * @param verificationMethod The Verification Method.
+     * @returns The public key in Base 58.
+     * @throws LdProofError if Verification Method does not comply.
+     */
+    public static extractPublicKey(verificationMethod: VerificationMethod): string {
+        const verMethod = verificationMethod.toJSON();
+        const publicKeyMultibase: string = verMethod.publicKeyMultibase;
+
+        if (!publicKeyMultibase) {
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
+                "Only multibase keys are supported");
+        }
+
+        if (!publicKeyMultibase.startsWith("z")) {
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
+                "Only multibase keys Base 58 are supported");
+        }
+
+        return publicKeyMultibase.slice(1);
     }
 }

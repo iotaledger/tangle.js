@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import type { VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
+import { type VerificationMethod, MethodScope } from "@iota/identity-wasm/node/identity_wasm.js";
 import bs58 from "bs58";
 import pkg from "elliptic";
 import LdProofError from "../errors/ldProofError";
@@ -24,15 +24,14 @@ export default class SigningService {
     public static async sign(request: ISigningRequest): Promise<ISigningResult> {
         const didDocument = request.didDocument;
 
-        let methodDocument: VerificationMethod;
-        try {
-            const scope = undefined;
-            methodDocument = didDocument.resolveMethod(`${didDocument.id()}#${request.method}`, scope);
-        } catch {
+        // eslint-disable-next-line new-cap
+        const scope = MethodScope.VerificationMethod();
+        const methodDocument: VerificationMethod = didDocument.resolveMethod(`${didDocument.id()}#${request.method}`, scope);
+        if (!methodDocument) {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "The method has not been found on the DID Document");
         }
-        if (methodDocument && methodDocument.type().toString() !== "Ed25519VerificationKey2018") {
+        if (methodDocument.type().toString() !== "Ed25519VerificationKey2018") {
             throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }

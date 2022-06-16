@@ -10,6 +10,8 @@ export default abstract class LdProofErrorNames {
 
     public static INVALID_DID_METHOD = "Invalid_DID_Method";
 
+    public static INVALID_VERIFICATION_METHOD = "Invalid_Verification_Method";
+
     public static DID_NOT_VERIFIED = "DID_Not_Verified";
 
     public static INVALID_SIGNING_KEY = "Invalid_Signing_Key";

@@ -47,7 +47,7 @@ describe("Verify IOTA Linked Data Proofs", () => {
     jsonLdDocument3
   ];
 
-  const method = "key";
+  const method = "dv-0";
 
   let singleIotaLdProof: IIotaLinkedDataProof;
   let singleIotaLdProofJsonLd: IIotaLinkedDataProof;
