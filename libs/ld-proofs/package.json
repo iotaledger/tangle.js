@@ -1,6 +1,6 @@
 {
     "name": "@tangle-js/ld-proofs",
-    "version": "0.9.6",
+    "version": "0.9.6-1",
     "description": "Linked Data Proofs on the Tangle. Powered by IOTA Identity & IOTA Streams",
     "type": "module",
     "scripts": {
