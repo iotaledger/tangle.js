@@ -6,19 +6,25 @@ import { IotaAnchoringChannel } from "@tangle-js/anchors";
    DID used
 
 {
-  did: 'did:iota:HeNzaWXCT6jTsshy9gyXCz9242NgZtMrbW1EC66iXZNP',
+  did: 'did:iota:4sQE2rDL578awq4mzhVU47cLSax2pGDdtHvCP8fXBRgf',
   keys: {
-    public: '6vRR8c2ceLbThT4acvNZj7rS9mL6g6dwu3SWFmV15KSJ',
-    private: '8XghdzhFGWrferW8v1PwpV86gtHKALKzxhGKSi4vGs3R'
+    'sign-0': {
+      public: '25Y6Kykfytd3wqdKAucZ7JSMKqtU3VPm2HQHSU8r1d8X',
+      private: 'Bg7qw6PXEAyw9dQKCaPMUVC6cbKm1nAkYqXwK7LnnVgp'
+    },
+    'dv-0': {
+      public: 'BQsz1sYqQDXMN2WdpFJpxMbPSDmriabDhJ8PSyPF2Xi6',
+      private: 'EnGTu7jYTapWn84Z9iiVjnzJaF3fc1x5JptPb3bcVhx1'
+    }
   },
-  transactionUrl: 'https://explorer.iota.org/mainnet/message/ed5cf851662d052b6a8fdfbaa11bb058df738faf066b72eee723631f345f419f'
+  transactionUrl: 'https://explorer.iota.org/mainnet/message/f58d2fb23165f836f5ef9f5bcd86e41002db7a96c87ebab63584b15d50c6b302'
 }
 
  */
 
 // Example on how to create LD Proofs anchored to the Tangle
 export default async function main() {
-    const myDID = "did:iota:HeNzaWXCT6jTsshy9gyXCz9242NgZtMrbW1EC66iXZNP";
+    const myDID = "did:iota:4sQE2rDL578awq4mzhVU47cLSax2pGDdtHvCP8fXBRgf";
 
     console.log("Creating a signer with DID", myDID);
     const signer = await IotaSigner.create(myDID);
@@ -46,8 +52,8 @@ export default async function main() {
 
     const ldProof = await ldProofGenerator.generate(document, {
       signatureType: SignatureTypes.ED25519_2018,
-      verificationMethod: "key",
-      secret: "8XghdzhFGWrferW8v1PwpV86gtHKALKzxhGKSi4vGs3R",
+      verificationMethod: "dv-0",
+      secret: "EnGTu7jYTapWn84Z9iiVjnzJaF3fc1x5JptPb3bcVhx1",
       anchorageID: anchoringChannel.firstAnchorageID
     });
     console.log("Linked Data Proof: ");

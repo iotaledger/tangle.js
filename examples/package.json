@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/iotaledger/tangle.js#readme",
   "dependencies": {
-    "@tangle-js/anchors": "0.9.2-beta18",
-    "@tangle-js/ld-proofs": "0.9.5-beta10",
+    "@tangle-js/anchors": "0.9.3",
+    "@tangle-js/ld-proofs": "0.9.6",
     "epcis2.js": "^2.1.0",
     "buffer": "^6.0.3",
     "node-fetch": "^2.6.1"

@@ -255,7 +255,7 @@ describe("Verify messages", () => {
     try {
       await IotaVerifier.verify(Buffer.from(message), signatureValue, options);
     } catch (error) {
-      expect(error.name).toBe(LdProofErrorNames.INVALID_VERIFICATION_METHOD);
+      expect(error.name).toBe(LdProofErrorNames.VERIFICATION_METHOD_NOT_FOUND);
       return;
     }
 

@@ -28,11 +28,11 @@ export default class SigningService {
         const scope = MethodScope.VerificationMethod();
         const methodDocument: VerificationMethod = didDocument.resolveMethod(`${didDocument.id()}#${request.method}`, scope);
         if (!methodDocument) {
-            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
-                "The method has not been found on the DID Document");
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
+                "The verification method has not been found on the DID Document");
         }
         if (methodDocument.type().toString() !== "Ed25519VerificationKey2018") {
-            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 

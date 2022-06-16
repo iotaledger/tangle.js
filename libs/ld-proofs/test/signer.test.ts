@@ -6,11 +6,11 @@ import { did, privateKey } from "./testCommon";
 
 
 /**
- * Asserts a signature
- * @param signature Signature
- * @param signatureType The type of signature
- * @param sdid DID
- * @param method Verification method
+ * Asserts a signature.
+ * @param signature Signature.
+ * @param signatureType The type of signature.
+ * @param sdid DID.
+ * @param method Verification method.
  */
 function assertSignature(signature: ILinkedDataSignature, signatureType: string, sdid: string, method: string) {
   expect(signature.created).toBeDefined();
@@ -211,7 +211,7 @@ describe("Sign messages", () => {
         secret: privateKey
       });
     } catch (error) {
-      expect(error.name).toBe(LdProofErrorNames.INVALID_DID_METHOD);
+      expect(error.name).toBe(LdProofErrorNames.INVALID_VERIFICATION_METHOD);
       return;
     }
 

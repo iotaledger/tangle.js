@@ -37,7 +37,7 @@ export default class DidService {
     /**
      * Resolves the DID verification method.
      * @param node Node against the DID is resolved.
-     * @param didMethod DID method to be resolved.
+     * @param didMethod DID method to be resolved. It must include a hash fragment.
      * @returns The DID Document resolved from Tangle.
      */
     public static async resolveMethod(node: string, didMethod: string): Promise<VerificationMethod> {
@@ -53,8 +53,8 @@ export default class DidService {
         const method = didDocument.resolveMethod(didMethod, MethodScope.VerificationMethod());
 
         if (!method) {
-            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
-                "Verification Method cannot be resolved");
+            throw new LdProofError(LdProofErrorNames.VERIFICATION_METHOD_NOT_FOUND,
+                "Verification Method cannot be found");
         }
 
         return method;
@@ -72,13 +72,12 @@ export default class DidService {
     public static async verifyOwnership(didDocument: DidDocument,
         method: string, secret: Uint8Array): Promise<boolean> {
         // First we verify if the method really exists on the DID
-        try {
-            // eslint-disable-next-line new-cap
-            const scope = MethodScope.VerificationMethod();
-            didDocument.resolveMethod(`${didDocument.id()}#${method}`, scope);
-        } catch {
-            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
-                "The DID method supplied is not valid");
+        // eslint-disable-next-line new-cap
+        const scope = MethodScope.VerificationMethod();
+        const methodObj = didDocument.resolveMethod(`${didDocument.id()}#${method}`, scope);
+        if (!methodObj) {
+            throw new LdProofError(LdProofErrorNames.VERIFICATION_METHOD_NOT_FOUND,
+                "The DID verification method supplied has not been found");
         }
 
         try {
