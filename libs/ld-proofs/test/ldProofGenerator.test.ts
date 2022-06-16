@@ -40,7 +40,7 @@ function assertProofValue(proof: IIotaLinkedDataProof, channelID: string, anchor
 describe("Generate IOTA Linked Data Proofs", () => {
     const node = "https://chrysalis-nodes.iota.org";
 
-    const method = "key";
+    const method = "dv-0";
 
     beforeAll(async () => { });
 

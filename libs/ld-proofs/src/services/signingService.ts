@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import type { VerificationMethod } from "@iota/identity-wasm/node/identity_wasm.js";
+import { type VerificationMethod, MethodScope } from "@iota/identity-wasm/node/identity_wasm.js";
 import bs58 from "bs58";
 import pkg from "elliptic";
 import LdProofError from "../errors/ldProofError";
@@ -24,15 +24,15 @@ export default class SigningService {
     public static async sign(request: ISigningRequest): Promise<ISigningResult> {
         const didDocument = request.didDocument;
 
-        let methodDocument: VerificationMethod;
-        try {
-            methodDocument = didDocument.resolveKey(`${didDocument.id}#${request.method}`);
-        } catch {
-            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
-                "The method has not been found on the DID Document");
+        // eslint-disable-next-line new-cap
+        const scope = MethodScope.VerificationMethod();
+        const methodDocument: VerificationMethod = didDocument.resolveMethod(`${didDocument.id()}#${request.method}`, scope);
+        if (!methodDocument) {
+            throw new LdProofError(LdProofErrorNames.VERIFICATION_METHOD_NOT_FOUND,
+                "The verification method has not been found on the DID Document");
         }
-        if (methodDocument && methodDocument.type !== "Ed25519VerificationKey2018") {
-            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
+        if (methodDocument.type().toString() !== "Ed25519VerificationKey2018") {
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 
@@ -48,7 +48,7 @@ export default class SigningService {
 
         const response: ISigningResult = {
             created: new Date().toISOString(),
-            verificationMethod: `${didDocument.id}#${request.method}`,
+            verificationMethod: `${didDocument.id()}#${request.method}`,
             signatureValue
         };
 
@@ -61,11 +61,9 @@ export default class SigningService {
      * @param message Message to be signed.
      * @returns The signature value.
      */
-    private static calculateSignature(privateKey: string, message: Buffer): string {
-        const bytesKey = bs58.decode(privateKey);
-
+    private static calculateSignature(privateKey: Uint8Array, message: Buffer): string {
         const ed25519 = new EdDSA("ed25519");
-        const ecKey = ed25519.keyFromSecret(bytesKey.toString("hex"), "hex");
+        const ecKey = ed25519.keyFromSecret(Buffer.from(privateKey).toString("hex"), "hex");
 
         const signatureHex = ecKey.sign(message).toHex();
 

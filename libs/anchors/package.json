@@ -1,6 +1,6 @@
 {
     "name": "@tangle-js/anchors",
-    "version": "0.9.2-beta18",
+    "version": "0.9.3",
     "description": "Anchoring messages to the Tangle. Powered by IOTA Streams",
     "type": "module",
     "scripts": {
@@ -32,7 +32,7 @@
         "channels"
     ],
     "engines": {
-        "node": ">=14",
+        "node": ">=16",
         "npm": ">=7"
     },
     "author": "Jose M. Cantera",
@@ -82,7 +82,7 @@
     "exports": {
         ".": {
             "import": "./dist/esm/index.mjs",
-            "require": "./dist/cjs/index.js"
+            "require": "./dist/cjs/index.cjs"
         },
         "./package.json": "./package.json"
     },

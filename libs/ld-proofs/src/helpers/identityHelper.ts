@@ -1,9 +1,9 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { Client as IdentityClient, Config as IdentityConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
+import { Client as IdentityClient, type IClientConfig, Network } from "@iota/identity-wasm/node/identity_wasm.js";
 import initialize from "./initializationHelper";
 
- export class IdentityHelper {
+export class IdentityHelper {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     private static readonly PERMANODE_URL = "https://chrysalis-chronicle.iota.org/api/mainnet/";
 
@@ -15,17 +15,18 @@ import initialize from "./initializationHelper";
      */
     public static async getClient(node: string): Promise<IdentityClient> {
         await initialize();
-        const identityConfig = new IdentityConfig();
+        const defNode = Network.mainnet().defaultNodeURL();
 
-        identityConfig.setNetwork(Network.mainnet());
+        const identityConfig: IClientConfig = {
+            network: Network.mainnet(),
+            nodes: [node ?? defNode],
+            permanodes: [
+                {
+                    url: this.PERMANODE_URL
+                }
+            ]
+        };
 
-        if (node) {
-            identityConfig.setNode(node);
-        } else {
-            identityConfig.setNode(Network.mainnet().defaultNodeURL);
-        }
-
-        identityConfig.setPermanode(this.PERMANODE_URL);
         const identityClient = IdentityClient.fromConfig(identityConfig);
 
         return identityClient;

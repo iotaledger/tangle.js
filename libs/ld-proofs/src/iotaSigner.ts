@@ -2,6 +2,7 @@
 
 import type { Document as DidDocument } from "@iota/identity-wasm/node/identity_wasm.js";
 // eslint-disable-next-line unicorn/prefer-node-protocol
+import bs58 from "bs58";
 import * as crypto from "crypto";
 import jsonld from "jsonld";
 import LdProofError from "./errors/ldProofError";
@@ -70,11 +71,17 @@ export class IotaSigner {
      * @returns The signature details including its value encoded in Base58.
      */
     public async sign(message: Buffer, options: ISigningOptions): Promise<ISigningResult> {
+        let secret: Uint8Array | string = options.secret;
+
+        if (typeof options.secret === "string") {
+            secret = bs58.decode(options.secret);
+        }
+
         const request: ISigningRequest = {
             didDocument: this._didDocument,
             type: SignatureTypes.ED25519_2018,
             method: options.verificationMethod,
-            secret: options.secret,
+            secret: secret as Uint8Array,
             message
         };
 
@@ -121,7 +128,7 @@ export class IotaSigner {
 
         const proof = {
             type: SignatureTypes.JCS_ED25519_2020,
-            verificationMethod: `${this._didDocument.id}#${options.verificationMethod}`,
+            verificationMethod: `${this._didDocument.id()}#${options.verificationMethod}`,
             proofPurpose: "dataVerification",
             created: new Date().toISOString()
         };
@@ -178,7 +185,7 @@ export class IotaSigner {
 
         const proofOptionsLd = {
             "@context": LdContextURL.W3C_SECURITY,
-            verificationMethod: `${this._didDocument.id}#${options.verificationMethod}`,
+            verificationMethod: `${this._didDocument.id()}#${options.verificationMethod}`,
             created: new Date().toISOString()
         };
 

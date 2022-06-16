@@ -1,6 +1,6 @@
 const path = require("path");
 
-const resolved = path.resolve(__dirname, "../anchors/dist/cjs/index.js");
+const resolved = path.resolve(__dirname, "../anchors/dist/cjs/index.cjs");
 
 module.exports = {
   env: {
@@ -34,7 +34,7 @@ module.exports = {
         map: [["@tangle-js/anchors", resolved]],
         extensions: [".js"],
       },
-    },
+    }
   },
   ignorePatterns: [
     ".eslintrc.js",

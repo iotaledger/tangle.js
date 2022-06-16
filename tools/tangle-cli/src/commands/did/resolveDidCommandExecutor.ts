@@ -9,11 +9,11 @@ export default class ResolveDidCommandExecutor {
         const did = args.did as string;
 
         try {
-            const identityClient = IdentityHelper.getClient(getNetworkParams(args));
+            const identityClient = await IdentityHelper.getClient(getNetworkParams(args));
 
             const resolution = await identityClient.resolve(did);
 
-            console.log(resolution);
+            console.log(resolution.intoDocument().toJSON().doc);
         } catch (error) {
             console.error("Error:", error);
             return false;

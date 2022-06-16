@@ -8,7 +8,9 @@ export default abstract class LdProofErrorNames {
 
     public static DID_NOT_FOUND = "DID_Not_Found";
 
-    public static INVALID_DID_METHOD = "Invalid_DID_Method";
+    public static INVALID_VERIFICATION_METHOD = "Invalid_Verification_Method";
+
+    public static VERIFICATION_METHOD_NOT_FOUND = "Verification_Method_Not_Found";
 
     public static DID_NOT_VERIFIED = "DID_Not_Verified";
 

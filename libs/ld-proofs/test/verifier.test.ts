@@ -26,7 +26,7 @@ describe("Verify messages", () => {
     "name": "IOTA Foundation"
   };
 
-  const method = "key";
+  const method = "dv-0";
 
   const verificationMethod = `${did}#${method}`;
   let signatureValue: string;
@@ -37,11 +37,13 @@ describe("Verify messages", () => {
   beforeAll(async () => {
     const signer = await IotaSigner.create(did, node);
 
-    signatureValue = (await signer.sign(Buffer.from(message), {
+    const signature = await signer.sign(Buffer.from(message), {
       signatureType: SignatureTypes.PLAIN_ED25519,
       verificationMethod: method,
       secret: privateKey
-    })).signatureValue;
+    });
+
+    signatureValue = signature.signatureValue;
 
     jsonProof = await signer.signJson(jsonDocument, {
       verificationMethod: method,
@@ -168,7 +170,7 @@ describe("Verify messages", () => {
   test("should fail verification. Identity is not the correct one", async () => {
     const options: IVerificationOptions = {
       signatureType: SignatureTypes.PLAIN_ED25519,
-      verificationMethod: "did:iota:B8y9H4tagyLhzGRP5EyHd3basposcCYCHvhVS5H9ScW1#key",
+      verificationMethod: "did:iota:7oGTE6kHFCPjpXCZfB8n2WXUcoFTyHfQrnZ9rEz3sUXA#dv-0",
       node
     };
 
@@ -253,7 +255,7 @@ describe("Verify messages", () => {
     try {
       await IotaVerifier.verify(Buffer.from(message), signatureValue, options);
     } catch (error) {
-      expect(error.name).toBe(LdProofErrorNames.DID_NOT_FOUND);
+      expect(error.name).toBe(LdProofErrorNames.VERIFICATION_METHOD_NOT_FOUND);
       return;
     }
 

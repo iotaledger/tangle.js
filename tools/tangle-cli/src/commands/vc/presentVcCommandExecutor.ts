@@ -1,6 +1,7 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Document, VerifiableCredential, VerifiablePresentation } from "@iota/identity-wasm/node";
+import { Credential, Presentation, ProofOptions } from "@iota/identity-wasm/node";
+import bs58 from "bs58";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -23,25 +24,29 @@ export default class PresentVcCommandExecutor {
 
             // If no holder is passed then the holder is the subject
             if (!holderDid) {
-                holderDid = (credentialObj.credentialSubject as Credential).id;
+                holderDid = (credentialObj.credentialSubject as { [key: string]: string }).id;
             }
 
-            const identityClient = IdentityHelper.getClient(getNetworkParams(args));
-            const holderDoc: Document = await identityClient.resolve(holderDid);
+            const identityClient = await IdentityHelper.getClient(getNetworkParams(args));
 
-            const holderDocument = Document.fromJSON(holderDoc);
+            const holderDocument = (await identityClient.resolve(holderDid)).document();
 
-            const vp = new VerifiablePresentation(
+            const vp = new Presentation(
                 holderDocument,
-                VerifiableCredential.fromJSON(credentialObj),
+                Credential.fromJSON(credentialObj),
                 presentationType,
                 presentationId
             );
 
-            const signedPresentation = holderDocument.signPresentation(vp, {
-                private: args.secret,
-                method: holderDocument.resolveKey(args.method as string).toJSON().id
-            });
+            const scope = undefined;
+            const method = holderDocument.resolveMethod(args.method as string, scope);
+
+            const signedPresentation = holderDocument.signPresentation(
+                vp,
+                bs58.decode(args.secret as string),
+                method.id(),
+                ProofOptions.default()
+            );
 
             let output = signedPresentation.toJSON();
             if (args.json) {

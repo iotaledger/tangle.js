@@ -81,7 +81,7 @@ export class IotaLdProofGenerator {
             msgIDL1 = await ProtocolHelper.getMsgIdL1(this.anchoringChannel, anchoringResult.msgID);
         } catch (e) {
             // eslint-disable-next-line no-console
-            console.log(e.message);
+            console.error(e.message);
         }
 
         const linkedDataProof: IIotaLinkedDataProof = {

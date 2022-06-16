@@ -45,13 +45,15 @@ export class IotaVerifier {
         const resolution = await DidService.resolveMethod(options?.node,
             options.verificationMethod);
 
-        if (resolution.type !== "Ed25519VerificationKey2018") {
-            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
+        if (resolution.type().toString() !== "Ed25519VerificationKey2018") {
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 
-        return this.verifySignature(signatureValue, message,
-            resolution.toJSON().publicKeyBase58 as string);
+        const publicKey = DidService.extractPublicKey(resolution);
+
+        // Only works with multibase keys which are actually encoded using Base58
+        return this.verifySignature(signatureValue, message, publicKey);
     }
 
     /**
@@ -101,7 +103,8 @@ export class IotaVerifier {
             .createHash("sha256").update(canonical)
             .digest();
 
-        const result = this.verifySignature(proofValue, msgHash, resolution.toJSON().publicKeyBase58 as string);
+        const publicKey = DidService.extractPublicKey(resolution);
+        const result = this.verifySignature(proofValue, msgHash, publicKey);
 
         // Restore the proof value
         proof.proofValue = proofValue;
@@ -121,7 +124,7 @@ export class IotaVerifier {
         options?: IJsonVerificationOptions): Promise<boolean> {
         const document = JsonHelper.getSignedJsonLdDocument(doc);
 
-        const resolution = await this.verificationMethod(document, options?.node);
+        const resolution: VerificationMethod = await this.verificationMethod(document, options?.node);
 
         const proof = document.proof;
 
@@ -152,8 +155,8 @@ export class IotaVerifier {
 
         const hashToVerify = Buffer.concat([docHash, proofHash]);
 
-        const result = this.verifySignature(proof.proofValue, hashToVerify,
-            resolution.toJSON().publicKeyBase58 as string);
+        const publicKey = DidService.extractPublicKey(resolution);
+        const result = this.verifySignature(proof.proofValue, hashToVerify, publicKey);
 
         // Restore the proof value on the original document
         document.proof = proof;
@@ -177,8 +180,8 @@ export class IotaVerifier {
 
         const resolution = await DidService.resolveMethod(node, verificationMethod);
 
-        if (resolution.type !== "Ed25519VerificationKey2018") {
-            throw new LdProofError(LdProofErrorNames.INVALID_DID_METHOD,
+        if (resolution.type().toString() !== "Ed25519VerificationKey2018") {
+            throw new LdProofError(LdProofErrorNames.INVALID_VERIFICATION_METHOD,
                 "Only 'Ed25519VerificationKey2018' verification methods are allowed");
         }
 
@@ -196,7 +199,7 @@ export class IotaVerifier {
             return (ecKey.verify(message, signatureBytes.toString("hex"))) as boolean;
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.log("Error while verifying signature:", error);
+            console.error("Error while verifying signature:", error);
             return false;
         }
     }

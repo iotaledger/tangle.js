@@ -1,6 +1,7 @@
 // Copyright 2021 IOTA Stiftung.
 // SPDX-License-Identifier: Apache-2.0.
-import { Document, KeyType, KeyPair } from "@iota/identity-wasm/node";
+import { Document, KeyType, KeyPair, Service, VerificationMethod, MethodScope } from "@iota/identity-wasm/node";
+import bs58 from "bs58";
 import { Arguments } from "yargs";
 import { getNetworkParams } from "../../globalParams";
 import { IdentityHelper } from "../identityHelper";
@@ -15,7 +16,7 @@ export default class CreateDidCommandExecutor {
         }
 
         const netParams = getNetworkParams(args);
-        const identityClient = IdentityHelper.getClient(netParams);
+        const identityClient = await IdentityHelper.getClient(netParams);
 
         // Generate a new keypair and DID document
         const key = new KeyPair(KeyType.Ed25519);
@@ -26,18 +27,46 @@ export default class CreateDidCommandExecutor {
             finalDocument = this.addService(doc, serviceList);
         }
 
-        finalDocument.sign(key);
+        const keys = {
+            "sign-0": {
+                public: bs58.encode(key.public()),
+                private: bs58.encode(key.private())
+            }
+        };
 
-        const receipt = await identityClient.publishDocument(finalDocument);
+        const key2 = new KeyPair(KeyType.Ed25519);
 
-        console.log({
-            did: finalDocument.toJSON().id,
-            keys: {
-                public: key.public,
-                private: key.private
-            },
-            ...(Boolean(netParams.explorer) && { transactionUrl: `${netParams.explorer}/message/${receipt.messageId}` })
+        const methodFragment = "dv-0";
+        keys[methodFragment] = {
+            public: bs58.encode(key2.public()),
+            private: bs58.encode(key2.private())
+        };
+
+        const verificationMethod = VerificationMethod.fromJSON({
+            id: `${doc.id().toString()}#${methodFragment}`,
+            type: "Ed25519VerificationKey2018",
+            controller: doc.id().toString(),
+            publicKeyMultibase: `z${bs58.encode(key2.public())}`
         });
+
+        // eslint-disable-next-line new-cap
+        finalDocument.insertMethod(verificationMethod, MethodScope.VerificationMethod());
+
+        finalDocument.signSelf(key, finalDocument.defaultSigningMethod().id());
+
+        try {
+            const receipt = await identityClient.publishDocument(finalDocument);
+
+            console.log({
+                did: finalDocument.id().toString(),
+                keys: { ...keys },
+                ...(Boolean(netParams.explorer) && {
+                    transactionUrl: `${netParams.explorer}/message/${receipt.messageId()}`
+                })
+            });
+        } catch (e) {
+            console.error("Error", e);
+        }
 
         return true;
     }
@@ -45,18 +74,15 @@ export default class CreateDidCommandExecutor {
     private static addService(doc: Document, service: IService[]): Document {
         const serviceFragment = "service";
 
-        // First we convert the document to JSON
-        const extDoc = doc.toJSON();
         // We ensure the services have an id
         for (let index = 0; index < service.length; index++) {
             if (!service[index].id) {
-                service[index].id = `${extDoc.id}#${serviceFragment}${index + 1}`;
+                service[index].id = `${doc.id().toString()}#${serviceFragment}${index + 1}`;
             }
+            doc.insertService(Service.fromJSON(service[index]));
         }
 
-        extDoc.service = service;
-
-        return Document.fromJSON(extDoc);
+        return doc;
     }
 
     private static validateService(service: string): {

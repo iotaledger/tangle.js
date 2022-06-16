@@ -6,11 +6,10 @@ window.onload = async () => {
 
   // handle test on click event
   document.querySelector("#test-ld-proofs").addEventListener("click", () => testIt());
-
 };
 
 async function testIt() {
-  const myDID = "did:iota:HeNzaWXCT6jTsshy9gyXCz9242NgZtMrbW1EC66iXZNP";
+  const myDID = "did:iota:92HAGCCy5NRTzf86Fta6dNC3z8fKDhXcXktKtWHMreXH";
 
   console.log("Creating a signer with DID", myDID);
   const signer = await IotaSigner.create(myDID);
@@ -26,9 +25,9 @@ async function testIt() {
     speed: {
       type: "QuantitativeValue",
       value: 50.2,
-      unitCode: "KMH",
+      unitCode: "KMH"
     },
-    dateUpdated: new Date().toISOString(),
+    dateUpdated: new Date().toISOString()
   };
 
   console.log("Anchoring to the Tangle ...");
@@ -43,8 +42,8 @@ async function testIt() {
 
   const ldProof = await ldProofGenerator.generate(document, {
     signatureType: SignatureTypes.ED25519_2018,
-    verificationMethod: "key",
-    secret: "8XghdzhFGWrferW8v1PwpV86gtHKALKzxhGKSi4vGs3R",
+    verificationMethod: "dv-0",
+    secret: "4erRoPQVj6S644FMRMNGtpSixSyXqAxeCz33rGxr3xvL",
     anchorageID: anchoringChannel.firstAnchorageID
   });
 

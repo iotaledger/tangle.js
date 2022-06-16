@@ -13,5 +13,5 @@ export interface ISigningRequest {
     /** Method for signing and verification. */
     method: string;
     /** Private key used for signing. */
-    secret: string;
+    secret: Uint8Array;
 }

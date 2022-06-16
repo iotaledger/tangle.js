@@ -6,6 +6,27 @@ import {
   SignatureTypes,
 } from "@tangle-js/ld-proofs";
 
+/** 
+
+  DID used:
+
+  {
+  did: 'did:iota:DN4YmCtjMLMQaBsYB98VwsWWGkrjGFKbZej2xSptk7VM',
+  keys: {
+    'sign-0': {
+      public: 'AKv6ZqWUDMHWpe89EDMRwUit2Nf167SJed7ErYBoTwX',
+      private: '6NxdH69gdTjK9yfn848i1ygmd6JvoRMiSJL2tq3qzkyf'
+    },
+    'dv-0': {
+      public: '4EXMKRQuFrV8Nc1VAy4NUiPjGfDwC5R1kyYpgL1FnSSE',
+      private: '4ZNFBsaLqwGCGampUj2bV5L8LUzEca2zuLzrQAbningY'
+    }
+  },
+  transactionUrl: 'https://explorer.iota.org/mainnet/message/9be512beb50e7a07f3499afd8d785daedbafc80afcaab663e4689d89f23873c8'
+}
+
+*/
+
 // Anchor an EPCIS Document to Tangle
 export default async function anchorEPCISDocument(epcisDocument) {
   const events = epcisDocument.getEventList();
@@ -24,7 +45,7 @@ export default async function anchorEPCISDocument(epcisDocument) {
 
   console.log("Preparing channel, signer and LD Proof generator ...");
   const anchoringChannel = await IotaAnchoringChannel.bindNew();
-  const did = "did:iota:yUxEqDGgL2WF4sQq2TEzdmDjDkRsHKL5TcLWrdAjmb4";
+  const did = "did:iota:DN4YmCtjMLMQaBsYB98VwsWWGkrjGFKbZej2xSptk7VM";
   const signer = await IotaSigner.create(did);
   const ldProofGenerator = IotaLdProofGenerator.create(
     anchoringChannel,
@@ -35,8 +56,8 @@ export default async function anchorEPCISDocument(epcisDocument) {
   const proofs = await ldProofGenerator.generateChain(eventList, {
     signatureType: SignatureTypes.ED25519_2018,
     anchorageID: anchoringChannel.firstAnchorageID,
-    verificationMethod: "key",
-    secret: "GxFKbdCAbaLfQcca6jrdfi9LCkngpDNKbBJb9wev1Yvm",
+    verificationMethod: "dv-0",
+    secret: "4ZNFBsaLqwGCGampUj2bV5L8LUzEca2zuLzrQAbningY",
   });
 
   console.log("Event Chain Linked Data Proofs: ", proofs);
