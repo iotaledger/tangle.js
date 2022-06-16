@@ -211,7 +211,7 @@ describe("Sign messages", () => {
         secret: privateKey
       });
     } catch (error) {
-      expect(error.name).toBe(LdProofErrorNames.INVALID_VERIFICATION_METHOD);
+      expect(error.name).toBe(LdProofErrorNames.VERIFICATION_METHOD_NOT_FOUND);
       return;
     }
 
