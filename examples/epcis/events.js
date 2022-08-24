@@ -19,7 +19,7 @@ epcisDocument
     .setCreationDate(new Date().toISOString());
 
 /*
-"@context": "https://gs1.github.io/EPCIS/epcis-context.jsonld",
+"@context": "https://ref.gs1.org/standards/epcis/epcis-context.jsonld",
     "isA": "ObjectEvent",
     "epcList": [
         "urn:jaif:id:obj:37SUN321456789A111222333AB+123456789012"
@@ -54,7 +54,7 @@ epcisDocument.addEvent(event1);
 
 /*
 {
-    "@context": "https://gs1.github.io/EPCIS/epcis-context.jsonld",
+    "@context": "https://ref.gs1.org/standards/epcis/epcis-context.jsonld",
     "isA": "ObjectEvent",
     "epcList": [
         "urn:jaif:id:obj:37SUN321456789A111222333AB+123456789012"

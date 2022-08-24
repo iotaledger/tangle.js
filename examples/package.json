@@ -25,7 +25,7 @@
   "dependencies": {
     "@tangle-js/anchors": "0.9.3",
     "@tangle-js/ld-proofs": "0.9.6-1",
-    "epcis2.js": "^2.1.0",
+    "epcis2.js": "^2.4.0",
     "buffer": "^6.0.3",
     "node-fetch": "^2.6.1"
   },
