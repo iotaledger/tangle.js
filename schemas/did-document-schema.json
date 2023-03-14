@@ -1,0 +1,166 @@
+{
+    "$id": "https://iotaledger.github.io/ebsi/did-document-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "uri": {
+            "type": "string",
+            "format": "uri"
+        },
+        "nonEmptyString": {
+            "type": "string",
+            "minLength": 1
+        },
+        "methodType": {
+            "type": "string",
+            "enum": [
+                "Ed25519VerificationKey2020"
+            ]
+        },
+        "serviceType": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/nonEmptyString"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/nonEmptyString"
+                    }
+                }
+            ]
+        },
+        "publicKeyMultibase": {
+            "type": "string",
+            "minLength": 1
+        },
+        "publicKeyJwk": {
+            "type": "object",
+            "minProperties": 1
+        },
+        "methodDef": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/uri"
+                },
+                "type": {
+                    "$ref": "#/definitions/methodType"
+                },
+                "controller": {
+                    "$ref": "#/definitions/uri"
+                },
+                "publicKeyMultibase": {
+                    "$ref": "#/definitions/publicKeyMultibase"
+                },
+                "publicKeyJwk": {
+                    "$ref": "#/definitions/publicKeyJwk"
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        "method": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/methodDef"
+                },
+                {
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "publicKeyMultibase"
+                            ]
+                        },
+                        {
+                            "type": "object",
+                            "required": [
+                                "publicKeyJwk"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "methodArray": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/method"
+                    },
+                    {
+                        "$ref": "#/definitions/uri"
+                    }
+                ]
+            },
+            "minItems": 1
+        },
+        "verificationMethodArray": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/method"
+            },
+            "minItems": 1
+        },
+        "serviceDef": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/uri"
+                },
+                "type": {
+                    "$ref": "#/definitions/serviceType"
+                },
+                "serviceEndpoint": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            }
+        },
+        "DID-Document-Input": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/uri"
+                },
+                "controller": {
+                    "$ref": "#/definitions/uri"
+                },
+                "alsoKnownAs": {
+                    "$ref": "#/definitions/uri"
+                },
+                "verificationMethod": {
+                    "$ref": "#/definitions/verificationMethodArray"
+                },
+                "authentication": {
+                    "$ref": "#/definitions/methodArray"
+                },
+                "capabilityInvocation": {
+                    "$ref": "#/definitions/methodArray"
+                },
+                "capabilityDelegation": {
+                    "$ref": "#/definitions/methodArray"
+                },
+                "assertionMethod": {
+                    "$ref": "#/definitions/methodArray"
+                },
+                "keyAgreement": {
+                    "$ref": "#/definitions/methodArray"
+                },
+                "services": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/serviceDef"
+                    }
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/definitions/DID-Document-Input"
+        }
+    ]
+}

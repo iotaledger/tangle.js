@@ -1,0 +1,144 @@
+{
+    "$id": "https://iotaledger.github.io/ebsi/identity-inx-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "uri": {
+            "type": "string",
+            "format": "uri"
+        },
+        "nonEmptyString": {
+            "type": "string",
+            "minLength": 1
+        },
+        "Doc": {
+            "type": "object",
+            "minProperties": 1
+        },
+        "Signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "number"
+                },
+                "publicKey": {
+                    "$ref": "#/definitions/nonEmptyString"
+                },
+                "signature": {
+                    "$ref": "#/definitions/nonEmptyString"
+                }
+            },
+            "required": [
+                "type",
+                "publicKey",
+                "signature"
+            ]
+        },
+        "Did-Creation-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "DIDCreationRequest"
+                    ]
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "type": "object",
+                    "properties": {
+                        "stateControllerAddress": {
+                            "$ref": "#/definitions/nonEmptyString"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "doc"
+            ]
+        },
+        "TransactionRequest-Metadata": {
+            "type": "object",
+            "properties": {
+                "fundingAddress": {
+                    "$ref": "#/definitions/nonEmptyString"
+                },
+                "stateControllerAddress": {
+                    "$ref": "#/definitions/nonEmptyString"
+                }
+            },
+            "required": [
+                "fundingAddress"
+            ]
+        },
+        "Did-Transaction-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "DIDTransactionRequest"
+                    ]
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/TransactionRequest-Metadata"
+                }
+            },
+            "required": [
+                "doc",
+                "metadata"
+            ]
+        },
+        "Did-Transaction-Signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "DIDTransactionSignature"
+                    ]
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "txEssenceHash": {
+                                    "$ref": "#/definitions/nonEmptyString"
+                                },
+                                "signature": {
+                                    "$ref": "#/definitions/Signature"
+                                }
+                            },
+                            "required": ["txEssenceHash", "signature"]
+                        },
+                        {
+                            "$ref": "#/definitions/TransactionRequest-Metadata"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "metadata"
+            ]
+        }
+    },
+    "oneOf": [
+        {
+            "$ref": "#/definitions/Did-Creation-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Transaction-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Transaction-Signature"
+        }
+    ]
+}
