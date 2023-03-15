@@ -55,8 +55,7 @@
                         "stateControllerAddress": {
                             "$ref": "#/definitions/nonEmptyString"
                         }
-                    },
-                    "additionalProperties": false
+                    }
                 }
             },
             "required": [
