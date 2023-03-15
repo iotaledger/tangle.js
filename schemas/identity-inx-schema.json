@@ -10,6 +10,10 @@
             "type": "string",
             "minLength": 1
         },
+        "timestamp": {
+            "type": "string",
+            "format": "date-time"
+        },
         "Doc": {
             "type": "object",
             "minProperties": 1
@@ -51,7 +55,8 @@
                         "stateControllerAddress": {
                             "$ref": "#/definitions/nonEmptyString"
                         }
-                    }
+                    },
+                    "additionalProperties": false
                 }
             },
             "required": [
@@ -115,6 +120,12 @@
                                 },
                                 "signature": {
                                     "$ref": "#/definitions/Signature"
+                                },
+                                "created": {
+                                    "$ref": "#/definitions/timestamp"
+                                },
+                                "updated": {
+                                    "$ref": "#/definitions/timestamp"
                                 }
                             },
                             "required": ["txEssenceHash", "signature"]
