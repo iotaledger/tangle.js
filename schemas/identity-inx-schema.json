@@ -37,14 +37,44 @@
                 "signature"
             ]
         },
+        "creationType": {
+            "type": "string",
+            "enum": [
+                "DIDCreation"
+            ]
+        },
+        "updateType": {
+            "type": "string",
+            "enum": [
+                "DIDUpdate"
+            ]
+        },
+        "issueAction": {
+            "type": "string",
+            "enum": [
+                "Issue"
+            ]
+        },
+        "transactionAction": {
+            "type": "string",
+            "enum": [
+                "TransactionRequest"
+            ]
+        },
+        "signatureAction": {
+            "type": "string",
+            "enum": [
+                "TransactionSignature"
+            ]
+        },
         "Did-Creation-Request": {
             "type": "object",
             "properties": {
                 "type": {
-                    "type": "string",
-                    "enum": [
-                        "DIDCreationRequest"
-                    ]
+                    "$ref": "#/definitions/creationType"
+                },
+                "action": {
+                    "$ref": "#/definitions/issueAction"
                 },
                 "doc": {
                     "$ref": "#/definitions/Doc"
@@ -55,14 +85,37 @@
                         "stateControllerAddress": {
                             "$ref": "#/definitions/nonEmptyString"
                         }
-                    }
+                    },
+                    "additionalProperties": false
                 }
             },
             "required": [
+                "type",
+                "action",
+                "doc"
+            ],
+            "additionalProperties": false
+        },
+        "Did-Update-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/updateType"
+                },
+                "action": {
+                    "$ref": "#/definitions/issueAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                }
+            },
+            "required": [
+                "type",
+                "action",
                 "doc"
             ]
         },
-        "TransactionRequest-Metadata": {
+        "Creation-TransactionRequest-Metadata": {
             "type": "object",
             "properties": {
                 "fundingAddress": {
@@ -76,35 +129,47 @@
                 "fundingAddress"
             ]
         },
-        "Did-Transaction-Request": {
+        "Update-TransactionRequest-Metadata": {
+            "type": "object",
+            "properties": {
+                "fundingAddress": {
+                    "$ref": "#/definitions/nonEmptyString"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Did-Creation-Transaction-Request": {
             "type": "object",
             "properties": {
                 "type": {
-                    "type": "string",
-                    "enum": [
-                        "DIDTransactionRequest"
-                    ]
+                    "$ref": "#/definitions/creationType"
+                },
+                "action": {
+                    "$ref": "#/definitions/transactionAction"
                 },
                 "doc": {
                     "$ref": "#/definitions/Doc"
                 },
                 "metadata": {
-                    "$ref": "#/definitions/TransactionRequest-Metadata"
+                    "$ref": "#/definitions/Creation-TransactionRequest-Metadata"
                 }
             },
             "required": [
+                "type",
+                "action",
                 "doc",
                 "metadata"
-            ]
+            ],
+            "additionalProperties": false
         },
-        "Did-Transaction-Signature": {
+        "Did-Creation-Transaction-Signature": {
             "type": "object",
             "properties": {
                 "type": {
-                    "type": "string",
-                    "enum": [
-                        "DIDTransactionSignature"
-                    ]
+                    "$ref": "#/definitions/creationType"
+                },
+                "action": {
+                    "$ref": "#/definitions/signatureAction"
                 },
                 "doc": {
                     "$ref": "#/definitions/Doc"
@@ -121,10 +186,13 @@
                                     "$ref": "#/definitions/timestamp"
                                 }
                             },
-                            "required": ["created", "updated"]
+                            "required": [
+                                "created",
+                                "updated"
+                            ]
                         },
                         {
-                            "$ref": "#/definitions/TransactionRequest-Metadata"
+                            "$ref": "#/definitions/Creation-TransactionRequest-Metadata"
                         }
                     ]
                 },
@@ -140,7 +208,86 @@
                 }
             },
             "required": [
-                "metadata", "txEssenceHash", "signature"
+                "type",
+                "action",
+                "doc",
+                "metadata",
+                "txEssenceHash",
+                "signature"
+            ]
+        },
+        "Did-Update-Transaction-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/updateType"
+                },
+                "action": {
+                    "$ref": "#/definitions/transactionAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/Update-TransactionRequest-Metadata"
+                }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc",
+                "metadata"
+            ],
+            "additionalProperties": false
+        },
+        "Did-Update-Transaction-Signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/updateType"
+                },
+                "action": {
+                    "$ref": "#/definitions/signatureAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "updated": {
+                                    "$ref": "#/definitions/timestamp"
+                                }
+                            },
+                            "required": [
+                                "updated"
+                            ]
+                        },
+                        {
+                            "$ref": "#/definitions/Update-TransactionRequest-Metadata"
+                        }
+                    ]
+                },
+                "txEssenceHash": {
+                    "$ref": "#/definitions/nonEmptyString"
+                },
+                "signature": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Signature"
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc",
+                "metadata",
+                "txEssenceHash",
+                "signature"
             ]
         }
     },
@@ -149,10 +296,19 @@
             "$ref": "#/definitions/Did-Creation-Request"
         },
         {
-            "$ref": "#/definitions/Did-Transaction-Request"
+            "$ref": "#/definitions/Did-Update-Request"
         },
         {
-            "$ref": "#/definitions/Did-Transaction-Signature"
+            "$ref": "#/definitions/Did-Creation-Transaction-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Creation-Transaction-Signature"
+        },
+        {
+            "$ref": "#/definitions/Did-Update-Transaction-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Update-Transaction-Signature"
         }
     ]
 }
