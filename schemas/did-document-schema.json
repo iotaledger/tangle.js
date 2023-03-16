@@ -13,7 +13,8 @@
         "methodType": {
             "type": "string",
             "enum": [
-                "Ed25519VerificationKey2020"
+                "Ed25519VerificationKey2020",
+                "Ed25519VerificationKey2018"
             ]
         },
         "serviceType": {
