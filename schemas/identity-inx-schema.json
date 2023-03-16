@@ -114,12 +114,6 @@
                         {
                             "type": "object",
                             "properties": {
-                                "txEssenceHash": {
-                                    "$ref": "#/definitions/nonEmptyString"
-                                },
-                                "signature": {
-                                    "$ref": "#/definitions/Signature"
-                                },
                                 "created": {
                                     "$ref": "#/definitions/timestamp"
                                 },
@@ -127,16 +121,26 @@
                                     "$ref": "#/definitions/timestamp"
                                 }
                             },
-                            "required": ["txEssenceHash", "signature"]
+                            "required": ["created", "updated"]
                         },
                         {
                             "$ref": "#/definitions/TransactionRequest-Metadata"
                         }
                     ]
+                },
+                "txEssenceHash": {
+                    "$ref": "#/definitions/nonEmptyString"
+                },
+                "signature": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Signature"
+                    },
+                    "minItems": 1
                 }
             },
             "required": [
-                "metadata"
+                "metadata", "txEssenceHash", "signature"
             ]
         }
     },
