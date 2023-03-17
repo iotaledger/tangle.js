@@ -16,6 +16,12 @@
         },
         "Doc": {
             "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "pattern": "did:0:0"
+                }
+            },
             "minProperties": 1
         },
         "Signature": {
