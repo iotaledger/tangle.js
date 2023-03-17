@@ -119,7 +119,8 @@
                 "type",
                 "action",
                 "doc"
-            ]
+            ],
+            "additionalProperties": false
         },
         "Creation-TransactionRequest-Metadata": {
             "type": "object",
@@ -242,7 +243,7 @@
                 "type",
                 "action",
                 "doc",
-                "metadata"
+                "meta"
             ],
             "additionalProperties": false
         },
@@ -291,24 +292,102 @@
             ]
         }
     },
-    "oneOf": [
+    "allOf": [
         {
-            "$ref": "#/definitions/Did-Creation-Request"
+            "if": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/definitions/creationType"
+                    },
+                    "action":  {
+                        "$ref": "#/definitions/issueAction"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/Did-Creation-Request"
+            }
         },
         {
-            "$ref": "#/definitions/Did-Update-Request"
+            "if": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/definitions/creationType"
+                    },
+                    "action":  {
+                        "$ref": "#/definitions/transactionAction"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/Did-Creation-Transaction-Request"
+            }
         },
         {
-            "$ref": "#/definitions/Did-Creation-Transaction-Request"
+            "if": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/definitions/creationType"
+                    },
+                    "action":  {
+                        "$ref": "#/definitions/signatureAction"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/Did-Creation-Transaction-Signature"
+            }
         },
         {
-            "$ref": "#/definitions/Did-Creation-Transaction-Signature"
+            "if": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/definitions/updateType"
+                    },
+                    "action":  {
+                        "$ref": "#/definitions/issueAction"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/Did-Update-Request"
+            }
         },
         {
-            "$ref": "#/definitions/Did-Update-Transaction-Request"
+            "if": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/definitions/updateType"
+                    },
+                    "action":  {
+                        "$ref": "#/definitions/transactionAction"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/Did-Update-Transaction-Request"
+            }
         },
         {
-            "$ref": "#/definitions/Did-Update-Transaction-Signature"
+            "if": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "$ref": "#/definitions/updateType"
+                    },
+                    "action":  {
+                        "$ref": "#/definitions/signatureAction"
+                    }
+                }
+            },
+            "then": {
+                "$ref": "#/definitions/Did-Update-Transaction-Signature"
+            }
         }
     ]
 }
