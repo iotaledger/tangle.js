@@ -85,7 +85,7 @@
                 "doc": {
                     "$ref": "#/definitions/Doc"
                 },
-                "metadata": {
+                "meta": {
                     "type": "object",
                     "properties": {
                         "stateControllerAddress": {
@@ -156,7 +156,7 @@
                 "doc": {
                     "$ref": "#/definitions/Doc"
                 },
-                "metadata": {
+                "meta": {
                     "$ref": "#/definitions/Creation-TransactionRequest-Metadata"
                 }
             },
@@ -164,7 +164,7 @@
                 "type",
                 "action",
                 "doc",
-                "metadata"
+                "meta"
             ],
             "additionalProperties": false
         },
@@ -180,7 +180,7 @@
                 "doc": {
                     "$ref": "#/definitions/Doc"
                 },
-                "metadata": {
+                "meta": {
                     "allOf": [
                         {
                             "type": "object",
@@ -217,7 +217,7 @@
                 "type",
                 "action",
                 "doc",
-                "metadata",
+                "meta",
                 "txEssenceHash",
                 "signature"
             ]
@@ -234,7 +234,7 @@
                 "doc": {
                     "$ref": "#/definitions/Doc"
                 },
-                "metadata": {
+                "meta": {
                     "$ref": "#/definitions/Update-TransactionRequest-Metadata"
                 }
             },
@@ -258,7 +258,7 @@
                 "doc": {
                     "$ref": "#/definitions/Doc"
                 },
-                "metadata": {
+                "meta": {
                     "type": "object",
                     "properties": {
                         "updated": {
@@ -285,7 +285,7 @@
                 "type",
                 "action",
                 "doc",
-                "metadata",
+                "meta",
                 "txEssenceHash",
                 "signature"
             ]
