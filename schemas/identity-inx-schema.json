@@ -242,8 +242,7 @@
             "required": [
                 "type",
                 "action",
-                "doc",
-                "meta"
+                "doc"
             ],
             "additionalProperties": false
         },
