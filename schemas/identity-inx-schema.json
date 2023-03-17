@@ -119,7 +119,8 @@
                 "type",
                 "action",
                 "doc"
-            ]
+            ],
+            "additionalProperties": false
         },
         "Creation-TransactionRequest-Metadata": {
             "type": "object",
@@ -259,22 +260,16 @@
                     "$ref": "#/definitions/Doc"
                 },
                 "metadata": {
-                    "allOf": [
-                        {
-                            "type": "object",
-                            "properties": {
-                                "updated": {
-                                    "$ref": "#/definitions/timestamp"
-                                }
-                            },
-                            "required": [
-                                "updated"
-                            ]
+                    "type": "object",
+                    "properties": {
+                        "updated": {
+                            "$ref": "#/definitions/timestamp"
                         },
-                        {
-                            "$ref": "#/definitions/Update-TransactionRequest-Metadata"
+                        "fundingAddress": {
+                            "$ref": "#/definitions/nonEmptyString"
                         }
-                    ]
+                    },
+                    "required": ["updated"]
                 },
                 "txEssenceHash": {
                     "$ref": "#/definitions/nonEmptyString"
