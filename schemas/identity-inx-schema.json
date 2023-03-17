@@ -119,8 +119,7 @@
                 "type",
                 "action",
                 "doc"
-            ],
-            "additionalProperties": false
+            ]
         },
         "Creation-TransactionRequest-Metadata": {
             "type": "object",
