@@ -1,5 +1,5 @@
 {
-    "$id": "https://iotaledger.github.io/ebsi/did-document-schema.json",
+    "$id": "https://iotaledger.github.io/ebsi/identity-inx-schema.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "definitions": {
         "uri": {
@@ -10,158 +10,311 @@
             "type": "string",
             "minLength": 1
         },
-        "methodType": {
+        "timestamp": {
             "type": "string",
-            "enum": [
-                "Ed25519VerificationKey2020",
-                "Ed25519VerificationKey2018"
-            ]
+            "format": "date-time"
         },
-        "serviceType": {
-            "oneOf": [
-                {
-                    "$ref": "#/definitions/nonEmptyString"
-                },
-                {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/nonEmptyString"
-                    }
-                }
-            ]
-        },
-        "publicKeyMultibase": {
-            "type": "string",
-            "minLength": 1
-        },
-        "publicKeyJwk": {
-            "type": "object",
-            "minProperties": 1
-        },
-        "methodDef": {
+        "Doc": {
             "type": "object",
             "properties": {
                 "id": {
-                    "$ref": "#/definitions/uri"
-                },
+                    "type": "string",
+                    "pattern": "did:0:0"
+                }
+            },
+            "minProperties": 1
+        },
+        "Signature": {
+            "type": "object",
+            "properties": {
                 "type": {
-                    "$ref": "#/definitions/methodType"
+                    "type": "number"
                 },
-                "controller": {
-                    "$ref": "#/definitions/uri"
+                "publicKey": {
+                    "$ref": "#/definitions/nonEmptyString"
                 },
-                "publicKeyMultibase": {
-                    "$ref": "#/definitions/publicKeyMultibase"
-                },
-                "publicKeyJwk": {
-                    "$ref": "#/definitions/publicKeyJwk"
+                "signature": {
+                    "$ref": "#/definitions/nonEmptyString"
                 }
             },
             "required": [
-                "type"
+                "type",
+                "publicKey",
+                "signature"
             ]
         },
-        "method": {
-            "allOf": [
-                {
-                    "$ref": "#/definitions/methodDef"
+        "creationType": {
+            "type": "string",
+            "enum": [
+                "DIDCreation"
+            ]
+        },
+        "updateType": {
+            "type": "string",
+            "enum": [
+                "DIDUpdate"
+            ]
+        },
+        "issueAction": {
+            "type": "string",
+            "enum": [
+                "Issue"
+            ]
+        },
+        "transactionAction": {
+            "type": "string",
+            "enum": [
+                "TransactionRequest"
+            ]
+        },
+        "signatureAction": {
+            "type": "string",
+            "enum": [
+                "TransactionSignature"
+            ]
+        },
+        "Did-Creation-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/creationType"
                 },
-                {
-                    "anyOf": [
+                "action": {
+                    "$ref": "#/definitions/issueAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "type": "object",
+                    "properties": {
+                        "stateControllerAddress": {
+                            "$ref": "#/definitions/nonEmptyString"
+                        }
+                    },
+                    "additionalProperties": false
+                }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc"
+            ],
+            "additionalProperties": false
+        },
+        "Did-Update-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/updateType"
+                },
+                "action": {
+                    "$ref": "#/definitions/issueAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc"
+            ]
+        },
+        "Creation-TransactionRequest-Metadata": {
+            "type": "object",
+            "properties": {
+                "fundingAddress": {
+                    "$ref": "#/definitions/nonEmptyString"
+                },
+                "stateControllerAddress": {
+                    "$ref": "#/definitions/nonEmptyString"
+                }
+            },
+            "required": [
+                "fundingAddress"
+            ]
+        },
+        "Update-TransactionRequest-Metadata": {
+            "type": "object",
+            "properties": {
+                "fundingAddress": {
+                    "$ref": "#/definitions/nonEmptyString"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Did-Creation-Transaction-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/creationType"
+                },
+                "action": {
+                    "$ref": "#/definitions/transactionAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/Creation-TransactionRequest-Metadata"
+                }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc",
+                "metadata"
+            ],
+            "additionalProperties": false
+        },
+        "Did-Creation-Transaction-Signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/creationType"
+                },
+                "action": {
+                    "$ref": "#/definitions/signatureAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "allOf": [
                         {
                             "type": "object",
+                            "properties": {
+                                "created": {
+                                    "$ref": "#/definitions/timestamp"
+                                },
+                                "updated": {
+                                    "$ref": "#/definitions/timestamp"
+                                }
+                            },
                             "required": [
-                                "publicKeyMultibase"
+                                "created",
+                                "updated"
                             ]
                         },
                         {
-                            "type": "object",
-                            "required": [
-                                "publicKeyJwk"
-                            ]
+                            "$ref": "#/definitions/Creation-TransactionRequest-Metadata"
                         }
                     ]
-                }
-            ]
-        },
-        "methodArray": {
-            "type": "array",
-            "items": {
-                "oneOf": [
-                    {
-                        "$ref": "#/definitions/method"
-                    },
-                    {
-                        "$ref": "#/definitions/uri"
-                    }
-                ]
-            },
-            "minItems": 1
-        },
-        "verificationMethodArray": {
-            "type": "array",
-            "items": {
-                "$ref": "#/definitions/method"
-            },
-            "minItems": 1
-        },
-        "serviceDef": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "$ref": "#/definitions/uri"
                 },
-                "type": {
-                    "$ref": "#/definitions/serviceType"
+                "txEssenceHash": {
+                    "$ref": "#/definitions/nonEmptyString"
                 },
-                "serviceEndpoint": {
-                    "type": "string",
-                    "format": "uri"
-                }
-            }
-        },
-        "DID-Document-Input": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "$ref": "#/definitions/uri"
-                },
-                "controller": {
-                    "$ref": "#/definitions/uri"
-                },
-                "alsoKnownAs": {
-                    "$ref": "#/definitions/uri"
-                },
-                "verificationMethod": {
-                    "$ref": "#/definitions/verificationMethodArray"
-                },
-                "authentication": {
-                    "$ref": "#/definitions/methodArray"
-                },
-                "capabilityInvocation": {
-                    "$ref": "#/definitions/methodArray"
-                },
-                "capabilityDelegation": {
-                    "$ref": "#/definitions/methodArray"
-                },
-                "assertionMethod": {
-                    "$ref": "#/definitions/methodArray"
-                },
-                "keyAgreement": {
-                    "$ref": "#/definitions/methodArray"
-                },
-                "services": {
+                "signature": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/serviceDef"
-                    }
+                        "$ref": "#/definitions/Signature"
+                    },
+                    "minItems": 1
                 }
-            }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc",
+                "metadata",
+                "txEssenceHash",
+                "signature"
+            ]
+        },
+        "Did-Update-Transaction-Request": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/updateType"
+                },
+                "action": {
+                    "$ref": "#/definitions/transactionAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/Update-TransactionRequest-Metadata"
+                }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc",
+                "metadata"
+            ],
+            "additionalProperties": false
+        },
+        "Did-Update-Transaction-Signature": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/updateType"
+                },
+                "action": {
+                    "$ref": "#/definitions/signatureAction"
+                },
+                "doc": {
+                    "$ref": "#/definitions/Doc"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "type": "object",
+                            "properties": {
+                                "updated": {
+                                    "$ref": "#/definitions/timestamp"
+                                }
+                            },
+                            "required": [
+                                "updated"
+                            ]
+                        },
+                        {
+                            "$ref": "#/definitions/Update-TransactionRequest-Metadata"
+                        }
+                    ]
+                },
+                "txEssenceHash": {
+                    "$ref": "#/definitions/nonEmptyString"
+                },
+                "signature": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Signature"
+                    },
+                    "minItems": 1
+                }
+            },
+            "required": [
+                "type",
+                "action",
+                "doc",
+                "metadata",
+                "txEssenceHash",
+                "signature"
+            ]
         }
     },
-    "allOf": [
+    "oneOf": [
         {
-            "$ref": "#/definitions/DID-Document-Input"
+            "$ref": "#/definitions/Did-Creation-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Update-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Creation-Transaction-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Creation-Transaction-Signature"
+        },
+        {
+            "$ref": "#/definitions/Did-Update-Transaction-Request"
+        },
+        {
+            "$ref": "#/definitions/Did-Update-Transaction-Signature"
         }
     ]
 }
