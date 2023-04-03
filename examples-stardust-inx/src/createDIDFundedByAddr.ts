@@ -58,8 +58,6 @@ async function postToPlugin(did: { [id: string]: unknown },
     const nextPayload = result1 as { doc: Doc; meta: Meta }
         & { type: string; action: string; txEssenceHash: string; signature: Signature[] };
 
-    console.log(nextPayload);
-
     // The result will contain a txEssence that has to be signed
     // Once it is signed it has to be submitted to the plugin again
     const essence = Converter.hexToBytes(nextPayload.txEssenceHash);
@@ -72,8 +70,6 @@ async function postToPlugin(did: { [id: string]: unknown },
         publicKey: Converter.bytesToHex(params.publicKeys[0], true),
         signature: Converter.bytesToHex(essenceSigned, true)
     }];
-
-    console.log(nextPayload);
 
     const finalResult = await post(PLUGIN_ENDPOINT, nextPayload);
 
