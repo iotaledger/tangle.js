@@ -1,13 +1,9 @@
 import { Converter, Base58 } from "@iota/util.js";
-import { generateAddresses } from "./generateAddresses";
+import { generateAddresses, requestFunds } from "./utilAddress";
 import { Ed25519 } from "@iota/crypto.js";
 
-import { post, type FullDoc, type Doc, type Meta, sleep, type Signature } from "./util";
-
-const NODE_ENDPOINT = "http://52.213.240.168:14265";
-const PLUGIN_ENDPOINT = `${NODE_ENDPOINT}/api/ext/v1/identities`
-
-const FAUCET = "http://52.213.240.168:8091/api/enqueue"
+import { post, type FullDoc, type Doc, type Meta, sleep, type Signature } from "./utilHttp";
+import { FAUCET, NODE_ENDPOINT, PLUGIN_ENDPOINT } from "./endpoint";
 
 async function run() {
     // This DID Document can also be created with the help of the IOTA Identity Library
@@ -21,7 +17,7 @@ async function run() {
         }]
     }
 
-    const { publicKeys, privateKeys, bech32Addresses } = await generateAddresses(NODE_ENDPOINT);
+    const { publicKeys, privateKeys, bech32Addresses } = await generateAddresses(NODE_ENDPOINT, 2);
 
     // Now converting the second private key into Base58 and multibase format and adding to the verification method
     did.verificationMethod[0].publicKeyMultibase = `z${Base58.encode(publicKeys[1])}`;
@@ -54,7 +50,7 @@ async function postToPlugin(did: { [id: string]: unknown },
         }
     };
 
-    const result1 = await post(PLUGIN_ENDPOINT, pluginRequest);
+    const result1 = await post(`${PLUGIN_ENDPOINT}/identities`, pluginRequest);
     const nextPayload = result1 as { doc: Doc; meta: Meta }
         & { type: string; action: string; txEssenceHash: string; signature: Signature[] };
 
@@ -71,22 +67,9 @@ async function postToPlugin(did: { [id: string]: unknown },
         signature: Converter.bytesToHex(essenceSigned, true)
     }];
 
-    const finalResult = await post(PLUGIN_ENDPOINT, nextPayload);
+    const finalResult = await post(`${PLUGIN_ENDPOINT}/identities`, nextPayload);
 
     return finalResult as FullDoc;
-}
-
-async function requestFunds(url: string, addressBech32: string): Promise<unknown> {
-    const requestFounds = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ address: addressBech32 })
-    });
-
-    return await requestFounds.json();
 }
 
 export { };

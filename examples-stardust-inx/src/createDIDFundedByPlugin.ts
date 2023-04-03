@@ -1,10 +1,9 @@
 import { Base58 } from "@iota/util.js";
-import { generateAddresses } from "./generateAddresses";
+import { generateAddresses } from "./utilAddress";
 
-import { post, type FullDoc } from "./util";
+import { post, type FullDoc } from "./utilHttp";
 
-const NODE_ENDPOINT = "http://52.213.240.168:14265";
-const PLUGIN_ENDPOINT = `${NODE_ENDPOINT}/api/ext/v1/identities`;
+import { NODE_ENDPOINT, PLUGIN_ENDPOINT } from "./endpoint";
 
 async function run() {
     // This DID Document can also be created with the help of the IOTA Identity Library
@@ -22,7 +21,7 @@ async function run() {
     // The account #0 will be controlling the DID
     // The account #1 will be the verification method
     // Write the key pairs to the std output
-    const { publicKeys, bech32Addresses } = await generateAddresses(NODE_ENDPOINT);
+    const { publicKeys, bech32Addresses } = await generateAddresses(NODE_ENDPOINT, 2);
 
     // Now converting the second private key into Base58 and multibase format and adding to the verification method
     did.verificationMethod[0].publicKeyMultibase = `z${Base58.encode(publicKeys[1])}`;
@@ -45,7 +44,7 @@ async function postToPlugin(did: { [id: string]: unknown }, bech32Addresses: str
         }
     };
 
-    const result = await post(PLUGIN_ENDPOINT, pluginRequest);
+    const result = await post(`${PLUGIN_ENDPOINT}/identities`, pluginRequest);
 
     return result as FullDoc;
 }
