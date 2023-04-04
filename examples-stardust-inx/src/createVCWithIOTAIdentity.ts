@@ -23,8 +23,8 @@ async function run() {
     });
     const didClient = new IotaIdentityClient(client);
 
-    const issuerDid = "did:iota:ebsi:0xb7c5d504cc1e8c6f2531c9e80e444f86319e5695568e9bd96d7c0e1b41eaa005";
-    const privateKey = "0xe9956d529058aaa82e87641a6233e8436112d2e43466e1c511f8f31e3b60ee8cd28dc61055240e04f4f0bcecf20af8d826ca24c12de139700e70f59a65a140f3";
+    const issuerDid = "did:iota:ebsi:0x9244145be500bcc71c1d4d29c895ef06cff5eb6c055eebe23208206b223cdb72";
+    const privateKey = "0x9d7d9c14f4aaa242ab0b6c3b05f7619b746367605f4d4e30586767de32021afb889ea932dd3f33674657c169859793f3f721be0a8c7122e696120c7bb2fc0adf";
 
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
@@ -65,7 +65,7 @@ async function run() {
     // The credential is then serialized to JSON and transmitted to the holder in a secure manner.
     // Note that the credential is NOT published to the IOTA Tangle. It is sent and stored off-chain.
     const credentialJSON = signedVc.toJSON();
-    console.log(`Issued credential: ${JSON.stringify(credentialJSON, null, 2)}`);
+    console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
 }
 
 export { };

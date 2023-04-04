@@ -2,6 +2,9 @@ import { PLUGIN_ENDPOINT, TOKEN } from "./endpoint";
 import { post } from "./utilHttp";
 
 const presentation = {
+  "@context": "https://www.w3.org/2018/credentials/v1",
+  "type": "VerifiablePresentation",
+  "verifiableCredential": {
     "@context": "https://www.w3.org/2018/credentials/v1",
     "id": "https://example.edu/credentials/3732",
     "type": [
@@ -9,28 +12,37 @@ const presentation = {
       "UniversityDegreeCredential"
     ],
     "credentialSubject": {
-      "id": "did:iota:tst:0x6abe6ef35e4dfd4242f932d6fbe1b1ae01b87a1b42a49329141602a9222980de",
+      "id": "did:iota:ebsi:0x58389b90eb77c8bf17940e44b4949d4c40b09d2bb5b75a18e57556ae61209c8b",
       "GPA": "4.0",
       "degreeName": "Bachelor of Science and Arts",
       "degreeType": "BachelorDegree",
       "name": "Alice"
     },
-    "issuer": "did:iota:ebsi:0xb7c5d504cc1e8c6f2531c9e80e444f86319e5695568e9bd96d7c0e1b41eaa005",
-    "issuanceDate": "2023-04-04T07:39:43Z",
+    "issuer": "did:iota:ebsi:0x9244145be500bcc71c1d4d29c895ef06cff5eb6c055eebe23208206b223cdb72",
+    "issuanceDate": "2023-04-04T08:27:13Z",
     "proof": {
       "type": "JcsEd25519Signature2020",
-      "verificationMethod": "did:iota:ebsi:0xb7c5d504cc1e8c6f2531c9e80e444f86319e5695568e9bd96d7c0e1b41eaa005#sign-1",
-      "signatureValue": "5cFrmrdmekoKn23Sb2vLZkq3cNBxH1xRggeCuZNTTjFv9RhdSZnn6xgGPcB8uvkvxies8d7T9GVPQEgTLwMg7Abx"
+      "verificationMethod": "did:iota:ebsi:0x9244145be500bcc71c1d4d29c895ef06cff5eb6c055eebe23208206b223cdb72#sign-1",
+      "signatureValue": "3YMtyXKGNF4uzQ1AFpcPYjHKBBnRFY5Uoe567nsqqCcvazvXNtv6FoPX2FBRKWMgBpFXcAdLtNozvMDWVqLh1buN"
     }
-  };
+  },
+  "holder": "did:iota:ebsi:0x58389b90eb77c8bf17940e44b4949d4c40b09d2bb5b75a18e57556ae61209c8b",
+  "proof": {
+    "type": "JcsEd25519Signature2020",
+    "verificationMethod": "did:iota:ebsi:0x58389b90eb77c8bf17940e44b4949d4c40b09d2bb5b75a18e57556ae61209c8b#sign-1",
+    "signatureValue": "4oarWj3JAyjPdXXu6ZTz25YzcBFRkMG73r8dUCJsQBJU27YtaQnnistnhw1YjjD7J9WTa5V9EsgWnjn5nmNtSJc6",
+    "expires": "2023-04-04T12:27:13Z",
+    "challenge": "475a7984-1bb5-4c4c-a56f-822bccd46440"
+  }
+};
 
 async function run() {
-    const verificationResult = await post(`${PLUGIN_ENDPOINT}/credentials`, TOKEN, {
-        type: "VerificationRequest",
-        credential: presentation
-    });
+  const verificationResult = await post(`${PLUGIN_ENDPOINT}/credentials`, TOKEN, {
+    type: "VerificationRequest",
+    credential: presentation
+  });
 
-    console.log(verificationResult);
+  console.log(verificationResult);
 }
 
 run().then(() => console.log("Done")).catch(err => console.error(err));
