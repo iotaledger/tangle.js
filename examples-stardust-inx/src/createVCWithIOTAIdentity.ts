@@ -11,15 +11,19 @@ import {
 import { Client } from "@iota/client-wasm/node/lib/index.js";
 
 import { Converter } from "@iota/util.js";
+import { NODE_ENDPOINT, TOKEN } from "./endpoint";
 
 async function run() {
     const client = new Client({
-        primaryNode: "http://52.213.240.168:14265",
+        primaryNode: {
+            url: NODE_ENDPOINT,
+            auth: { jwt:  TOKEN }
+        },
         localPow: true,
     });
     const didClient = new IotaIdentityClient(client);
 
-    const issuerDid = "did:iota:tst:0x73871725725fd46a59f25440e29ce99eaad737f9c4f6ee980f642eb10de719d2";
+    const issuerDid = "did:iota:ebsi:0xb7c5d504cc1e8c6f2531c9e80e444f86319e5695568e9bd96d7c0e1b41eaa005";
     const privateKey = "0xe9956d529058aaa82e87641a6233e8436112d2e43466e1c511f8f31e3b60ee8cd28dc61055240e04f4f0bcecf20af8d826ca24c12de139700e70f59a65a140f3";
 
     const elements = issuerDid.split(":");

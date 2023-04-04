@@ -1,3 +1,5 @@
+import fetch, { Headers } from "node-fetch";
+
 import { Bip39, Bip32Path } from "@iota/crypto.js";
 import {
     Bech32Helper,
@@ -10,15 +12,20 @@ import {
 import { Converter } from "@iota/util.js";
 
 
-export async function generateAddresses(endpoint: string, numAddresses):
+export async function generateAddresses(endpoint: string, authToken: string, numAddresses: number):
     Promise<{ publicKeys: Uint8Array[], privateKeys: Uint8Array[], bech32Addresses: string[] }> {
 
     const publicKeys: Uint8Array[] = [];
     const privateKeys: Uint8Array[] = [];
 
     const bech32Addresses: string[] = [];
+    const headers = {};
 
-    const client = new SingleNodeClient(endpoint);
+    if (authToken) {
+        headers["Authorization"] = `Bearer ${authToken}`;
+    }
+
+    const client = new SingleNodeClient(endpoint, { headers });
     const clientInfo = await client.info();
     const bech32Hrp = clientInfo.protocol.bech32Hrp;
 
@@ -61,15 +68,26 @@ export async function generateAddresses(endpoint: string, numAddresses):
     return { privateKeys, publicKeys, bech32Addresses };
 }
 
-export async function requestFunds(url: string, addressBech32: string): Promise<unknown> {
-    const requestFounds = await fetch(url, {
+export async function requestFunds(url: string, credentials: { user: string; pass: string }, addressBech32: string): Promise<unknown> {
+    const headers = new Headers();
+
+    headers.set("Accept", "application/json");
+    headers.set("Content-Type", "application/json");
+
+    if (credentials?.user) {
+        const userPass = Converter.bytesToBase64(Converter.utf8ToBytes(`${credentials.user}:${credentials.pass}`));
+        headers.set("Authorization", `Basic ${userPass}`);
+    }
+
+    const fundsRequest = await fetch(url, {
         method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        headers,
         body: JSON.stringify({ address: addressBech32 })
     });
 
-    return await requestFounds.json();
+    if (fundsRequest.status != 202) {
+        throw new Error(`Cannot get funds ${fundsRequest.status}`);
+    }
+
+    return await fundsRequest.json();
 }

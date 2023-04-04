@@ -4,13 +4,13 @@ import { Ed25519 } from "@iota/crypto.js";
 
 import { post, type Doc, type FullDoc, type Meta, type Signature } from "./utilHttp";
 
-import { NODE_ENDPOINT, PLUGIN_ENDPOINT } from "./endpoint";
+import { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } from "./endpoint";
 
-const didToUpdate = "did:iota:tst:0xc1bc321c72f9baa7c3d68163defd78603611eba9560ce858e251d72422b00578";
+const didToUpdate = "did:iota:ebsi:0x6e78f05ebab593e1045bcf319d053b4c592dd446679bacfd8b7be631993c22bd";
 // The private key of whom controls the DID
-const stateControllerPrivateKey = "0x285ce4fafc76a915243b338c1840c46b9098e2df5f98252bee6eaf889fe392d9fb6409931d569069662b28537de10e0864c0dd13db917acee58d22abd7db13b6";
-// Bech32Addr : tst1qp4ewjgq6k3nw9traf8dwwwuwcx9lh8pfxdcputt7jeu9q4ym0njjgp89s3
-const stateControllerPublicKey = "0xfb6409931d569069662b28537de10e0864c0dd13db917acee58d22abd7db13b6";
+const stateControllerPrivateKey = "0xc757af48f988ab2ca14d7b6976b8f12d961ccc60633b8e8c593885329b2dce0a9f6c467187860c7f8221c5922102067fa9847ed8b0b16503e96a84ed1fc685d2";
+// Bech32Addr : ebsi1qrelqrvcmmu2k6t0kpnr434jqlrlmg2vp6cqx2tchysf40t9tazw2zgyhu5
+const stateControllerPublicKey = "0x9f6c467187860c7f8221c5922102067fa9847ed8b0b16503e96a84ed1fc685d2";
 
 async function run() {
     // The DID is updated
@@ -28,7 +28,7 @@ async function run() {
     // The account #0 will be controlling the DID
     // The account #1 will be the verification method
     // Write the key pairs to the std output
-    const { publicKeys } = await generateAddresses(NODE_ENDPOINT, 1);
+    const { publicKeys } = await generateAddresses(NODE_ENDPOINT, TOKEN, 1);
 
     // Now converting the second private key into Base58 and multibase format and adding to the verification method
     did.verificationMethod[0].publicKeyMultibase = `z${Base58.encode(publicKeys[0])}`;
@@ -48,11 +48,11 @@ async function postToPlugin(did: { [id: string]: unknown }): Promise<FullDoc> {
         doc: did
     };
 
-    const updateEndpoint = `${PLUGIN_ENDPOINT}/identities/${didToUpdate}`;
+    const updateEndpoint = `${PLUGIN_ENDPOINT}/identities/${encodeURIComponent(didToUpdate)}`;
 
-    const result1 = await post(updateEndpoint, pluginRequest);
+    const result1 = await post(updateEndpoint, TOKEN, pluginRequest);
     const nextPayload = result1 as { doc: Doc; meta: Meta }
-        & { type: string; action: string; txEssenceHash: string; signature: Signature[] };
+        & { type: string; action: string; txEssenceHash: string; signature?: Signature[] };
 
     // Now the transaction has to be signed by the state controller
 
@@ -69,7 +69,7 @@ async function postToPlugin(did: { [id: string]: unknown }): Promise<FullDoc> {
         signature: Converter.bytesToHex(essenceSigned, true)
     }];
 
-    const finalResult = await post(updateEndpoint, nextPayload);
+    const finalResult = await post(updateEndpoint, TOKEN, nextPayload);
 
     return finalResult as FullDoc;
 }

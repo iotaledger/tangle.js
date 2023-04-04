@@ -3,7 +3,7 @@ import { generateAddresses, requestFunds } from "./utilAddress";
 import { Ed25519 } from "@iota/crypto.js";
 
 import { post, type FullDoc, type Doc, type Meta, sleep, type Signature } from "./utilHttp";
-import { FAUCET, NODE_ENDPOINT, PLUGIN_ENDPOINT } from "./endpoint";
+import { FAUCET, FAUCET_PASS, FAUCET_USER, NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } from "./endpoint";
 
 async function run() {
     // This DID Document can also be created with the help of the IOTA Identity Library
@@ -17,13 +17,13 @@ async function run() {
         }]
     }
 
-    const { publicKeys, privateKeys, bech32Addresses } = await generateAddresses(NODE_ENDPOINT, 2);
+    const { publicKeys, privateKeys, bech32Addresses } = await generateAddresses(NODE_ENDPOINT, TOKEN, 2);
 
     // Now converting the second private key into Base58 and multibase format and adding to the verification method
     did.verificationMethod[0].publicKeyMultibase = `z${Base58.encode(publicKeys[1])}`;
 
     // Funding the address that will control #0
-    const fundingResult = await requestFunds(FAUCET, bech32Addresses[0]);
+    const fundingResult = await requestFunds(FAUCET, {user: FAUCET_USER, pass: FAUCET_PASS }, bech32Addresses[0]);
     console.log(fundingResult);
     console.log("Waiting for funding address ...");
     await sleep(6000);
@@ -50,9 +50,9 @@ async function postToPlugin(did: { [id: string]: unknown },
         }
     };
 
-    const result1 = await post(`${PLUGIN_ENDPOINT}/identities`, pluginRequest);
+    const result1 = await post(`${PLUGIN_ENDPOINT}/identities`, TOKEN, pluginRequest);
     const nextPayload = result1 as { doc: Doc; meta: Meta }
-        & { type: string; action: string; txEssenceHash: string; signature: Signature[] };
+        & { type: string; action: string; txEssenceHash: string; signature?: Signature[] };
 
     // The result will contain a txEssence that has to be signed
     // Once it is signed it has to be submitted to the plugin again
@@ -67,7 +67,7 @@ async function postToPlugin(did: { [id: string]: unknown },
         signature: Converter.bytesToHex(essenceSigned, true)
     }];
 
-    const finalResult = await post(`${PLUGIN_ENDPOINT}/identities`, nextPayload);
+    const finalResult = await post(`${PLUGIN_ENDPOINT}/identities`, TOKEN, nextPayload);
 
     return finalResult as FullDoc;
 }
