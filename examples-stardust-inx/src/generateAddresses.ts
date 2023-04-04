@@ -1,5 +1,9 @@
-import { FAUCET, FAUCET_PASS, FAUCET_USER, NODE_ENDPOINT, TOKEN } from "./endpoint";
 import { generateAddresses, requestFunds } from "./utilAddress";
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const { FAUCET, FAUCET_PASS, FAUCET_USER, NODE_ENDPOINT, TOKEN } = process.env;
 
 async function run() {
     const { bech32Addresses } = await generateAddresses(NODE_ENDPOINT, TOKEN, 6);

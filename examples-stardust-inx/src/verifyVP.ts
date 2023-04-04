@@ -1,5 +1,9 @@
-import { PLUGIN_ENDPOINT, TOKEN } from "./endpoint";
 import { post } from "./utilHttp";
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const { PLUGIN_ENDPOINT, TOKEN } = process.env;
 
 const presentation = {
   "@context": "https://www.w3.org/2018/credentials/v1",

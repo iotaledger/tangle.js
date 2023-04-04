@@ -11,7 +11,11 @@ import {
 import { Client } from "@iota/client-wasm/node/lib/index.js";
 
 import { Converter } from "@iota/util.js";
-import { NODE_ENDPOINT, TOKEN } from "./endpoint";
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const { NODE_ENDPOINT, TOKEN } = process.env;
 
 async function run() {
     const client = new Client({

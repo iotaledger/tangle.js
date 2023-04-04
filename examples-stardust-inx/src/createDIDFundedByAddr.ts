@@ -3,7 +3,13 @@ import { generateAddresses, requestFunds } from "./utilAddress";
 import { Ed25519 } from "@iota/crypto.js";
 
 import { post, type FullDoc, type Doc, type Meta, sleep, type Signature } from "./utilHttp";
-import { FAUCET, FAUCET_PASS, FAUCET_USER, NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } from "./endpoint";
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const { FAUCET, FAUCET_PASS, FAUCET_USER, NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
+
+console.log(PLUGIN_ENDPOINT);
 
 async function run() {
     // This DID Document can also be created with the help of the IOTA Identity Library
@@ -23,7 +29,7 @@ async function run() {
     did.verificationMethod[0].publicKeyMultibase = `z${Base58.encode(publicKeys[1])}`;
 
     // Funding the address that will control #0
-    const fundingResult = await requestFunds(FAUCET, {user: FAUCET_USER, pass: FAUCET_PASS }, bech32Addresses[0]);
+    const fundingResult = await requestFunds(FAUCET, { user: FAUCET_USER, pass: FAUCET_PASS }, bech32Addresses[0]);
     console.log(fundingResult);
     console.log("Waiting for funding address ...");
     await sleep(6000);

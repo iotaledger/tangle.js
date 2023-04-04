@@ -4,7 +4,10 @@ import { Ed25519 } from "@iota/crypto.js";
 
 import { post, type Doc, type FullDoc, type Meta, type Signature } from "./utilHttp";
 
-import { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } from "./endpoint";
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
 
 const didToUpdate = "did:iota:ebsi:0x6e78f05ebab593e1045bcf319d053b4c592dd446679bacfd8b7be631993c22bd";
 // The private key of whom controls the DID

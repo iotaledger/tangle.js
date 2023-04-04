@@ -3,7 +3,10 @@ import { generateAddresses } from "./utilAddress";
 
 import { post, type FullDoc } from "./utilHttp";
 
-import { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } from "./endpoint";
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
 
 async function run() {
     // This DID Document can also be created with the help of the IOTA Identity Library
