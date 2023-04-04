@@ -5,11 +5,11 @@ import { Ed25519 } from "@iota/crypto.js";
 import { post, type FullDoc, type Doc, type Meta, sleep, type Signature } from "./utilHttp";
 
 import * as dotenv from "dotenv";
-dotenv.config();
+import * as dotenvExpand from "dotenv-expand";
+const theEnv = dotenv.config();
+dotenvExpand.expand(theEnv);
 
 const { FAUCET, FAUCET_PASS, FAUCET_USER, NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
-
-console.log(PLUGIN_ENDPOINT);
 
 async function run() {
     // This DID Document can also be created with the help of the IOTA Identity Library

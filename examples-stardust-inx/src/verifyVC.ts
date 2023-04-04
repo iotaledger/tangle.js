@@ -1,7 +1,9 @@
 import { post } from "./utilHttp";
 
 import * as dotenv from "dotenv";
-dotenv.config();
+import * as dotenvExpand from "dotenv-expand";
+const theEnv = dotenv.config();
+dotenvExpand.expand(theEnv);
 
 const { PLUGIN_ENDPOINT, TOKEN } = process.env;
 

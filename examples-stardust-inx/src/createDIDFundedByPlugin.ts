@@ -4,7 +4,9 @@ import { generateAddresses } from "./utilAddress";
 import { post, type FullDoc } from "./utilHttp";
 
 import * as dotenv from "dotenv";
-dotenv.config();
+import * as dotenvExpand from "dotenv-expand";
+const theEnv = dotenv.config();
+dotenvExpand.expand(theEnv);
 
 const { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
 

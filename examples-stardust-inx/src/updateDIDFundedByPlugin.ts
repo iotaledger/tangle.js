@@ -5,7 +5,9 @@ import { Ed25519 } from "@iota/crypto.js";
 import { post, type Doc, type FullDoc, type Meta, type Signature } from "./utilHttp";
 
 import * as dotenv from "dotenv";
-dotenv.config();
+import * as dotenvExpand from "dotenv-expand";
+const theEnv = dotenv.config();
+dotenvExpand.expand(theEnv);
 
 const { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
 

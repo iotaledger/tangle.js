@@ -13,7 +13,9 @@ import { Client } from "@iota/client-wasm/node/lib/index.js";
 import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
-dotenv.config();
+import * as dotenvExpand from "dotenv-expand";
+const theEnv = dotenv.config();
+dotenvExpand.expand(theEnv);
 
 const { NODE_ENDPOINT, TOKEN } = process.env;
 
