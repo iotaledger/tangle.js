@@ -1,0 +1,764 @@
+{
+	"info": {
+		"_postman_id": "2e978af8-3100-4a6d-8c1f-37c63e09d693",
+		"name": "IOTA-Node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "579084"
+	},
+	"item": [
+		{
+			"name": "Shimmer",
+			"item": [
+				{
+					"name": "Get Node Info - Shimmer",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SHIMMER_TLIP}}:14265/api/core/v2/info",
+							"host": [
+								"{{SHIMMER_TLIP}}"
+							],
+							"port": "14265",
+							"path": [
+								"api",
+								"core",
+								"v2",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Milestone Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SHIMMER}}/api/core/v2/milestones/by-index/2596134",
+							"host": [
+								"{{SHIMMER}}"
+							],
+							"path": [
+								"api",
+								"core",
+								"v2",
+								"milestones",
+								"by-index",
+								"2596134"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Block",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SHIMMER_TLIP}}:14265/api/core/v2/blocks/0x682391d4b60f1ab584fa16506c0d95530d9e101c3298211fcb78ba1fe5a7adbc",
+							"host": [
+								"{{SHIMMER_TLIP}}"
+							],
+							"port": "14265",
+							"path": [
+								"api",
+								"core",
+								"v2",
+								"blocks",
+								"0x682391d4b60f1ab584fa16506c0d95530d9e101c3298211fcb78ba1fe5a7adbc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Block Metadata",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SHIMMER}}/api/core/v2/blocks/0x90b91983c4b69ff8d7f98adf4c2d0e2e8fbd851fcb578f1e0cb4265cbb1ab37d/metadata",
+							"host": [
+								"{{SHIMMER}}"
+							],
+							"path": [
+								"api",
+								"core",
+								"v2",
+								"blocks",
+								"0x90b91983c4b69ff8d7f98adf4c2d0e2e8fbd851fcb578f1e0cb4265cbb1ab37d",
+								"metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Routes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{MAIN_SHIMMER}}/api/routes",
+							"host": [
+								"{{MAIN_SHIMMER}}"
+							],
+							"path": [
+								"api",
+								"routes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prune",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"index\": 1560 }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SHIMMER}}/api/core/v2/control/database/prune",
+							"host": [
+								"{{SHIMMER}}"
+							],
+							"path": [
+								"api",
+								"core",
+								"v2",
+								"control",
+								"database",
+								"prune"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UTXOs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SHIMMER}}/api/core/v2/milestones/by-index/2596130/utxo-changes",
+							"host": [
+								"{{SHIMMER}}"
+							],
+							"path": [
+								"api",
+								"core",
+								"v2",
+								"milestones",
+								"by-index",
+								"2596130",
+								"utxo-changes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Indexer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SHIMMER}}/api/indexer/v1/outputs/basic",
+							"host": [
+								"{{SHIMMER}}"
+							],
+							"path": [
+								"api",
+								"indexer",
+								"v1",
+								"outputs",
+								"basic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Proof of Inclusion",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SHIMMER_TLIP}}:14265/api/poi/v1/create/0x9417ca2fe94c868b3ff3c7c6b703ebca15b5df5e436e49f137f35cda339c72c9",
+							"host": [
+								"{{SHIMMER_TLIP}}"
+							],
+							"port": "14265",
+							"path": [
+								"api",
+								"poi",
+								"v1",
+								"create",
+								"0x9417ca2fe94c868b3ff3c7c6b703ebca15b5df5e436e49f137f35cda339c72c9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chrysalis",
+			"item": [
+				{
+					"name": "Get Node Info",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\": \"getNodeInfo\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://212.22.169.21:14265/api/v1/info",
+							"protocol": "http",
+							"host": [
+								"212",
+								"22",
+								"169",
+								"21"
+							],
+							"port": "14265",
+							"path": [
+								"api",
+								"v1",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Snapshot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\": \"createSnapshotFile\",\n    \"targetIndex\": 688\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://nodes.tlip.io:8443",
+							"protocol": "https",
+							"host": [
+								"nodes",
+								"tlip",
+								"io"
+							],
+							"port": "8443"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Neighbour",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-IOTA-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\": \"addNeighbors\",\n    \"uris\": [\n        \"tcp://3.249.192.29:15600\"\n    ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://212.22.169.21:14265",
+							"protocol": "http",
+							"host": [
+								"212",
+								"22",
+								"169",
+								"21"
+							],
+							"port": "14265"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Neighbours",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-IOTA-API-Version",
+								"value": "1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"command\": \"getNeighbors\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://212.22.169.21:14265",
+							"protocol": "http",
+							"host": [
+								"212",
+								"22",
+								"169",
+								"21"
+							],
+							"port": "14265"
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "EBSI",
+			"item": [
+				{
+					"name": "DID",
+					"item": [
+						{
+							"name": "Identity Create - JWK",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDCreation\",\n    \"action\": \"Issue\",\n    \"doc\": {\n        \"@context\": \"https://w3id.org/did/v1\",\n        \"id\": \"did:0:0\",\n        \"verificationMethod\": [\n            {\n                \"id\": \"did:0:0#F0r5Oyt_lahvvz6MWlYs3mcYNKZiiQdUfqv8tshHN9w\",\n                \"type\": \"Ed25519VerificationKey2020\",\n                \"controller\": \"did:0:0\",\n                \"publicKeyJwk\": {\n                    \"kty\": \"EC\",\n                    \"crv\": \"P-256\",\n                    \"x\": \"ZYE6uX3XvQ9rLc6s0eeo2YiOM2VfwrEZOZXzTOthcHE\",\n                    \"y\": \"k-t1bfe-MmmXWQ0QaxK3uJMYlMNkJHYGUSLpxP9RQak\",\n                    \"alg\": \"ES256\"\n                }\n            }\n        ],\n        \"authentication\": [\n            \"did:0:0#F0r5Oyt_lahvvz6MWlYs3mcYNKZiiQdUfqv8tshHN9w\"\n        ],\n        \"assertionMethod\": [\n            \"did:0:0#F0r5Oyt_lahvvz6MWlYs3mcYNKZiiQdUfqv8tshHN9w\"\n        ]\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Create - Ed25IOTA",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDCreation\",\n    \"action\": \"Issue\",\n    \"doc\": {\n        \"id\": \"did:0:0\",\n        \"verificationMethod\": [\n            {\n                \"id\": \"did:0:0#sign-1\",\n                \"type\": \"Ed25519VerificationKey2018\",\n                \"controller\": \"did:0:0\",\n                \"publicKeyMultibase\": \"zEuNVC3Fs5dxsk3hCFrvm7hwfLAjq42gaKyXUCetRu1Sg\"\n            }\n        ]\n    },\n    \"meta\": {\n        \"stateControllerAddress\": \"tst1qp7amxzx4wgawnzd75kldwdesnulyt2l3u8jcjz3laz66mvcn03tvkez20t\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDUpdate\",\n    \"action\": \"Issue\",\n    \"doc\": {\n        \"id\": \"did:0:0\",\n        \"verificationMethod\": [\n            {\n                \"id\": \"did:0:0#key-322666666999999999999999999999999999\",\n                \"controller\": \"did:iota:tst:0xacbea3d557f2aa7a2566ccdeb57095b7cfc6e9747e3543efca99c8fc3391ad39\",\n                \"type\": \"Ed25519VerificationKey2018\",\n                \"publicKeyMultibase\": \"z6BNtMbKY78XDVuqfh4u15bZkByu94XNVr9RpqEGCNncn\"\n            }\n        ]\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities/did:iota:tst:0xacbea3d557f2aa7a2566ccdeb57095b7cfc6e9747e3543efca99c8fc3391ad39",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities",
+										"did:iota:tst:0xacbea3d557f2aa7a2566ccdeb57095b7cfc6e9747e3543efca99c8fc3391ad39"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Create - TxRequest",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDCreation\",\n    \"action\": \"TransactionRequest\",\n    \"doc\": {\n        \"id\": \"did:0:0\"\n    },\n    \"meta\": {\n        \"stateControllerAddress\": \"tst1qp2mln9zju6clsrtkayx35stmn4z96s8dp0a0gsshwnu68w3r0457hlk83l\",\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\"\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Update - TxRequest",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDUpdate\",\n    \"action\": \"TransactionRequest\",\n    \"doc\": {\n        \"id\": \"did:0:0\",\n        \"verificationMethod\": [\n            {\n                \"controller\": \"did:iota:tst:0xacbea3d557f2aa7a2566ccdeb57095b7cfc6e9747e3543efca99c8fc3391ad39\",\n                \"id\": \"did:0:0#key-99999999999999999999990000000aaa\",\n                \"publicKeyMultibase\": \"z6BNtMbKY78XDVuqfh4u15bZkByu94XNVr9RpqEGCNncn\",\n                \"type\": \"Ed25519VerificationKey2018\"\n            }\n        ]\n    },\n    \"meta\": {\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\"\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities/did:iota:tst:0x3f9d6271856a6b56732bf5ae1c8ce67155ed61a9aa7b51e402c71fdbf662a357",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities",
+										"did:iota:tst:0x3f9d6271856a6b56732bf5ae1c8ce67155ed61a9aa7b51e402c71fdbf662a357"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Create - TxSign",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDCreation\",\n    \"action\": \"TransactionSignature\",\n    \"doc\": {\n        \"id\": \"did:0:0\"\n    },\n   \"meta\": {\n        \"created\": \"2023-03-21T08:44:58+01:00\",\n        \"updated\": \"2023-03-21T08:44:58+01:00\",\n        \"stateControllerAddress\": \"tst1qp2mln9zju6clsrtkayx35stmn4z96s8dp0a0gsshwnu68w3r0457hlk83l\",\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\",\n        \"fundingOutputID\": \"0xa7c91cf0c09005b1b596c40e072773ef3485d3f12293b09eb2e17faa2c8f20da0100\",\n        \"storageCost\": \"326500\"\n    },\n    \"txEssenceHash\": \"0xfd7bcf5f07b4eab73f45ef83a109602816c5ab91024b73d668a6826d0a835f6c\",\n    \"signature\": [\n        {\n            \"type\": 5,\n            \"publicKey\": \"0x4a4d7d2b280d55db0892af0e188981c0f9de12a6a33f2fb858dbbe10c49ceb5f\",\n            \"signature\": \"0x3188777d33f2b2ac07681a32136e5081448a674513dc392f74ab9d0933e04667996b14301432cafc381d00c204852f38b7cbde42c4668db5fdd2f5c0f0bdb304\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Update - TxSign",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDUpdate\",\n    \"action\": \"TransactionSignature\",\n   \"doc\": {\n        \"id\": \"did:0:0\",\n        \"verificationMethod\": [\n            {\n                \"controller\": \"did:iota:tst:0xacbea3d557f2aa7a2566ccdeb57095b7cfc6e9747e3543efca99c8fc3391ad39\",\n                \"id\": \"did:0:0#key-99999999999999999999990000000aaa\",\n                \"publicKeyMultibase\": \"z6BNtMbKY78XDVuqfh4u15bZkByu94XNVr9RpqEGCNncn\",\n                \"type\": \"Ed25519VerificationKey2018\"\n            }\n        ]\n    },\n    \"meta\": {\n        \"created\": \"2023-03-21T08:44:58+01:00\",\n        \"updated\": \"2023-03-21T08:48:43+01:00\",\n        \"stateControllerAddress\": \"tst1qp2mln9zju6clsrtkayx35stmn4z96s8dp0a0gsshwnu68w3r0457hlk83l\",\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\",\n        \"fundingOutputID\": \"0xc67dfa3fa2c8759252f1e908da098dc5475e804b096306b454734693afba6cf90100\",\n        \"storageCost\": \"465000\"\n    },\n    \"txEssenceHash\": \"0xfdbf0c0abc3261426cba7a8461ee0abaa467f3650ae42205e47e207932a22ab9\",\n    \"signature\": [\n        {\n            \"type\": 5,\n            \"publicKey\": \"0x955e83290704c8f15d537c7d69eb761ba81db2c370a627a697d14e1f797a401a\",\n            \"signature\": \"0x8b9ff04dc3cf1d115e096fc4f80e8b7f4e9b73ec4852ec5a8ea427c90c6bf0f919eb707104e882c4e5f207f3b1881a6bda4aee699e82ed5bdb15c314f75df30d\"\n        },\n        {\n            \"type\": 5,\n            \"publicKey\": \"0x4a4d7d2b280d55db0892af0e188981c0f9de12a6a33f2fb858dbbe10c49ceb5f\",\n            \"signature\": \"0x29e008a72c5feaeac21b995874347c2c5a17d0d037e2217cca7b2c378314d8e929535c6ea26cbfb637ab136f88cc21e941c909423d8cd01cb9bb33442d3ae105\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities/did:iota:tst:0x3f9d6271856a6b56732bf5ae1c8ce67155ed61a9aa7b51e402c71fdbf662a357",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities",
+										"did:iota:tst:0x3f9d6271856a6b56732bf5ae1c8ce67155ed61a9aa7b51e402c71fdbf662a357"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Read",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{EBSI_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities/did:iota:ebsi:0x815b68865befb6a53b591bf7ad8f77d56c822b654205e1cbcd63d6fd5ce36040",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities",
+										"did:iota:ebsi:0x815b68865befb6a53b591bf7ad8f77d56c822b654205e1cbcd63d6fd5ce36040"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Audit Trail",
+					"item": [
+						{
+							"name": "Audit Trail - Read",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:9687/audit-trails/0x2ab85e8197ba29c9e6facc36581f5a64559baf524aca5976cc438bee995694a5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9687",
+									"path": [
+										"audit-trails",
+										"0x2ab85e8197ba29c9e6facc36581f5a64559baf524aca5976cc438bee995694a5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Audit Trail - Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": \"Lara1234\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:9687/audit-trails",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "9687",
+									"path": [
+										"audit-trails"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Credentials",
+					"item": [
+						{
+							"name": "Credential Verify",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"VerificationRequest\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"id\": \"https://example.edu/credentials/3732\",\n        \"type\": [\n            \"VerifiableCredential\",\n            \"UniversityDegreeCredential\"\n        ],\n        \"credentialSubject\": {\n            \"id\": \"did:iota:tst:0x6abe6ef35e4dfd4242f932d6fbe1b1ae01b87a1b42a49329141602a9222980de\",\n            \"GPA\": \"4.0\",\n            \"degreeName\": \"Bachelor of Science and Arts\",\n            \"degreeType\": \"BachelorDegree\",\n            \"name\": \"Alice\"\n        },\n        \"issuer\": \"did:iota:tst:0x73871725725fd46a59f25440e29ce99eaad737f9c4f6ee980f642eb10de719d2\",\n        \"issuanceDate\": \"2023-04-03T07:41:45Z\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0x73871725725fd46a59f25440e29ce99eaad737f9c4f6ee980f642eb10de719d2#sign-1\",\n            \"signatureValue\": \"675BdkApXXt6Tgc4FRwFEB6bf3omTH4c7rMkz6Z3DFZx2BLdDJiRZZ3rNn8i7D4rohjAHLZhTJHRoqKRfuh1EGuM\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Presentation Verify",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"VerificationRequest\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"type\": \"VerifiablePresentation\",\n        \"verifiableCredential\": {\n            \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n            \"id\": \"https://example.edu/credentials/3732\",\n            \"type\": [\n                \"VerifiableCredential\",\n                \"UniversityDegreeCredential\"\n            ],\n            \"credentialSubject\": {\n                \"id\": \"did:iota:tst:0x6abe6ef35e4dfd4242f932d6fbe1b1ae01b87a1b42a49329141602a9222980de\",\n                \"GPA\": \"4.0\",\n                \"degreeName\": \"Bachelor of Science and Arts\",\n                \"degreeType\": \"BachelorDegree\",\n                \"name\": \"Alice\"\n            },\n            \"issuer\": \"did:iota:tst:0x73871725725fd46a59f25440e29ce99eaad737f9c4f6ee980f642eb10de719d2\",\n            \"issuanceDate\": \"2023-04-03T08:09:42Z\",\n            \"proof\": {\n                \"type\": \"JcsEd25519Signature2020\",\n                \"verificationMethod\": \"did:iota:tst:0x73871725725fd46a59f25440e29ce99eaad737f9c4f6ee980f642eb10de719d2#sign-1\",\n                \"signatureValue\": \"2gShmYRpE8TjaiFoLXbQTjw1PuaWg3fob8qEGS2sQZfTRFbFNTtJFrGHzfTftbZsBasPADP4Y1mpMwR7VPj4VGW4\"\n            }\n        },\n        \"holder\": \"did:iota:tst:0xe0051c9a0dba361f6ef050ed2eeab2904491ded689547067539a06860630d336\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xe0051c9a0dba361f6ef050ed2eeab2904491ded689547067539a06860630d336#sign-1\",\n            \"signatureValue\": \"CUrntqQCBGTPw9Bdij4mLbZwnmyEmqcjKx2GhE6hPqtA225Lk1nqoHnCw2JpxfhpPqUajdBThN5ayz9VyX5m21A\",\n            \"expires\": \"2023-04-03T12:09:42Z\",\n            \"challenge\": \"475a7984-1bb5-4c4c-a56f-822bccd46440\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "POI",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIT1JORVQiLCJzdWIiOiJIT1JORVQiLCJhdWQiOlsiSE9STkVUIl0sIm5iZiI6MTY3ODY5NjYxMywiaWF0IjoxNjc4Njk2NjEzLCJqdGkiOiIxNjc4Njk2NjEzIn0.0Cqp7sgD9ZuFVOSmvBbYd1GipRL8EJSMiwHqveesVMU",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.lb-0.h1.stable.iota-ec.net/api/poi/v1/create/0x9417ca2fe94c868b3ff3c7c6b703ebca15b5df5e436e49f137f35cda339c72c9",
+							"protocol": "https",
+							"host": [
+								"api",
+								"lb-0",
+								"h1",
+								"stable",
+								"iota-ec",
+								"net"
+							],
+							"path": [
+								"api",
+								"poi",
+								"v1",
+								"create",
+								"0x9417ca2fe94c868b3ff3c7c6b703ebca15b5df5e436e49f137f35cda339c72c9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
