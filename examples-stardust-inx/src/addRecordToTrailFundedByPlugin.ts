@@ -10,11 +10,11 @@ dotenvExpand.expand(theEnv);
 
 const { PLUGIN_ENDPOINT, TOKEN } = process.env;
 
-const trailID = "urn:trail:iota:tst:0x838a79bc8ca2204971ff7a03ba1252292c8719be0a2fb517f1103abc23a9f835";
+const trailID = "urn:trail:iota:ebsi:0x51b68173108c7ce357f09836da611057768c7641f823834aec49232667900ce2";
 // The private key of whom controls the DID
-const stateControllerPrivateKey = "0x769eee8f423c7f76be74e0623931e77a71a20560b61a3ac289f427e2004cad57fb633de0ba653470415e44c0482aeed0ae4b3d29aa6903d7452cbc4109b0ccc9";
+const stateControllerPrivateKey = "0xaf6a6c1713c147920b87879d720b40c029883658cbd7df21366265211946337ad08f4711282a234005b19906dcea534e62d7cfc8220badf46a488b618f73a99e";
 // Bech32Addr : tst1qqsjpwktq5xfrhd092u4rj4aye4peymgrg44glgg4g4vmlw2sjavqqtkv7g
-const stateControllerPublicKey = "0xfb633de0ba653470415e44c0482aeed0ae4b3d29aa6903d7452cbc4109b0ccc9";
+const stateControllerPublicKey = "0xd08f4711282a234005b19906dcea534e62d7cfc8220badf46a488b618f73a99e";
 
 async function run() {
     // A new record to the trail is added
