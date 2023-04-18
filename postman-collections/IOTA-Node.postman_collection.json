@@ -616,36 +616,34 @@
 					]
 				},
 				{
-					"name": "Audit Trail",
+					"name": "Trail",
 					"item": [
 						{
-							"name": "Audit Trail - Read",
+							"name": "Trail - Read",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "http://localhost:9687/audit-trails/0x2ab85e8197ba29c9e6facc36581f5a64559baf524aca5976cc438bee995694a5",
-									"protocol": "http",
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3d4eeb1d8249bc59401633da78a5944581e7c565f205c2cd11f7cc55dfe3f0ab",
 									"host": [
-										"localhost"
+										"{{SHIMMER_HOST}}"
 									],
-									"port": "9687",
 									"path": [
-										"audit-trails",
-										"0x2ab85e8197ba29c9e6facc36581f5a64559baf524aca5976cc438bee995694a5"
+										"trails",
+										"urn:trail:iota:tst:0x3d4eeb1d8249bc59401633da78a5944581e7c565f205c2cd11f7cc55dfe3f0ab"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Audit Trail - Create",
+							"name": "Trail - Create",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"data\": \"Lara1234\"\n}\n",
+									"raw": "{\n    \"type\": \"TrailCreation\",\n    \"action\": \"Issue\",\n    \"trail\": {\n        \"record\": {\n            \"proof\": {\n                \"value\": \"1234\"\n            }\n        }\n    },\n    \"meta\": {\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\"\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -653,14 +651,145 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:9687/audit-trails",
-									"protocol": "http",
+									"raw": "{{SHIMMER_HOST}}/trails",
 									"host": [
-										"localhost"
+										"{{SHIMMER_HOST}}"
 									],
-									"port": "9687",
 									"path": [
-										"audit-trails"
+										"trails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Trail - Create - TxReq",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"TrailCreation\",\n    \"action\": \"TransactionRequest\",\n    \"trail\": {\n        \"record\": {\n            \"proof\": {\n                \"value\": \"1234\"\n            }\n        },\n        \"immutable\": {\n            \"sub\": \"A45678\"\n        }\n    },\n    \"meta\": {\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\",\n        \"fundingAddress\": \"tst1qrlhxr49yslu6gzaxzq8jquu8l32f5r9u0542xe77m4crjwxx6y9w5w8rgd\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/trails",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"trails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Trail - Create - TxSign",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"TrailCreation\",\n    \"action\": \"TransactionSignature\",\n    \"trail\": {\n        \"record\": {\n            \"proof\": {\n                \"value\": \"1234\"\n            }\n        }\n    },\n    \"meta\": {\n        \"created\": \"2023-04-18T10:38:08+02:00\",\n        \"updated\": \"2023-04-18T10:38:08+02:00\",\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\",\n        \"fundingAddress\": \"tst1qrlhxr49yslu6gzaxzq8jquu8l32f5r9u0542xe77m4crjwxx6y9w5w8rgd\",\n        \"fundingOutputID\": \"0x4ad04aa60aed71f9ddce02739d1ab6f6aec5a61ccc5737c8666907da6d5322410000\",\n        \"storageCost\": \"345500\"\n    },\n    \"txEssenceHash\": \"0xe47988b2792cb6b66eea86e629bc8f9696e129bcb0a7415012650f5987c8a6e9\",\n    \"signature\": [\n        {\n            \"publicKey\": \"0x3c068675dcf67c47a3f12c220444d1e4aeaf839f0e5b1762f21bd969aecc278a\",\n            \"signature\": \"0x1f7c23c07397081d3856e7c0df90e2def4d3473f2f9b3c3dc55f71f4cca78356ad3776c44edd1061a54689b30016797c85cbd45e0ffe7150713d963051717c01\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/trails",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"trails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Record to Trail",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"TrailRecordAdd\",\n    \"action\": \"Issue\",\n    \"record\": {\n        \"proof\": {\n            \"value\": \"77779999\"\n        }\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"trails",
+										"urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Rec Trail  - TxReq",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"TrailRecordAdd\",\n    \"action\": \"TransactionRequest\",\n    \"record\": {\n        \"proof\": {\n            \"value\": \"12349393939393939393\"\n        }\n    }\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"trails",
+										"urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Rec Trail  - TxSign",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"record\": {\n        \"proof\": {\n            \"value\": \"12349393939393939393\"\n        }\n    },\n    \"type\": \"TrailRecordAdd\",\n    \"action\": \"TransactionSignature\",\n    \"meta\": {\n        \"created\": \"2023-04-18T08:27:35+02:00\",\n        \"updated\": \"2023-04-18T08:41:37+02:00\",\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\",\n        \"fundingAddress\": \"tst1qpj8d8k8tq3zv4qfd29t4f5c5qduqvfjnymy0263qv7g2erufr3xk7mxvtf\",\n        \"fundingOutputID\": \"0x89c83ed60dbe286b8b68bea3d5022379cb76356726134c802f39d52ead10cc5b0100\",\n        \"storageCost\": \"353500\"\n    },\n    \"txEssenceHash\": \"0x8c1a564c3c368aa2f18f6a06226cf0b71ade3dc5fe8ebcb1a48a237a6b9a4f70\",\n    \"signature\": [\n        {\n            \"publicKey\": \"0x905becb2967c7c803706347f75832bbb01858ef0bab7f67741237c3508098a3a\",\n            \"signature\": \"0x9d3964c8bab58f77ae9ce7e102dbd1f1ad8e0d9f1c1e9cbefa70d2af8b12c049138b84a0d9e6bb7189908060cab394d3c25bc37e6435328ba15034535be3e001\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"trails",
+										"urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52"
 									]
 								}
 							},
@@ -718,6 +847,37 @@
 									],
 									"path": [
 										"credentials"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Data",
+					"item": [
+						{
+							"name": "Data Integrity Verification",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"IntegrityVerificationRequest\",\n    \"data\": {\n        \"name\": \"IOTA Foundation\",\n        \"type\": \"Organization\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xcaa521e19b04f3c75dcc6aa927b666f6947aa56d5a71011aa9e29165d4b41be4#sign-1\",\n            \"signatureValue\": \"5Qm6DcC1NBfNawpc9PGp6Sb2VV1HukJphZ5BerUz4xujrK9qZqpo9oGFJkSCz6YTpf6X8wP714PHiYk9cnrKzaXn\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/data",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"data"
 									]
 								}
 							},
