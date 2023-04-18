@@ -49,6 +49,14 @@ export function sleep(ms: number): Promise<void> {
 export type Doc = { [id: string]: unknown };
 export type Meta = { [id: string]: unknown };
 
-export type Signature = { publicKey: string; signature: string; }
+export type Signature = { publicKey: string; signature: string; };
 
 export type FullDoc = { doc: Doc; meta: Meta; };
+
+export type TrailRecord = {[id: string]: unknown};
+export type TrailImmutable = {[id: string]: unknown};
+
+export type Trail = { 
+    trail: { record: TrailRecord, immutable: TrailImmutable }; 
+    meta: Meta
+};
