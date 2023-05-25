@@ -11,13 +11,15 @@ dotenvExpand.expand(theEnv);
 const { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
 
 const trailRecord0 = {
-    record: {
-        proof: "1234"
-    },
+    proof: "1234"
+};
+
+const initialTrail = {
+    record: trailRecord0,
     immutable: {
         "sub": "A45678"
     }
-}
+};
 
 async function run() {
     const endpointDetails = { url: PLUGIN_ENDPOINT, token: TOKEN };
@@ -27,14 +29,12 @@ async function run() {
 
     // then a trail created
 
-    const result = await createTrail(endpointDetails, trailRecord0, bech32Addresses[0]);
+    const result = await createTrail(endpointDetails, initialTrail, bech32Addresses[0]);
 
     const trailID = result.trail["id"];
 
     const trailRecord1 = {
-        record: {
-            proof: "6789"
-        }
+        proof: "6789"
     };
 
     console.log("Waiting for confirmation. Trail Creation ...");
@@ -47,9 +47,7 @@ async function run() {
     await addTrailRecord(endpointDetails, trailID, trailRecord1, { publicKey, privateKey });
 
     const trailRecord2 = {
-        record: {
-            proof: "00000"
-        }
+        proof: "00000"
     };
 
     console.log("Waiting for confirmation. Trail Record addition ...");
@@ -67,8 +65,8 @@ async function run() {
         type: "TrailRecordInclusion",
         action: "Prove",
         query: {
-            stateIndex: 1,
-            record: trailRecord1
+            stateIndex: 0,
+            record: trailRecord0
         }
     };
 
