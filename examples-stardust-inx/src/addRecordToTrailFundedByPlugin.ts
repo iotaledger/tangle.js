@@ -1,10 +1,6 @@
-import { Converter } from "@iota/util.js";
-import { Ed25519 } from "@iota/crypto.js";
-
-import { post, type Meta, type Signature, type Trail, type TrailRecord } from "./utilHttp";
-
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
+import { addTrailRecord } from "./trailOperations";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -20,49 +16,16 @@ async function run() {
     // A new record to the trail is added
     const record = {
         proof: {
-            value: "4567"
+            value: "4567888888"
         }
     };
 
     // Posting data to the plugin
-    const result = await postToPlugin(record);
+    const result = await addTrailRecord({ url: PLUGIN_ENDPOINT, token: TOKEN}, trailID, record, {
+        publicKey: stateControllerPublicKey, privateKey: stateControllerPrivateKey });
 
     console.log("Trail Next State: ", result.trail);
     console.log("Metadata:\n", result.meta);
-}
-
-
-async function postToPlugin(record: TrailRecord): Promise<Trail> {
-    const pluginRequest = {
-        type: "TrailRecordAdd",
-        action: "TransactionRequest",
-        record
-    };
-
-    const updateEndpoint = `${PLUGIN_ENDPOINT}/trails/${encodeURIComponent(trailID)}`;
-
-    const result1 = await post(updateEndpoint, TOKEN, pluginRequest);
-    const nextPayload = result1 as { trail: Trail; meta: Meta }
-        & { type: string; action: string; txEssenceHash: string; signature?: Signature[] };
-
-    // Now the transaction has to be signed by the state controller
-
-    // The result will contain a txEssence that has to be signed
-    // Once it is signed it has to be submitted to the plugin again
-    const essence = Converter.hexToBytes(nextPayload.txEssenceHash);
-    const essenceSigned = Ed25519.sign(Converter.hexToBytes(stateControllerPrivateKey), essence);
-
-    // Now the essence is signed then the same payload is sent including a signature
-    nextPayload.type = "TrailRecordAdd";
-    nextPayload.action = "TransactionSignature";
-    nextPayload.signature = [{
-        publicKey: stateControllerPublicKey,
-        signature: Converter.bytesToHex(essenceSigned, true)
-    }];
-
-    const finalResult = await post(updateEndpoint, TOKEN, nextPayload);
-
-    return finalResult as Trail;
 }
 
 export { };
