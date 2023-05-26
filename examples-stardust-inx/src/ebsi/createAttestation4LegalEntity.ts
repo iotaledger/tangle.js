@@ -5,7 +5,9 @@ import {
     Credential,
     ProofOptions,
     IotaDocument, IotaIdentityClient
-    , IotaDID
+    , IotaDID,
+    ProofPurpose,
+    IotaDIDUrl
 } from "@iota/identity-wasm/node/index.js";
 
 import { Client } from "@iota/client-wasm/node/lib/index.js";
@@ -30,8 +32,8 @@ async function run() {
     const didClient = new IotaIdentityClient(client);
 
     const issuerDid = "did:iota:ebsi:0x9c0939fe864d813f4257374146b725e4e0c8a1424a3e2b54a83ffac1c9d94a39";
+    const verMethod =  "#sign-1";
     const privateKey = "0x33a6111c4cdaa142b34367b79d1858daa39d56196a6f1261c612c6be90358111ec8db3bb05a78b537b9bb25a34c066572d635cc5dbfd84c0fa8afea37648a356";
-
 
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
@@ -40,20 +42,28 @@ async function run() {
 
     // Create a credential subject indicating the degree earned by Alice, linked to their DID.
     const subject = {
-        id: "did:iota:tst:0x6abe6ef35e4dfd4242f932d6fbe1b1ae01b87a1b42a49329141602a9222980de",
-        name: "Alice",
-        degreeName: "Bachelor of Science and Arts",
-        degreeType: "BachelorDegree",
-        GPA: "4.0",
+        id: "did:iota:ebsi:0x70194f5e8ec8fdb4fb94b458806c074269b52bd5ce0f14d73feb797244e8f5b9",
+        legalName: "Company AG",
+        domainName: "company.example.org"
     };
 
     // Create an unsigned `UniversityDegree` credential for Alice
     const unsignedVc = new Credential({
+        context: ["https://europa.eu/schemas/v-id/2020/v1"],
         id: "https://example.edu/credentials/3732",
-        type: "UniversityDegreeCredential",
+        type: "VerifiableAttestation",
         issuer: issuerDid,
-        credentialSubject: subject,
+        credentialSubject: subject
     });
+
+    const credAsJson = unsignedVc.toJSON();
+    // Workaround to add Credential Schema
+    credAsJson["credentialSchema"] = {
+        type: "FullJsonSchemaValidator2021",
+        id: "https://ec.europa.eu/digital-building-blocks/code/projects/EBSI/repos/json-schema/raw/schemas/ebsi-vid/legal-entity/2022-11/schema.json"
+    }
+    credAsJson["issued"] = credAsJson["issuanceDate"];
+    credAsJson["validFrom"] = credAsJson["issuanceDate"];
 
     const privateKeyBytes = Converter.hexToBytes(privateKey);
 
@@ -61,7 +71,14 @@ async function run() {
     let signedVc;
 
     try {
-        signedVc = issuerDocument.signCredential(unsignedVc, privateKeyBytes.slice(0, 32), "#sign-1", ProofOptions.default());
+        const options = new ProofOptions({
+            purpose: ProofPurpose.assertionMethod(),
+            created: credAsJson["issued"]
+        });
+
+        const iotaUrl = IotaDIDUrl.parse(`${issuerDid}${verMethod}`);
+
+        signedVc = issuerDocument.signData(credAsJson, privateKeyBytes.slice(0, 32), iotaUrl, options);
     }
     catch (error) {
         console.error(error);
@@ -71,7 +88,7 @@ async function run() {
     // The issuer is now sure that the credential they are about to issue satisfies their expectations.
     // The credential is then serialized to JSON and transmitted to the holder in a secure manner.
     // Note that the credential is NOT published to the IOTA Tangle. It is sent and stored off-chain.
-    const credentialJSON = signedVc.toJSON();
+    const credentialJSON = signedVc;
     console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
 }
 
