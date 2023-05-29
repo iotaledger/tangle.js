@@ -15,9 +15,6 @@ import { Client } from "@iota/client-wasm/node/lib/index.js";
 
 import { Converter } from "@iota/util.js";
 
-// import { IotaSigner, IotaVerifier, SignatureTypes } from "@tangle-js/ld-proofs";
-
-
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 const theEnv = dotenv.config();
@@ -49,7 +46,7 @@ async function run() {
     const issuerDocument: IotaDocument = await didClient.resolveDid(did);
     console.log("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
-    // Create a credential subject indicating the degree earned by Alice, linked to their DID.
+    // Create a credential subject for the Legal Entity for which the attestation is being created
     const subject = {
         id: "did:iota:ebsi:0x70194f5e8ec8fdb4fb94b458806c074269b52bd5ce0f14d73feb797244e8f5b9",
         legalName: "Company AG",
@@ -72,6 +69,16 @@ async function run() {
         issuanceDate: Timestamp.nowUTC(),
         issued: Timestamp.nowUTC(),
         validFrom: Timestamp.nowUTC(),
+        evidence: [
+            {
+              id: "https://europa.eu/tsr-vid/evidence/f2aeec97-fc0d-42bf-8ca7-0548192d4231",
+              type: ["DocumentVerification"],
+              verifier: "did:ebsi:2e81454f76775c687694ee6772a17796436768a30e289555",
+              evidenceDocument: ["Passport"],
+              subjectPresence: "Physical",
+              documentPresence: ["Physical"]
+            }
+          ]
     };
    
     const privateKeyBytes = Converter.hexToBytes(privateKey);
