@@ -59,7 +59,8 @@ async function run() {
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             }
-        ]
+        ],
+        economicActivity: "http://data.europa.eu/ux2/nace2.1/26"
     };
 
     const unsignedVc = {
@@ -76,10 +77,10 @@ async function run() {
         issuer: issuerDid,
         credentialSubject: subject,
         credentialSchema: /*[ Commented due to misalignment of EBSI Legal Entity Schema with latest Attestation Schema */
-            {
-                type: "FullJsonSchemaValidator2021",
-                id: legalEntitySchema
-            }/*, 
+        {
+            type: "FullJsonSchemaValidator2021",
+            id: legalEntitySchema
+        }/*, 
             {
                 type: "FullJsonSchemaValidator2021",
                 id: accreditationSchema
