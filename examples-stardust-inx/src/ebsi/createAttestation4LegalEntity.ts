@@ -47,7 +47,8 @@ async function run() {
     const subject = {
         id: dids.recyclerTI.did,
         legalName: "Company Recycler AG",
-        domainName: "recycler.example.org"
+        domainName: "recycler.example.org",
+        economicActivity: "http://data.europa.eu/ux2/nace2.1/38"
     };
 
     const unsignedVc = {
