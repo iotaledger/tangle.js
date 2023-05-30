@@ -109,3 +109,25 @@ Public Key 0x55abe1926a93c39b3d18c005e0372a80a0f860370d9ec180f82f960538809cf4
 Address Ed25519 0x5a5b5c7cfd8e8f88b90f6336ad58d46327582a8a6827b91285aef7fee04ec288
 Address Bech32 tst1qpd9khrulk8glz9epa3ndt2c633jwkp23f5z0wgjskh00lhqfmpgs4ffm88
 ```
+
+## Manufacturer DID
+
+`did:iota:tst:0x77eac1ab20a84c5ca1d3020b7eb0c1f2220eb098d0c839b9f3fd69de54807202`
+
+### Address Controlling the DID
+
+```text
+Private Key 0xd10a72cdc496e729ca460a4059f55613ad8bb441b9312b86f57c10638399456dc6b83423dc6dfbd75ed0004098f53249ff211458529e4d09131b08ec0c5dd294
+Public Key 0xc6b83423dc6dfbd75ed0004098f53249ff211458529e4d09131b08ec0c5dd294
+Address Ed25519 0xc670dee35fe6307074dc64b2a331087cf20da33f90cd98b84932e0dc6c75b12b
+Address Bech32 tst1qrr8phhrtlnrqur5m3jt9ge3pp70yrdr87gvmx9cfyewphrvwkcjkv7ru0l
+```
+
+### Address of the Ver Method "#sign-1"
+
+```text
+Private Key 0xf08ecb2f95f01f78b02940ce056827037383c36afd596c0a8ccb42c53aee6b05470f88792038ae99788bbd7afbf6daa96d06c04bdb5857950e4f0ac94862a920
+Public Key 0x470f88792038ae99788bbd7afbf6daa96d06c04bdb5857950e4f0ac94862a920
+Address Ed25519 0x549d6ea4161b1cc6e065f38f1c31d5034a2c1cada506fb10381c6fae4647bf0f
+Address Bech32 tst1qp2f6m4yzcd3e3hqvhec78p365p55tqu4kjsd7cs8qwxltjxg7ls7hy3gpv
+```

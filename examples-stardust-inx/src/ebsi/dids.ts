@@ -18,5 +18,8 @@ export const dids = {
     recyclerTI: {
         did: "did:iota:tst:0x25237db769135c3053065913547cbf6482600a9646d40a978aabc017042f161f",
         privateKeySign: "0xf0d34c4f5b74bc327fbe6646fdf874f6dad9d5425e138078ef654b1144389eae55abe1926a93c39b3d18c005e0372a80a0f860370d9ec180f82f960538809cf4"
+    },
+    manufacturerLegalEntity: {
+        did: "did:iota:tst:0x77eac1ab20a84c5ca1d3020b7eb0c1f2220eb098d0c839b9f3fd69de54807202"
     }
 };

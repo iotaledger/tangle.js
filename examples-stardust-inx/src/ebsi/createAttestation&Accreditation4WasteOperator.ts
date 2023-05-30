@@ -52,13 +52,13 @@ async function run() {
         limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP",
         accreditedFor: [
             {
-                "schemaId": "https://raw.githubusercontent.com/iotaledger/ebsi-stardust-components/master/docs/public/schemas/waste-declaration-schema.json",
-                "types": [
+                schemaId: "https://raw.githubusercontent.com/iotaledger/ebsi-stardust-components/master/docs/public/schemas/waste-declaration-schema.json",
+                types: [
                     "VerifiableCredential",
                     "VerifiableAttestation",
                     "WasteOperationDeclaration"
                 ],
-                "limitJurisdiction": "https://publications.europa.eu/resource/authority/atu/ESP"
+                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             }
         ]
     };

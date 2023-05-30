@@ -51,8 +51,9 @@ async function run() {
         accreditedFor: [
             {
                 schemaId: wasteOperatorSchema,
-                type: [
+                types: [
                     "VerifiableCredential",
+                    "VerifiableAccreditationToAttest",
                     "VerifiableAttestation"
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"

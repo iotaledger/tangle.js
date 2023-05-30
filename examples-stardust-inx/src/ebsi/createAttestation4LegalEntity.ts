@@ -28,14 +28,14 @@ async function run() {
     const client = new Client({
         primaryNode: {
             url: NODE_ENDPOINT,
-            auth: { jwt:  TOKEN }
+            auth: { jwt: TOKEN }
         },
         localPow: true,
     });
     const didClient = new IotaIdentityClient(client);
 
     const issuerDid = dids.revenueAgencyTAO.did;
-    const verMethod =  "#sign-1";
+    const verMethod = "#sign-1";
     const privateKey = dids.revenueAgencyTAO.privateKeySign;
 
     const elements = issuerDid.split(":");
@@ -56,7 +56,10 @@ async function run() {
             "https://www.w3.org/2018/credentials/v1"
         ],
         id: "https://example.edu/credentials/3732",
-        type: ["VerifiableCredential", "VerifiableAttestation"],
+        type: [
+            "VerifiableCredential",
+            "VerifiableAttestation"
+        ],
         issuer: issuerDid,
         credentialSubject: subject,
         credentialSchema: {
@@ -68,16 +71,16 @@ async function run() {
         validFrom: Timestamp.nowUTC(),
         evidence: [
             {
-              id: "https://europa.eu/tsr-vid/evidence/f2aeec97-fc0d-42bf-8ca7-0548192d4231",
-              type: ["DocumentVerification"],
-              verifier: "did:ebsi:2e81454f76775c687694ee6772a17796436768a30e289555",
-              evidenceDocument: ["Passport"],
-              subjectPresence: "Physical",
-              documentPresence: ["Physical"]
+                id: "https://europa.eu/tsr-vid/evidence/f2aeec97-fc0d-42bf-8ca7-0548192d4231",
+                type: ["DocumentVerification"],
+                verifier: "did:ebsi:2e81454f76775c687694ee6772a17796436768a30e289555",
+                evidenceDocument: ["Passport"],
+                subjectPresence: "Physical",
+                documentPresence: ["Physical"]
             }
-          ]
+        ]
     };
-   
+
     const privateKeyBytes = Converter.hexToBytes(privateKey);
 
 

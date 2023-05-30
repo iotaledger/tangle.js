@@ -50,12 +50,13 @@ async function run() {
         reservedAttributeId: "88888",
         accreditedFor: [
             {
-                "schemaId": legalEntitySchema,
-                "types": [
+                schemaId: legalEntitySchema,
+                types: [
                     "VerifiableCredential",
+                    "VerifiableAccreditationToAttest",
                     "VerifiableAttestation"
                 ],
-                "limitJurisdiction": "https://publications.europa.eu/resource/authority/atu/ESP"
+                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             }
         ]
     };
