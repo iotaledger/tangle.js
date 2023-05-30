@@ -47,7 +47,7 @@ async function run() {
     const subject = {
         id: dids.recyclerTI.did,
         reservedAttributeId: "088888888",
-        legalName: "Company AG",
+        legalName: "Company Recycler AG",
         wasteOperatorNumber: "A456789",
         limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP",
         accreditedFor: [
