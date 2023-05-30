@@ -17,6 +17,8 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
+import { dids } from "./dids";
+import { accreditationSchema, wasteOperatorSchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -32,15 +34,11 @@ async function run() {
     });
     const didClient = new IotaIdentityClient(client);
 
-    /*
-    const issuerDid = "did:iota:ebsi:0x9c0939fe864d813f4257374146b725e4e0c8a1424a3e2b54a83ffac1c9d94a39";
-    const verMethod =  "#sign-1";
-    const privateKey = "0x33a6111c4cdaa142b34367b79d1858daa39d56196a6f1261c612c6be90358111ec8db3bb05a78b537b9bb25a34c066572d635cc5dbfd84c0fa8afea37648a356";
-    */
 
-    const issuerDid = "did:iota:tst:0xd9a66e585ecfdf44fdf4aa3b76a46576184bbcb2a2fa09f990593dd460dbac24";
+    // The root of trust accredits to accredit to the ES Government
+    const issuerDid = dids.esGovernmentTAO.did;
     const verMethod = "#sign-1";
-    const privateKey = "0x2391bfcd6a39cf400ea60e1ed4bb681b851603f7a5b21c306599669fb9f975009b8b4f71f845c67beda1e1ae7962c277a59ec9c93e0a269ce7b40d3b8f9adad6";
+    const privateKey = dids.esGovernmentTAO.privateKeySign
 
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
@@ -48,26 +46,25 @@ async function run() {
     console.log("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     const subject = {
-        id: "did:iota:ebsi:0x70194f5e8ec8fdb4fb94b458806c074269b52bd5ce0f14d73feb797244e8f5b9",
-        reservedAttributeId: "60ae46e4fe9adffe0bc83c5e5be825aafe6b5246676398cd1ac36b8999e088a8",
+        id: dids.envAgencyTAO.did,
+        reservedAttributeId: "777777777",
         accreditedFor: [
             {
-                "schemaId": "https://ec.europa.eu/digital-building-blocks/code/projects/EBSI/repos/json-schema/raw/schemas/ebsi-vid/legal-entity/2022-11/schema.json",
-                "types": [
+                schemaId: wasteOperatorSchema,
+                type: [
                     "VerifiableCredential",
                     "VerifiableAttestation"
                 ],
-                "limitJurisdiction": "https://publications.europa.eu/resource/authority/atu/ESP"
+                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             }
         ]
     };
 
     const credAsJson = {
         "@context": ["https://www.w3.org/2018/credentials/v1"],
-        id: "https://id.example.org/accreditation/1001",
+        id: "https://id.example.org/id999999",
         type: [
             "VerifiableCredential",
-            "VerifiableAttestation",
             "VerifiableAccreditation",
             "VerifiableAccreditationToAttest"
         ],
@@ -77,7 +74,7 @@ async function run() {
         expirationDate: "2024-06-22T14:11:44Z",
         issued: Timestamp.nowUTC(),
         credentialSchema: {
-            "id": "https://ec.europa.eu/digital-building-blocks/code/projects/EBSI/repos/json-schema/raw/schemas/ebsi-accreditation/2023-04/schema.json",
+            "id": accreditationSchema,
             "type": "FullJsonSchemaValidator2021"
         },
         credentialSubject: subject,
@@ -85,13 +82,11 @@ async function run() {
             id: "https://api-test.ebsi.eu/trusted-issuers-registry/v4/issuers/did:ebsi:zZeKyEJfUTGwajhNyNX928z/attributes/60ae46e4fe9adffe0bc83c5e5be825aafe6b5246676398cd1ac36b8999e088a8",
             type: "EbsiAccreditationEntry"
         },
-        termsOfUse:
-        {
+        termsOfUse: {
             id: "https://api-test.ebsi.eu/trusted-issuers-registry/terms/of/use",
             type: "IssuanceCertificate"
         }
-
-    }
+    };
 
     // Workaround to add Credential Schema
 

@@ -1,0 +1,111 @@
+# DIDs
+
+## Root DID
+
+`did:iota:tst:0x7f5c9fd1709b276d7f2bc9bcce8db84f63109fcc4ca2fda96d7d914136076f71`
+
+### Address Controlling the DID
+
+```text
+Private Key 0xe1ce41b08f81bf4f7346101964bcb7bef21f74839bc4deebbe1a385c5ed8b3ecfc394b540f5a7ff0bafbbe19bae9828b4b64547f087ebd5caec91b403f452381
+Public Key 0xfc394b540f5a7ff0bafbbe19bae9828b4b64547f087ebd5caec91b403f452381
+Address Ed25519 0x889ed9d21f919723e45dd0d6019bf35ecb09fbf55c0401ee46e428bf413fac28
+Address Bech32 tst1qzyfakwjr7gewglythgdvqvm7d0vkz0m74wqgq0wgmjz306p87kzsedgh29
+```
+
+### Address of the Ver Method "#sign-1"
+
+```text
+Private Key 0xe55144a83405cef9b1276078234326d5d22ddde4f795ac9640045f5d5e7dae73ee70925c83b02509046914c9a2a79755989c98109505b864c14718bc9afbaf20
+Public Key 0xee70925c83b02509046914c9a2a79755989c98109505b864c14718bc9afbaf20
+Address Ed25519 0xdea3e8c3b4e3a213c22d042be8ab2a4e50fe0849a29589e5ca56fe15d41d55fc
+Address Bech32 tst1qr0286xrkn36yy7z95zzh69t9f89plsgfx3ftz09eft0u9w5r42lcvs8tep
+```
+
+## ES Government TAO DID
+
+`did:iota:tst:0x13fd00d0725e33f5a4a98ac8dd8e2c393ccab20e2b6ed428659a70becc939a04`
+
+### Address Controlling the DID
+
+```text
+Private Key 0x4a504a5bb515cce743b987bb6ee2482fbe177e69abf7cb85468cce75c4b1ddd1224ab431e36d6982d169b2bb8ba5cf2511a67df115076846d1f98927ab509c19
+Public Key 0x224ab431e36d6982d169b2bb8ba5cf2511a67df115076846d1f98927ab509c19
+Address Ed25519 0xb0c86f187342c5477be3af6ba3e6e0bbb85c7d9f0f64f10913e4cf17423741ba
+Address Bech32 tst1qzcvsmccwdpv23mmuwhkhglxuzamshranu8kfugfz0jv796zxaqm5uq37cg
+```
+
+### Address of the Ver Method "#sign-1"
+
+```text
+Private Key 0xa1e216356ebff66325a0ca62931e33ef7ce70119f9b537beef7d607e46ebfa5f595cef74f73c262af7d6bf7eef996bde2895b257bf4a16773d184df6d3259931
+Public Key 0x595cef74f73c262af7d6bf7eef996bde2895b257bf4a16773d184df6d3259931
+Address Ed25519 0xb0eca7dce8451b31bf32e591adece69a864cc6aa453a7dbc025cf8862c77a1ee
+Address Bech32 tst1qzcwef7uapz3kvdlxtjert0vu6dgvnxx4fzn5lduqfw03p3vw7s7u2zwu2s
+```
+
+## Revenue Agency DID
+
+`did:iota:tst:0x8f3b066327c83c9c8a2fbf01e005d3407fca9c5853ca947fe4536462aa31600f`
+
+### Address Controlling the DID
+
+```text
+Private Key 0x872a52de3c2218248d0ed4b1acf4913ff1957d55b7b32576a114fa56ab9f2f7b339f83db0528fa423500c49fd46ef2e7770b2df8a05f05d8dbac9a7c7c6022fa
+Public Key 0x339f83db0528fa423500c49fd46ef2e7770b2df8a05f05d8dbac9a7c7c6022fa
+Address Ed25519 0xac59c7fe331526a2feb03cfa18c914d18a32b5b67618a5af8a26b809712f7343
+Address Bech32 tst1qzk9n3l7xv2jdgh7kq705xxfzngc5v44kemp3fd03gntszt39ae5xlnfz33
+```
+
+### Address of the Ver Method "#sign-1"
+
+```text
+Private Key 0x8e4c81cc8c6f2f44a72d287521b9e1fae27754755efb573b10014eca6c57cfd86a1b1a17fd41ed2d462625984a0aeb95a0798e23b71bda737d54e6523aba4b5f
+Public Key 0x6a1b1a17fd41ed2d462625984a0aeb95a0798e23b71bda737d54e6523aba4b5f
+Address Ed25519 0x492718ece1d9b021af9ea32e9dbb2fb333b0d4c6e978d2004da4549313950573
+Address Bech32 tst1qpyjwx8vu8vmqgd0n63ja8dm97en8vx5cm5h35sqfkj9fycnj5zhxf7pg2h
+```
+
+## Env Agency DID
+
+`did:iota:tst:0xb5eab59c42f979923818284ca14b88d4ca3d539a0f7330612416c422de303488`
+
+### Address Controlling the DID
+
+```text
+Private Key 0x39d1d3fcef3b2a6b828dbfe3401b6de23bd2d4cd62de2873dbbe6d82485cdacbc81b6771e2648c1c24ded7dcc1248d4d7c978ce31e5ba1e8ecb42993564f6ce7
+Public Key 0xc81b6771e2648c1c24ded7dcc1248d4d7c978ce31e5ba1e8ecb42993564f6ce7
+Address Ed25519 0x19417b4145f50e922e0838a69070e2d9905a22edd91527acd6ffbe605a7acc27
+Address Bech32 tst1qqv5z76pgh6say3wpqu2dyrsutveqk3zahv32fav6mlmucz60txzw4kj87h
+```
+
+### Address of the Ver Method "#sign-1"
+
+```text
+Private Key 0x2a3506aa8c55f5fbfc7c077b7ce76f1d931629840b951e21037d60802cc47930e7b2f324ef4e695753ee10dd8f4cd78758141c979041549e5cfc8e4ddb6d2693
+Public Key 0xe7b2f324ef4e695753ee10dd8f4cd78758141c979041549e5cfc8e4ddb6d2693
+Address Ed25519 0xfb8f431cd70f5fcfec9788fb2706d589daf71a9ae3f4f27d776a679f35f8da10
+Address Bech32 tst1qrac7scu6u84lnlvj7y0kfcx6kya4ac6nt3lfunawa4x08e4lrdpqnkfzt9
+```
+
+## Recycler DID
+
+`did:iota:tst:0x25237db769135c3053065913547cbf6482600a9646d40a978aabc017042f161f`
+
+### Address Controlling the DID
+
+```text
+Private Key 0x907f9a7bb1b6eb45256eca8939834dad91bd958d162173aec392acca94242c5f92b97c5b842cee584c07f3f9c8279ac25d427e6e66111e6acb212be60210095a
+Public Key 0x92b97c5b842cee584c07f3f9c8279ac25d427e6e66111e6acb212be60210095a
+Address Ed25519 0x94f92de5a182ed24e90086b75013e8ca132ff4ce633595cf91d3d5ff2120ded8
+Address Bech32 tst1qz20jt095xpw6f8fqzrtw5qnar9pxtl5ee3nt9w0j8fatlepyr0dsj8yd7v
+```
+
+### Address of the Ver Method "#sign-1"
+
+```text
+Private Key 0xf0d34c4f5b74bc327fbe6646fdf874f6dad9d5425e138078ef654b1144389eae55abe1926a93c39b3d18c005e0372a80a0f860370d9ec180f82f960538809cf4
+Public Key 0x55abe1926a93c39b3d18c005e0372a80a0f860370d9ec180f82f960538809cf4
+Address Ed25519 0x5a5b5c7cfd8e8f88b90f6336ad58d46327582a8a6827b91285aef7fee04ec288
+Address Bech32 tst1qpd9khrulk8glz9epa3ndt2c633jwkp23f5z0wgjskh00lhqfmpgs4ffm88
+```
