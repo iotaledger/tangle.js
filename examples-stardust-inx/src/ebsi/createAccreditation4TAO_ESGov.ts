@@ -43,7 +43,7 @@ async function run() {
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
     const issuerDocument: IotaDocument = await didClient.resolveDid(did);
-    console.log("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
+    console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     const subject = {
         id: dids.esGovernmentTAO.did,
@@ -129,9 +129,9 @@ async function run() {
     }
     
     const credentialJSON = signedVc;
-    console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
+    console.log(JSON.stringify(credentialJSON, null, 2));
 }
 
 export { };
 
-run().then(() => console.log("Done")).catch(err => console.error(err));
+run().then(() => console.error("Done")).catch(err => console.error(err));
