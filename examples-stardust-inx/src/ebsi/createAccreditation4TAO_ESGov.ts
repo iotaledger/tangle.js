@@ -17,7 +17,7 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids } from "./dids";
+import { ebsiDids } from "./dids";
 import { accreditationSchema, auditOrgSchema, legalEntitySchema, wasteOperatorSchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
@@ -36,9 +36,9 @@ async function run() {
 
 
     // The root of trust accredits to accredit to the ES Government
-    const issuerDid = dids.rootTrust.did;
+    const issuerDid = ebsiDids.rootTrust.did;
     const verMethod = "#sign-1";
-    const privateKey = dids.rootTrust.privateKeySign
+    const privateKey = ebsiDids.rootTrust.privateKeySign
 
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
@@ -46,7 +46,7 @@ async function run() {
     console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     const subject = {
-        id: dids.esGovernmentTAO.did,
+        id: ebsiDids.esGovernmentTAO.did,
         reservedAttributeId: "1244",
         accreditedFor: [
             {
@@ -105,8 +105,6 @@ async function run() {
         }
     };
 
-
-    // Workaround to add Credential Schema
 
     const privateKeyBytes = Converter.hexToBytes(privateKey);
 

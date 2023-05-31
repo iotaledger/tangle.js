@@ -16,7 +16,7 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids } from "./dids";
+import { ebsiDids } from "./dids";
 import { post } from "../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
@@ -43,8 +43,8 @@ async function run() {
     });
     const didClient = new IotaIdentityClient(client);
 
-    const holderDid = dids.esGovernmentTAO.did;
-    const holderPrivateKey = dids.esGovernmentTAO.privateKeySign;
+    const holderDid = ebsiDids.esGovernmentTAO.did;
+    const holderPrivateKey = ebsiDids.esGovernmentTAO.privateKeySign;
 
     const holderDocument = await resolveDocument(didClient, holderDid);
 
