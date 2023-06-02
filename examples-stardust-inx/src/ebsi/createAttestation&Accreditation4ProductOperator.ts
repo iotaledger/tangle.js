@@ -18,7 +18,7 @@ import { Converter } from "@iota/util.js";
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 import { dids } from "./dids";
-import { /* accreditationSchema,*/ legalEntitySchema } from "./schemas";
+import { /* accreditationSchema,*/ dppSchema, legalEntitySchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -51,7 +51,7 @@ async function run() {
         limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP",
         accreditedFor: [
             {
-                schemaId: "https://raw.githubusercontent.com/iotaledger/ebsi-stardust-components/master/docs/public/schemas/dpp-schema.json",
+                schemaId: dppSchema,
                 types: [
                     "VerifiableCredential",
                     "VerifiableAttestation",

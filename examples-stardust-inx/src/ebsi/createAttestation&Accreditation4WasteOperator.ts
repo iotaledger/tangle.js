@@ -18,7 +18,7 @@ import { Converter } from "@iota/util.js";
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 import { dids } from "./dids";
-import { accreditationSchema, wasteOperatorSchema } from "./schemas";
+import { accreditationSchema, wasteDeclarationSchema, wasteOperatorSchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -52,7 +52,7 @@ async function run() {
         limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP",
         accreditedFor: [
             {
-                schemaId: "https://raw.githubusercontent.com/iotaledger/ebsi-stardust-components/master/docs/public/schemas/waste-declaration-schema.json",
+                schemaId: wasteDeclarationSchema,
                 types: [
                     "VerifiableCredential",
                     "VerifiableAttestation",
