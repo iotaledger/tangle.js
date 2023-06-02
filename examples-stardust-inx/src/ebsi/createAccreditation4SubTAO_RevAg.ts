@@ -18,7 +18,7 @@ import { Converter } from "@iota/util.js";
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 import { dids } from "./dids";
-import { accreditationSchema, legalEntitySchema } from "./schemas";
+import { accreditationSchema, dppSchema, legalEntitySchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -53,8 +53,16 @@ async function run() {
                 schemaId: legalEntitySchema,
                 types: [
                     "VerifiableCredential",
-                    "VerifiableAccreditationToAttest",
                     "VerifiableAttestation"
+                ],
+                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
+            },
+            {
+                schemaId: dppSchema,
+                types: [
+                    "VerifiableCredential",
+                    "VerifiableAccreditation",
+                    "VerifiableAccreditationToAttest",
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             }
@@ -67,7 +75,8 @@ async function run() {
         type: [
             "VerifiableCredential",
             "VerifiableAccreditation",
-            "VerifiableAccreditationToAttest"
+            "VerifiableAccreditationToAttest",
+            "VerifiableAccreditationToAccredit"
         ],
         issuer: issuerDid,
         issuanceDate: Timestamp.nowUTC(),

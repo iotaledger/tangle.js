@@ -18,7 +18,7 @@ import { Converter } from "@iota/util.js";
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 import { dids } from "./dids";
-import { accreditationSchema, wasteOperatorSchema } from "./schemas";
+import { accreditationSchema, wasteDeclarationSchema, wasteOperatorSchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -53,8 +53,16 @@ async function run() {
                 schemaId: wasteOperatorSchema,
                 types: [
                     "VerifiableCredential",
-                    "VerifiableAccreditationToAttest",
                     "VerifiableAttestation"
+                ],
+                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
+            },
+            {
+                schemaId: wasteDeclarationSchema,
+                types: [
+                    "VerifiableCredential",
+                    "VerifiableAccreditation",
+                    "VerifiableAccreditationToAttest",
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             }
@@ -67,6 +75,7 @@ async function run() {
         type: [
             "VerifiableCredential",
             "VerifiableAccreditation",
+            "VerifiableAccreditationToAccredit",
             "VerifiableAccreditationToAttest"
         ],
         issuer: issuerDid,

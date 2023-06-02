@@ -53,6 +53,7 @@ async function run() {
                 schemaId: legalEntitySchema,
                 types: [
                     "VerifiableCredential",
+                    "VerifiableAccreditation",
                     "VerifiableAccreditationToAttest"
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
@@ -61,6 +62,7 @@ async function run() {
                 schemaId: wasteOperatorSchema,
                 types: [
                     "VerifiableCredential",
+                    "VerifiableAccreditation",
                     "VerifiableAccreditationToAttest"
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
