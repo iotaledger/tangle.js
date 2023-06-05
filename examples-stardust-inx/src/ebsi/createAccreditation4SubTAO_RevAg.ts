@@ -57,6 +57,9 @@ async function run() {
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             },
+            // The revenue agency can give this accreditation to those legal entities, i.e. economic operators
+            // that are in economicActivity elegible for issuing DPP Data
+            // That's why this is made explicit here albeit it could have been implicit
             {
                 schemaId: dppSchema,
                 types: [
@@ -76,6 +79,7 @@ async function run() {
             "VerifiableCredential",
             "VerifiableAccreditation",
             "VerifiableAccreditationToAttest",
+            // The Rev Ag can accredit product operators to issue DPP Data
             "VerifiableAccreditationToAccredit"
         ],
         issuer: issuerDid,

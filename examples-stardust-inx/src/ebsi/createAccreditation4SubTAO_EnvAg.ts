@@ -57,6 +57,9 @@ async function run() {
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             },
+            /* This accreditation can be implicit. i.e. any waste operator might be entitled, implicitly, to 
+               issue waste declarations or any entity accredited to attest waste operators can accredit to attest Waste
+               Declarations
             {
                 schemaId: wasteDeclarationSchema,
                 types: [
@@ -65,7 +68,7 @@ async function run() {
                     "VerifiableAccreditationToAttest",
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
-            }
+            } */
         ]
     };
 
