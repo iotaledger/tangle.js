@@ -18,7 +18,7 @@ import { Converter } from "@iota/util.js";
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 import { dids } from "./dids";
-import { accreditationSchema, wasteDeclarationSchema, wasteOperatorSchema } from "./schemas";
+import { accreditationSchema, /*wasteDeclarationSchema, */ wasteOperatorSchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
