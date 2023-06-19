@@ -1,6 +1,6 @@
-import { generateAddresses } from "./utilAddress";
+import { generateAddresses } from "../utilAddress";
 
-import { post, type Trail } from "./utilHttp";
+import { post, type Trail } from "../utilHttp";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";

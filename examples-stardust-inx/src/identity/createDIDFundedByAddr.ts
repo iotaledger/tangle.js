@@ -1,8 +1,8 @@
 import { Converter, Base58 } from "@iota/util.js";
-import { generateAddresses, requestFunds } from "./utilAddress";
+import { generateAddresses, requestFunds } from "../utilAddress";
 import { Ed25519 } from "@iota/crypto.js";
 
-import { post, type FullDoc, type Doc, type Meta, sleep, type Signature } from "./utilHttp";
+import { post, type FullDoc, type Doc, type Meta, sleep, type Signature } from "../utilHttp";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";

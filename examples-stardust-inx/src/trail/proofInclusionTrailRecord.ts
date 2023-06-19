@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { generateAddresses } from "./utilAddress";
+import { generateAddresses } from "../utilAddress";
 import { addTrailRecord, createTrail } from "./trailOperations";
 import { Converter } from "@iota/util.js";
-import { get, post, sleep } from "./utilHttp";
+import { get, post, sleep } from "../utilHttp";
 
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
@@ -71,7 +71,7 @@ async function run() {
     };
 
     const inclusionResult = await post(resource, TOKEN, pluginRequest);
-    const inclResultObj = inclusionResult as {inclusionProofed: boolean; proof: { href: "string"}};
+    const inclResultObj = inclusionResult as { inclusionProofed: boolean; proof: { href: "string" } };
 
     console.log("Inclusion Result: \n", inclusionResult);
 

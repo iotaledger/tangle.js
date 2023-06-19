@@ -1,4 +1,4 @@
-import { get } from "./utilHttp";
+import { get } from "../utilHttp";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";

@@ -1,4 +1,4 @@
-import { post, type Meta, type Trail, type TrailRecord, type Signature } from "./utilHttp";
+import { post, type Meta, type Trail, type TrailRecord, type Signature } from "../utilHttp";
 
 import { Converter } from "@iota/util.js";
 import { Ed25519 } from "@iota/crypto.js";

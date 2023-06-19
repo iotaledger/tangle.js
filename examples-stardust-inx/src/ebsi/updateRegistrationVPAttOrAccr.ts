@@ -7,7 +7,8 @@ import {
     IotaDocument, IotaIdentityClient, IotaDID,
     Timestamp,
     Duration,
-    Presentation
+    Presentation,
+    Ed25519
 } from "@iota/identity-wasm/node/index.js";
 
 import { Client } from "@iota/client-wasm/node/lib/index.js";
@@ -17,7 +18,7 @@ import { Converter } from "@iota/util.js";
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 import { ebsiDids } from "./dids";
-import { post } from "../utilHttp";
+import { post, type Signature } from "../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -44,12 +45,16 @@ async function run() {
     const didClient = new IotaIdentityClient(client);
 
     const holderDid = ebsiDids.esGovernmentTAO.did;
-    const holderPrivateKey = ebsiDids.esGovernmentTAO.privateKeySign;
+    const holderPrivateKeySign = ebsiDids.esGovernmentTAO.privateKeySign;
+
+    const holderPrivateKeyDidControl = ebsiDids.esGovernmentTAO.privateKeyDidControl;
+    const holderPublicKeyDidControl = ebsiDids.esGovernmentTAO.publicKeyDidControl;
 
     const holderDocument = await resolveDocument(didClient, holderDid);
 
+    const holderPrivateKeyBytes = Converter.hexToBytes(holderPrivateKeySign);
 
-    const holderPrivateKeyBytes = Converter.hexToBytes(holderPrivateKey);
+    const registrationTrail = "urn:";
 
     console.log("Arg: ", process.argv[2]);
 
@@ -101,21 +106,40 @@ async function run() {
     // ====================================
     console.log("Issued presentation: \n", JSON.stringify(signedVpJSON, null, 2));
 
-    const registrationResult = await postToPlugin(signedVpJSON);
+    const registrationResult = await postToPlugin(signedVpJSON, registrationTrail,
+        { publicKey: holderPublicKeyDidControl, privateKey: holderPrivateKeyDidControl });
 
     console.log("Registration Result: ", registrationResult);
 }
 
 
-async function postToPlugin(signedVp: unknown): Promise<unknown> {
+async function postToPlugin(signedVp: unknown, registrationTrail: string,
+    params: { publicKey: string, privateKey: string }): Promise<unknown> {
     const pluginRequest = {
-        type: "RegistrationRequest",
+        type: "TransactionRequest",
+        registrationTrail,
         credential: signedVp
     };
 
-    const result = await post(`${PLUGIN_ENDPOINT}/credentials/registrations`, TOKEN, pluginRequest);
+    const result1 = await post(`${PLUGIN_ENDPOINT}/credentials/registrations`, TOKEN, pluginRequest);
 
-    return result;
+    const nextPayload = result1 as { type: string; txEssenceHash: string; signature?: Signature[] };
+
+    // The result will contain a txEssence that has to be signed
+    // Once it is signed it has to be submitted to the plugin again
+    const essence = Converter.hexToBytes(nextPayload.txEssenceHash);
+    const essenceSigned = Ed25519.sign(Converter.hexToBytes(params.privateKey), essence);
+
+    // Now the essence is signed then the same payload is sent including a signature
+    nextPayload.type = "TransactionSignature";
+    nextPayload.signature = [{
+        publicKey: params.publicKey,
+        signature: Converter.bytesToHex(essenceSigned, true)
+    }];
+
+    const finalResult = await post(`${PLUGIN_ENDPOINT}/credentials/registrations`, TOKEN, nextPayload);
+
+    return finalResult;
 }
 
 

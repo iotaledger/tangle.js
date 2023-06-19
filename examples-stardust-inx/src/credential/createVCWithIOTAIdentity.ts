@@ -29,9 +29,8 @@ async function run() {
     });
     const didClient = new IotaIdentityClient(client);
 
-    const issuerDid = "did:iota:ebsi:0x9c0939fe864d813f4257374146b725e4e0c8a1424a3e2b54a83ffac1c9d94a39";
-    const privateKey = "0x33a6111c4cdaa142b34367b79d1858daa39d56196a6f1261c612c6be90358111ec8db3bb05a78b537b9bb25a34c066572d635cc5dbfd84c0fa8afea37648a356";
-
+    const issuerDid = "did:iota:tst:0xcbe64b9ab1a7253c6d34f00530080affd7df9cf0e528cbfef322062ecf01128b";
+    const privateKey = "0x8f5c469bc65bd0a9fb2a359d4e83b7fff2b919551c16223b4d2cd6759710799ccdd0096c565b294f59fc0960f7c78843d61545249d063a0bd73d884b9bc710b4";
 
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
@@ -40,7 +39,7 @@ async function run() {
 
     // Create a credential subject indicating the degree earned by Alice, linked to their DID.
     const subject = {
-        id: "did:iota:tst:0x6abe6ef35e4dfd4242f932d6fbe1b1ae01b87a1b42a49329141602a9222980de",
+        id: "did:iota:tst:0x986fe72c5e1e8f0a628daa02fe92e7e6c8d3482f73dc6052d8e932025081021b",
         name: "Alice",
         degreeName: "Bachelor of Science and Arts",
         degreeType: "BachelorDegree",
@@ -53,6 +52,7 @@ async function run() {
         type: "UniversityDegreeCredential",
         issuer: issuerDid,
         credentialSubject: subject,
+        validFrom: "2023-06-13T16:08:00Z"
     });
 
     const privateKeyBytes = Converter.hexToBytes(privateKey);

@@ -41,11 +41,11 @@ async function run() {
     });
     const didClient = new IotaIdentityClient(client);
 
-    const issuerDid = "did:iota:ebsi:0x9244145be500bcc71c1d4d29c895ef06cff5eb6c055eebe23208206b223cdb72";
-    const privateKey = "0x9d7d9c14f4aaa242ab0b6c3b05f7619b746367605f4d4e30586767de32021afb889ea932dd3f33674657c169859793f3f721be0a8c7122e696120c7bb2fc0adf";
+    const issuerDid = "did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597";
+    const privateKey = "0x4b5ead3c51d14dde35a8835259b1e5e2692787ca5374129c48bde4bd95b7e6a2cd9eb71c5e6d03ff50fea5556b3842a19445e1ca5d1f0b653b3a96f03ffa71d0";
 
-    const holderDid = "did:iota:ebsi:0x58389b90eb77c8bf17940e44b4949d4c40b09d2bb5b75a18e57556ae61209c8b";
-    const holderPrivateKey = "0x2b4ac273b3afe93f09918cdbff3a44bcefa35db5c9b6064c50ffdf8fc4987da7f022f892cfedbecda711071903145b9680e255226398e560d58ff80799792c4c";
+    const holderDid = "did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf";
+    const holderPrivateKey = "0xd8bd8f8eecffc4ed36b1109a20c0e162354d146b716bf6981fe680f2b20e3d9bb3485404f80ad19becc652644efd46a09320c4a46e180fe9bf160a38c2f3d4ca";
 
    const issuerDocument = await resolveDocument(didClient, issuerDid);
    const holderDocument = await resolveDocument(didClient, holderDid);
@@ -55,7 +55,7 @@ async function run() {
         id: holderDid,
         name: "Alice",
         degreeName: "Bachelor of Science and Arts",
-        degreeType: "BachelorDegree",
+        degreeType: "BachelorDegree - Extended More and More",
         GPA: "4.0",
     };
 

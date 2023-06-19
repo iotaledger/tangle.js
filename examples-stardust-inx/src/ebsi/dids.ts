@@ -28,11 +28,13 @@ export const ebsiDids = {
     rootTrust: {
         did: "did:iota:ebsi:0x3e5d50b9f0f9f293c1e460e63b09162abd06d9b51e6a2cf28a1e6f74932e9f44",
         privateKeyDidControl: "0xb95582a9b1909921d7ef4cd8f6c5e3e3fb6aeff5985b32935c8dc0f8e9cfa15daad5ca965ea13b5005e18eaa8fd732efb897781ae96b77b9820ecfa3bea84126",
+        publicKeyDidControl: "",        
         privateKeySign: "0x87cdb1421f948e54109aeab967769babb581f7e5831379d7934d046b237684aa55e1f3db773b4196db88beb5ac487286e34ba3fac5dd052ac2654fc2f72f3fb7"
     },
     esGovernmentTAO: {
         did: "did:iota:ebsi:0x6efaa386f074cf069375c24791aff27594d3b9d9037085f855aa56f5d69fbb22",
         privateKeyDidControl: "0x442f5b918ceeb3d43cf9c96cbccac5a19b671ea248dbe0fbcf8b596447c24a04b9fb4922262272d04514e8e451c669fb2304b4636aedbbc389636e0f3e7df7e9",
+        publicKeyDidControl: "",        
         privateKeySign: "0xc42a68f1d7f5454c88aef9d5cf2870686c18688ee1bc2dff061c13da5fd496336e90638b104da15cd50ae836f9502444daffd8e4f7be81096e78648d764bd16e"
     }
 };

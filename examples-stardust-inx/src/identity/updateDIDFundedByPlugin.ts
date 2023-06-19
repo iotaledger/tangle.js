@@ -1,8 +1,8 @@
 import { Base58, Converter } from "@iota/util.js";
-import { generateAddresses } from "./utilAddress";
+import { generateAddresses } from "../utilAddress";
 import { Ed25519 } from "@iota/crypto.js";
 
-import { post, type Doc, type FullDoc, type Meta, type Signature } from "./utilHttp";
+import { post, type Doc, type FullDoc, type Meta, type Signature } from "../utilHttp";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
@@ -29,10 +29,7 @@ async function run() {
         }]
     }
 
-    // From the menemonic a key pair
-    // The account #0 will be controlling the DID
-    // The account #1 will be the verification method
-    // Write the key pairs to the std output
+   // A new keypair is generated for the verification method
     const { publicKeys } = await generateAddresses(NODE_ENDPOINT, TOKEN, 1);
 
     // Now converting the second private key into Base58 and multibase format and adding to the verification method

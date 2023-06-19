@@ -21,8 +21,9 @@ async function run() {
     };
 
     // Posting data to the plugin
-    const result = await addTrailRecord({ url: PLUGIN_ENDPOINT, token: TOKEN}, trailID, record, {
-        publicKey: stateControllerPublicKey, privateKey: stateControllerPrivateKey });
+    const result = await addTrailRecord({ url: PLUGIN_ENDPOINT, token: TOKEN }, trailID, record, {
+        publicKey: stateControllerPublicKey, privateKey: stateControllerPrivateKey
+    });
 
     console.log("Trail Next State: ", result.trail);
     console.log("Metadata:\n", result.meta);

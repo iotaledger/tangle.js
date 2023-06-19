@@ -59,7 +59,7 @@ async function run() {
             },
             // The revenue agency can give this accreditation to those legal entities, i.e. economic operators
             // that are in economicActivity elegible for issuing DPP Data
-            // That's why this is made explicit here albeit it could have been implicit
+            // That's why this is made explicit here, albeit it could have been implicit
             {
                 schemaId: dppSchema,
                 types: [

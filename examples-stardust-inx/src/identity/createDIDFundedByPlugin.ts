@@ -1,7 +1,7 @@
 import { Base58 } from "@iota/util.js";
-import { generateAddresses } from "./utilAddress";
+import { generateAddresses } from "../utilAddress";
 
-import { post, type FullDoc } from "./utilHttp";
+import { post, type FullDoc } from "../utilHttp";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
@@ -45,7 +45,7 @@ async function postToPlugin(did: { [id: string]: unknown }, bech32Addresses: str
         action: "Issue",
         doc: did,
         meta: {
-            // The stateController address could be omitted but in that case 
+            // The stateController address could be omitted but in that case the plugin itself will be controller
             stateControllerAddress: bech32Addresses[0]
         }
     };
