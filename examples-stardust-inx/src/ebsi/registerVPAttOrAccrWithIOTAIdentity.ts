@@ -16,7 +16,7 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { ebsiDids } from "./dids";
+import { dids as ebsiDids } from "./dids";
 import { post } from "../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
@@ -45,17 +45,12 @@ async function run() {
 
     const holderDid = ebsiDids.esGovernmentTAO.did;
     const holderPrivateKey = ebsiDids.esGovernmentTAO.privateKeySign;
+    const holderPrivateKeyBytes = Converter.hexToBytes(holderPrivateKey);
 
     const holderDocument = await resolveDocument(didClient, holderDid);
 
-
-    const holderPrivateKeyBytes = Converter.hexToBytes(holderPrivateKey);
-
     console.log("Arg: ", process.argv[2]);
 
-    // The issuer is now sure that the credential they are about to issue satisfies their expectations.
-    // The credential is then serialized to JSON and transmitted to the holder in a secure manner.
-    // Note that the credential is NOT published to the IOTA Tangle. It is sent and stored off-chain.
     const credentialJSON = JSON.parse(process.argv[2]);
     console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
 
@@ -65,10 +60,6 @@ async function run() {
     // The verifier and holder also agree that the signature should have an expiry date
     // 10 minutes from now.
     const expires = Timestamp.nowUTC().checkedAdd(Duration.minutes(240));
-
-    // ===========================================================================
-    // Step 5: Holder creates a verifiable presentation from the issued credential for the verifier to validate.
-    // ===========================================================================
 
     // Deserialize the credential.
     const receivedVc = Credential.fromJSON(credentialJSON);
@@ -90,10 +81,6 @@ async function run() {
             expires,
         }),
     );
-
-    // ===========================================================================
-    // Step 6: Holder sends a verifiable presentation to the verifier.
-    // ===========================================================================
 
     // Convert the Verifiable Presentation to JSON to send it to the verifier.
     const signedVpJSON = signedVp.toJSON();

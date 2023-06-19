@@ -1,11 +1,15 @@
 export const dids = {
     rootTrust: {
-        did: "did:iota:tst:0x7f5c9fd1709b276d7f2bc9bcce8db84f63109fcc4ca2fda96d7d914136076f71",
-        privateKeySign: "0xe55144a83405cef9b1276078234326d5d22ddde4f795ac9640045f5d5e7dae73ee70925c83b02509046914c9a2a79755989c98109505b864c14718bc9afbaf20"
+        did: "did:iota:tst:0x8faff1d7514eeae7fa17f66adb53d514ff85f9eb230f1aa1f9d8e943ebe3c78c",
+        privateKeyDidControl: "0xd3cc37b46f5fea8863cd53bd878b5e196ef3a21d4adf6d13180292685398af6c490272beecd09f9aceb7f459b0a6cae46ae5f3e757aca5847af43d32bb48b152",
+        publicKeyDidControl: "0x490272beecd09f9aceb7f459b0a6cae46ae5f3e757aca5847af43d32bb48b152",  
+        privateKeySign:       "0x6fa50ffb05e0afe350852f9caac7e9282b3c79a5215be70c6d1cc8e06c4a3d1794299286fee7ac43990d80f68e3ac3942f291095787a43115af4c3c9fe4a53d7"
     },
     esGovernmentTAO: {
-        did: "did:iota:tst:0x13fd00d0725e33f5a4a98ac8dd8e2c393ccab20e2b6ed428659a70becc939a04",
-        privateKeySign: "0xa1e216356ebff66325a0ca62931e33ef7ce70119f9b537beef7d607e46ebfa5f595cef74f73c262af7d6bf7eef996bde2895b257bf4a16773d184df6d3259931"
+        did: "did:iota:tst:0x227d08526f19e1bfd441ff7a0994ce0b2c1ee3000d8aab8e44c58300a2b72e2d",
+        privateKeyDidControl: "0xb40071c414b64db86011b7716bfeb719ec4f77adcf17f25b8076fbb5a1fb3698e710576bda504245d2fdce8f81959fffae6be51d692a19d9c63c1b0e4b737d39",
+        publicKeyDidControl: "0xe710576bda504245d2fdce8f81959fffae6be51d692a19d9c63c1b0e4b737d39",  
+        privateKeySign:       "0x7bcc4eb58f45320e2895b50d925e3b336e944f886845319fed68a8e3480646d07a8a90ca6069aa538fd94cc066139f409ecb777a7e4729531dba4d8361a4e1ed"
     },
     revenueAgencyTAO: {
         did: "did:iota:tst:0x8f3b066327c83c9c8a2fbf01e005d3407fca9c5853ca947fe4536462aa31600f",

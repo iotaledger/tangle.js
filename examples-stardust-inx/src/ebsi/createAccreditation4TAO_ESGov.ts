@@ -17,7 +17,7 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { ebsiDids } from "./dids";
+import { dids as ebsiDids } from "./dids";
 import { accreditationSchema, auditOrgSchema, legalEntitySchema, wasteOperatorSchema } from "./schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
