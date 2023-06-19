@@ -48,9 +48,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SHIMMER}}/api/core/v2/milestones/by-index/2596134",
+							"raw": "{{SHIMMER_BASE}}/api/core/v2/milestones/by-index/1197398",
 							"host": [
-								"{{SHIMMER}}"
+								"{{SHIMMER_BASE}}"
 							],
 							"path": [
 								"api",
@@ -58,7 +58,7 @@
 								"v2",
 								"milestones",
 								"by-index",
-								"2596134"
+								"1197398"
 							]
 						}
 					},
@@ -70,17 +70,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SHIMMER_TLIP}}:14265/api/core/v2/blocks/0x682391d4b60f1ab584fa16506c0d95530d9e101c3298211fcb78ba1fe5a7adbc",
+							"raw": "{{SHIMMER_BASE}}/api/core/v2/blocks/0xf7a1fa484937ac715c2bed1dba8d736d09121a21707ce2cceb3f6da53a23d3e4",
 							"host": [
-								"{{SHIMMER_TLIP}}"
+								"{{SHIMMER_BASE}}"
 							],
-							"port": "14265",
 							"path": [
 								"api",
 								"core",
 								"v2",
 								"blocks",
-								"0x682391d4b60f1ab584fa16506c0d95530d9e101c3298211fcb78ba1fe5a7adbc"
+								"0xf7a1fa484937ac715c2bed1dba8d736d09121a21707ce2cceb3f6da53a23d3e4"
 							]
 						}
 					},
@@ -92,16 +91,16 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{SHIMMER}}/api/core/v2/blocks/0x90b91983c4b69ff8d7f98adf4c2d0e2e8fbd851fcb578f1e0cb4265cbb1ab37d/metadata",
+							"raw": "{{SHIMMER_BASE}}/api/core/v2/blocks/0x84804603db91183c7b2484b4d742841c2d80ab3dab156a572ff422aa0482da72/metadata",
 							"host": [
-								"{{SHIMMER}}"
+								"{{SHIMMER_BASE}}"
 							],
 							"path": [
 								"api",
 								"core",
 								"v2",
 								"blocks",
-								"0x90b91983c4b69ff8d7f98adf4c2d0e2e8fbd851fcb578f1e0cb4265cbb1ab37d",
+								"0x84804603db91183c7b2484b4d742841c2d80ab3dab156a572ff422aa0482da72",
 								"metadata"
 							]
 						}
@@ -433,6 +432,32 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": "{\n    \"type\": \"DIDCreation\",\n    \"action\": \"Issue\",\n    \"doc\": {\n        \"id\": \"did:0:0\",\n        \"verificationMethod\": [\n            {\n                \"id\": \"did:0:0#sign-1\",\n                \"type\": \"Ed25519VerificationKey2018\",\n                \"controller\": \"did:0:0\",\n                \"publicKeyMultibase\": \"zEuNVC3Fs5dxsk3hCFrvm7hwfLAjq42gaKyXUCetRu1Sg\"\n            }\n        ]\n    },\n    \"meta\": {\n        \"stateControllerAddress\": \"tst1prudwl9n0szt46agmdxgt2x502ppnsr3k32zw6ccyydmgh9mzz6rj3klvds\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/identities",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"identities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Identity - Create - Ed25IOTA Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
 									"raw": "{\n    \"type\": \"DIDCreation\",\n    \"action\": \"Issue\",\n    \"doc\": {\n        \"id\": \"did:0:0\",\n        \"verificationMethod\": [\n            {\n                \"id\": \"did:0:0#sign-1\",\n                \"type\": \"Ed25519VerificationKey2018\",\n                \"controller\": \"did:0:0\",\n                \"publicKeyMultibase\": \"zEuNVC3Fs5dxsk3hCFrvm7hwfLAjq42gaKyXUCetRu1Sg\"\n            }\n        ]\n    },\n    \"meta\": {\n        \"stateControllerAddress\": \"tst1qp7amxzx4wgawnzd75kldwdesnulyt2l3u8jcjz3laz66mvcn03tvkez20t\"\n    }\n}",
 									"options": {
 										"raw": {
@@ -467,13 +492,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{SHIMMER_HOST}}/identities/did:iota:tst:0xacbea3d557f2aa7a2566ccdeb57095b7cfc6e9747e3543efca99c8fc3391ad39",
+									"raw": "{{SHIMMER_HOST}}/identities/did:iota:tst:0xa3904f73a4464e26aa35af0b82a406e0ea27d3347733e95f786d006f120c6d4e",
 									"host": [
 										"{{SHIMMER_HOST}}"
 									],
 									"path": [
 										"identities",
-										"did:iota:tst:0xacbea3d557f2aa7a2566ccdeb57095b7cfc6e9747e3543efca99c8fc3391ad39"
+										"did:iota:tst:0xa3904f73a4464e26aa35af0b82a406e0ea27d3347733e95f786d006f120c6d4e"
 									]
 								}
 							},
@@ -601,13 +626,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SHIMMER_HOST}}/identities/did:iota:ebsi:0x815b68865befb6a53b591bf7ad8f77d56c822b654205e1cbcd63d6fd5ce36040",
+									"raw": "{{SHIMMER_HOST}}/identities/did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf",
 									"host": [
 										"{{SHIMMER_HOST}}"
 									],
 									"path": [
 										"identities",
-										"did:iota:ebsi:0x815b68865befb6a53b591bf7ad8f77d56c822b654205e1cbcd63d6fd5ce36040"
+										"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf"
 									]
 								}
 							},
@@ -619,18 +644,143 @@
 					"name": "Trail",
 					"item": [
 						{
+							"name": "Inclusion",
+							"item": [
+								{
+									"name": "Trail - Included Addrs",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SHIMMER_HOST}}/inclusion/addresses",
+											"host": [
+												"{{SHIMMER_HOST}}"
+											],
+											"path": [
+												"inclusion",
+												"addresses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Trail - Inclusion  - Verification Request",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\": \"TrailRecordInclusion\",\n    \"action\": \"Verify\",\n    \"trail\": {\n        \"stateIndex\": 3\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:ebsi:0xef174f13a22fe05a99bdb58bdf811539ef932acea2c53278945e822efcc75977/inclusion",
+											"host": [
+												"{{SHIMMER_HOST}}"
+											],
+											"path": [
+												"trails",
+												"urn:trail:iota:ebsi:0xef174f13a22fe05a99bdb58bdf811539ef932acea2c53278945e822efcc75977",
+												"inclusion"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Trail - Inclusion  - Prove Request",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"type\": \"TrailRecordInclusion\",\n    \"action\": \"Prove\",\n    \"query\": {\n        \"stateIndex\": 0,\n        \"record\": {\n            \"proof\": {\n                \"value\": \"1234\"\n            }\n        },\n        \"immutable\": {\n           \"v\": \"v2\"\n        }\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x1ae0e714c39d1e0e8ac750da6bebec152361950635c96ab584c17bb248887176/inclusion",
+											"host": [
+												"{{SHIMMER_HOST}}"
+											],
+											"path": [
+												"trails",
+												"urn:trail:iota:tst:0x1ae0e714c39d1e0e8ac750da6bebec152361950635c96ab584c17bb248887176",
+												"inclusion"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Trail - Add Incl Addrs",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    \"yyyy\"\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{SHIMMER_HOST}}/inclusion/addresses",
+											"host": [
+												"{{SHIMMER_HOST}}"
+											],
+											"path": [
+												"inclusion",
+												"addresses"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Repo - PoI",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{SHIMMER_HOST}}/inclusion/proofs/0x727c86eab58a51f5018c9b2ba9175f56f30ce815989b15d581330e2a630d979e",
+											"host": [
+												"{{SHIMMER_HOST}}"
+											],
+											"path": [
+												"inclusion",
+												"proofs",
+												"0x727c86eab58a51f5018c9b2ba9175f56f30ce815989b15d581330e2a630d979e"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
 							"name": "Trail - Read",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3d4eeb1d8249bc59401633da78a5944581e7c565f205c2cd11f7cc55dfe3f0ab",
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3759c130b0af1753c9a3e02a2af505af48e895f7e98f6242ed859c990ee30336",
 									"host": [
 										"{{SHIMMER_HOST}}"
 									],
 									"path": [
 										"trails",
-										"urn:trail:iota:tst:0x3d4eeb1d8249bc59401633da78a5944581e7c565f205c2cd11f7cc55dfe3f0ab"
+										"urn:trail:iota:tst:0x3759c130b0af1753c9a3e02a2af505af48e895f7e98f6242ed859c990ee30336"
 									]
 								}
 							},
@@ -695,7 +845,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"TrailCreation\",\n    \"action\": \"TransactionSignature\",\n    \"trail\": {\n        \"record\": {\n            \"proof\": {\n                \"value\": \"1234\"\n            }\n        }\n    },\n    \"meta\": {\n        \"created\": \"2023-04-18T10:38:08+02:00\",\n        \"updated\": \"2023-04-18T10:38:08+02:00\",\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\",\n        \"fundingAddress\": \"tst1qrlhxr49yslu6gzaxzq8jquu8l32f5r9u0542xe77m4crjwxx6y9w5w8rgd\",\n        \"fundingOutputID\": \"0x4ad04aa60aed71f9ddce02739d1ab6f6aec5a61ccc5737c8666907da6d5322410000\",\n        \"storageCost\": \"345500\"\n    },\n    \"txEssenceHash\": \"0xe47988b2792cb6b66eea86e629bc8f9696e129bcb0a7415012650f5987c8a6e9\",\n    \"signature\": [\n        {\n            \"publicKey\": \"0x3c068675dcf67c47a3f12c220444d1e4aeaf839f0e5b1762f21bd969aecc278a\",\n            \"signature\": \"0x1f7c23c07397081d3856e7c0df90e2def4d3473f2f9b3c3dc55f71f4cca78356ad3776c44edd1061a54689b30016797c85cbd45e0ffe7150713d963051717c01\"\n        }\n    ]\n}",
+									"raw": "{\n    \"type\": \"TrailCreation\",\n    \"action\": \"TransactionSignature\",\n     \"trail\": {\n        \"record\": {\n            \"proof\": {\n                \"value\": \"1234\"\n            }\n        },\n        \"immutable\": {\n            \"sub\": \"A45678\"\n        }\n    },\n    \"meta\": {\n        \"created\": \"2023-04-18T10:43:49+02:00\",\n        \"updated\": \"2023-04-18T10:43:49+02:00\",\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\",\n        \"fundingAddress\": \"tst1qrlhxr49yslu6gzaxzq8jquu8l32f5r9u0542xe77m4crjwxx6y9w5w8rgd\",\n        \"fundingOutputID\": \"0x39593db90ff83e199fc389809a7c0f480a84440d25ba060bf43f6f3131fe31bf0100\",\n        \"storageCost\": \"358500\"\n    },\n    \"txEssenceHash\": \"0x7e6504808e79b9528a295df2db5937e55e3be42c489dac10a3c6795ecb717278\",\n    \"signature\": [\n        {\n            \"publicKey\": \"0x3c068675dcf67c47a3f12c220444d1e4aeaf839f0e5b1762f21bd969aecc278a\",\n            \"signature\": \"0x4722e339e054260f711dfb795036678b4bb38e44b1c96dc827bf05cea7db7d600918bb6b3da33347c61f3ab2f54dc5c18125e0b41dc0fe72ddb489cd98aa550e\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -729,13 +879,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52",
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0xa8d2f52cc7c5f56b3e8c5243743b4f9163815cb4deda92f21eac5010b00ce2fa",
 									"host": [
 										"{{SHIMMER_HOST}}"
 									],
 									"path": [
 										"trails",
-										"urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52"
+										"urn:trail:iota:tst:0xa8d2f52cc7c5f56b3e8c5243743b4f9163815cb4deda92f21eac5010b00ce2fa"
 									]
 								}
 							},
@@ -756,13 +906,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52",
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:ebsi:0xef174f13a22fe05a99bdb58bdf811539ef932acea2c53278945e822efcc75977",
 									"host": [
 										"{{SHIMMER_HOST}}"
 									],
 									"path": [
 										"trails",
-										"urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52"
+										"urn:trail:iota:ebsi:0xef174f13a22fe05a99bdb58bdf811539ef932acea2c53278945e822efcc75977"
 									]
 								}
 							},
@@ -775,7 +925,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n   \"record\": {\n        \"proof\": {\n            \"value\": \"12349393939393939393\"\n        }\n    },\n    \"type\": \"TrailRecordAdd\",\n    \"action\": \"TransactionSignature\",\n    \"meta\": {\n        \"created\": \"2023-04-18T08:27:35+02:00\",\n        \"updated\": \"2023-04-18T08:41:37+02:00\",\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\",\n        \"fundingAddress\": \"tst1qpj8d8k8tq3zv4qfd29t4f5c5qduqvfjnymy0263qv7g2erufr3xk7mxvtf\",\n        \"fundingOutputID\": \"0x89c83ed60dbe286b8b68bea3d5022379cb76356726134c802f39d52ead10cc5b0100\",\n        \"storageCost\": \"353500\"\n    },\n    \"txEssenceHash\": \"0x8c1a564c3c368aa2f18f6a06226cf0b71ade3dc5fe8ebcb1a48a237a6b9a4f70\",\n    \"signature\": [\n        {\n            \"publicKey\": \"0x905becb2967c7c803706347f75832bbb01858ef0bab7f67741237c3508098a3a\",\n            \"signature\": \"0x9d3964c8bab58f77ae9ce7e102dbd1f1ad8e0d9f1c1e9cbefa70d2af8b12c049138b84a0d9e6bb7189908060cab394d3c25bc37e6435328ba15034535be3e001\"\n        }\n    ]\n}",
+									"raw": "{\n    \"record\": {\n        \"proof\": {\n            \"value\": \"12349393939393939393\"\n        }\n    },\n    \"type\": \"TrailRecordAdd\",\n    \"action\": \"TransactionSignature\",\n    \"meta\": {\n        \"created\": \"2023-04-18T08:27:35+02:00\",\n        \"updated\": \"2023-04-20T17:25:56+02:00\",\n        \"stateControllerAddress\": \"tst1qq077fh6ekkpl5jrc2aq0fjkuna4gpg9j5kq79tmxpluefaqs50txfs9af5\",\n        \"fundingAddress\": \"\",\n        \"fundingOutputID\": \"\",\n        \"storageCost\": \"353500\"\n    },\n    \"txEssenceHash\": \"0x6eb31fdc6b21ad73ed28f827102d337248eb17273cc728624f3f130b30f21742\",\n    \"signature\": [\n        {\n            \"publicKey\": \"0x905becb2967c7c803706347f75832bbb01858ef0bab7f67741237c3508098a3a\",\n            \"signature\": \"0x71b52c0784349e286046ef78b9e724fb6471c86b22bcd1eab6ae219b8d073171852a25439954031f044620caf3dc00a15ad5479d64cb00b838b5b02819e04509\"\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -783,17 +933,47 @@
 									}
 								},
 								"url": {
-									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52",
+									"raw": "{{SHIMMER_HOST}}/trails/urn:trail:iota:ebsi:0xef174f13a22fe05a99bdb58bdf811539ef932acea2c53278945e822efcc75977",
 									"host": [
 										"{{SHIMMER_HOST}}"
 									],
 									"path": [
 										"trails",
-										"urn:trail:iota:tst:0x3613be8c038361b001a556dbf83d67106b843d0f06c6f63deeccc2dfe2babe52"
+										"urn:trail:iota:ebsi:0xef174f13a22fe05a99bdb58bdf811539ef932acea2c53278945e822efcc75977"
 									]
 								}
 							},
 							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{EBSI_TOKEN}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				},
@@ -807,7 +987,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"type\": \"VerificationRequest\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"id\": \"https://example.edu/credentials/3732\",\n        \"type\": [\n            \"VerifiableCredential\",\n            \"UniversityDegreeCredential\"\n        ],\n        \"credentialSubject\": {\n            \"id\": \"did:iota:tst:0x6abe6ef35e4dfd4242f932d6fbe1b1ae01b87a1b42a49329141602a9222980de\",\n            \"GPA\": \"4.0\",\n            \"degreeName\": \"Bachelor of Science and Arts\",\n            \"degreeType\": \"BachelorDegree\",\n            \"name\": \"Alice\"\n        },\n        \"issuer\": \"did:iota:tst:0x73871725725fd46a59f25440e29ce99eaad737f9c4f6ee980f642eb10de719d2\",\n        \"issuanceDate\": \"2023-04-03T07:41:45Z\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0x73871725725fd46a59f25440e29ce99eaad737f9c4f6ee980f642eb10de719d2#sign-1\",\n            \"signatureValue\": \"675BdkApXXt6Tgc4FRwFEB6bf3omTH4c7rMkz6Z3DFZx2BLdDJiRZZ3rNn8i7D4rohjAHLZhTJHRoqKRfuh1EGuM\"\n        }\n    }\n}",
+									"raw": "{\n    \"type\": \"VerificationRequest\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"id\": \"https://example.edu/credentials/3732\",\n        \"type\": [\n            \"VerifiableCredential\",\n            \"UniversityDegreeCredential\"\n        ],\n        \"credentialSubject\": {\n            \"id\": \"did:iota:tst:0x6abe6ef35e4dfd4242f932d6fbe1b1ae01b87a1b42a49329141602a9222980de\",\n            \"GPA\": \"4.0\",\n            \"degreeName\": \"Bachelor of Science and Arts\",\n            \"degreeType\": \"BachelorDegree\",\n            \"name\": \"Alice\"\n        },\n        \"issuer\": \"did:iota:tst:0xcbe64b9ab1a7253c6d34f00530080affd7df9cf0e528cbfef322062ecf01128b\",\n        \"issuanceDate\": \"2023-06-13T11:49:48Z\",\n        \"validFrom\": \"2022-10-10T12:00:00Z\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xcbe64b9ab1a7253c6d34f00530080affd7df9cf0e528cbfef322062ecf01128b#sign-1\",\n            \"signatureValue\": \"5MhiLkNpndrNmme43dXCYpMoeMEVZKFJ3Gzxi1nk8Tnw3Z6NFgAFaBm8BQ8YsPhsN584iAAMKy4kbfpjM3CMCsxt\"\n        }\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -821,6 +1001,141 @@
 									],
 									"path": [
 										"credentials"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Credential Reg",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"RegistrationRequest\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"type\": \"VerifiablePresentation\",\n        \"verifiableCredential\": {\n            \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n            \"id\": \"https://example.edu/credentials/3732\",\n            \"type\": [\n                \"VerifiableCredential\",\n                \"UniversityDegreeCredential\"\n            ],\n            \"credentialSubject\": {\n                \"id\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n                \"GPA\": \"4.0\",\n                \"degreeName\": \"Bachelor of Science and Arts\",\n                \"degreeType\": \"BachelorDegree\",\n                \"name\": \"Alice\"\n            },\n            \"issuer\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597\",\n            \"issuanceDate\": \"2023-06-16T09:17:37Z\",\n            \"proof\": {\n                \"type\": \"JcsEd25519Signature2020\",\n                \"verificationMethod\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597#sign-1\",\n                \"signatureValue\": \"3YXsJ4VnK1mNRnGYoWwcYu3iAYTCa3jwZqQzhYqmKa2iRTpFxeqhix643M7FxHR9kSTTYaTProxdsT74vR7dmVHK\"\n            }\n        },\n        \"holder\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf#sign-1\",\n            \"signatureValue\": \"oneRmiaA2MKDJnciWYMkzgpqZsaFXDrHh83kqffXRMGLrnGpssnFJRRzMGx1YfKHgzYCz7rjFbQQsunLYQTWtEg\",\n            \"expires\": \"2023-06-16T13:17:37Z\",\n            \"challenge\": \"475a7984-1bb5-4c4c-a56f-822bccd46440\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials/registrations",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials",
+										"registrations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cred Reg - Final Tx Performed",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"RegistrationRequest\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"holder\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n        \"proof\": {\n            \"challenge\": \"475a7984-1bb5-4c4c-a56f-822bccd46440\",\n            \"expires\": \"2023-06-16T10:58:27Z\",\n            \"signatureValue\": \"3zMLWBmxiYPjKjiWr68CugcLdj8111o9xQ6wHhy5NXGMZyAbVamBKRD9b7x4i1YPRm8JbxYrPWTxTABPn8bgyU3J\",\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf#sign-1\"\n        },\n        \"type\": \"VerifiablePresentation\",\n        \"verifiableCredential\": {\n            \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n            \"credentialSubject\": {\n                \"GPA\": \"4.0\",\n                \"degreeName\": \"Bachelor of Science and Arts\",\n                \"degreeType\": \"BachelorDegree\",\n                \"id\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n                \"name\": \"Alice\"\n            },\n            \"id\": \"https://example.edu/credentials/3732\",\n            \"issuanceDate\": \"2023-06-16T06:58:27Z\",\n            \"issuer\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597\",\n            \"proof\": {\n                \"signatureValue\": \"5uH7hrpFXVdQe1eWt8cjhkY6NHM9Ec8pAguMZTKxDmea3buTB5ijD7D1duT7UCDY6UDFvLfpKQzDqTPcjv3U5LCJ\",\n                \"type\": \"JcsEd25519Signature2020\",\n                \"verificationMethod\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597#sign-1\"\n            },\n            \"type\": [\n                \"VerifiableCredential\",\n                \"UniversityDegreeCredential\"\n            ]\n        }\n    },\n    \"meta\": {\n        \"created\": \"2023-06-16T11:11:20+02:00\",\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\",\n        \"fundingOutputID\": \"0x9cd829831b1a69daee254929cfb6488f12c6c9775d065666339792c1cd266bc00100\",\n        \"stateControllerAddress\": \"tst1pr76frx67tgmays4tce284fxz6wjnr25dtl856y0jes863z60fl67f7asm8\",\n        \"storageCost\": \"711500\",\n        \"updated\": \"2023-06-16T11:11:20+02:00\"\n    },\n    \"txEssenceHash\": \"0xd1eb02bb021e96ab31b0c0edb186d3b13d727180897b8f820bf665988708c7d9\",\n\n    \"signature\": [\n        {\n            \"publicKey\": \"0x4a4d7d2b280d55db0892af0e188981c0f9de12a6a33f2fb858dbbe10c49ceb5f\",\n            \"signature\": \"0xe8e0f06063c50483fdfc6bf791f1c854a2bdfa4237ad15b4d9f956ca46dfe58d828576188d7168bd0276aa51ec692745d864f6776948b9accf62da82459fae0f\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials/registrations",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials",
+										"registrations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cred Reg Update - Final Tx",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"RegistrationRequest\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"holder\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n        \"proof\": {\n            \"challenge\": \"475a7984-1bb5-4c4c-a56f-822bccd46440\",\n            \"expires\": \"2023-06-16T14:37:49Z\",\n            \"signatureValue\": \"28vobsH4ojHQtfAqHiSd88izWFqSestAK8JXBDKqYZ7jiiHrQNCJ1rfwbm2YUfpL48xhsdaW6LqdYE3Q6X2H53C9\",\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf#sign-1\"\n        },\n        \"type\": \"VerifiablePresentation\",\n        \"verifiableCredential\": {\n            \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n            \"credentialSubject\": {\n                \"GPA\": \"4.0\",\n                \"degreeName\": \"Bachelor of Science and Arts\",\n                \"degreeType\": \"BachelorDegree - Extended More and More\",\n                \"id\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n                \"name\": \"Alice\"\n            },\n            \"id\": \"https://example.edu/credentials/3732\",\n            \"issuanceDate\": \"2023-06-16T10:37:49Z\",\n            \"issuer\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597\",\n            \"proof\": {\n                \"signatureValue\": \"2Wgemyha5jHpdq8fnLsDwb8s8ncxAc9W9St4US3ZdsvJ45bgRXYAuUih6ovh617EagFwRG2QHFMe8oFZDKoC92b7\",\n                \"type\": \"JcsEd25519Signature2020\",\n                \"verificationMethod\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597#sign-1\"\n            },\n            \"type\": [\n                \"VerifiableCredential\",\n                \"UniversityDegreeCredential\"\n            ]\n        }\n    },\n    \"registrationTrail\": \"urn:trail:iota:tst:0x6a6b1536d6bd449ddf4530f0613c50f3fb4eff4401ab14d6fb5903ff460dc7cf\",\n    \"meta\": {\n        \"created\": \"2023-06-16T11:18:49+02:00\",\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\",\n        \"fundingOutputID\": \"0xbabd2f70f8447cef9fe31d734d416ed55dfb764c9910cea8253ef908dbd4c26c0100\",\n        \"stateControllerAddress\": \"tst1pr76frx67tgmays4tce284fxz6wjnr25dtl856y0jes863z60fl67f7asm8\",\n        \"storageCost\": \"724000\",\n        \"updated\": \"2023-06-16T12:39:14+02:00\"\n    },\n    \"txEssenceHash\": \"0xcd020ab5a5d5e14d1936e8c4695707335b3d94b92c7771e466fe43040872e152\",\n    \"signature\": [\n        {\n            \"publicKey\": \"0x02fd35630921beb918ae5a1088a008d5e13768928a098a03b0efec940e96354f\",\n            \"signature\": \"0xba56d23e553d52367c7d4a9b1f22793fe2702b12a6090ffa7ab917b2793ab70160d95c3ea8a8f8cb775948a274bc29d009cb2a60c50d53b621047494ef249305\"\n        },\n        {\n            \"publicKey\": \"0x4a4d7d2b280d55db0892af0e188981c0f9de12a6a33f2fb858dbbe10c49ceb5f\",\n            \"signature\": \"0xfe5bf822e0ef1218a4707cf4dfaddd27f1f88d5156f32065b235c58539c75f43309a5e6dc91371c076404a1c2c23c42b43a8457e53f8dc2f391b5613cad8100b\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials/registrations",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials",
+										"registrations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cred Reg Funding Addr",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"TransactionRequest\",\n    \"meta\": {\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\"\n    },\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"type\": \"VerifiablePresentation\",\n        \"verifiableCredential\": {\n            \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n            \"id\": \"https://example.edu/credentials/3732\",\n            \"type\": [\n                \"VerifiableCredential\",\n                \"UniversityDegreeCredential\"\n            ],\n            \"credentialSubject\": {\n                \"id\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n                \"GPA\": \"4.0\",\n                \"degreeName\": \"Bachelor of Science and Arts\",\n                \"degreeType\": \"BachelorDegree\",\n                \"name\": \"Alice\"\n            },\n            \"issuer\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597\",\n            \"issuanceDate\": \"2023-06-16T06:58:27Z\",\n            \"proof\": {\n                \"type\": \"JcsEd25519Signature2020\",\n                \"verificationMethod\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597#sign-1\",\n                \"signatureValue\": \"5uH7hrpFXVdQe1eWt8cjhkY6NHM9Ec8pAguMZTKxDmea3buTB5ijD7D1duT7UCDY6UDFvLfpKQzDqTPcjv3U5LCJ\"\n            }\n        },\n        \"holder\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf#sign-1\",\n            \"signatureValue\": \"3zMLWBmxiYPjKjiWr68CugcLdj8111o9xQ6wHhy5NXGMZyAbVamBKRD9b7x4i1YPRm8JbxYrPWTxTABPn8bgyU3J\",\n            \"expires\": \"2023-06-16T10:58:27Z\",\n            \"challenge\": \"475a7984-1bb5-4c4c-a56f-822bccd46440\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials/registrations",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials",
+										"registrations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cred Reg Update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"type\": \"TransactionRequest\",\n    \"meta\": {\n        \"fundingAddress\": \"tst1qpmqk6gdm8752j2hs60w385h6gaelv07x7g8tz2t4x0ez38ttkfwwsfycum\"\n    },\n    \"registrationTrail\": \"urn:trail:iota:tst:0x6a6b1536d6bd449ddf4530f0613c50f3fb4eff4401ab14d6fb5903ff460dc7cf\",\n    \"credential\": {\n        \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n        \"type\": \"VerifiablePresentation\",\n        \"verifiableCredential\": {\n            \"@context\": \"https://www.w3.org/2018/credentials/v1\",\n            \"id\": \"https://example.edu/credentials/3732\",\n            \"type\": [\n                \"VerifiableCredential\",\n                \"UniversityDegreeCredential\"\n            ],\n            \"credentialSubject\": {\n                \"id\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n                \"GPA\": \"4.0\",\n                \"degreeName\": \"Bachelor of Science and Arts\",\n                \"degreeType\": \"BachelorDegree - Extended More and More\",\n                \"name\": \"Alice\"\n            },\n            \"issuer\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597\",\n            \"issuanceDate\": \"2023-06-16T10:37:49Z\",\n            \"proof\": {\n                \"type\": \"JcsEd25519Signature2020\",\n                \"verificationMethod\": \"did:iota:tst:0xc138aaeac93104bbb4eb56eab2a689754b558872ecbf0a1bd89bf9aaffe06597#sign-1\",\n                \"signatureValue\": \"2Wgemyha5jHpdq8fnLsDwb8s8ncxAc9W9St4US3ZdsvJ45bgRXYAuUih6ovh617EagFwRG2QHFMe8oFZDKoC92b7\"\n            }\n        },\n        \"holder\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf\",\n        \"proof\": {\n            \"type\": \"JcsEd25519Signature2020\",\n            \"verificationMethod\": \"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf#sign-1\",\n            \"signatureValue\": \"28vobsH4ojHQtfAqHiSd88izWFqSestAK8JXBDKqYZ7jiiHrQNCJ1rfwbm2YUfpL48xhsdaW6LqdYE3Q6X2H53C9\",\n            \"expires\": \"2023-06-16T14:37:49Z\",\n            \"challenge\": \"475a7984-1bb5-4c4c-a56f-822bccd46440\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials/registrations",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials",
+										"registrations"
 									]
 								}
 							},
@@ -847,6 +1162,25 @@
 									],
 									"path": [
 										"credentials"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Credential Registrations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SHIMMER_HOST}}/credentials/registrations/did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf",
+									"host": [
+										"{{SHIMMER_HOST}}"
+									],
+									"path": [
+										"credentials",
+										"registrations",
+										"did:iota:tst:0xfda48cdaf2d1be92155e32a3d526169d298d546afe7a688f96607d445a7a7faf"
 									]
 								}
 							},
@@ -886,7 +1220,76 @@
 					]
 				},
 				{
-					"name": "POI",
+					"name": "INX-Chronicle",
+					"item": [
+						{
+							"name": "Proof of Inclusion",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "Get Output",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://chronicle.stable.iota-ec.net/api/explorer/v2/milestones/123456/blocks",
+									"protocol": "https",
+									"host": [
+										"chronicle",
+										"stable",
+										"iota-ec",
+										"net"
+									],
+									"path": [
+										"api",
+										"explorer",
+										"v2",
+										"milestones",
+										"123456",
+										"blocks"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaHJvbmljbGUiLCJzdWIiOiJjaHJvbmljbGUiLCJhdWQiOlsiY2hyb25pY2xlIl0sIm5iZiI6MTY3ODY5NjY4OSwiaWF0IjoxNjc4Njk2Njg5LCJqdGkiOiIxNjc4Njk2Njg5In0.jCRidWUxauFqBPMCIOZGMSWSd4Yz6hPVvf8BdQspFLc",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "POI Create",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -897,26 +1300,85 @@
 							}
 						],
 						"url": {
-							"raw": "https://api.lb-0.h1.stable.iota-ec.net/api/poi/v1/create/0x9417ca2fe94c868b3ff3c7c6b703ebca15b5df5e436e49f137f35cda339c72c9",
-							"protocol": "https",
+							"raw": "{{SHIMMER_BASE}}/api/poi/v1/create/0x6c1785a0f83218a2dac6030bec6539690c8d31fcb25ae8a4f4a4084dbb952c9e",
 							"host": [
-								"api",
-								"lb-0",
-								"h1",
-								"stable",
-								"iota-ec",
-								"net"
+								"{{SHIMMER_BASE}}"
 							],
 							"path": [
 								"api",
 								"poi",
 								"v1",
 								"create",
-								"0x9417ca2fe94c868b3ff3c7c6b703ebca15b5df5e436e49f137f35cda339c72c9"
+								"0x6c1785a0f83218a2dac6030bec6539690c8d31fcb25ae8a4f4a4084dbb952c9e"
 							]
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "POI  Verify",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIT1JORVQiLCJzdWIiOiJIT1JORVQiLCJhdWQiOlsiSE9STkVUIl0sIm5iZiI6MTY3ODY5NjYxMywiaWF0IjoxNjc4Njk2NjEzLCJqdGkiOiIxNjc4Njk2NjEzIn0.0Cqp7sgD9ZuFVOSmvBbYd1GipRL8EJSMiwHqveesVMU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"milestone\": {\n        \"type\": 7,\n        \"index\": 1573327,\n        \"timestamp\": 1684934785,\n        \"protocolVersion\": 2,\n        \"previousMilestoneId\": \"0x0b8a31de9dd2958fe1895a36ed20a756089c78e0db2c7b4fcf5ee1a498f6d33e\",\n        \"parents\": [\n            \"0x21c2b84d71bb67d99136863bbe82ae931c7327a1f70cb1fa2bf734776ba92bcd\",\n            \"0x6570a1d56b1fa0f6e9adb712d799bb65d730bb03c7d8d26f25f8baf1889dc081\"\n        ],\n        \"inclusionMerkleRoot\": \"0x01df8099f5d1c7d9f434e5df721c8d2a5ff57dbe51240bfcd3b98eda2eb7a947\",\n        \"appliedMerkleRoot\": \"0x421b346cdec928eed16027b127eacc38c245995836c21234517506ca48aa12c9\",\n        \"signatures\": [\n            {\n                \"type\": 0,\n                \"publicKey\": \"0xed3c3f1a319ff4e909cf2771d79fece0ac9bd9fd2ee49ea6c0885c9cb3b1248c\",\n                \"signature\": \"0x7e14688179ce13fe8fe3d338d2def48a30f863ba55a342239c2e440de6a2bd110ee1c4667df18b4f954670cdbe0b0ed287f9de400d28d51f13cfeef952c9e807\"\n            },\n            {\n                \"type\": 0,\n                \"publicKey\": \"0xf6752f5f46a53364e2ee9c4d662d762a81efd51010282a75cd6bd03f28ef349c\",\n                \"signature\": \"0x365dbc7e68a3edb0f763ff47213682176488a368206ba4fc97c3083907f35b858901e7e7f8548ec8d02c8a0eeae6623827fc7c19ac49364df75aa4d2a4562b00\"\n            }\n        ]\n    },\n    \"block\": {\n        \"protocolVersion\": 2,\n        \"parents\": [\n            \"0x21c2b84d71bb67d99136863bbe82ae931c7327a1f70cb1fa2bf734776ba92bcd\",\n            \"0xd33b870ee5c2c23bf2012762dceef67ea3351f8366fa5d9c9854bf79822ec414\"\n        ],\n        \"payload\": {\n            \"type\": 6,\n            \"essence\": {\n                \"type\": 1,\n                \"networkId\": \"8453507715857476362\",\n                \"inputs\": [\n                    {\n                        \"type\": 0,\n                        \"transactionId\": \"0x1253c0d2020ce965a24e61e9e60a82c1d365a57858823d9e95525a8199ad2468\",\n                        \"transactionOutputIndex\": 1\n                    }\n                ],\n                \"inputsCommitment\": \"0x2446860a8ec9c00276bbb7d7c3b1d637a7bfbc763fc50fa6827e011877cc3acc\",\n                \"outputs\": [\n                    {\n                        \"type\": 4,\n                        \"amount\": \"355500\",\n                        \"aliasId\": \"0x0000000000000000000000000000000000000000000000000000000000000000\",\n                        \"stateIndex\": 0,\n                        \"stateMetadata\": \"0x7b226d657461223a7b2275706461746564223a22323032332d30352d32345431353a32363a32312b30323a3030227d2c227265636f7264223a7b2270726f6f66223a7b2276616c7565223a2231323334227d7d7d\",\n                        \"foundryCounter\": 0,\n                        \"unlockConditions\": [\n                            {\n                                \"type\": 4,\n                                \"address\": {\n                                    \"type\": 0,\n                                    \"pubKeyHash\": \"0x64769ec758222654096a8abaa698a01bc03132993647ab51033c85647c48e26b\"\n                                }\n                            },\n                            {\n                                \"type\": 5,\n                                \"address\": {\n                                    \"type\": 0,\n                                    \"pubKeyHash\": \"0x64769ec758222654096a8abaa698a01bc03132993647ab51033c85647c48e26b\"\n                                }\n                            }\n                        ],\n                        \"immutableFeatures\": [\n                            {\n                                \"type\": 1,\n                                \"address\": {\n                                    \"type\": 0,\n                                    \"pubKeyHash\": \"0x64769ec758222654096a8abaa698a01bc03132993647ab51033c85647c48e26b\"\n                                }\n                            },\n                            {\n                                \"type\": 2,\n                                \"data\": \"0x7b226d657461223a7b2263726561746564223a22323032332d30352d32345431353a32363a32312b30323a3030222c2274797065223a22545241494c3a312e30227d2c227265636f7264223a7b2276223a227632227d7d\"\n                            }\n                        ]\n                    },\n                    {\n                        \"type\": 3,\n                        \"amount\": \"99687860500\",\n                        \"unlockConditions\": [\n                            {\n                                \"type\": 0,\n                                \"address\": {\n                                    \"type\": 0,\n                                    \"pubKeyHash\": \"0x64769ec758222654096a8abaa698a01bc03132993647ab51033c85647c48e26b\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            },\n            \"unlocks\": [\n                {\n                    \"type\": 0,\n                    \"signature\": {\n                        \"type\": 0,\n                        \"publicKey\": \"0x04d6dfce148914c434f1c22ef9a273cc3cf99e4e7fadc56bf0a2e1f667fa7a4f\",\n                        \"signature\": \"0x3f290359ae43275518efbe448330c4fc7ceedd3b90fd90e640c025907c64bac4c99d4b86c5137ca9b1e2b4da25c04959e4a2f1784db16c3f10c159896b343902\"\n                    }\n                }\n            ]\n        },\n        \"nonce\": \"0\"\n    },\n    \"proof\": {\n        \"l\": {\n            \"h\": \"0x4c495c442e24a83d2186159d1934e2ec92a8a321ec04baebfa09337fb5770f7f\"\n        },\n        \"r\": {\n            \"value\": \"0x6570a1d56b1fa0f6e9adb712d799bb65d730bb03c7d8d26f25f8baf1889dc081\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SHIMMER_BASE}}/api/poi/v1/validate",
+							"host": [
+								"{{SHIMMER_BASE}}"
+							],
+							"path": [
+								"api",
+								"poi",
+								"v1",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{EBSI_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		}
