@@ -18,7 +18,7 @@ import { Ed25519 } from "@iota/crypto.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids as ebsiDids } from "./dids";
+import { ebsiDids as ebsiDids } from "./dids";
 import { post, type Signature } from "../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
@@ -55,7 +55,7 @@ async function run() {
 
     const holderPrivateKeyBytes = Converter.hexToBytes(holderPrivateKeySign);
 
-    const registrationTrail = "urn:trail:iota:tst:0x110a94aa8ced1effe53e7d910c9673314efc39b0830d6509d9cb2365a034e688";
+    const registrationTrail = "urn:trail:iota:ebsi:0x3c802ea821cf0e181f0b49498da70f2f55fec08a212d280ea1f0307cff7191d0";
 
     // The issuer is now sure that the credential they are about to issue satisfies their expectations.
     // The credential is then serialized to JSON and transmitted to the holder in a secure manner.

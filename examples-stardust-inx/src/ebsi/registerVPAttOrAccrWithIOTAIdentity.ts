@@ -16,7 +16,7 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids as ebsiDids } from "./dids";
+import { ebsiDids as ebsiDids } from "./dids";
 import { post } from "../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
