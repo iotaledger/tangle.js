@@ -17,8 +17,8 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids as ebsiDids } from "./dids";
-import { accreditationSchema, auditOrgSchema, legalEntitySchema, wasteOperatorSchema } from "./schemas";
+import { dids } from "../dids";
+import { accreditationSchema, dppSchema, legalEntitySchema } from "../schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -36,42 +36,36 @@ async function run() {
 
 
     // The root of trust accredits to accredit to the ES Government
-    const issuerDid = ebsiDids.rootTrust.did;
+    const issuerDid = dids.esGovernmentTAO.did;
     const verMethod = "#sign-1";
-    const privateKey = ebsiDids.rootTrust.privateKeySign
+    const privateKey = dids.esGovernmentTAO.privateKeySign
 
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
     const issuerDocument: IotaDocument = await didClient.resolveDid(did);
-    console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
+    console.log("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     const subject = {
-        id: ebsiDids.esGovernmentTAO.did,
-        reservedAttributeId: "1244",
+        id: dids.revenueAgencyTAO.did,
+        reservedAttributeId: "88888",
         accreditedFor: [
             {
                 schemaId: legalEntitySchema,
                 types: [
                     "VerifiableCredential",
-                    "VerifiableAccreditation",
-                    "VerifiableAccreditationToAttest"
-                ],
-                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
-            },
-            {
-                schemaId: wasteOperatorSchema,
-                types: [
-                    "VerifiableCredential",
-                    "VerifiableAccreditation",
-                    "VerifiableAccreditationToAttest"
-                ],
-                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
-            },
-            {
-                schemaId: auditOrgSchema,
-                types: [
-                    "VerifiableCredential",
                     "VerifiableAttestation"
+                ],
+                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
+            },
+            // The revenue agency can give this accreditation to those legal entities, i.e. economic operators
+            // that are in economicActivity elegible for issuing DPP Data
+            // That's why this is made explicit here, albeit it could have been implicit
+            {
+                schemaId: dppSchema,
+                types: [
+                    "VerifiableCredential",
+                    "VerifiableAccreditation",
+                    "VerifiableAccreditationToAttest",
                 ],
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             }
@@ -84,6 +78,8 @@ async function run() {
         type: [
             "VerifiableCredential",
             "VerifiableAccreditation",
+            "VerifiableAccreditationToAttest",
+            // The Rev Ag can accredit product operators to issue DPP Data
             "VerifiableAccreditationToAccredit"
         ],
         issuer: issuerDid,
@@ -108,6 +104,8 @@ async function run() {
     };
 
 
+    // Workaround to add Credential Schema
+
     const privateKeyBytes = Converter.hexToBytes(privateKey);
 
     // Sign Credential.
@@ -127,11 +125,11 @@ async function run() {
         console.error(error);
         return;
     }
-    
+
     const credentialJSON = signedVc;
-    console.log(JSON.stringify(credentialJSON, null, 2));
+    console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
 }
 
 export { };
 
-run().then(() => console.error("Done")).catch(err => console.error(err));
+run().then(() => console.log("Done")).catch(err => console.error(err));

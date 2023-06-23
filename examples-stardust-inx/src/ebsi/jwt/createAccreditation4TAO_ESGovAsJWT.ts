@@ -3,46 +3,32 @@
 
 import {
     Credential,
-    ProofOptions,
-    IotaDocument, IotaIdentityClient
-    , IotaDID,
-    ProofPurpose,
-    IotaDIDUrl,
     Timestamp
 } from "@iota/identity-wasm/node/index.js";
 
-import { Client } from "@iota/client-wasm/node/lib/index.js";
-
-import { Converter } from "@iota/util.js";
-
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids as ebsiDids } from "./dids";
-import { accreditationSchema, auditOrgSchema, legalEntitySchema, wasteOperatorSchema } from "./schemas";
+
+import { ebsiDidsJwk as ebsiDids } from "../dids";
+
+import { accreditationSchema, auditOrgSchema, legalEntitySchema, wasteOperatorSchema } from "../schemas";
+import { get } from "../../utilHttp";
+import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
+
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
-const { NODE_ENDPOINT, TOKEN } = process.env;
+const { TOKEN, PLUGIN_ENDPOINT } = process.env;
 
 async function run() {
-    const client = new Client({
-        primaryNode: {
-            url: NODE_ENDPOINT,
-            auth: { jwt: TOKEN }
-        },
-        localPow: true,
-    });
-    const didClient = new IotaIdentityClient(client);
-
 
     // The root of trust accredits to accredit to the ES Government
     const issuerDid = ebsiDids.rootTrust.did;
-    const verMethod = "#sign-1";
-    const privateKey = ebsiDids.rootTrust.privateKeySign
+    const verMethod = "sign-1";
+    
+    const privateKey = await JWK.fromObject(ebsiDids.rootTrust.privateKeySign as unknown as JWKObject);
 
-    const elements = issuerDid.split(":");
-    const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
-    const issuerDocument: IotaDocument = await didClient.resolveDid(did);
+    const issuerDocument = await get(`${PLUGIN_ENDPOINT}/identities/${encodeURIComponent(issuerDid)}`, TOKEN);
     console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     const subject = {
@@ -78,6 +64,7 @@ async function run() {
         ]
     };
 
+    const expiresAt =  "2024-06-22T14:11:44Z";
     const credAsJson = {
         "@context": ["https://www.w3.org/2018/credentials/v1"],
         id: "https://id.example.org/id999999",
@@ -89,7 +76,8 @@ async function run() {
         issuer: issuerDid,
         issuanceDate: Timestamp.nowUTC(),
         validFrom: Timestamp.nowUTC(),
-        expirationDate: "2024-06-22T14:11:44Z",
+        expirationDate: expiresAt,
+        validUntil: expiresAt,
         issued: Timestamp.nowUTC(),
         credentialSchema: {
             "id": accreditationSchema,
@@ -107,29 +95,40 @@ async function run() {
         }
     };
 
+    const cred = Credential.fromJSON(credAsJson);
+    const finalCred = cred.toJSON();
 
-    const privateKeyBytes = Converter.hexToBytes(privateKey);
+    const payload: JWTPayload = {
+        vc: finalCred,
+    };
 
-    // Sign Credential.
-    let signedVc;
+    const options: JWTSignOptions = {
+       issuer: issuerDid,
+       subject: ebsiDids.esGovernmentTAO.did,
+       jti: finalCred["id"],
+       kid: `${issuerDid}#${verMethod}`,
+       notBefore: toUnixSeconds(finalCred["validFrom"]),
+       iat: toUnixSeconds(finalCred["issued"]),
+       exp: toUnixSeconds(finalCred["expirationDate"])
+    };
 
+    let token = "";
     try {
-        const options = new ProofOptions({
-            purpose: ProofPurpose.assertionMethod(),
-            created: credAsJson["issued"]
-        });
-
-        const iotaUrl = IotaDIDUrl.parse(`${issuerDid}${verMethod}`);
-
-        signedVc = issuerDocument.signCredential(Credential.fromJSON(credAsJson), privateKeyBytes.slice(0, 32), iotaUrl, options);
+        // Now the JWT Claims are defined
+        token = await JWT.sign(payload, privateKey, options)
     }
     catch (error) {
         console.error(error);
         return;
     }
     
-    const credentialJSON = signedVc;
-    console.log(JSON.stringify(credentialJSON, null, 2));
+   console.log(token);
+}
+
+function toUnixSeconds(iso8601Date: string): number {
+    const date = new Date(iso8601Date);
+
+    return Math.round(date.getTime() / 1000);
 }
 
 export { };

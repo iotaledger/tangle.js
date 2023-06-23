@@ -18,7 +18,7 @@ import { Ed25519 } from "@iota/crypto.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { ebsiDids as ebsiDids } from "./dids";
+import { dids as ebsiDids } from "./dids";
 import { post, type Signature } from "../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
@@ -55,7 +55,8 @@ async function run() {
 
     const holderPrivateKeyBytes = Converter.hexToBytes(holderPrivateKeySign);
 
-    const registrationTrail = "urn:trail:iota:ebsi:0x3c802ea821cf0e181f0b49498da70f2f55fec08a212d280ea1f0307cff7191d0";
+    const registrationTrail = "urn:trail:iota:tst:0x2c7a8c3636356f6517f3ad62cc8291deef62db7fe960e456440cd9695159ae44";
+    // const registrationTrail = "urn:trail:iota:ebsi:0x3c802ea821cf0e181f0b49498da70f2f55fec08a212d280ea1f0307cff7191d0";
 
     // The issuer is now sure that the credential they are about to issue satisfies their expectations.
     // The credential is then serialized to JSON and transmitted to the holder in a secure manner.
@@ -135,7 +136,7 @@ async function postToPlugin(signedVp: unknown, registrationTrail: string,
         signature: Converter.bytesToHex(essenceSigned, true)
     }];
 
-    // console.log(JSON.stringify(nextPayload));
+    console.error("Signature: ", nextPayload.signature);
 
     const finalResult = await post(`${PLUGIN_ENDPOINT}/credentials/registrations`, TOKEN, nextPayload);
 
