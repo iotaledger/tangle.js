@@ -48,15 +48,15 @@ export const ebsiDidsJwk = {
         did: "did:iota:tst:0xefeed3f8d9beb66f5ce47642f3eb32a8585ab682f96b9da2be7fa49b1933ef9e",
         privateKeyDidControl: "0x3b76dc6580975782bdee1deca7127caf4e2eba35081688035d0e7c805f1aeeb4c06dbaa2546fd9f3faf555337b11bc384991bcab0498874b01f39a31b0f526f2",
         publicKeyDidControl: "0xc06dbaa2546fd9f3faf555337b11bc384991bcab0498874b01f39a31b0f526f2",
-        privateKeySign: { 
-            "kid": "did:iota:tst:0xefeed3f8d9beb66f5ce47642f3eb32a8585ab682f96b9da2be7fa49b1933ef9e#sign-1", 
-            "use": "sig", 
-            "alg": "ES256", 
-            "kty": "EC", 
-            "x": "mRj7FhQ9XSssxvqQK-vSS6EqjS8vDJ4yQbeH1S-0iwg", 
-            "y": "Y7vnSC_YBd2cz6neP1P5UwNKOxM2VuQjFtnqCeg37GE", 
-            "crv": "P-256", 
-            "d": "YGEi9qi5m1HRJWjxeRR6LhDdh3eSWM3xntGwImX1oIM" 
+        privateKeySign: {
+            "kid": "did:iota:tst:0xefeed3f8d9beb66f5ce47642f3eb32a8585ab682f96b9da2be7fa49b1933ef9e#sign-1",
+            "use": "sig",
+            "alg": "ES256",
+            "kty": "EC",
+            "x": "mRj7FhQ9XSssxvqQK-vSS6EqjS8vDJ4yQbeH1S-0iwg",
+            "y": "Y7vnSC_YBd2cz6neP1P5UwNKOxM2VuQjFtnqCeg37GE",
+            "crv": "P-256",
+            "d": "YGEi9qi5m1HRJWjxeRR6LhDdh3eSWM3xntGwImX1oIM"
         }
     },
     esGovernmentTAO: {
@@ -72,6 +72,21 @@ export const ebsiDidsJwk = {
             "y": "bMIX8jpgJDgfujyFBGwOhUctrVy2x1rHn74Iv_yPCMM",
             "crv": "P-256",
             "d": "SAEt1GgiZrc3IoKYrgPMwI7uXu11eF1vKo-zH3F3xM8"
-          }
+        }
+    },
+    revenueAgencyTAO: {
+        did: "did:iota:tst:0xc5f0c16656242b4e1f54dff58ebccc6373af0c8c976315d2eae2e77c1db7ab43",
+        privateKeyDidControl: "0xd5c5daaa78cf1172f3df2942ef56c4fcf1cd8b1152b3e5e8b56da1c45104a064bfee0a3d93aae2f25aa8ebc84bc2dd4df7e9077b170bc45548d00f5dbff68d54",
+        publicKeyDidControl: "0xbfee0a3d93aae2f25aa8ebc84bc2dd4df7e9077b170bc45548d00f5dbff68d54",
+        privateKeySign: {
+            "kid": "did:iota:tst:0xc5f0c16656242b4e1f54dff58ebccc6373af0c8c976315d2eae2e77c1db7ab43#sign-1",
+            "use": "sig",
+            "alg": "ES256",
+            "kty": "EC",
+            "x": "LepDRweiPs-GXXJVuqrfcVjHxqvh87PhorSBD4gQYiQ",
+            "y": "8rWKQybzD4XAgZxi_NzAizh4x4GOpaU7T8qPJ3poC7M",
+            "crv": "P-256",
+            "d": "2zrT-WPElcQUsexabdQzr4cubXHjQf7sPAbbfY92h6o"
+        }
     }
 };

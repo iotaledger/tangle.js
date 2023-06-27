@@ -46,6 +46,12 @@ export function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export function toUnixSeconds(iso8601Date: string): number {
+    const date = new Date(iso8601Date);
+
+    return Math.round(date.getTime() / 1000);
+}
+
 export type Doc = { [id: string]: unknown };
 export type Meta = { [id: string]: unknown };
 

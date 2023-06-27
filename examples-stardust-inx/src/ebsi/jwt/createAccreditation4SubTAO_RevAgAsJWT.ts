@@ -3,50 +3,38 @@
 
 import {
     Credential,
-    ProofOptions,
-    IotaDocument, IotaIdentityClient
-    , IotaDID,
-    ProofPurpose,
-    IotaDIDUrl,
     Timestamp
 } from "@iota/identity-wasm/node/index.js";
 
-import { Client } from "@iota/client-wasm/node/lib/index.js";
-
-import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids } from "../dids";
+import { ebsiDidsJwk as ebsiDids } from "../dids";
 import { accreditationSchema, dppSchema, legalEntitySchema } from "../schemas";
+import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
+import { get, toUnixSeconds } from "../../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
-const { NODE_ENDPOINT, TOKEN } = process.env;
+const { PLUGIN_ENDPOINT, TOKEN } = process.env;
 
 async function run() {
-    const client = new Client({
-        primaryNode: {
-            url: NODE_ENDPOINT,
-            auth: { jwt: TOKEN }
-        },
-        localPow: true,
-    });
-    const didClient = new IotaIdentityClient(client);
 
+    const issuer =  ebsiDids.rootTrust;
+    const subject = ebsiDids.esGovernmentTAO;
 
     // The root of trust accredits to accredit to the ES Government
-    const issuerDid = dids.esGovernmentTAO.did;
-    const verMethod = "#sign-1";
-    const privateKey = dids.esGovernmentTAO.privateKeySign
+    const issuerDid = issuer.did;
+    const verMethod = "sign-1";
 
-    const elements = issuerDid.split(":");
-    const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
-    const issuerDocument: IotaDocument = await didClient.resolveDid(did);
-    console.log("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
+    // Issuer's private key used to sign
+    const privateKey = await JWK.fromObject(issuer.privateKeySign as unknown as JWKObject);
 
-    const subject = {
-        id: dids.revenueAgencyTAO.did,
+    const issuerDocument = await get(`${PLUGIN_ENDPOINT}/identities/${encodeURIComponent(issuerDid)}`, TOKEN);
+    console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
+
+    const subjectData = {
+        id: subject.did,
         reservedAttributeId: "88888",
         accreditedFor: [
             {
@@ -58,7 +46,7 @@ async function run() {
                 limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
             },
             // The revenue agency can give this accreditation to those legal entities, i.e. economic operators
-            // that are in economicActivity elegible for issuing DPP Data
+            // that are in economicActivity eligible for issuing DPP Data
             // That's why this is made explicit here, albeit it could have been implicit
             {
                 schemaId: dppSchema,
@@ -91,7 +79,7 @@ async function run() {
             "id": accreditationSchema,
             "type": "FullJsonSchemaValidator2021"
         },
-        credentialSubject: subject,
+        credentialSubject: subjectData,
         credentialStatus: {
             id: "https://api-test.ebsi.eu/trusted-issuers-registry/v4/issuers/did:ebsi:zZeKyEJfUTGwajhNyNX928z/attributes/60ae46e4fe9adffe0bc83c5e5be825aafe6b5246676398cd1ac36b8999e088a8",
             type: "EbsiAccreditationEntry"
@@ -103,31 +91,34 @@ async function run() {
         }
     };
 
+    const cred = Credential.fromJSON(credAsJson);
+    const finalCred = cred.toJSON();
 
-    // Workaround to add Credential Schema
+    const payload: JWTPayload = {
+        vc: finalCred,
+    };
 
-    const privateKeyBytes = Converter.hexToBytes(privateKey);
+    const options: JWTSignOptions = {
+        issuer: issuerDid,
+        subject: subject.did,
+        jti: finalCred["id"],
+        kid: `${issuerDid}#${verMethod}`,
+        notBefore: toUnixSeconds(finalCred["validFrom"]),
+        iat: toUnixSeconds(finalCred["issued"]),
+        exp: toUnixSeconds(finalCred["expirationDate"])
+    };
 
-    // Sign Credential.
-    let signedVc;
-
+    let token = "";
     try {
-        const options = new ProofOptions({
-            purpose: ProofPurpose.assertionMethod(),
-            created: credAsJson["issued"]
-        });
-
-        const iotaUrl = IotaDIDUrl.parse(`${issuerDid}${verMethod}`);
-
-        signedVc = issuerDocument.signCredential(Credential.fromJSON(credAsJson), privateKeyBytes.slice(0, 32), iotaUrl, options);
+        // Now the JWT Claims are defined
+        token = await JWT.sign(payload, privateKey, options)
     }
     catch (error) {
         console.error(error);
         return;
     }
 
-    const credentialJSON = signedVc;
-    console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
+    console.log(token);
 }
 
 export { };

@@ -12,7 +12,7 @@ import * as dotenvExpand from "dotenv-expand";
 import { ebsiDidsJwk as ebsiDids } from "../dids";
 
 import { accreditationSchema, auditOrgSchema, legalEntitySchema, wasteOperatorSchema } from "../schemas";
-import { get } from "../../utilHttp";
+import { get, toUnixSeconds } from "../../utilHttp";
 import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
 
 const theEnv = dotenv.config();
@@ -123,12 +123,6 @@ async function run() {
     }
     
    console.log(token);
-}
-
-function toUnixSeconds(iso8601Date: string): number {
-    const date = new Date(iso8601Date);
-
-    return Math.round(date.getTime() / 1000);
 }
 
 export { };
