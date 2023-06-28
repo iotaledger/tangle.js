@@ -24,7 +24,6 @@ async function run() {
 
     // The root of trust accredits to accredit to the ES Government
     const issuerDid = ebsiDids.rootTrust.did;
-    const verMethod = "sign-1";
     
     const privateKey = await JWK.fromObject(ebsiDids.rootTrust.privateKeySign as unknown as JWKObject);
 
@@ -106,7 +105,7 @@ async function run() {
        issuer: issuerDid,
        subject: ebsiDids.esGovernmentTAO.did,
        jti: finalCred["id"],
-       kid: `${issuerDid}#${verMethod}`,
+       kid: `${privateKey.kid}`,
        notBefore: toUnixSeconds(finalCred["validFrom"]),
        iat: toUnixSeconds(finalCred["issued"]),
        exp: toUnixSeconds(finalCred["expirationDate"])

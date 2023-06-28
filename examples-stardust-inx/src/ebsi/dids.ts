@@ -45,48 +45,48 @@ export const ebsiDids = {
 
 export const ebsiDidsJwk = {
     rootTrust: {
-        did: "did:iota:tst:0xefeed3f8d9beb66f5ce47642f3eb32a8585ab682f96b9da2be7fa49b1933ef9e",
-        privateKeyDidControl: "0x3b76dc6580975782bdee1deca7127caf4e2eba35081688035d0e7c805f1aeeb4c06dbaa2546fd9f3faf555337b11bc384991bcab0498874b01f39a31b0f526f2",
-        publicKeyDidControl: "0xc06dbaa2546fd9f3faf555337b11bc384991bcab0498874b01f39a31b0f526f2",
+        did: "did:iota:tst:0xd0f496159980c9781c7ede6735c21f40756745d385999bb5a80490b347226532",
+        privateKeyDidControl: "0xb73b066ca5f416fc1ea74c82fe5a8c7bf9f292f22a18b6b9d1de40582914a20f2d83b0d8c34a4b076a6a8b19be7b480ccb3001da7880aedf0237c3bbe2406837",
+        publicKeyDidControl: "0x2d83b0d8c34a4b076a6a8b19be7b480ccb3001da7880aedf0237c3bbe2406837",
         privateKeySign: {
-            "kid": "did:iota:tst:0xefeed3f8d9beb66f5ce47642f3eb32a8585ab682f96b9da2be7fa49b1933ef9e#sign-1",
             "use": "sig",
             "alg": "ES256",
             "kty": "EC",
-            "x": "mRj7FhQ9XSssxvqQK-vSS6EqjS8vDJ4yQbeH1S-0iwg",
-            "y": "Y7vnSC_YBd2cz6neP1P5UwNKOxM2VuQjFtnqCeg37GE",
+            "x": "OW-K0MS1GJr18QsFimm1DWZYnZlVKTWERYyuWG_UEYo",
+            "y": "aA56KmqhYle4RMQd4hdJQqRi5HNrptdHLLN5bqtGor4",
             "crv": "P-256",
-            "d": "YGEi9qi5m1HRJWjxeRR6LhDdh3eSWM3xntGwImX1oIM"
+            "d": "-HKxayVZ9tNThx-FSGH6BbRMehe9r-pbriUDIzZof18",
+            "kid": "did:iota:tst:0xd0f496159980c9781c7ede6735c21f40756745d385999bb5a80490b347226532#QBY2xH1c9FdN-WtlFGXaAC9KFgjOO2ArSayQXIrxU1A"
         }
     },
     esGovernmentTAO: {
-        did: "did:iota:tst:0x43e8de0883631604887805c6d7b96a6f4e728fd889e95feec8ad77acb8c785f0",
-        privateKeyDidControl: "0x0e5a81e730d09045029fa0c03d293d6cd16941498c4a0a72c43d1813917904a6077a2d55cb32db7dacee0d1d407964c76fce373e4ff0b33dfc6a7dc8920d67b8",
-        publicKeyDidControl: "0x077a2d55cb32db7dacee0d1d407964c76fce373e4ff0b33dfc6a7dc8920d67b8",
+        did: "did:iota:tst:0x2c9e4529301918a165c029e57579e24df0a280805d28532a56487dc9aebfb16d",
+        privateKeyDidControl: "0xbd6add038c47395e0f57587dad489da25ffe13d590aaab40ad04e6e5a8e87331eafca4643ac70059d0fb614b81a2483528574e0108c5098a10c8e3a70e7732ad",
+        publicKeyDidControl: "0xeafca4643ac70059d0fb614b81a2483528574e0108c5098a10c8e3a70e7732ad",
         privateKeySign: {
-            "kid": "did:iota:tst:0x43e8de0883631604887805c6d7b96a6f4e728fd889e95feec8ad77acb8c785f0#sign-1",
             "use": "sig",
             "alg": "ES256",
             "kty": "EC",
-            "x": "ehop5tvu0M7VGg2KsYPwozpb-ma4nmk131qMOzyuwA4",
-            "y": "bMIX8jpgJDgfujyFBGwOhUctrVy2x1rHn74Iv_yPCMM",
+            "x": "h_yhTOkXfeq3SWshPBw5m_fI9a-OmZLpACI4W2Uz0Nc",
+            "y": "NPEkD6rAvkhnmoJTC0vl5amRQ5iv6xm8yKKoCWTqN38",
             "crv": "P-256",
-            "d": "SAEt1GgiZrc3IoKYrgPMwI7uXu11eF1vKo-zH3F3xM8"
-        }
+            "d": "7pvlxj3VcpzQu0jT-KUDIvLgOtuzSMOslSxh4dc9r0Y",
+            "kid": "did:iota:tst:0x2c9e4529301918a165c029e57579e24df0a280805d28532a56487dc9aebfb16d#b2uKWE5hgur3y0pWlueFJSMF1rjBvysHzv8W-7qO6Zs"
+          }
     },
     revenueAgencyTAO: {
-        did: "did:iota:tst:0xc5f0c16656242b4e1f54dff58ebccc6373af0c8c976315d2eae2e77c1db7ab43",
-        privateKeyDidControl: "0xd5c5daaa78cf1172f3df2942ef56c4fcf1cd8b1152b3e5e8b56da1c45104a064bfee0a3d93aae2f25aa8ebc84bc2dd4df7e9077b170bc45548d00f5dbff68d54",
-        publicKeyDidControl: "0xbfee0a3d93aae2f25aa8ebc84bc2dd4df7e9077b170bc45548d00f5dbff68d54",
+        did: "did:iota:tst:0xd790148263a3bd9b1a6d6e158eebeb14fc196d3d01512c246a67fc24781ee4f7",
+        privateKeyDidControl: "0x36dd193a9a09f1aefe7b1768f338f0cf2ce39a68902d682de3676764602ad436c6ab84856fb3917a4c3343c77952ea77a4b31c73f848ca59ba02c00a5effdc7c",
+        publicKeyDidControl: "0xc6ab84856fb3917a4c3343c77952ea77a4b31c73f848ca59ba02c00a5effdc7c",
         privateKeySign: {
-            "kid": "did:iota:tst:0xc5f0c16656242b4e1f54dff58ebccc6373af0c8c976315d2eae2e77c1db7ab43#sign-1",
             "use": "sig",
             "alg": "ES256",
             "kty": "EC",
-            "x": "LepDRweiPs-GXXJVuqrfcVjHxqvh87PhorSBD4gQYiQ",
-            "y": "8rWKQybzD4XAgZxi_NzAizh4x4GOpaU7T8qPJ3poC7M",
+            "x": "NlA5DcoNRMOTUzD3kZqiPBfZzLwXb9zC3NjZALwtOUk",
+            "y": "R5OH3aJ3f1sUJGI_pIwy1unp3mujHj6Ra599MjFfnfI",
             "crv": "P-256",
-            "d": "2zrT-WPElcQUsexabdQzr4cubXHjQf7sPAbbfY92h6o"
-        }
+            "d": "gRxBSeUlLZLHdD5tuZYgTFGH2cZAnU4WrSNEYw6VIw8",
+            "kid": "did:iota:tst:0xd790148263a3bd9b1a6d6e158eebeb14fc196d3d01512c246a67fc24781ee4f7#Q45Ed0uNsZY6J6OtR09UXd8R4hRmcAHuC7KBv4rrv7s"
+          }
     }
 };

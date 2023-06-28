@@ -11,19 +11,6 @@ dotenvExpand.expand(theEnv);
 const { NODE_ENDPOINT, PLUGIN_ENDPOINT, TOKEN } = process.env;
 
 async function run() {
-    const verMethod = "sign-1";
-
-    // This DID Document can also be created with the help of the IOTA Identity Library
-    const did = {
-        id: "did:0:0",
-        verificationMethod: [{
-            id: `did:0:0#${verMethod}`,
-            type: "JsonWebKey2020",
-            controller: "did:0:0",
-            publicKeyJwk: {}
-        }]
-    }
-
     // From the menemonic a key pair
     // The account #0 will be controlling the DID
     // The account #1 will be the verification method
@@ -35,11 +22,23 @@ async function run() {
         // At this point in time we don't know the full Kid as we don't know the DID
         // This could be done in two steps, one generating an empty DID and then adding the Ver Method through
         // an update operation
-        kid: `${verMethod}`,
         use: "sig",
         // crv: string, some algorithms need to add curve - EdDSA
         // modulusLength: number, some algorithms need to add length - RSA
     });
+
+    const verMethod = await key.getThumbprint();
+
+     // This DID Document can also be created with the help of the IOTA Identity Library
+     const did = {
+        id: "did:0:0",
+        verificationMethod: [{
+            id: `did:0:0#${verMethod}`,
+            type: "JsonWebKey2020",
+            controller: "did:0:0",
+            publicKeyJwk: {}
+        }]
+    };
 
     did.verificationMethod[0].publicKeyJwk = key.toObject(false);
 

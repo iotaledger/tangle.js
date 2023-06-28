@@ -40,7 +40,6 @@ async function run() {
     const holder = ebsiDids.esGovernmentTAO;
 
     const holderDid = holder.did;
-    const verMethod = "sign-1";
 
     const privateKey = await JWK.fromObject(holder.privateKeySign as unknown as JWKObject);
  
@@ -67,7 +66,7 @@ async function run() {
        issuer: holderDid,
        subject: vcPayload["credentialSubject"]["id"],
        jti: verifiablePresentation["id"],
-       kid: `${holderDid}#${verMethod}`,
+       kid: `${holder.privateKeySign.kid}`,
        notBefore: now,
        iat: now,
        // Expires in 1 hour
