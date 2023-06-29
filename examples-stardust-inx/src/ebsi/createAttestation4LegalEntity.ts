@@ -104,9 +104,6 @@ async function run() {
         return;
     }
 
-    // The issuer is now sure that the credential they are about to issue satisfies their expectations.
-    // The credential is then serialized to JSON and transmitted to the holder in a secure manner.
-    // Note that the credential is NOT published to the IOTA Tangle. It is sent and stored off-chain.
     const credentialJSON = signedVc;
     console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
 }

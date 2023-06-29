@@ -56,7 +56,7 @@ export const ebsiDidsJwk = {
             "y": "aA56KmqhYle4RMQd4hdJQqRi5HNrptdHLLN5bqtGor4",
             "crv": "P-256",
             "d": "-HKxayVZ9tNThx-FSGH6BbRMehe9r-pbriUDIzZof18",
-            "kid": "did:iota:tst:0xd0f496159980c9781c7ede6735c21f40756745d385999bb5a80490b347226532#QBY2xH1c9FdN-WtlFGXaAC9KFgjOO2ArSayQXIrxU1A"
+            "kid": "QBY2xH1c9FdN-WtlFGXaAC9KFgjOO2ArSayQXIrxU1A"
         }
     },
     esGovernmentTAO: {
@@ -71,8 +71,8 @@ export const ebsiDidsJwk = {
             "y": "NPEkD6rAvkhnmoJTC0vl5amRQ5iv6xm8yKKoCWTqN38",
             "crv": "P-256",
             "d": "7pvlxj3VcpzQu0jT-KUDIvLgOtuzSMOslSxh4dc9r0Y",
-            "kid": "did:iota:tst:0x2c9e4529301918a165c029e57579e24df0a280805d28532a56487dc9aebfb16d#b2uKWE5hgur3y0pWlueFJSMF1rjBvysHzv8W-7qO6Zs"
-          }
+            "kid": "b2uKWE5hgur3y0pWlueFJSMF1rjBvysHzv8W-7qO6Zs"
+        }
     },
     revenueAgencyTAO: {
         did: "did:iota:tst:0xd790148263a3bd9b1a6d6e158eebeb14fc196d3d01512c246a67fc24781ee4f7",
@@ -86,7 +86,22 @@ export const ebsiDidsJwk = {
             "y": "R5OH3aJ3f1sUJGI_pIwy1unp3mujHj6Ra599MjFfnfI",
             "crv": "P-256",
             "d": "gRxBSeUlLZLHdD5tuZYgTFGH2cZAnU4WrSNEYw6VIw8",
-            "kid": "did:iota:tst:0xd790148263a3bd9b1a6d6e158eebeb14fc196d3d01512c246a67fc24781ee4f7#Q45Ed0uNsZY6J6OtR09UXd8R4hRmcAHuC7KBv4rrv7s"
-          }
-    }
+            "kid": "Q45Ed0uNsZY6J6OtR09UXd8R4hRmcAHuC7KBv4rrv7s"
+        }
+    },
+    recyclerTI: {
+        did: "did:iota:tst:0x6f5d2cfe81c27d33b8977e2b4bdf07b00378174aca1770a17a91c323960b3d2d",
+        privateKeyDidControl: "0x6b5101adcd50f15894347ee4bc4bd8db12ebda9776c4ce596a67a16d8af4461a7cc01ee5d95038732227989e6d35acada8cdb9b2f6779f222caf939a9bf57a40",
+        publicKeyDidControl: "0x7cc01ee5d95038732227989e6d35acada8cdb9b2f6779f222caf939a9bf57a40",
+        privateKeySign: {
+            "use": "sig",
+            "alg": "EdDSA",
+            "crv": "Ed25519",
+            "d": "dX2V2IYeZmblfJkef03bG9Wk-DbhsZ1pbqIH2tKcIec",
+            "x": "JwrXeFRh7te585WGUXyzLswkJEEiGz-q4TQ3rarZ5Ck",
+            "kty": "OKP",
+            "kid": "YrLtAMV0Hl31BEtxazzgW5ueiqK0asq961ZHKE9j2GM"
+        },
+        rawPrivateKeySign: "0x757d95d8861e6666e57c991e7f4ddb1bd5a4f836e1b19d696ea207dad29c21e7"
+    },
 };

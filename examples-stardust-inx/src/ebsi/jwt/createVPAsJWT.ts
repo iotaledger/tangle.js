@@ -42,17 +42,20 @@ async function run() {
     const holderDid = holder.did;
 
     const privateKey = await JWK.fromObject(holder.privateKeySign as unknown as JWKObject);
+    const kid = privateKey.kid;
+    // We overwrite it in order the sign process does not fail
+    privateKey.metadata.kid = `${holderDid}#${kid}`;
  
      const holderDocument = await get(`${PLUGIN_ENDPOINT}/identities/${encodeURIComponent(holderDid)}`, TOKEN);
      console.error("Resolved DID document:", JSON.stringify(holderDocument, null, 2));
 
     const verifiablePresentation = {
+        "@context": "https://www.w3.org/2018/credentials/v1",
         id: "https://id.example.org/vp/456789",
         type: "VerifiablePresentation",
         holder: holderDid,
         verifiableCredential: [vcAsJwt]
     };
-
 
     const nonce = "4567789";
     const payload: JWTPayload = {
@@ -66,7 +69,7 @@ async function run() {
        issuer: holderDid,
        subject: vcPayload["credentialSubject"]["id"],
        jti: verifiablePresentation["id"],
-       kid: `${holder.privateKeySign.kid}`,
+       kid: `${holderDid}#${kid}`,
        notBefore: now,
        iat: now,
        // Expires in 1 hour

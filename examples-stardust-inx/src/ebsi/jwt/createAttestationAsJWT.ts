@@ -11,7 +11,7 @@ import * as dotenvExpand from "dotenv-expand";
 
 import { ebsiDidsJwk as ebsiDids } from "../dids";
 
-import { accreditationSchema, auditOrgSchema, legalEntitySchema, wasteOperatorSchema } from "../schemas";
+import { dppSchema } from "../schemas";
 import { get, toUnixSeconds } from "../../utilHttp";
 import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
 
@@ -23,9 +23,9 @@ const { TOKEN, PLUGIN_ENDPOINT } = process.env;
 async function run() {
 
     // The root of trust accredits to accredit to the ES Government
-    const issuerDid = ebsiDids.rootTrust.did;
+    const issuerDid = ebsiDids.recyclerTI.did;
     
-    const privateKey = await JWK.fromObject(ebsiDids.rootTrust.privateKeySign as unknown as JWKObject);
+    const privateKey = await JWK.fromObject(ebsiDids.recyclerTI.privateKeySign as unknown as JWKObject);
     const kid = privateKey.kid;
     // We overwrite it in order the sign process does not fail
     privateKey.metadata.kid = `${issuerDid}#${kid}`;
@@ -34,36 +34,8 @@ async function run() {
     console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     const subject = {
-        id: ebsiDids.esGovernmentTAO.did,
-        reservedAttributeId: "1244",
-        accreditedFor: [
-            {
-                schemaId: legalEntitySchema,
-                types: [
-                    "VerifiableCredential",
-                    "VerifiableAccreditation",
-                    "VerifiableAccreditationToAttest"
-                ],
-                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
-            },
-            {
-                schemaId: wasteOperatorSchema,
-                types: [
-                    "VerifiableCredential",
-                    "VerifiableAccreditation",
-                    "VerifiableAccreditationToAttest"
-                ],
-                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
-            },
-            {
-                schemaId: auditOrgSchema,
-                types: [
-                    "VerifiableCredential",
-                    "VerifiableAttestation"
-                ],
-                limitJurisdiction: "https://publications.europa.eu/resource/authority/atu/ESP"
-            }
-        ]
+        id: "https://dlnkd.tn.gg/01/95203454189156/21/6789",
+        manufacturingDate: "2023-07-01"
     };
 
     const expiresAt =  "2024-06-22T14:11:44Z";
@@ -72,8 +44,7 @@ async function run() {
         id: "https://id.example.org/id999999",
         type: [
             "VerifiableCredential",
-            "VerifiableAccreditation",
-            "VerifiableAccreditationToAccredit"
+            "VerifiableAttestation"
         ],
         issuer: issuerDid,
         issuanceDate: Timestamp.nowUTC(),
@@ -82,7 +53,7 @@ async function run() {
         validUntil: expiresAt,
         issued: Timestamp.nowUTC(),
         credentialSchema: {
-            "id": accreditationSchema,
+            "id": dppSchema,
             "type": "FullJsonSchemaValidator2021"
         },
         credentialSubject: subject,
@@ -106,7 +77,7 @@ async function run() {
 
     const options: JWTSignOptions = {
        issuer: issuerDid,
-       subject: ebsiDids.esGovernmentTAO.did,
+       subject: subject.id,
        jti: finalCred["id"],
        kid: `${issuerDid}#${kid}`,
        notBefore: toUnixSeconds(finalCred["validFrom"]),

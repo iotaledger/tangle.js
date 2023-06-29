@@ -28,6 +28,9 @@ async function run() {
 
     // Issuer's private key used to sign
     const privateKey = await JWK.fromObject(issuer.privateKeySign as unknown as JWKObject);
+    const kid = privateKey.kid;
+    // We overwrite it in order the sign process does not fail
+    privateKey.metadata.kid = `${issuerDid}#${kid}`;
 
     const issuerDocument = await get(`${PLUGIN_ENDPOINT}/identities/${encodeURIComponent(issuerDid)}`, TOKEN);
     console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
@@ -101,7 +104,7 @@ async function run() {
         issuer: issuerDid,
         subject: subject.did,
         jti: finalCred["id"],
-        kid: `${privateKey.kid}`,
+        kid: `${issuerDid}#${kid}`,
         notBefore: toUnixSeconds(finalCred["validFrom"]),
         iat: toUnixSeconds(finalCred["issued"]),
         exp: toUnixSeconds(finalCred["expirationDate"])
