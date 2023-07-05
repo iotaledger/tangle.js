@@ -7,8 +7,6 @@ import { ebsiDidsJwk as ebsiDids } from "../dids";
 import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
 import { get } from "../../utilHttp";
 
-import { Converter } from "@iota/util.js";
-
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
@@ -30,7 +28,8 @@ async function run() {
 
     // The VC is parsed before being wrapped into a VP, just to obtain the subject
     const decoder = new TextDecoder();
-    const jwtPayload = JSON.parse(decoder.decode(Converter.base64ToBytes(jwtSegments[1])));
+    const jwtPayload = JSON.parse(decoder.decode(Buffer.from(jwtSegments[1], "base64")));
+
     if (!jwtPayload["vc"]) {
         console.error("The JWT does not contain a VC");
         process.exit(-1);

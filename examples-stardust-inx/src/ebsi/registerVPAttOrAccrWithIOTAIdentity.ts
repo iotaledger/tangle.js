@@ -16,7 +16,7 @@ import { Converter } from "@iota/util.js";
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { dids as ebsiDids } from "./dids";
+import { ebsiDids as ebsiDids } from "./dids";
 import { post } from "../utilHttp";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
@@ -59,7 +59,7 @@ async function run() {
 
     // The verifier and holder also agree that the signature should have an expiry date
     // 10 minutes from now.
-    const expires = Timestamp.nowUTC().checkedAdd(Duration.minutes(240));
+    const expires = Timestamp.nowUTC().checkedAdd(Duration.hours(24));
 
     // Deserialize the credential.
     const receivedVc = Credential.fromJSON(credentialJSON);

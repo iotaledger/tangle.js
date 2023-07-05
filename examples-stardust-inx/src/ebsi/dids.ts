@@ -45,6 +45,69 @@ export const ebsiDids = {
 
 export const ebsiDidsJwk = {
     rootTrust: {
+        did: "did:iota:ebsi:0xe1f6db9cafa264f96e890a91b7c2c690b2929086368b33ea033701968774fa18",
+        privateKeyDidControl: "0xf609dde2e6cc76b20b8e234bdafd2d0904a3a11c6a392607286ffc699480496a5be1ecac30166926b3d1df553cb1f6f9415aae012d87759e66d5337d2161322f",
+        publicKeyDidControl: "0x5be1ecac30166926b3d1df553cb1f6f9415aae012d87759e66d5337d2161322f",
+        privateKeySign: {
+            "use": "sig",
+            "alg": "ES256",
+            "kty": "EC",
+            "x": "Rt4MVShuI3R434wBVAC1giHXoDWJG-VCb5BTax3ss5E",
+            "y": "_glqI4Ca7sz2ywI3PHymTUqCmQeK_Tb0SYQMUcWqln8",
+            "crv": "P-256",
+            "d": "sLf3mrQrOMT-lkT5LEVxAXJ-D7CNMnC5E2sGa1LmwwM",
+            "kid": "32wtc25oUpEN1iV280jipZL10txJtKmEZBYEpxV1-wI"
+          }
+    },
+    esGovernmentTAO: {
+        did: "did:iota:ebsi:0x16533a1ec360672c5d199ee2ca00091f891a9fc312f08aa3e27512c3f174a38e",
+        privateKeyDidControl: "0x883cfe5c759cb22a8382f6fbeaf1b6698831746e29ec39ba5aba8974c95f2f803dbe85132dbd651b0c4079a18c8ee116c0986e31f43f42aa4e07c43d3097aabd",
+        publicKeyDidControl: "0x3dbe85132dbd651b0c4079a18c8ee116c0986e31f43f42aa4e07c43d3097aabd",
+        privateKeySign: {
+            "use": "sig",
+            "alg": "ES256",
+            "kty": "EC",
+            "x": "ixEpTMFEUTeO_mmLdJn5wXXAV9yDteJFs-fYYu3Hcd8",
+            "y": "wY-iJFalq7Taljh8YP630Ca3qnnMUSYPeKeqiaurRS0",
+            "crv": "P-256",
+            "d": "ee2wDnmYRE1gB-V5MESpSjak4ouDyER3M2a-QlrpRH4",
+            "kid": "OFR8nk-F6_RzcVUhlKHI4H_CeUGbuXi4W3gqs19pkXg"
+          }
+    },
+    revenueAgencyTAO: {
+        did: "did:iota:ebsi:0xb3d07d21076882a1f0ea56cca1908741e782e61294c51f5e51299c8b8ba7aafc",
+        privateKeyDidControl: "0x3a39acadd6e502ba256f8eee0bd5dedb7851f0d12d54841ea357254e68ae82eb681fb141f03095fc1ae76f47031d011640a38d0157d09bfb70f8a26c117d2109",
+        publicKeyDidControl: "0x681fb141f03095fc1ae76f47031d011640a38d0157d09bfb70f8a26c117d2109",
+        privateKeySign: {
+            "use": "sig",
+            "alg": "ES256",
+            "kty": "EC",
+            "x": "cdroC05aoStXVIFIw_ntJXYEoxJKAGd9c2PexhqoiKQ",
+            "y": "j-GojhoKBofMak8XDfBCF9svUFZBPDmz9gt8Dx5ebtM",
+            "crv": "P-256",
+            "d": "XoLPMu8vxySZ-xYfTWKT9U7Q86htFDBvWFRqqy69DxA",
+            "kid": "qgOYb5jR7f7hBjvjF3BDvhrV2MKYpT85rCSuM733wc8"
+          }
+    },
+    recyclerTI: {
+        did: "did:iota:ebsi:0x6ebd60f364b80756a49099c8c47a210bedd0740d1ac77271deabdfe01d76d26f",
+        privateKeyDidControl: "0xc0d3afb3c2b1a9d1a3bd91412d9b6582e0f3746501d7c2ec3a3e9bac48608af83ca3dd4eac975ac170543e99fdf5f810ec262c8d0bd4f95f5ae1d69b0a24a84d",
+        publicKeyDidControl: "0x3ca3dd4eac975ac170543e99fdf5f810ec262c8d0bd4f95f5ae1d69b0a24a84d",
+        privateKeySign: {
+            "use": "sig",
+            "alg": "EdDSA",
+            "crv": "Ed25519",
+            "d": "9g15PTr07BKA-USV8AMwVycdXv03EOD0bbMTydfAK3w",
+            "x": "es8EZcSn2T0u6LCGguMYOZtQUxVmBYcqI12tDQl2zyg",
+            "kty": "OKP",
+            "kid": "9BdtT063y06qCmaz0eOYcmYeoQWI5k-_LDBEG7lqBfA"
+          },
+        rawPrivateKeySign: "0xf60d793d3af4ec1280f94495f0033057271d5efd3710e0f46db313c9d7c02b7c"
+    },
+};
+
+export const didsJwk = {
+    rootTrust: {
         did: "did:iota:tst:0xd0f496159980c9781c7ede6735c21f40756745d385999bb5a80490b347226532",
         privateKeyDidControl: "0xb73b066ca5f416fc1ea74c82fe5a8c7bf9f292f22a18b6b9d1de40582914a20f2d83b0d8c34a4b076a6a8b19be7b480ccb3001da7880aedf0237c3bbe2406837",
         publicKeyDidControl: "0x2d83b0d8c34a4b076a6a8b19be7b480ccb3001da7880aedf0237c3bbe2406837",
@@ -104,4 +167,4 @@ export const ebsiDidsJwk = {
         },
         rawPrivateKeySign: "0x757d95d8861e6666e57c991e7f4ddb1bd5a4f836e1b19d696ea207dad29c21e7"
     },
-};
+}

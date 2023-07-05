@@ -46,7 +46,7 @@ async function run() {
     const result = await postToPlugin(did, bech32Addresses);
 
     const privateKey = key.toObject(true);
-    privateKey.kid = `${result.doc["id"]}#${verMethod}`;
+    privateKey.kid = `${verMethod}`;
     console.log("Private Key of the Verification Method: ");
     console.log(JSON.stringify(privateKey, undefined, 2));
     console.log();
