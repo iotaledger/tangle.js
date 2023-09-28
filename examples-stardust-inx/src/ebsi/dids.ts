@@ -57,7 +57,7 @@ export const ebsiDidsJwk = {
             "crv": "P-256",
             "d": "sLf3mrQrOMT-lkT5LEVxAXJ-D7CNMnC5E2sGa1LmwwM",
             "kid": "32wtc25oUpEN1iV280jipZL10txJtKmEZBYEpxV1-wI"
-          }
+        }
     },
     esGovernmentTAO: {
         did: "did:iota:ebsi:0x16533a1ec360672c5d199ee2ca00091f891a9fc312f08aa3e27512c3f174a38e",
@@ -72,7 +72,7 @@ export const ebsiDidsJwk = {
             "crv": "P-256",
             "d": "ee2wDnmYRE1gB-V5MESpSjak4ouDyER3M2a-QlrpRH4",
             "kid": "OFR8nk-F6_RzcVUhlKHI4H_CeUGbuXi4W3gqs19pkXg"
-          }
+        }
     },
     revenueAgencyTAO: {
         did: "did:iota:ebsi:0xb3d07d21076882a1f0ea56cca1908741e782e61294c51f5e51299c8b8ba7aafc",
@@ -87,7 +87,7 @@ export const ebsiDidsJwk = {
             "crv": "P-256",
             "d": "XoLPMu8vxySZ-xYfTWKT9U7Q86htFDBvWFRqqy69DxA",
             "kid": "qgOYb5jR7f7hBjvjF3BDvhrV2MKYpT85rCSuM733wc8"
-          }
+        }
     },
     recyclerTI: {
         did: "did:iota:ebsi:0x6ebd60f364b80756a49099c8c47a210bedd0740d1ac77271deabdfe01d76d26f",
@@ -101,10 +101,27 @@ export const ebsiDidsJwk = {
             "x": "es8EZcSn2T0u6LCGguMYOZtQUxVmBYcqI12tDQl2zyg",
             "kty": "OKP",
             "kid": "9BdtT063y06qCmaz0eOYcmYeoQWI5k-_LDBEG7lqBfA"
-          },
+        },
         rawPrivateKeySign: "0xf60d793d3af4ec1280f94495f0033057271d5efd3710e0f46db313c9d7c02b7c"
     },
+
+    naturalPerson: {
+        did: "did:key:z2dmzD81cgPx8Vki7JbuuMmFYrWPgYoytykUZ3eyqht1j9Kbo6tAUpsSqTX78FJsG9AXAW2dKhHoNvywt6LXGj2pebEYBiedDRBe56X51DDN6PSqg22K5sMg4R2v4w5vcBCwF7nXdK7kyg6P3vj7hvBe4zoerTSGiyv5xZYwDLcbhHNgtk",
+              
+        privateKeyDidControl: {},
+        privateKeySign: {
+            "use": "sig",
+            "alg": "ES256",
+            "kty": "EC",
+            "x": "9u-2hzEC6_atWbckmXT1XJ4WFBu_RS9KZnWmGLRAC_Q",
+            "y": "S7TeI23GKEZm9DMXyHWGvyiFKYxNaRFa5vpuC3yc-CA",
+            "crv": "P-256",
+            "d": "hRniX6_QtGMHcEuL3ZuRsuxpft1s40lJgzR9kpJIX4Q"
+        },
+        rawPrivateKeySign: ""
+    }
 };
+ebsiDidsJwk.naturalPerson.privateKeyDidControl = ebsiDidsJwk.naturalPerson.privateKeySign;
 
 export const didsJwk = {
     rootTrust: {
