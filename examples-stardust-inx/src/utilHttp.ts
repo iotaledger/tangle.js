@@ -1,4 +1,5 @@
 import fetch, { Headers } from "node-fetch";
+import https from "node:https";
 
 export async function post(endpoint: string, auth: string, payload: unknown): Promise<unknown> {
     const headers = new Headers();
@@ -25,13 +26,17 @@ export async function post(endpoint: string, auth: string, payload: unknown): Pr
 }
 
 export async function get(endpoint: string, auth: string): Promise<unknown> {
+    const httpsAgent = new https.Agent({
+        rejectUnauthorized: false,
+      });
+
     const headers = new Headers();
     headers.set("Accept", "application/json");
     if (auth) {
         headers.set("Authorization", `Bearer ${auth}`);
     }
 
-    const response = await fetch(`${endpoint}`, { headers });
+    const response = await fetch(`${endpoint}`, { headers, agent: httpsAgent });
     const json = await response.json();
 
     if (response.status !== 200) {
