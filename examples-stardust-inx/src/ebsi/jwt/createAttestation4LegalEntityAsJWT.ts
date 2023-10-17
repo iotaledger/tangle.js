@@ -40,6 +40,7 @@ async function run() {
         legalName: "Company Recycler AG",
         domainName: "recycler.example.org",
         economicActivity: "http://data.europa.eu/ux2/nace2.1/38",
+        legalEmailAddress: "info@recycler.example.org",
         account: "0x8324905441AA4cb6a9C7da0B5a9d644aea825360"
     };
 
@@ -75,6 +76,8 @@ async function run() {
 
     const cred = Credential.fromJSON(credAsJson);
     const finalCred = cred.toJSON();
+
+    console.log(JSON.stringify(finalCred));
 
     const payload: JWTPayload = {
         vc: finalCred,
