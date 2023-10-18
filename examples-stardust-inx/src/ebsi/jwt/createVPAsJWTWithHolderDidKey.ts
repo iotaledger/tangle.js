@@ -3,7 +3,7 @@
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { ebsiDidsJwk as ebsiDids } from "../dids";
+import { didsJwk as ebsiDids } from "../dids";
 import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
 import { get } from "../../utilHttp";
 

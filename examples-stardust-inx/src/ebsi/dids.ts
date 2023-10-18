@@ -124,6 +124,7 @@ export const ebsiDidsJwk = {
 ebsiDidsJwk.naturalPerson.privateKeyDidControl = ebsiDidsJwk.naturalPerson.privateKeySign;
 
 export const didsJwk = {
+    naturalPerson: ebsiDidsJwk.naturalPerson,
     rootTrust: {
         did: "did:iota:tst:0xd0f496159980c9781c7ede6735c21f40756745d385999bb5a80490b347226532",
         privateKeyDidControl: "0xb73b066ca5f416fc1ea74c82fe5a8c7bf9f292f22a18b6b9d1de40582914a20f2d83b0d8c34a4b076a6a8b19be7b480ccb3001da7880aedf0237c3bbe2406837",

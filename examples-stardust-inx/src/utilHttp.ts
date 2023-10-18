@@ -1,5 +1,18 @@
 import fetch, { Headers } from "node-fetch";
 import https from "node:https";
+import http from "node:http";
+
+function getAgent(endpoint: string): (http.Agent | https.Agent) {
+    let agent: https.Agent | http.Agent = new http.Agent();
+
+    if (endpoint.startsWith("https")) {
+        agent = new https.Agent({
+            rejectUnauthorized: false,
+        });
+    }
+
+    return agent;
+}
 
 export async function post(endpoint: string, auth: string, payload: unknown): Promise<unknown> {
     const headers = new Headers();
@@ -11,7 +24,8 @@ export async function post(endpoint: string, auth: string, payload: unknown): Pr
     const requestOptions = {
         headers,
         method: "POST",
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        agent: getAgent(endpoint)
     };
 
     const response = await fetch(`${endpoint}`, requestOptions);
@@ -26,9 +40,7 @@ export async function post(endpoint: string, auth: string, payload: unknown): Pr
 }
 
 export async function get(endpoint: string, auth: string): Promise<unknown> {
-    const httpsAgent = new https.Agent({
-        rejectUnauthorized: false,
-      });
+    const agent = getAgent(endpoint);
 
     const headers = new Headers();
     headers.set("Accept", "application/json");
@@ -36,7 +48,7 @@ export async function get(endpoint: string, auth: string): Promise<unknown> {
         headers.set("Authorization", `Bearer ${auth}`);
     }
 
-    const response = await fetch(`${endpoint}`, { headers, agent: httpsAgent });
+    const response = await fetch(`${endpoint}`, { headers, agent });
     const json = await response.json();
 
     if (response.status !== 200) {
@@ -64,10 +76,10 @@ export type Signature = { publicKey: string; signature: string; };
 
 export type FullDoc = { doc: Doc; meta: Meta; };
 
-export type TrailRecord = {[id: string]: unknown};
-export type TrailImmutable = {[id: string]: unknown};
+export type TrailRecord = { [id: string]: unknown };
+export type TrailImmutable = { [id: string]: unknown };
 
-export type Trail = { 
-    trail: { record: TrailRecord, immutable: TrailImmutable }; 
+export type Trail = {
+    trail: { record: TrailRecord, immutable: TrailImmutable };
     meta: Meta
 };

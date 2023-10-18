@@ -34,6 +34,9 @@ async function run() {
     });
     const didClient = new IotaIdentityClient(client);
 
+    if (process.argv[2]) {
+        ebsiDids.esGovernmentTAO.did = process.argv[2];
+    }
 
     // The root of trust accredits to accredit to the ES Government
     const issuerDid = ebsiDids.rootTrust.did;
