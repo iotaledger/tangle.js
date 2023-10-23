@@ -28,7 +28,10 @@ async function run() {
     const issuerDid = ebsiDids.tao.did;
     
     const privateKey = await JWK.fromObject(ebsiDids.tao.privateKeySign as unknown as JWKObject);
-    const kid = privateKey.kid;
+    let kid = privateKey.kid;
+    if (!kid) {
+        kid = await privateKey.getThumbprint();
+    }
     // We overwrite it in order the sign process does not fail
     privateKey.metadata.kid = `${issuerDid}#${kid}`;
 
@@ -42,7 +45,7 @@ async function run() {
         economicActivity: "http://data.europa.eu/ux2/nace2.1/38"
     };
 
-    const expiresAt =  "2024-06-22T14:11:44Z";
+    const expiresAt =  "2027-06-22T14:11:44Z";
     const credAsJson = {
         "@context": ["https://www.w3.org/2018/credentials/v1"],
         id: "https://id.example.org/id999999",

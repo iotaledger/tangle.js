@@ -9,7 +9,7 @@ import {
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 
-import { ebsiDidsJwk as ebsiDids } from "../dids";
+import { didsJwk as ebsiDids } from "../dids";
 
 import { dppSchema } from "../schemas";
 import { get, toUnixSeconds } from "../../utilHttp";
@@ -38,7 +38,7 @@ async function run() {
         manufacturingDate: "2023-07-01"
     };
 
-    const expiresAt =  "2024-06-22T14:11:44Z";
+    const expiresAt =  "2027-06-22T14:11:44Z";
     const credAsJson = {
         "@context": ["https://www.w3.org/2018/credentials/v1"],
         id: "https://id.example.org/id999999",

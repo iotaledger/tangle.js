@@ -9,7 +9,9 @@ import {
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
 
-import { ebsiDidsJwk as ebsiDids } from "../dids";
+import { ebsiReplicaDids as ebsiDids } from "./dids-replica";
+import { didsJwk as ebsiIotaDids } from "../dids";
+
 
 import { get, toUnixSeconds } from "../../utilHttp";
 import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
@@ -20,28 +22,29 @@ import { legalEntitySchema } from "../schemas";
 const theEnv = dotenv.config();
 dotenvExpand.expand(theEnv);
 
-const { TOKEN, PLUGIN_ENDPOINT } = process.env;
+const { PLUGIN_ENDPOINT } = process.env;
 
 async function run() {
 
     // The root of trust accredits to accredit to the ES Government
-    const issuerDid = ebsiDids.esGovernmentTAO.did;
+    const issuerDid = ebsiIotaDids.esGovernmentTAO.did;
     
-    const privateKey = await JWK.fromObject(ebsiDids.esGovernmentTAO.privateKeySign as unknown as JWKObject);
-    const kid = privateKey.kid;
+    const privateKey = await JWK.fromObject(ebsiIotaDids.esGovernmentTAO.privateKeySign as unknown as JWKObject);
+    let kid = privateKey.kid;
+    if (!kid) {
+        kid = await privateKey.getThumbprint();
+    }
     // We overwrite it in order the sign process does not fail
     privateKey.metadata.kid = `${issuerDid}#${kid}`;
 
-    const issuerDocument = await get(`${PLUGIN_ENDPOINT}/identities/${encodeURIComponent(issuerDid)}`, TOKEN);
+    const issuerDocument = await get(`${PLUGIN_ENDPOINT}/identities/${encodeURIComponent(issuerDid)}`, "");
     console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     const subject = {
-        id: ebsiDids.recyclerTI.did,
+        id: ebsiDids.ti.did,
         legalName: "Company Recycler AG",
         domainName: "recycler.example.org",
-        economicActivity: "http://data.europa.eu/ux2/nace2.1/38",
-        legalEmailAddress: "info@recycler.example.org",
-        account: "0x8324905441AA4cb6a9C7da0B5a9d644aea825360"
+        economicActivity: "http://data.europa.eu/ux2/nace2.1/38"
     };
 
     const expiresAt =  "2027-06-22T14:11:44Z";
@@ -64,7 +67,7 @@ async function run() {
         },
         credentialSubject: subject,
         credentialStatus: {
-            id: "https://api-test.ebsi.eu/trusted-issuers-registry/v4/issuers/did:ebsi:zZeKyEJfUTGwajhNyNX928z/attributes/60ae46e4fe9adffe0bc83c5e5be825aafe6b5246676398cd1ac36b8999e088a8",
+            id: `https://api-test.ebsi.eu/trusted-issuers-registry/v4/issuers/${ebsiDids.tao.did}/attributes/60ae46e4fe9adffe0bc83c5e5be825aafe6b5246676398cd1ac36b8999e088a8`,
             type: "EbsiAccreditationEntry"
         },
         termsOfUse:
@@ -76,8 +79,6 @@ async function run() {
 
     const cred = Credential.fromJSON(credAsJson);
     const finalCred = cred.toJSON();
-
-    console.log(JSON.stringify(finalCred));
 
     const payload: JWTPayload = {
         vc: finalCred,

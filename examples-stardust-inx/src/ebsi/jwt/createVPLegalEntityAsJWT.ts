@@ -3,7 +3,7 @@
 
 import * as dotenv from "dotenv";
 import * as dotenvExpand from "dotenv-expand";
-import { ebsiDidsJwk as ebsiDids } from "../dids";
+import { didsJwk as ebsiDids } from "../dids";
 import { JWK, JWT, type JWKObject, type JWTPayload, type JWTSignOptions } from "ts-jose";
 import { get } from "../../utilHttp";
 
@@ -71,8 +71,8 @@ async function run() {
        kid: `${holderDid}#${kid}`,
        notBefore: now,
        iat: now,
-       // Expires in 1 hour
-       exp: now + 3600,
+       // Expires in 5 years
+       exp: now + 157680000,
        audience: "https://dpp.registry.org"
     };
 

@@ -65,6 +65,7 @@ async function run() {
         type: "UniversityDegreeCredential",
         issuer: issuerDid,
         credentialSubject: subject,
+        expirationDate: Timestamp.nowUTC().checkedAdd(Duration.days(1500))
     });
 
     const privateKeyBytes = Converter.hexToBytes(privateKey);
@@ -91,8 +92,7 @@ async function run() {
     const challenge = "475a7984-1bb5-4c4c-a56f-822bccd46440";
 
     // The verifier and holder also agree that the signature should have an expiry date
-    // 10 minutes from now.
-    const expires = Timestamp.nowUTC().checkedAdd(Duration.minutes(240));
+    const expires = Timestamp.nowUTC().checkedAdd(Duration.days(1500));
 
     // ===========================================================================
     // Step 5: Holder creates a verifiable presentation from the issued credential for the verifier to validate.

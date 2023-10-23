@@ -41,7 +41,10 @@ async function run() {
     const holderDid = holder.did;
 
     const privateKey = await JWK.fromObject(holder.privateKeySign as unknown as JWKObject);
-    const kid = privateKey.kid;
+    let kid = privateKey.kid;
+    if (!kid) {
+        kid = await privateKey.getThumbprint();
+    }
     // We overwrite it in order the sign process does not fail
     privateKey.metadata.kid = `${holderDid}#${kid}`;
  
@@ -71,8 +74,8 @@ async function run() {
        kid: `${holderDid}#${kid}`,
        notBefore: now,
        iat: now,
-       // Expires in 1 hour
-       exp: now + 3600,
+       // Expires in 5 years
+       exp: now + 157680000,
        audience: "https://dpp.registry.org"
     };
 

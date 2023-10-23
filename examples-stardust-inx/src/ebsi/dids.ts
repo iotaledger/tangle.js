@@ -20,8 +20,10 @@ export const dids = {
         privateKeySign: "0x2a3506aa8c55f5fbfc7c077b7ce76f1d931629840b951e21037d60802cc47930e7b2f324ef4e695753ee10dd8f4cd78758141c979041549e5cfc8e4ddb6d2693"
     },
     recyclerTI: {
-        did: "did:iota:tst:0x25237db769135c3053065913547cbf6482600a9646d40a978aabc017042f161f",
-        privateKeySign: "0xf0d34c4f5b74bc327fbe6646fdf874f6dad9d5425e138078ef654b1144389eae55abe1926a93c39b3d18c005e0372a80a0f860370d9ec180f82f960538809cf4"
+        did: " did:iota:tst:0xf2a9d1c3c01b4bd4fff8a3ddda09cd4699093ae859538cfa243dcb99228f6f3c",
+        privateKeyDidControl: "0xf23a23b7e59788b0ade319961a7593a5bd46f40852d5363d4f30a7039612e577bf17de99d2ae10958e6c6fe7b31fc245627d05204c0ffec35fad3c59817d0ad1",
+        publicKeyDidControl: "0xbf17de99d2ae10958e6c6fe7b31fc245627d05204c0ffec35fad3c59817d0ad1",
+        privateKeySign: "0x96b38f37e4a53c15f9d96a9e293418a7e79014b14668625491a7f80c04ec1456381ba8d114e1defeb512c80ff37cf1d1659abde41577a707febc9101a8abd29c"
     },
     manufacturerLegalEntity: {
         did: "did:iota:tst:0x77eac1ab20a84c5ca1d3020b7eb0c1f2220eb098d0c839b9f3fd69de54807202"

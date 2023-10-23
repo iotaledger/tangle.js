@@ -70,8 +70,8 @@ async function run() {
         kid: `${holderDid}#${kid}`,
         notBefore: now,
         iat: now,
-        // Expires in 1 hour
-        exp: now + 3600,
+        // Expires in 5 years
+        exp: now + 157680000,
         audience: "https://dpp.registry.org"
     };
 

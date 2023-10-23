@@ -8,7 +8,8 @@ import {
     , IotaDID,
     ProofPurpose,
     IotaDIDUrl,
-    Timestamp
+    Timestamp,
+    Duration
 } from "@iota/identity-wasm/node/index.js";
 
 import { Client } from "@iota/client-wasm/node/lib/index.js";
@@ -41,20 +42,23 @@ async function run() {
     const elements = issuerDid.split(":");
     const did = IotaDID.fromAliasId(elements[elements.length - 1], elements[elements.length - 2]);
     const issuerDocument: IotaDocument = await didClient.resolveDid(did);
-    console.log("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
+    console.error("Resolved DID document:", JSON.stringify(issuerDocument, null, 2));
 
     // Create a credential subject for the Legal Entity for which the attestation is being created
     const subject = {
         id: dids.recyclerTI.did,
         legalName: "Company Recycler AG",
         domainName: "recycler.example.org",
-        economicActivity: "http://data.europa.eu/ux2/nace2.1/38"
+        economicActivity: "http://data.europa.eu/ux2/nace2.1/38",
+        legalEmailAddress: "info@recycler.example.org"
     };
+
+    const expiresAt = Timestamp.nowUTC().checkedAdd(Duration.days(1200));
 
     const unsignedVc = {
         "@context": [
-            "https://europa.eu/schemas/v-id/2020/v1",
-            "https://www.w3.org/2018/credentials/v1"
+            "https://www.w3.org/2018/credentials/v1",
+            "https://europa.eu/schemas/v-id/2020/v1"
         ],
         id: "https://example.edu/credentials/3732",
         type: [
@@ -70,6 +74,8 @@ async function run() {
         issuanceDate: Timestamp.nowUTC(),
         issued: Timestamp.nowUTC(),
         validFrom: Timestamp.nowUTC(),
+        validUntil: expiresAt,
+        expirationDate: expiresAt,
         evidence: [
             {
                 id: "https://europa.eu/tsr-vid/evidence/f2aeec97-fc0d-42bf-8ca7-0548192d4231",
@@ -105,9 +111,9 @@ async function run() {
     }
 
     const credentialJSON = signedVc;
-    console.log("Issued credential: \n", JSON.stringify(credentialJSON, null, 2));
+    console.log(JSON.stringify(credentialJSON));
 }
 
 export { };
 
-run().then(() => console.log("Done")).catch(err => console.error(err));
+run().then(() => console.error("Done")).catch(err => console.error(err));
