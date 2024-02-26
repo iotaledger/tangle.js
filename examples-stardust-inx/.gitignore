@@ -6,3 +6,5 @@ credential.json
 legal-entity.json
 presentation.json
 
+.env.test
+.env.local

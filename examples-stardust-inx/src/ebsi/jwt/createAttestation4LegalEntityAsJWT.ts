@@ -44,7 +44,7 @@ async function run() {
         account: "0x8324905441AA4cb6a9C7da0B5a9d644aea825360"
     };
 
-    const expiresAt =  "2027-06-22T14:11:44Z";
+    const expiresAt =  "2023-10-24T08:22:00Z";
     const credAsJson = {
         "@context": ["https://www.w3.org/2018/credentials/v1"],
         id: "https://id.example.org/id999999",
